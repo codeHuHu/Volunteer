@@ -1,2 +1,39 @@
-<!--pages/mine/mine.wxml-->
-<text>pages/mine/mine.wxml</text>
+<scroll-view class="scrollPage">
+  <view class="bg-img padding-tb-xl" style="background-image: url(/images/1-up.png);height: 414rpx;">
+    <view class="margin-left cu-tag round bg-green ">
+      注册
+    </view>
+    <view class="margin-top padding-xl text-white">
+      <view class="padding-top-xl flex-sub solid-bottom text-sl">
+        <text class="text-blue text-bold">志愿时长:0小时</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="cu-list menu card-menu margin-bottom-xl shadow-lg radius">
+    <view class="cu-item arrow">
+      <view bindtap="none" class="content">
+        <text class="cuIcon-my lg text-gray"></text>
+        <text class="text-grey">我的志愿服务</text>
+      </view>
+    </view>
+    <view class="cu-item arrow">
+      <view bindtap="none" class="content">
+        <text class="cuIcon-friend lg text-gray"></text>
+        <text class="text-grey">我的队伍</text>
+      </view>
+    </view>
+    <view class="cu-item arrow">
+      <view bindtap="none" class="content">
+        <text class="cuIcon-rank lg text-gray"></text>
+        <text class="text-grey">我的排名</text>
+      </view>
+    </view>
+    <view class="cu-item arrow">
+      <view bindtap="none" class="content">
+        <text class="cuIcon-settings lg text-gray"></text>
+        <text class="text-grey">个人设置</text>
+      </view>
+    </view>
+  </view>
+</scroll-view>
