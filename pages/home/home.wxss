@@ -1,0 +1,210 @@
+/* pages/home/home.wxss */
+
+page{
+	min-height: 1000px;
+}
+.up image {
+	width: 100%;
+	height: 400rpx;
+	border-radius: 5%;
+}
+.search-bar {
+	display: flex;
+	position: relative;
+	margin-top: -80px;
+	background-color: rgba(93, 192, 137,0);
+}
+.cu-bar.bg-white.search.fixed.search-bar 
+{
+	border-top-color: transparent;
+	border-bottom-color: transparent;
+}
+.search-form {
+	 border: 1px rgb(111, 185, 228) solid;
+}
+
+.icon-bar {
+	margin-top: 0rpx;
+	display: flex;
+	flex-direction: row;
+	height: 100px;
+	width:100% ;
+	position: relative;
+	z-index: 2;
+	padding: 20rpx;
+	background-color: rgba(136, 199, 224, 0);
+	align-items: center;
+	justify-content: center;
+	grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+	grid-gap: 30px; /* 调整元素之间的间距 */
+}
+	.item {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+.greencircle {
+	display: grid;
+	align-items: center;
+	justify-content: center;
+	width: 100rpx;
+	height: 100rpx;
+	border-radius: 50%;
+	background-color: rgb(132, 228, 132);
+	margin-bottom: 10rpx;
+	box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
+}
+
+.bluecircle {
+	display: grid;
+	align-items: center;
+	justify-content: center;
+	width: 100rpx;
+	height: 100rpx;
+	border-radius: 50%;
+	background-color: rgb(101, 146, 231);
+	margin-bottom: 10rpx;
+	box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
+}
+
+.fontsize {
+	font-weight: 600;
+	font-size: 24rpx;
+}
+.icon-fangzi {
+	display: inline;
+	max-width: 100rpx;
+	max-height: 100rpx;
+	font-size: 30px;
+	color: white;
+}
+
+.icon-duiwu {
+	display: inline;
+	max-width: 100rpx;
+	max-height: 100rpx;
+	font-size: 30px;
+	color: white;
+}
+.fengcai {
+	display: inline;
+	max-width: 100rpx;
+	max-height: 100rpx;
+	font-size: 30px;
+	color: white;
+}
+
+.icon-jushou {
+	display: inline;
+	max-width: 100rpx;
+	max-height: 100rpx;
+	font-size: 30px;
+	color: white;
+}
+
+.home-header-line1 {
+
+  background: #e0e3da;
+
+  width: 100%;
+  height: 2rpx;
+  margin-top: 0rpx;
+  margin-bottom: -20rpx;
+}
+
+.cu-tag.bg-green.light.sm.round.detail
+{
+	float: right;
+	background-color: red;
+}
+
+.character {
+	display: flex;
+	font-display: row;
+}
+.detail {
+	text-align: right;
+}
+
+.cu-card 
+{
+	margin-bottom: -20rpx;
+}
+.btn-detail {
+	display: flex;
+	position: relative;
+	right: -220rpx;
+	bottom: 5rpx;
+	background-color: #66a8d4;
+  color: white;
+	border: none;
+	line-height: 40rpx;
+	align-items: center;
+ justify-content: center;
+ text-align: center;
+	cursor: pointer;
+	font-size: 12px;
+	border-radius: 10px;
+	height:40rpx;
+	max-width: 150rpx;
+	margin-bottom: -10rpx;
+
+}
+
+.new-join {
+	height: 50rpx;
+	width: 100%;
+	display: flex;
+	margin-top: 30rpx;
+	padding: 20rpx 34rpx;
+	display: flex;
+	flex-direction: row;
+}
+
+.newest {
+	font-weight: 800;
+}
+
+.joinvolunteer {
+		text-decoration: underline;
+		color: white;
+		display: flex;
+		white-space: nowrap;
+		font-weight: 550;
+		height: 50rpx;
+		max-width: 160rpx;
+		align-items: center;
+		text-align: center;
+		line-height: 50rpx;
+		font-size: 24rpx;
+		background-color: rgb(223, 86, 62);
+		padding: 10rpx 20rpx;
+		position: relative;
+		left:170rpx
+}
+
+.cu-bar.tabbar.bg-white.shadow.foot
+{
+z-index: 998;
+}
+.iconfont.icon-shouye 
+{
+	z-index: 999;
+	
+}
+
+.bottom-bar {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: 10rpx 20rpx;
+}
+
+.bottom-font
+{
+	font-size: 20rpx;
+}
+
+.bottom-icon{
+	font-size: 50rpx;
+}

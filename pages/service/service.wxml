@@ -1,0 +1,93 @@
+<view class="top-bar">
+	<view class='select_box'>
+ <view class='select' catchtap='selectallTap'>
+  <text class='select_text'>{{selectallData[index1]}}</text>
+  <text class='select_img {{show1&&"select_img_rotate"}} iconfont icon-icon-test65'></text> 
+ </view>
+ <view class='option_box' style='height:{{show1?(selectallData.length>5?300:selectallData.length*60):0}}rpx;'>
+  <text class='option' style='{{index1==selectallData.length-1&&"border:0;"}}' wx:for='{{selectallData}}' wx:key='this' data-index='{{index}}' catchtap='optionallTap'>{{item}}</text>
+ </view>
+</view>
+<view class="select_box">
+	<view class='select' catchtap='selecttypeTap'>
+  <text class='select_text'>{{selecttypeData[index2]}}</text>
+  <text class='select_img {{show2&&"select_img_rotate"}} iconfont icon-icon-test65'></text> 
+ </view>
+ <view class='option_box' style='height:{{show2?(selectData.length>5?300:selecttypeData.length*60):0}}rpx;'>
+  <text class='option' style='{{index2==selecttypeData.length-1&&"border:0;"}}' wx:for='{{selecttypeData}}' wx:key='this' data-index='{{index}}' catchtap='optiontypeTap'>{{item}}</text>
+</view>
+</view>
+<view class="select_box">
+	<view class='select' catchtap='selectstatusTap'>
+  <text class='select_text'>{{selectstatusData[index3]}}</text>
+  <text class='select_img {{show3&&"select_img_rotate"}} iconfont icon-icon-test65'></text> 
+ </view>
+ <view class='option_box' style='height:{{show3?(selectstatusData.length>5?300:selectstatusData.length*60):0}}rpx;'>
+  <text class='option' style='{{index3==selectstatuseData.length-1&&"border:0;"}}' wx:for='{{selectstatusData}}' wx:key='this' data-index='{{index}}' catchtap='optionstatusTap'>{{item}}</text>
+</view>
+</view>
+</view>
+
+ <!-- show&&"select_img_rotate"-----给显示框右边的下拉箭头添加动画
+ height:{{show?(selectData.length>5?300:selectData.length*60):0}}rpx;-----给改变下拉框高度，实现下拉框的显示隐藏，每个下拉选项的高度为60，下拉框的最大高度这里设置的是300，所以这里写成当数据长度大于5时，下拉框高度为300，反之下拉框高度为数据长度乘以60
+ index==selectData.length-1&&"border:0;"-----取消下拉选项的最后一个的下边框 -->
+
+ <view class="cu-card article {{isCard?'no-card':''}}">
+  <view class="cu-item shadow">
+    <view class="title">
+      <view class="text-cut">广州大学计算机科学与网络工程学院三下乡科技振兴团队</view>
+    </view>
+    <view class="content">
+      <view class="desc">
+      
+        <view class="character">
+          <view class="cu-tag bg-red light sm round">公益服务团队</view>
+          <view class="cu-tag bg-green light sm round">三下乡</view>
+          <view class="cu-tag bg-green light sm round going-on">进行中</view>
+					<text class="data">2023-7-10</text>
+        </view>
+				
+      </view>
+    </view>
+  </view>
+</view>
+
+<view class="cu-card article {{isCard?'no-card':''}}">
+  <view class="cu-item shadow">
+    <view class="title">
+      <view class="text-cut">7月8日社区义剪志愿服务活动</view>
+    </view>
+    <view class="content">
+      <view class="desc">
+      
+        <view class="character">
+          <view class="cu-tag bg-red light sm round">暖心服务队</view>
+          <view class="cu-tag bg-green light sm round">便民服务</view>
+          <view class="cu-tag bg-green light sm round over">已结束</view>
+					<text class="data">2023-7-9</text>
+        </view>
+				
+      </view>
+    </view>
+  </view>
+</view>
+
+<view class="cu-bar tabbar bg-white shadow foot">
+<view class="bottom-bar">
+	<text class="iconfont icon-shouye bottom-icon"></text>
+	<text class="bottom-font">首页</text>
+</view>
+<view class="bottom-bar" bindtap="toZhiyuanfuwu">
+	<text class="iconfont icon-dakaixinxi bottom-icon"></text>
+	<text class="bottom-font">志愿服务</text>
+	</view>
+	<view class="bottom-bar">
+
+	<text class="iconfont icon-fengcaizhanshi bottom-icon"></text>
+	<text class="bottom-font">志愿风采</text>	</view>
+	<view class="bottom-bar">
+		
+
+	<text class="iconfont icon-gerenzhongxin bottom-icon"></text>
+	<text class="bottom-font">个人中心</text>	</view>
+</view>
