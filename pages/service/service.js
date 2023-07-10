@@ -112,5 +112,17 @@ Page({
 	 */
 	onShareAppMessage() {
 
+	},
+	toshouye()
+	{
+	wx.navigateTo({
+		url: '/pages/home/home',
+	})
+},
+	tomine()
+	{
+		wx.navigateTo({
+			url: '/pages/mine/mine',
+		})
 	}
 })

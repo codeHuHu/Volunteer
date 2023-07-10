@@ -1,1 +1,44 @@
 /* pages/mine/mine.wxss */
+
+.text-green.text-bold {
+	font-size: 34rpx;
+	
+}
+.log-time {
+	padding: 20rpx 0rpx;
+}
+.margin-left.cu-tag.round.bg-green
+{
+	position: relative;
+	top:160rpx;
+	left: 18rpx;
+}
+.radius {
+	margin-top:-80rpx;
+}
+
+.cu-bar.tabbar.bg-white.shadow.foot
+{
+z-index: 998;
+}
+.iconfont.icon-shouye 
+{
+	z-index: 999;
+	
+}
+
+.bottom-bar {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: 10rpx 20rpx;
+}
+
+.bottom-font
+{
+	font-size: 20rpx;
+}
+
+.bottom-icon{
+	font-size: 50rpx;
+}

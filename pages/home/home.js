@@ -11,8 +11,10 @@ Page({
 	/**
 	 * 生命周期函数--监听页面加载
 	 */
-	onLoad(options) {
-		
+	onLoad:function() {
+		wx.setNavigationBarTitle({
+			title: '首页',
+		})
 	},
 
 	/**
@@ -67,6 +69,12 @@ Page({
 	{
 		wx.navigateTo({
 			url: '/pages/service/service',
+		})
+	},
+	tomine(event)
+	{
+		wx.navigateTo({
+			url: '/pages/mine/mine',
 		})
 	}
 })

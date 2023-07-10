@@ -1,13 +1,14 @@
 <scroll-view class="scrollPage">
   <view class="bg-img padding-tb-xl" style="background-image: url(/images/1-up.png);height: 414rpx;">
+	<view class="log-time">
     <view class="margin-left cu-tag round bg-green ">
       注册
     </view>
     <view class="margin-top padding-xl text-white">
       <view class="padding-top-xl flex-sub solid-bottom text-sl">
-        <text class="text-blue text-bold">志愿时长:0小时</text>
+        <text class="text-green text-bold ">志愿时长:0小时</text>
       </view>
-    </view>
+    </view>	</view>
   </view>
 
   <view class="cu-list menu card-menu margin-bottom-xl shadow-lg radius">
@@ -37,3 +38,21 @@
     </view>
   </view>
 </scroll-view>
+
+<view class="cu-bar tabbar bg-white shadow foot">
+<view class="bottom-bar" bindtap="toshouye">
+	<text class="iconfont icon-shouye bottom-icon"></text>
+	<text class="bottom-font">首页</text>
+</view>
+<view class="bottom-bar" bindtap="toZhiyuanfuwu">
+	<text class="iconfont icon-dakaixinxi bottom-icon"></text>
+	<text class="bottom-font">志愿服务</text>
+	</view>
+	<view class="bottom-bar">
+	<text class="iconfont icon-fengcaizhanshi bottom-icon"></text>
+	<text class="bottom-font">志愿风采</text>	</view>
+
+	<view class="bottom-bar" bindtap="tomine">
+	<text class="iconfont icon-gerenzhongxin bottom-icon"></text>
+	<text class="bottom-font" >个人中心</text>	</view>
+</view>

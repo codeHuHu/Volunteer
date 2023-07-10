@@ -73,7 +73,7 @@
 </view>
 
 <view class="cu-bar tabbar bg-white shadow foot">
-<view class="bottom-bar">
+<view class="bottom-bar" bindtap="toshouye">
 	<text class="iconfont icon-shouye bottom-icon"></text>
 	<text class="bottom-font">首页</text>
 </view>
@@ -85,9 +85,7 @@
 
 	<text class="iconfont icon-fengcaizhanshi bottom-icon"></text>
 	<text class="bottom-font">志愿风采</text>	</view>
-	<view class="bottom-bar">
-		
-
+	<view class="bottom-bar" bindtap="tomine">
 	<text class="iconfont icon-gerenzhongxin bottom-icon"></text>
 	<text class="bottom-font">个人中心</text>	</view>
 </view>

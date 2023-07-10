@@ -62,5 +62,23 @@ Page({
 	 */
 	onShareAppMessage() {
 
+	},
+	toshouye()
+	{
+wx.navigateTo({
+	url: '/pages/home/home',
+})
+	},
+	toZhiyuanfuwu()
+	{
+		wx.navigateTo({
+			url: '/pages/service/service',
+		})
+	},
+	tomine()
+	{
+		wx.navigateTo({
+			url: '/pages/mine/mine',
+		})
 	}
 })
