@@ -13,15 +13,19 @@
 <view class="icon-bar">
 		<view class="item">
 		<view class="greencircle">
-			<text class="iconfont icon-fangzi"></text>
+		<view class="bar-icon">
+			<text class="cuIcon-present lg "></text>
+		</view>
 		</view>
 			<view>
-				<text class="fontsize">机构概述</text>
+				<text class="fontsize">志愿福利</text>
 			</view>
 		</view>
 		<view class="item">
 		<view class="bluecircle">
+			<view class="bar-icon">
 			<text class="iconfont icon-jushou "></text>
+			</view>
 		</view>
 		<view>
 			<text class="fontsize">志愿服务</text>
@@ -29,15 +33,17 @@
 	</view>
 	<view class="item">
 		<view class="greencircle">
-			<text class="iconfont icon-airudiantubiaohuizhi-zhuanqu_guangyingfengcai fengcai"></text>
+			<view class="bar-icon">
+			<text class="cuIcon-selection lg "></text>
+			</view>
 	</view>	
 	<view>
-		<text class="fontsize">志愿风采</text>
+		<text class="fontsize">荣誉墙</text>
 	</view>
 	</view>
 	<view class="item">
 		<view class="bluecircle">
-			<view class="join">
+			<view class="bar-icon">
 			<text class="iconfont icon-duiwu"></text>
 		</view>
 	</view>	
@@ -93,7 +99,7 @@
 </view>
 
 <view class="cu-bar tabbar bg-white shadow foot">
-<view class="bottom-bar" bindtap="toshouye">
+<view class="bottom-bar">
 	<text class="iconfont icon-shouye bottom-icon"></text>
 	<text class="bottom-font">首页</text>
 </view>
@@ -102,9 +108,11 @@
 	<text class="bottom-font">志愿服务</text>
 	</view>
 	<view class="bottom-bar">
+
 	<text class="iconfont icon-fengcaizhanshi bottom-icon"></text>
 	<text class="bottom-font">志愿风采</text>	</view>
-	<view class="bottom-bar" bindtap="tomine">
+	<view class="bottom-bar">
+
 	<text class="iconfont icon-gerenzhongxin bottom-icon"></text>
 	<text class="bottom-font" >个人中心</text>	</view>
 </view>

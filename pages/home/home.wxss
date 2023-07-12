@@ -71,7 +71,7 @@ page{
 	font-weight: 600;
 	font-size: 24rpx;
 }
-.icon-fangzi {
+.cuIcon-present.lg {
 	display: inline;
 	max-width: 100rpx;
 	max-height: 100rpx;
@@ -86,7 +86,7 @@ page{
 	font-size: 30px;
 	color: white;
 }
-.fengcai {
+.cuIcon-selection.lg  {
 	display: inline;
 	max-width: 100rpx;
 	max-height: 100rpx;
