@@ -1,20 +1,18 @@
-// pages/home/home.js
+// pages/jointeam/jointeam.js
 Page({
 
 	/**
 	 * 页面的初始数据
 	 */
 	data: {
-		message:123
+
 	},
-	
+
 	/**
 	 * 生命周期函数--监听页面加载
 	 */
-	onLoad:function() {
-		wx.setNavigationBarTitle({
-			title: '首页',
-		})
+	onLoad(options) {
+
 	},
 
 	/**
@@ -64,23 +62,5 @@ Page({
 	 */
 	onShareAppMessage() {
 
-	},
-	toZhiyuanfuwu()
-	{
-		wx.navigateTo({
-			url: '/pages/service/service',
-		})
-	},
-	tomine(event)
-	{
-		wx.navigateTo({
-			url: '/pages/mine/mine',
-		})
-	},
-	tojointeam()
-	{
-		wx.navigateTo({
-			url: '/pages/jointeam/jointeam',
-		})
 	}
 })

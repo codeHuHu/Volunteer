@@ -5,6 +5,7 @@ page{
 	height: 60px; 
 	display: flex;
 	flex-direction:row ;
+
  }
  .select_box{
 	background: transparent;

@@ -3,7 +3,7 @@
 			<image mode="aspectFill" src="../../images/1-up1.png" />
 </view>
 
-<view class="cu-bar bg-white search fixed search-bar" style="top:{{CustomBar}}px col-display">
+<view class="cu-bar bg-white search search-bar" style="top:{{CustomBar}}px col-display">
   <view class="search-form round">
     <text class="cuIcon-search"></text>
     <input type="text" placeholder="搜索志愿" confirm-type="search" bindinput="searchIcon" ></input>
@@ -44,10 +44,10 @@
 	<view class="item">
 		<view class="bluecircle">
 			<view class="bar-icon">
-			<text class="iconfont icon-duiwu"></text>
+			<text class="iconfont icon-duiwu" bindtap="tojointeam"></text>
 		</view>
 	</view>	
-	<text class="fontsize">加入队伍</text>
+	<text class="fontsize" bindtap="tojointeam">加入队伍</text>
 	</view>
 </view>
 <!-- 分割线 -->
@@ -57,7 +57,7 @@
 	<text class="newest">最新志愿服务</text>
 	<button class="joinvolunteer">成为志愿者</button>
 </view>
-<view class="cu-card article {{isCard?'no-card':''}}">
+<view class="cu-card article {{isCard?'no-card':''}} margin " >
   <view class="cu-item shadow">
     <view class="title">
       <view class="text-cut">广州大学计算机科学与网络工程学院三下乡科技振兴团队</view>
@@ -77,7 +77,7 @@
     </view>
   </view>
 </view>
-<view class="cu-card article {{isCard?'no-card':''}}">
+<view class="cu-card article {{isCard?'no-card':''}} margin">
   <view class="cu-item shadow">
     <view class="title">
       <view class="text-cut">广州大学计算机科学与网络工程学院三下乡科技振兴团队</view>
