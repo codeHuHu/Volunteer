@@ -1,12 +1,12 @@
 <view class="cu-bar">
   <view class="action sub-title">
-    <text class="text-xl text-bold text-black">帅府仲夏夜第四期</text>
+    <text class="text-xl text-bold text-black">帅府仲夏夜第四期帅府仲夏夜第四期</text>
     <view class="padding-left-xl">
       <view class="cu-tag bg-red radius sm">
         进行中
       </view>
     </view>
-    <text class="text-ABC text-black ">帅府仲夏夜第四期</text>
+    <text class="text-ABC text-black ">帅府仲夏夜第四期帅府仲夏夜第四期</text>
   </view>
 </view>
 
