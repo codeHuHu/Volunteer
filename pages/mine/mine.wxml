@@ -1,58 +1,104 @@
 <scroll-view class="scrollPage">
-  <view class="bg-img padding-tb-xl" style="background-image: url(/images/1-up.png);height: 414rpx;">
-	<view class="log-time">
-    <view class="margin-left cu-tag round bg-green ">
-      注册
-    </view>
-    <view class="margin-top padding-xl text-white">
-      <view class="padding-top-xl flex-sub solid-bottom text-sl">
-        <text class="text-green text-bold ">志愿时长:0小时</text>
-      </view>
-    </view>	</view>
-  </view>
+	<view class="bg-img margin-lr" style="min-height: 35vh;">
+		<view class="bg-white radius-lg">
+			<view class="flex padding-sm justify-between">
+				<view class="padding-xs text-xxl text-black">
+					<view>用户1<text class="text-gray text-df"> / 职位</text></view>
+					<view class="text-gray text-df padding-top-sm">所属志愿者单位</view>
+				</view>
+				<view class="">
+					<view class="cu-avatar xl round" style="background-image:url(https://image.meiye.art/Fha6tqRTIwHtlLW3xuZBJj8ZXSX3?imageMogr2/thumbnail/450x/interlace/1);">
+					</view>
+				</view>
+			</view>
+		</view>
+		<view class="cu-list grid col-4 no-border padding-top">
+			<view class="cu-item">
+				<view class="text-black text-bold text-xxl">
+					500
+				</view>
+				<text>信用值</text>
+			</view>
+			<view class="cu-item">
+				<view class="text-black text-bold text-xxl">
+					10
+				</view>
+				<text>志愿时</text>
+			</view>
+			<view class="cu-item">
+				<view class="text-black text-bold text-xxl">
+					95
+				</view>
+				<text>能力</text>
+			</view>
+			<view class="cu-item">
+				<view class="text-black text-bold text-xxl">
+					5
+				</view>
+				<text>任务数</text>
+			</view>
+		</view>
+	</view>
 
-  <view class="cu-list menu card-menu margin-bottom-xl shadow-lg radius">
-    <view class="cu-item arrow">
-      <view bindtap="none" class="content">
-        <text class="cuIcon-my lg text-gray"></text>
-        <text class="text-grey">我的志愿服务</text>
-      </view>
-    </view>
-    <view class="cu-item arrow">
-      <view bindtap="none" class="content">
-        <text class="cuIcon-friend lg text-gray"></text>
-        <text class="text-grey">我的队伍</text>
-      </view>
-    </view>
-    <view class="cu-item arrow">
-      <view bindtap="none" class="content">
-        <text class="cuIcon-rank lg text-gray"></text>
-        <text class="text-grey">我的排名</text>
-      </view>
-    </view>
-    <view class="cu-item arrow">
-      <view bindtap="none" class="content">
-        <text class="cuIcon-settings lg text-gray"></text>
-        <text class="text-grey">个人设置</text>
-      </view>
-    </view>
-  </view>
+
+
+
+
+
+
+
+
+
+
+
+	<view class="cu-list menu card-menu margin-bottom-xl shadow-lg radius">
+		<view class="cu-item arrow">
+			<view bindtap="none" class="content">
+				<text class="cuIcon-my lg text-gray"></text>
+				<text class="text-grey">我的志愿服务</text>
+			</view>
+		</view>
+		<view class="cu-item arrow">
+			<view bindtap="none" class="content">
+				<text class="cuIcon-friend lg text-gray"></text>
+				<text class="text-grey">我的队伍</text>
+			</view>
+		</view>
+		<view class="cu-item arrow">
+			<view bindtap="none" class="content">
+				<text class="cuIcon-rank lg text-gray"></text>
+				<text class="text-grey">我的排名</text>
+			</view>
+		</view>
+		<view class="cu-item arrow">
+			<view bindtap="none" class="content">
+				<text class="cuIcon-settings lg text-gray"></text>
+				<text class="text-grey">个人设置</text>
+			</view>
+		</view>
+	</view>
+
+	
+
+
 </scroll-view>
 
 <view class="cu-bar tabbar bg-white shadow foot">
-<view class="bottom-bar" bindtap="toshouye">
-	<text class="iconfont icon-shouye bottom-icon"></text>
-	<text class="bottom-font">首页</text>
-</view>
-<view class="bottom-bar" bindtap="toZhiyuanfuwu">
-	<text class="iconfont icon-dakaixinxi bottom-icon"></text>
-	<text class="bottom-font">志愿服务</text>
+	<view class="bottom-bar" bindtap="toshouye">
+		<text class="iconfont icon-shouye bottom-icon"></text>
+		<text class="bottom-font">首页</text>
+	</view>
+	<view class="bottom-bar" bindtap="toZhiyuanfuwu">
+		<text class="iconfont icon-dakaixinxi bottom-icon"></text>
+		<text class="bottom-font">志愿服务</text>
 	</view>
 	<view class="bottom-bar">
-	<text class="iconfont icon-fengcaizhanshi bottom-icon"></text>
-	<text class="bottom-font">志愿风采</text>	</view>
+		<text class="iconfont icon-fengcaizhanshi bottom-icon"></text>
+		<text class="bottom-font">志愿风采</text>
+	</view>
 
 	<view class="bottom-bar" bindtap="tomine">
-	<text class="iconfont icon-gerenzhongxin bottom-icon"></text>
-	<text class="bottom-font" >个人中心</text>	</view>
+		<text class="iconfont icon-gerenzhongxin bottom-icon"></text>
+		<text class="bottom-font">个人中心</text>
+	</view>
 </view>
