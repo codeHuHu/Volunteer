@@ -4,7 +4,8 @@
 		"pages/service/service",
 		"pages/mine/mine",
 		"pages/datail/detail",
-		"pages/jointeam/jointeam"
+		"pages/jointeam/jointeam",
+		"pages/teamdetail/teamdetail"
 	],
 	"usingComponents": {
     "cu-custom": "colorui/components/cu-custom/cu-custom"

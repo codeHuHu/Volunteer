@@ -1,4 +1,5 @@
-// pages/jointeam/jointeam.js
+// pages/teamdetail/teamdetail.js
+const app=getApp()	
 Page({
 
 	/**
@@ -62,11 +63,32 @@ Page({
 	 */
 	onShareAppMessage() {
 
-	},
-	toteamdetail()
-{
-	wx.navigateTo({
-		url: '/pages/teamdetail/teamdetail',
-	})
+  },
+  join()
+  {
+    if (app.globalData.userInfo == null) {
+      
+      wx.showModal({
+				title: '提示',
+				content: '你未注册，请前往注册认证',
+				success(res){
+          if(res.confirm)
+          {
+						console.log("成功")
+						wx.navigateTo({
+							url: '/pages/home/home',
+						})
+					}
+					else {
+						
+					}
+				}
+			})
+	}
+		else {
+		wx.showToast({
+			title: '申请成功，等待管理员验证通过',
+		})
+		}
 }
 })

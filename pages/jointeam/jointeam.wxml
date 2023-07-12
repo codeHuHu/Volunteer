@@ -30,7 +30,7 @@
 
 <view class="solid-bottom text-sm padding " style="margin: -24px 20px auto; width: 90%;"></view>
 
-<view class="team-list padding ">
+<view class="team-list padding " bindtap="toteamdetail">
 	<view class="team-item">
 	<text class="team-name text-bold"> 广州市民政局志愿服务支队</text>		
 	<view class="margin-top-xs">
