@@ -1,0 +1,17 @@
+.share {
+  display: flex;
+  position: fixed; 
+  top:400px;
+  right:15px;
+}
+
+.signUp {
+  display: flex;
+  position: fixed; 
+  top:500px;
+  right:15px;
+}
+
+.iconfont {
+  font-size:100rpx;
+}
