@@ -1,11 +1,13 @@
 // pages/mine/mine.js
+const app=getApp()
+
 Page({
 
 	/**
 	 * 页面的初始数据
 	 */
 	data: {
-
+		openid:1
 	},
 
 	/**
@@ -26,7 +28,8 @@ Page({
 	 * 生命周期函数--监听页面显示
 	 */
 	onShow() {
-
+		// 隐藏返回按钮
+		wx.hideHomeButton()
 	},
 
 	/**
@@ -63,22 +66,22 @@ Page({
 	onShareAppMessage() {
 
 	},
+	toregister()
+	{
+		wx.navigateTo({
+			url: '/pages/accountSignUp/accountSignUp',
+		})
+	},
 	toshouye()
 	{
-wx.navigateTo({
-	url: '/pages/home/home',
-})
+		wx.reLaunch({
+			url:'/pages/home/home'
+		})
 	},
 	toZhiyuanfuwu()
 	{
-		wx.navigateTo({
-			url: '/pages/service/service',
-		})
-	},
-	tomine()
-	{
-		wx.navigateTo({
-			url: '/pages/mine/mine',
+		wx.reLaunch({
+			url:'/pages/service/service'
 		})
 	}
 })

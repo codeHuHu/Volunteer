@@ -78,7 +78,8 @@ Page({
 	 * 生命周期函数--监听页面显示
 	 */
 	onShow() {
-
+			// 隐藏返回按钮
+			wx.hideHomeButton()
 	},
 
 	/**
@@ -117,13 +118,13 @@ Page({
 	},
 	toshouye()
 	{
-	wx.navigateTo({
+	wx.reLaunch({
 		url: '/pages/home/home',
 	})
 },
 	tomine()
 	{
-		wx.navigateTo({
+		wx.reLaunch({
 			url: '/pages/mine/mine',
 		})
 	}

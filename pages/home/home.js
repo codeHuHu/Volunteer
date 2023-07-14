@@ -27,8 +27,8 @@ Page({
 	/**
 	 * 生命周期函数--监听页面显示
 	 */
-	onShow() {
-
+	onShow:function() {
+		wx.hideHomeButton()
 	},
 
 	/**
@@ -67,7 +67,7 @@ Page({
 	},
 	toZhiyuanfuwu()
 	{
-		wx.navigateTo({
+		wx.reLaunch({
 			url: '/pages/service/service',
 		})
 	},
@@ -81,6 +81,24 @@ Page({
 	{
 		wx.navigateTo({
 			url: '/pages/jointeam/jointeam',
+		})
+	},
+	toregister()
+	{
+		wx.navigateTo({
+			url: '/pages/accountSignUp/accountSignUp',
+		})
+	},
+	tomine()
+	{
+		wx.reLaunch({
+			url: '/pages/mine/mine',
+		})
+	},
+	todetail()
+	{
+		wx.navigateTo({
+			url: '/pages/detail/detail',
 		})
 	}
 })

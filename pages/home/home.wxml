@@ -22,13 +22,13 @@
 			</view>
 		</view>
 		<view class="item">
-		<view class="bluecircle">
+		<view class="bluecircle" bindtap="toZhiyuanfuwu">
 			<view class="bar-icon">
 			<text class="iconfont icon-jushou "></text>
 			</view>
 		</view>
 		<view>
-			<text class="fontsize">志愿服务</text>
+			<text class="fontsize" bindtap="toZhiyuanfuwu">志愿服务</text>
 		</view>
 	</view>
 	<view class="item">
@@ -55,7 +55,7 @@
 
 <view class="new-join">
 	<text class="newest">最新志愿服务</text>
-	<button class="joinvolunteer">成为志愿者</button>
+	<button class="joinvolunteer" bindtap="toregister">成为志愿者</button>
 </view>
 <view class="cu-card article {{isCard?'no-card':''}} margin " >
   <view class="cu-item shadow">
@@ -69,7 +69,7 @@
           <view class="cu-tag bg-red light sm round">公益服务团队</view>
           <view class="cu-tag bg-green light sm round">三下乡</view>
 					<view class="detail">
-					<button class="btn-detail">查看</button>
+					<button class="btn-detail"  bindtap="todetail">查看</button>
 				</view>
         </view>
 				
@@ -113,6 +113,6 @@
 	<text class="bottom-font">志愿风采</text>	</view>
 	<view class="bottom-bar">
 
-	<text class="iconfont icon-gerenzhongxin bottom-icon"></text>
+	<text class="iconfont icon-gerenzhongxin bottom-icon" bindtap="tomine"></text>
 	<text class="bottom-font" >个人中心</text>	</view>
 </view>

@@ -1,6 +1,6 @@
 <view class="cu-list menu card-menu margin-bottom-xl shadow-lg radius">
 	<view class="cu-form-group">
-		<view class="title">您的姓名</view>
+		<view class="title">您的真实姓名</view>
 		<input placeholder="统一标题的宽度"></input>
 	</view>
 	<view class="cu-form-group">
@@ -20,6 +20,14 @@
 		<picker mode="region" bindchange="RegionChange" value="{{region}}" custom-item="{{customItem}}">
 			<view class="picker">
 				{{region[0]}}，{{region[1]}}，{{region[2]}}
+			</view>
+		</picker>
+	</view>
+	<view class="cu-form-group">
+		<view class="title">我的队伍</view>
+		<picker bindchange="PickerChange" value="{{index}}" range="{{picker}}">
+			<view class="picker ">
+				{{index?picker[index]:'请选择团队'}}
 			</view>
 		</picker>
 	</view>
