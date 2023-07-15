@@ -1,4 +1,5 @@
 // pages/home/home.js
+const app=getApp()
 Page({
 
 	/**
@@ -85,9 +86,31 @@ Page({
 	},
 	toregister()
 	{
+		var value=wx.getStorageSync('user_status')
+		if(value)
+		{
+		try{
+		for(var i=0;i<value.length;i++)
+		{
+				if(value[i][0]==app.globalData.openid && value[i][1]==true)
+				{
+					wx.showToast({
+						title: '你已注册成为志愿者',
+						icon:'none'
+					})
+				}
+		}
+	}
+	catch(e)
+	{
+
+	}
+}
+else {
 		wx.navigateTo({
 			url: '/pages/accountSignUp/accountSignUp',
 		})
+	}
 	},
 	tomine()
 	{
