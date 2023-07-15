@@ -1,14 +1,13 @@
 {
   "pages": [
     "pages/home/home",
-		"pages/service/service",
+		"pages/volunteerService/volunteerService",
 		"pages/mine/mine",
-
 		"pages/jointeam/jointeam",
 		"pages/teamdetail/teamdetail",
 		"pages/detail/detail",
-		"pages/accountSignUp/accountSignUp"
-
+		"pages/accountSignUp/accountSignUp",
+		"pages/None/None"
 	],
 	"usingComponents": {
     "cu-custom": "colorui/components/cu-custom/cu-custom"
@@ -20,7 +19,28 @@
 		"navigationBarTitleText": "Volunteer",
 		"navigationBarTextStyle": "black",
 		"enablePullDownRefresh": true
-	
+	},
+	"tabBar": {
+    "list": [
+      {
+        "pagePath": "pages/home/home",
+        "text": "首页",
+        "iconPath": "images/tabbar/home.png",
+        "selectedIconPath": "images/tabbar/home_activate.png"
+      },
+      {
+        "pagePath": "pages/None/None",
+        "text": "志愿风采",
+        "iconPath": "images/tabbar/fengcai.png",
+        "selectedIconPath": "images/tabbar/fengcai_activate.png"
+			},
+      {
+        "pagePath": "pages/mine/mine",
+        "text": "个人中心",
+        "iconPath": "images/tabbar/mine.png",
+        "selectedIconPath": "images/tabbar/mine_activate.png"
+      }
+    ]
   },
   "sitemapLocation": "sitemap.json",
   "style": "v2"

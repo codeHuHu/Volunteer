@@ -23,14 +23,14 @@
 			</view>
 		</picker>
 	</view>
-	<view class="cu-form-group">
+	<!-- <view class="cu-form-group">
 		<view class="title">我的队伍</view>
 		<picker bindchange="teamChange" value="{{teamid}}" range="{{team}}">
 			<view class="picker ">
 				{{teamid?team[teamid]:'无'}}
 			</view>
 		</picker>
-	</view>
+	</view> -->
 	<view class="cu-form-group ">
 		<view class="title">手机号码</view>
 		<input placeholder="请输入手机号码" bindinput="getPhone" model:value="{{UserPhone}}"></input>
