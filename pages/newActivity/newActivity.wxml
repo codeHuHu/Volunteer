@@ -1,11 +1,11 @@
 <!--pages/newActivity/newActivity.wxml-->
 <view class="cu-list menu card-menu new_activity">
 	<form class="new_activity">
-    <view class="new_inline">
+    <view class="cu-form-group">
       <view class="inline_name">名称：</view>
       <input class="newName" placeholder="请输入名称"/>
     </view>
-    <view class="new_inline">
+    <view class="cu-form-group">
       <view class="inline_name">开始时间：</view>
 			<view class="new_date">
 				<picker class="time_pickers" mode="date" value="{{startDate}}" start="{{currentDate}}" end="" bindchange="bindStartChange">{{startDate}}
@@ -14,7 +14,7 @@
   			</picker>
 			</view>
     </view>
-    <view class="new_inline">
+    <view class="cu-form-group">
       <view class="inline_name">结束时间：</view>
 			<view class="new_date">
 				<picker class="time_pickers" mode="date" value="{{endDate}}" start="{{currentDate}}" end="" bindchange="bindEndChange">{{endDate}}
@@ -23,11 +23,11 @@
   			</picker>
 			</view>
     </view>
-    <view class="new_inline">
+    <view class="cu-form-group">
       <view class="inline_name">简介：</view>
       <textarea class="new_profile" placeholder="请输入简介"></textarea>
     </view>
-		<view class="new_inline">
+		<view class=" cu-form-group">
 			<view class="inline_name">添加标签：</view>
 			<input class="newName" placeholder="请输入标签" bindconfirm="onConfirm"  value="{{inputValue}}"/>
 		</view>

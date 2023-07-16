@@ -1,4 +1,4 @@
-<view class="top-bar">
+<view class="top-bar fixed" style="margin:0rpx 5rpx -20rpx 5rpx;">
 	<view class='select_box'>
  <view class='select' catchtap='selectallTap'>
   <text class='select_text'>{{selectallData[index1]}}</text>
@@ -32,7 +32,7 @@
  height:{{show?(selectData.length>5?300:selectData.length*60):0}}rpx;-----给改变下拉框高度，实现下拉框的显示隐藏，每个下拉选项的高度为60，下拉框的最大高度这里设置的是300，所以这里写成当数据长度大于5时，下拉框高度为300，反之下拉框高度为数据长度乘以60
  index==selectData.length-1&&"border:0;"-----取消下拉选项的最后一个的下边框 -->
 
- <view class="cu-card article {{isCard?'no-card':''}}">
+ <view class="cu-card article {{isCard?'no-card':''}} margin">
   <view class="cu-item shadow">
     <view class="title">
       <view class="text-cut">广州大学计算机科学与网络工程学院三下乡科技振兴团队</view>
@@ -52,7 +52,7 @@
   </view>
 </view>
 
-<view class="cu-card article {{isCard?'no-card':''}}">
+<view class="cu-card article {{isCard?'no-card':''}} margin">
   <view class="cu-item shadow">
     <view class="title">
       <view class="text-cut">7月8日社区义剪志愿服务活动</view>

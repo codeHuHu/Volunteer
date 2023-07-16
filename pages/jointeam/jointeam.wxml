@@ -1,0 +1,97 @@
+<!--pages/jointeam/jointeam.wxml-->
+<view class="cu-bar bg-white>">
+	
+<text class="text-black text-bold text-xxl padding-xs">志愿队伍列表</text></view>
+<view class="cu-bar bg-white search " style="top:-10px;">
+  <view class="search-form round">
+    <text class="cuIcon-search"></text>
+    <input type="text" placeholder="输入相关队伍" confirm-type="search"></input>
+  </view>
+  <view class="action">
+    <button class="cu-btn bg-gradual-blue shadow-blur round" style="width: auto;">搜索</button>
+  </view>
+</view>
+
+<view class="team-list padding ">
+	<view class="team-item">
+	<text class="team-name text-bold"> 广州市民政局志愿服务支队</text>		
+	<view class="margin-top-xs">
+	<text class="team-belong bg-oc-red-5 text-sm"> 广州市民政局</text>	</view>
+	<view class="teamInfo margin-top-xs text-sm">
+	<text class="teamer bg-oc-yellow-3">队长  </text>
+	<text class="margin-xs text-grey">张三</text>
+	<text class="team-people margin-left-xl bg-oc-yellow-3">人数</text>
+	<text class="team-people margin-left-xs text-grey">900</text>
+	<text class="team-time margin-left-xl bg-oc-yellow-3">志愿时 </text>
+	<text class="margin-left-xs text-grey">999小时</text>
+	</view>
+	</view>	
+</view>
+
+<view class="solid-bottom text-sm padding " style="margin: -24px 20px auto; width: 90%;"></view>
+
+<view class="team-list padding " bindtap="toteamdetail">
+	<view class="team-item">
+	<text class="team-name text-bold"> 广州市民政局志愿服务支队</text>		
+	<view class="margin-top-xs">
+	<text class="team-belong bg-oc-red-5 text-sm"> 广州市民政局</text>	</view>
+	<view class="teamInfo margin-top-xs text-sm">
+	<text class="teamer bg-oc-yellow-3">队长  </text>
+	<text class="margin-xs text-grey">张三</text>
+	<text class="team-people margin-left-xl bg-oc-yellow-3">人数</text>
+	<text class="team-people margin-left-xs text-grey">900</text>
+	<text class="team-time margin-left-xl bg-oc-yellow-3">志愿时 </text>
+	<text class="margin-left-xs text-grey">999小时</text>
+	</view>
+	</view>	
+</view>
+
+<view class="solid-bottom text-sm padding " style="margin: -24px 20px auto; width: 90%;"></view><view class="team-list padding ">
+	<view class="team-item">
+	<text class="team-name text-bold"> 广州市民政局志愿服务支队</text>		
+	<view class="margin-top-xs">
+	<text class="team-belong bg-oc-red-5 text-sm"> 广州市民政局</text>	</view>
+	<view class="teamInfo margin-top-xs text-sm">
+	<text class="teamer bg-oc-yellow-3">队长  </text>
+	<text class="margin-xs text-grey">张三</text>
+	<text class="team-people margin-left-xl bg-oc-yellow-3">人数</text>
+	<text class="team-people margin-left-xs text-grey">900</text>
+	<text class="team-time margin-left-xl bg-oc-yellow-3">志愿时 </text>
+	<text class="margin-left-xs text-grey">999小时</text>
+	</view>
+	</view>	
+</view>
+
+<view class="solid-bottom text-sm padding " style="margin: -24px 20px auto; width: 90%;"></view><view class="team-list padding ">
+	<view class="team-item">
+	<text class="team-name text-bold"> 广州市民政局志愿服务支队</text>		
+	<view class="margin-top-xs">
+	<text class="team-belong bg-oc-red-5 text-sm"> 广州市民政局</text>	</view>
+	<view class="teamInfo margin-top-xs text-sm">
+	<text class="teamer bg-oc-yellow-3">队长  </text>
+	<text class="margin-xs text-grey">张三</text>
+	<text class="team-people margin-left-xl bg-oc-yellow-3">人数</text>
+	<text class="team-people margin-left-xs text-grey">900</text>
+	<text class="team-time margin-left-xl bg-oc-yellow-3">志愿时 </text>
+	<text class="margin-left-xs text-grey">999小时</text>
+	</view>
+	</view>	
+</view>
+
+<view class="solid-bottom text-sm padding " style="margin: -24px 20px auto; width: 90%;"></view><view class="team-list padding ">
+	<view class="team-item">
+	<text class="team-name text-bold"> 广州市民政局志愿服务支队</text>		
+	<view class="margin-top-xs">
+	<text class="team-belong bg-oc-red-5 text-sm"> 广州市民政局</text>	</view>
+	<view class="teamInfo margin-top-xs text-sm">
+	<text class="teamer bg-oc-yellow-3">队长  </text>
+	<text class="margin-xs text-grey">张三</text>
+	<text class="team-people margin-left-xl bg-oc-yellow-3">人数</text>
+	<text class="team-people margin-left-xs text-grey">900</text>
+	<text class="team-time margin-left-xl bg-oc-yellow-3">志愿时 </text>
+	<text class="margin-left-xs text-grey">999小时</text>
+	</view>
+	</view>	
+</view>
+
+<view class="solid-bottom text-sm padding " style="margin: -24px 20px auto; width: 90%;"></view>

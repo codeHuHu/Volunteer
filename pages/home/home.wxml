@@ -1,47 +1,53 @@
 <!--pages/home/home.wxml-->
 <view class="up">
-			<image mode="aspectFill" src="../../images/1-up1.png" />
+	<image mode="aspectFill" src="../../images/1-up1.png" />
 </view>
 
-<view class="cu-bar bg-white search fixed search-bar" style="top:{{CustomBar}}px col-display">
-  <view class="search-form round">
-    <text class="cuIcon-search"></text>
-    <input type="text" placeholder="搜索志愿" confirm-type="search" bindinput="searchIcon" ></input>
-  </view>
+<view class="cu-bar bg-white search search-bar" style="top:{{CustomBar}}px col-display">
+	<view class="search-form round">
+		<text class="cuIcon-search"></text>
+		<input type="text" placeholder="搜索志愿" confirm-type="search" bindinput="searchIcon"></input>
+	</view>
 </view>
 
 <view class="icon-bar">
-		<view class="item">
+	<view class="item">
 		<view class="greencircle">
-			<text class="iconfont icon-fangzi"></text>
-		</view>
-			<view>
-				<text class="fontsize">机构概述</text>
+			<view class="bar-icon">
+				<text class="cuIcon-present lg "></text>
 			</view>
 		</view>
-		<view class="item">
-		<view class="bluecircle">
-			<text class="iconfont icon-jushou "></text>
+		<view>
+			<text class="fontsize">志愿福利</text>
+		</view>
+	</view>
+	<view class="item">
+		<view class="bluecircle" bindtap="toZhiyuanfuwu">
+			<view class="bar-icon">
+				<text class="iconfont icon-jushou "></text>
+			</view>
 		</view>
 		<view>
-			<text class="fontsize">志愿服务</text>
+			<text class="fontsize" bindtap="toZhiyuanfuwu">志愿服务</text>
 		</view>
 	</view>
 	<view class="item">
 		<view class="greencircle">
-			<text class="iconfont icon-airudiantubiaohuizhi-zhuanqu_guangyingfengcai fengcai"></text>
-	</view>	
-	<view>
-		<text class="fontsize">志愿风采</text>
-	</view>
+			<view class="bar-icon">
+				<text class="cuIcon-selection lg "></text>
+			</view>
+		</view>
+		<view>
+			<text class="fontsize">荣誉墙</text>
+		</view>
 	</view>
 	<view class="item">
 		<view class="bluecircle">
-			<view class="join">
-			<text class="iconfont icon-duiwu"></text>
+			<view class="bar-icon">
+				<text class="iconfont icon-duiwu" bindtap="tojointeam"></text>
+			</view>
 		</view>
-	</view>	
-	<text class="fontsize">加入队伍</text>
+		<text class="fontsize" bindtap="tojointeam">加入队伍</text>
 	</view>
 </view>
 <!-- 分割线 -->
@@ -49,62 +55,47 @@
 
 <view class="new-join">
 	<text class="newest">最新志愿服务</text>
-	<button class="joinvolunteer">成为志愿者</button>
+	<button class="joinvolunteer" bindtap="toregister">成为志愿者</button>
 </view>
-<view class="cu-card article {{isCard?'no-card':''}}">
-  <view class="cu-item shadow">
-    <view class="title">
-      <view class="text-cut">广州大学计算机科学与网络工程学院三下乡科技振兴团队</view>
-    </view>
-    <view class="content">
-      <view class="desc">
-        <view class="text-content"> 在社会课堂中受教育、长才干、做贡献，为地区发展和建设提供优质科技服务</view>
-        <view class="character">
-          <view class="cu-tag bg-red light sm round">公益服务团队</view>
-          <view class="cu-tag bg-green light sm round">三下乡</view>
+<view class="cu-card article {{isCard?'no-card':''}} margin ">
+	<view class="cu-item shadow">
+		<view class="title">
+			<view class="text-cut">广州大学计算机科学与网络工程学院三下乡科技振兴团队</view>
+		</view>
+		<view class="content">
+			<view class="desc">
+				<view class="text-content"> 在社会课堂中受教育、长才干、做贡献，为地区发展和建设提供优质科技服务</view>
+				<view class="character">
+					<view class="cu-tag bg-red light sm round">公益服务团队</view>
+					<view class="cu-tag bg-green light sm round">三下乡</view>
 					<view class="detail">
-					<button class="btn-detail">查看</button>
+						<button class="btn-detail" bindtap="todetail">查看</button>
+					</view>
 				</view>
-        </view>
-				
-      </view>
-    </view>
-  </view>
+
+			</view>
+		</view>
+	</view>
 </view>
-<view class="cu-card article {{isCard?'no-card':''}}">
-  <view class="cu-item shadow">
-    <view class="title">
-      <view class="text-cut">广州大学计算机科学与网络工程学院三下乡科技振兴团队</view>
-    </view>
-    <view class="content">
-      <view class="desc">
-        <view class="text-content"> 在社会课堂中受教育、长才干、做贡献，为地区发展和建设提供优质科技服务</view>
-        <view class="character">
-          <view class="cu-tag bg-red light sm round">公益服务团队</view>
-          <view class="cu-tag bg-green light sm round">三下乡</view>
+<view class="cu-card article {{isCard?'no-card':''}} margin">
+	<view class="cu-item shadow">
+		<view class="title">
+			<view class="text-cut">广州大学计算机科学与网络工程学院三下乡科技振兴团队</view>
+		</view>
+		<view class="content">
+			<view class="desc">
+				<view class="text-content"> 在社会课堂中受教育、长才干、做贡献，为地区发展和建设提供优质科技服务</view>
+				<view class="character">
+					<view class="cu-tag bg-red light sm round">公益服务团队</view>
+					<view class="cu-tag bg-green light sm round">三下乡</view>
 					<view class="detail">
-					<button class="btn-detail">查看</button>
+						<button class="btn-detail">查看</button>
+					</view>
 				</view>
-        </view>
-				
-      </view>
-    </view>
-  </view>
+
+			</view>
+		</view>
+	</view>
 </view>
 
-<view class="cu-bar tabbar bg-white shadow foot">
-<view class="bottom-bar" bindtap="toshouye">
-	<text class="iconfont icon-shouye bottom-icon"></text>
-	<text class="bottom-font">首页</text>
-</view>
-<view class="bottom-bar" bindtap="toZhiyuanfuwu">
-	<text class="iconfont icon-dakaixinxi bottom-icon"></text>
-	<text class="bottom-font">志愿服务</text>
-	</view>
-	<view class="bottom-bar">
-	<text class="iconfont icon-fengcaizhanshi bottom-icon"></text>
-	<text class="bottom-font">志愿风采</text>	</view>
-	<view class="bottom-bar" bindtap="tomine">
-	<text class="iconfont icon-gerenzhongxin bottom-icon"></text>
-	<text class="bottom-font" >个人中心</text>	</view>
-</view>
+

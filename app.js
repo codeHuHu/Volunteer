@@ -1,6 +1,7 @@
 // app.js
 App({
   onLaunch: function () {
+		var that =this
     if (!wx.cloud) {
       console.error('请使用 2.2.3 或以上的基础库以使用云能力');
     } else {
@@ -9,16 +10,30 @@ App({
         //   env 参数决定接下来小程序发起的云开发调用（wx.cloud.xxx）会默认请求到哪个云环境的资源
         //   此处请填入环境 ID, 环境 ID 可打开云控制台查看
         //   如不填则使用默认环境（第一个创建的环境）
-        // env: 'my-env-id',
+        env: 'volunteer-2ge0hjpsa1879e88',
         traceUser: true,
-      });
-    }
+			})
+			if(wx.getStorageSync('openid')){
+				console.log("此openid已登陆过")
+          this.globalData.openid = wx.getStorageSync('openid')
+				}
+				else{
+				wx.cloud.callFunction({
+          name: 'getUserOpenid',
+          success(res) {
+            console.log("此openid未登陆过")
+            that.globalData.openid = res.result.openid
+            wx.setStorageSync('openid', res.result.openid)
+          }
+        })
+    }}
   },
   globalData:
   {
     userinfo: null,
     openid: null,
     nickName: '',
-    avatar: null,
+		avatar: null,
+		islogin:''
   }
 });

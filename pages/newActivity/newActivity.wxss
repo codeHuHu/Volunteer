@@ -20,6 +20,7 @@
   width: 400rpx;
 }
 .time_pickers {
+	padding-right: 0;
 	margin:0 10rpx;
 }
 .new_profile {
@@ -30,8 +31,9 @@
 }
 .new_button {
 	margin: 100rpx;
-	font-weight: 300;
-	background-color: rgb(132, 228, 132);
+	color: #fff;
+	border-radius: 100rpx;
+	background-color: rgb(95, 206, 95);
 }
 .tag {
 	display: inline-flex;

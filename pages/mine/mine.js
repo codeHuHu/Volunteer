@@ -1,20 +1,67 @@
 // pages/mine/mine.js
+const app=getApp()
+
 Page({
 
 	/**
 	 * 页面的初始数据
 	 */
 	data: {
-
+		openid:null,
+		islogin:'',
+		actions:''
 	},
 
 	/**
 	 * 生命周期函数--监听页面加载
 	 */
-	onLoad(options) {
+	onLoad:function(event) {
+		var value=wx.getStorageSync('user_status');
+		if(value)
+		{
+			for(var i=0;i<value.length;i++)
+			{
+				if(value[i][0] == app.globalData.openid && value[i][1]==true)
+				{
+					this.setData({
+						islogin:true
+					})
+					
+				}
+			}
+		}else 
+		{
+			this.setData({
+				islogin:false
+			})
+		}
+
+		 console.log(this.data.islogin)
+			this.setData({
+				openid:app.globalData.openid
+			})
+			this.getDetail();
 
 	},
-
+		getDetail()
+		{
+			var that=this
+			wx.cloud.database().collection('UserInfo').where({
+				_openid:app.globalData.openid
+			})
+				.get({
+					success(res)
+					{
+							
+						console.log(res.data)
+						that.setData({
+							actions:res.data
+						})
+					}
+				}
+			)
+			
+		},
 	/**
 	 * 生命周期函数--监听页面初次渲染完成
 	 */
@@ -26,7 +73,10 @@ Page({
 	 * 生命周期函数--监听页面显示
 	 */
 	onShow() {
-
+		// 隐藏返回按钮
+		wx.hideHomeButton()
+		wx.stopPullDownRefresh()
+		this.onLoad()
 	},
 
 	/**
@@ -47,7 +97,7 @@ Page({
 	 * 页面相关事件处理函数--监听用户下拉动作
 	 */
 	onPullDownRefresh() {
-
+	
 	},
 
 	/**
@@ -63,28 +113,28 @@ Page({
 	onShareAppMessage() {
 
 	},
+	toregister()
+	{
+		wx.navigateTo({
+			url: '/pages/accountSignUp/accountSignUp',
+		})
+	},
 	toshouye()
 	{
-wx.navigateTo({
-	url: '/pages/home/home',
-})
+		wx.reLaunch({
+			url:'/pages/home/home'
+		})
 	},
 	toZhiyuanfuwu()
 	{
-		wx.navigateTo({
-			url: '/pages/service/service',
+		wx.reLaunch({
+			url:'/pages/service/service'
 		})
 	},
 	toNewActivity()
 	{
 		wx.navigateTo({
 			url: '/pages/newActivity/newActivity',
-		})
-	},
-	tomine()
-	{
-		wx.navigateTo({
-			url: '/pages/mine/mine',
 		})
 	}
 })
