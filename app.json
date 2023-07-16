@@ -3,7 +3,8 @@
     "pages/home/home",
 		"pages/service/service",
 		"pages/mine/mine",
-		"pages/datail/detail"
+		"pages/detail/detail",
+		"pages/newActivity/newActivity"
 	],
 	"usingComponents": {
     "cu-custom": "colorui/components/cu-custom/cu-custom"

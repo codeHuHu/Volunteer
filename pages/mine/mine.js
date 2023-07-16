@@ -75,6 +75,12 @@ wx.navigateTo({
 			url: '/pages/service/service',
 		})
 	},
+	toNewActivity()
+	{
+		wx.navigateTo({
+			url: '/pages/newActivity/newActivity',
+		})
+	},
 	tomine()
 	{
 		wx.navigateTo({

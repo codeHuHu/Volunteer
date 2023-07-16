@@ -63,6 +63,12 @@
 				<text class="cuIcon-friend lg text-gray"></text>
 				<text class="text-grey">我的队伍</text>
 			</view>
+		</view>		
+		<view class="cu-item arrow">
+			<view bindtap="toNewActivity" class="content">
+				<text class="cuIcon-friend lg text-gray"></text>
+				<text class="text-grey">发布活动</text>
+			</view>
 		</view>
 		<view class="cu-item arrow">
 			<view bindtap="none" class="content">

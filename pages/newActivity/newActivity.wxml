@@ -1,0 +1,45 @@
+<!--pages/newActivity/newActivity.wxml-->
+<view class="cu-list menu card-menu new_activity">
+	<form class="new_activity">
+    <view class="new_inline">
+      <view class="inline_name">名称：</view>
+      <input class="newName" placeholder="请输入名称"/>
+    </view>
+    <view class="new_inline">
+      <view class="inline_name">开始时间：</view>
+			<view class="new_date">
+				<picker class="time_pickers" mode="date" value="{{startDate}}" start="{{currentDate}}" end="" bindchange="bindStartChange">{{startDate}}
+        </picker>
+				<picker class="time_pickers" mode="time" value="{{startTime}}" start="06:00" end="22:00" bindchange="bindSTimeChange">{{startTime}}
+  			</picker>
+			</view>
+    </view>
+    <view class="new_inline">
+      <view class="inline_name">结束时间：</view>
+			<view class="new_date">
+				<picker class="time_pickers" mode="date" value="{{endDate}}" start="{{currentDate}}" end="" bindchange="bindEndChange">{{endDate}}
+        </picker>
+				<picker class="time_pickers" mode="time" value="{{endTime}}" start="06:00" end="22:00" bindchange="bindETimeChange">{{endTime}}
+  			</picker>
+			</view>
+    </view>
+    <view class="new_inline">
+      <view class="inline_name">简介：</view>
+      <textarea class="new_profile" placeholder="请输入简介"></textarea>
+    </view>
+		<view class="new_inline">
+			<view class="inline_name">添加标签：</view>
+			<input class="newName" placeholder="请输入标签" bindconfirm="onConfirm"  value="{{inputValue}}"/>
+		</view>
+		<view wx:key="index" class="new_inline" style="margin-left: 150rpx;">
+  <view wx:for="{{tagList}}" class="tag" bindtap="handleTagClick">
+    {{item}}
+    <view wx:if="{{showCloseButton}}" class="close-button" bindtap="handleCloseClick" data-index="{{index}}">✕</view>
+  </view>
+</view>
+		<!-- <view wx:key="index" class="new_inline" style="margin-left: 150rpx;">
+				<view wx:for="{{tagList}}" bindtap="handleCloseClick" class="tag">{{item}}</view>
+		</view> -->
+    <button class="new_button" bindtap="sendNew">提交</button>
+  </form>
+</view>
