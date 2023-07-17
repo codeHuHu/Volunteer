@@ -31,10 +31,10 @@
         "selectedIconPath": "images/tabbar/home_activate.png"
       },
       {
-        "pagePath": "pages/None/None",
-        "text": "志愿风采",
-        "iconPath": "images/tabbar/fengcai.png",
-        "selectedIconPath": "images/tabbar/fengcai_activate.png"
+        "pagePath": "pages/volunteerService/volunteerService",
+        "text": "志愿服务",
+        "iconPath": "images/tabbar/jvshou.png",
+        "selectedIconPath": "images/tabbar/jvshou_activate.png"
 			},
       {
         "pagePath": "pages/mine/mine",

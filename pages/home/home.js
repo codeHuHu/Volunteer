@@ -104,7 +104,7 @@ else {
     })
   },
   toZhiyuanfuwu() {
-    wx.navigateTo({
+    wx.reLaunch({
       url: '/pages/volunteerService/volunteerService',
     })
   },
