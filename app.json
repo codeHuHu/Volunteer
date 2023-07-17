@@ -5,6 +5,7 @@
 		"pages/mine/mine",
 		"pages/detail/detail",
 		"pages/newActivity/newActivity",
+		"pages/newTeam/newTeam",
 		"pages/jointeam/jointeam",
 		"pages/teamdetail/teamdetail",
 		"pages/accountSignUp/accountSignUp",
