@@ -27,19 +27,17 @@
       <view class="inline_name">简介：</view>
       <textarea class="new_profile" placeholder="请输入简介"></textarea>
     </view>
-		<view class=" cu-form-group">
-			<view class="inline_name">添加标签：</view>
-			<input class="newName" placeholder="请输入标签" bindconfirm="onConfirm"  value="{{inputValue}}"/>
-		</view>
-		<view wx:key="index" class="new_inline" style="margin-left: 150rpx;">
-  <view wx:for="{{tagList}}" class="tag" bindtap="handleTagClick">
-    {{item}}
-    <view wx:if="{{showCloseButton}}" class="close-button" bindtap="handleCloseClick" data-index="{{index}}">✕</view>
+<view class=" cu-form-group" style="display: flex;" >
+<view class="inline_name" style="width:40%" >添加标签：</view>
+<view wx:key="index" class="new_inline " style="">
+  <view wx:for="{{tagList}}" class="tag "  >
+   <view bindtap="handlemyTagClick" data-index="{{index}}"
+	 class="{{showLightButton[index]?'red':'default'}} " >
+		  {{item}}
+	 </view>
   </view>
 </view>
-		<!-- <view wx:key="index" class="new_inline" style="margin-left: 150rpx;">
-				<view wx:for="{{tagList}}" bindtap="handleCloseClick" class="tag">{{item}}</view>
-		</view> -->
+	</view>
     <button class="new_button" bindtap="sendNew">提交</button>
   </form> 
 </view>

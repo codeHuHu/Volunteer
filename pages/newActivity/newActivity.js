@@ -9,9 +9,11 @@ Page({
 		endDate:'',
 		startTime:'00:00', 
 		endTime:'00:00',
-		tagList:[],
+		tagList:['青少年服务','便民服务','环境保护','扶贫帮困','其他'],
+	
 		inputValue: '', // 清空输入框的值
-		showCloseButton: false, // 控制关闭按钮的显示
+		showLightButton:[] // 控制按钮显示高光
+	
   },
 
 	/**
@@ -155,28 +157,42 @@ sendNew(e) {
 	}
 },
 
-  onConfirm(e) {
-    const value = e.detail.value; // 获取输入框的内容
-    const tagList = this.data.tagList; // 获取之前的内容数组
-    tagList.push(value); // 将新的内容添加到数组中
+  // onConfirm(e) {
+  //   const value = e.detail.value; // 获取输入框的内容
+  //   const tagList = this.data.tagList; // 获取之前的内容数组
+  //   tagList.push(value); // 将新的内容添加到数组中
+  //   this.setData({
+	// 		tagList: tagList, // 更新tagList的值
+	// 		inputValue: '', // 清空输入框的值
+  //   });
+	// },
+	handlemyTagClick(e) {
+		var index=e.currentTarget.dataset.index
+		var lb=[]
+		lb[index]=true
     this.setData({
-			tagList: tagList, // 更新tagList的值
-			inputValue: '', // 清空输入框的值
-    });
-	},
-	handleTagClick() {
-    this.setData({
-      showCloseButton: true, // 点击标签时显示关闭按钮
-    });
+      showLightButton:lb, // 点击标签时显示高光
+		});
+		console.log(e.currentTarget.dataset.index)
   },
-  handleCloseClick(e) {
+
+	
+  handleHiddenClick(e) {
     const index = e.currentTarget.dataset.index; // 获取点击的标签索引
-    const tagList = this.data.tagList;
+		const tagList = this.data.tagList;
+		var mytagList=[]
+		mytagList.push(tagList[index])
+		this.setData({
+			mytagList:mytagList
+		})
 		tagList.splice(index, 1); // 从数组中删除该索引对应的元素
 		console.log(this.data.tagList);
+		console.log(this.data.mytagList);
+
     this.setData({
       tagList: tagList,
-      showCloseButton: false,
-    });
+			showCloseButton: false,
+		});
+		
   },
 })
