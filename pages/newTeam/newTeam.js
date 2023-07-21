@@ -1,3 +1,5 @@
+const db = wx.cloud.database()
+const app = getApp()
 // pages/newTeam/newTeam.js
 Page({
 
@@ -5,14 +7,20 @@ Page({
 	 * 页面的初始数据
 	 */
 	data: {
-		region: ['广东省', '广州市', '番禺区'],
+		adminAccount: '',
+		adminPassword: '',
+		ifAdmin: false,
 		picker: ['类型1', '类型2', '类型3', '类型4'],
-		team:	['广州大学城青年志愿者协会','阳光义工团'],
-		UserName:'',
-		UserIdnumber:'',
-		UserPhone:'',
-		ischeck:false,
-		List:[]
+		teamName: '',
+		teamCategory: '',
+		captainName: '',
+		captainNumber: '',
+		captainPhone: '',
+		mail: '',
+		region: ['广东省', '广州市', '番禺区'],
+		teamIntro: '',
+		reason: '',
+		ischeck: false,
 	},
 
 	/**
@@ -33,7 +41,12 @@ Page({
 	 * 生命周期函数--监听页面显示
 	 */
 	onShow() {
-
+		var a = wx.getStorageSync('adminAccount')
+		var b = wx.getStorageSync('adminPassword')
+		this.setData({
+			adminAccount: a,
+			adminPassword: b
+		})
 	},
 
 	/**
@@ -70,19 +83,110 @@ Page({
 	onShareAppMessage() {
 
 	},
-
+	getAdminAccount(e) {
+		this.setData({
+			adminAccount: e.detail.value
+		})
+	},
+	getAdminPassword(e) {
+		this.setData({
+			adminPassword: e.detail.value
+		})
+	},
+	adminLogin() {
+		if (this.data.adminAccount == '123456' && this.data.adminPassword == '123456') {
+			this.setData({
+				ifAdmin: true
+			})
+			wx.setStorageSync('adminAccount', this.data.adminAccount)
+			wx.setStorageSync('adminPassword', this.data.adminPassword)
+		} else {
+			wx.showToast({
+				title: '验证错误',
+			})
+		}
+	},
+	getTeamName(e) {
+		this.setData({
+			teamName: e.detail.value
+		})
+	},
+	getCaptainName(e) {
+		this.setData({
+			captainName: e.detail.value
+		})
+	},
+	getCaptainNumber(e) {
+		this.setData({
+			captainNumber: e.detail.value
+		})
+	},
+	getCaptainPhone(e) {
+		this.setData({
+			captainPhone: e.detail.value
+		})
+	},
+	getMail(e) {
+		this.setData({
+			mail: e.detail.value
+		})
+	},
+	getTeamIntro(e) {
+		this.setData({
+			teamIntro: e.detail.value
+		})
+	},
+	getReason(e) {
+		this.setData({
+			reason: e.detail.value
+		})
+	},
 	RegionChange: function (e) {
 		this.setData({
 			region: e.detail.value
-		
 		})
-		console.log	(this.data.region)
 	},
 	PickerChange(e) {
-		console.log(e);
 		this.setData({
-			index: e.detail.value
+			teamCategory: this.data.picker[e.detail.value]
 		})
-		console.log()
 	},
+	checkchange() {
+		this.setData({
+			ischeck: !this.data.ischeck
+		})
+	},
+	teamRegister() {
+		console.log('register')
+		//暂未添加纠错机制
+		if (!this.data.ischeck) {
+			wx.showToast({
+				title: '未同意协议',
+			})
+			// db.collection('TeamInfo').where({
+			// 	_openid: app.globalData.openid
+			// }).remove()
+		} else {
+			db.collection('TeamInfo').add({
+				data: {
+					teamName: this.data.teamName,
+					teamCategory: this.data.teamCategory,
+					captainName: this.data.captainName,
+					captainNumber: this.data.captainNumber,
+					captainPhone: this.data.captainPhone,
+					mail: this.data.mail,
+					region: this.data.region[0] + this.data.region[1] + this.data.region[2],
+					teamIntro: this.data.teamIntro,
+					reason: this.data.reason
+				},
+				success(res) {
+					console.log(res);
+					wx.showToast({
+						title: '注册成功',
+					})
+
+				}
+			})
+		}
+	}
 })

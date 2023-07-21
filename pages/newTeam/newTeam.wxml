@@ -1,22 +1,22 @@
-<view class="cu-list menu card-menu margin-bottom-xl shadow-lg radius padding-lr-sm">
+<view wx:if="{{ifAdmin}}" class="cu-list menu card-menu margin-bottom-xl shadow-lg radius padding-lr-sm">
 	<view class="content margin-bottom">
 		<view class="text-lg text-black text-bold ">
-			<text>组织名称:</text>
+			<text>队伍名称:</text>
 		</view>
 		<view class="bg-oc-gray-2 radius margin-tb-xs solid">
-			<input class="text-black padding-lr text-lg" placeholder="请输入你的组织名称" bindinput="getName" model:value="{{UserName}}" style="width:100%;height: 80rpx;"></input>
+			<input class="text-black padding-lr text-lg" placeholder="请输入你的队伍名称" bindinput="getTeamName" style="width:100%;height: 80rpx;"></input>
 		</view>
 	</view>
 
 	<view class="content margin-bottom">
 		<view class="text-lg text-black flex justify-between ">
-			<text class="text-bold ">组织类型:</text>
-			<text class="text-lg text-gray">组织类型说明</text>
+			<text class="text-bold ">队伍类型:</text>
+			<text class="text-lg text-gray">队伍类型说明</text>
 		</view>
 		<view class="cu-form-group bg-oc-gray-2 radius margin-tb-xs solid ">
 			<picker bindchange="PickerChange" value="{{index}}" range="{{picker}}">
 				<view class="picker flex text-black">
-					{{index?picker[index]:'请选择组织类型'}}
+					{{teamCategory?teamCategory:'请选择队伍类型'}}
 				</view>
 			</picker>
 		</view>
@@ -24,28 +24,28 @@
 
 	<view class="content margin-bottom">
 		<view class="text-lg text-black text-bold ">
-			<text>管理员姓名:</text>
+			<text>队长姓名:</text>
 		</view>
 		<view class="bg-oc-gray-2 radius margin-tb-xs solid">
-			<input class="text-black padding-lr text-lg" placeholder="请输入管理员姓名" bindinput="getName" model:value="{{UserName}}" style="width:100%;height: 80rpx;"></input>
+			<input class="text-black padding-lr text-lg" placeholder="请输入管理员姓名" bindinput="getCaptainName" style="width:100%;height: 80rpx;"></input>
 		</view>
 	</view>
 
 	<view class="content margin-bottom">
 		<view class="text-lg text-black text-bold ">
-			<text>管理员身份证号码:</text>
+			<text>队长身份证号码:</text>
 		</view>
 		<view class="bg-oc-gray-2 radius margin-tb-xs solid">
-			<input class="text-black padding-lr text-lg" placeholder="请输入管理员身份证号码" bindinput="getName" model:value="{{UserName}}" style="width:100%;height: 80rpx;"></input>
+			<input class="text-black padding-lr text-lg" placeholder="请输入管理员身份证号码" bindinput="getCaptainNumber" style="width:100%;height: 80rpx;"></input>
 		</view>
 	</view>
 
 	<view class="content margin-bottom">
 		<view class="text-lg text-black text-bold ">
-			<text>管理员手机号码:</text>
+			<text>队长手机号码:</text>
 		</view>
 		<view class="bg-oc-gray-2 radius margin-tb-xs solid">
-			<input class="text-black padding-lr text-lg" placeholder="请输入管理员手机号码" bindinput="getName" model:value="{{UserName}}" style="width:100%;height: 80rpx;"></input>
+			<input class="text-black padding-lr text-lg" placeholder="请输入管理员手机号码" bindinput="getCaptainPhone" style="width:100%;height: 80rpx;"></input>
 		</view>
 	</view>
 
@@ -55,7 +55,7 @@
 		</view>
 		<view class=" radius margin-tb-xs flex">
 			<view class="bg-oc-gray-2 flex-twice margin-right-sm  solid ">
-				<input class="text-black padding-lr text-lg " placeholder="请输入验证码" bindinput="getName" model:value="{{UserName}}" style="width:90%;height: 80rpx;"></input>
+				<input class="text-black padding-lr text-lg " placeholder="123456" bindinput="getName" style="width:90%;height: 80rpx;"></input>
 			</view>
 			<button class="flex-sub cu-btn bg-green shadow-blur round lg">获取验证码</button>
 		</view>
@@ -66,7 +66,7 @@
 			<text>邮箱:</text>
 		</view>
 		<view class="bg-oc-gray-2 radius margin-tb-xs solid">
-			<input class="text-black padding-lr text-lg" placeholder="请输入你的邮箱" bindinput="getName" model:value="{{UserName}}" style="width:100%;height: 80rpx;"></input>
+			<input class="text-black padding-lr text-lg" placeholder="请输入你的邮箱" bindinput="getMail" style="width:100%;height: 80rpx;"></input>
 		</view>
 	</view>
 
@@ -83,21 +83,21 @@
 		</view>
 	</view>
 
-	<view class="content margin-bottom">
+	<!-- <view class="content margin-bottom">
 		<view class="text-lg text-black text-bold ">
-			<text>组织申请函:</text>
+			<text>队伍申请函:</text>
 		</view>
 		<view class="bg-oc-gray-2 radius margin-tb-xs solid">
-			<input class="text-black padding-lr text-lg" placeholder="请上传组织申请函(未完善)" bindinput="getName" model:value="{{UserName}}" style="width:100%;height: 80rpx;"></input>
+			<input class="text-black padding-lr text-lg" placeholder="请上传队伍申请函(未完善)" bindinput="getName" style="width:100%;height: 80rpx;"></input>
 		</view>
-	</view>
+	</view> -->
 
 	<view class="content margin-bottom">
 		<view class="text-lg text-black text-bold ">
-			<text>组织介绍:</text>
+			<text>队伍介绍:</text>
 		</view>
 		<view class="bg-oc-gray-2 radius margin-tb-xs solid">
-			<textarea class="text-black padding-lr text-lg padding-tb" maxlength="-1" disabled="{{modalName!=null}}" bindinput="textareaAInput" placeholder="组织介绍不少于50个字" style="height: 200rpx;"></textarea>
+			<textarea class="text-black padding-lr text-lg padding-tb" maxlength="-1" disabled="{{modalName!=null}}" bindinput="getTeamIntro" placeholder="队伍介绍不少于50个字" style="height: 200rpx;"></textarea>
 		</view>
 	</view>
 
@@ -106,7 +106,7 @@
 			<text>申请原因:</text>
 		</view>
 		<view class="bg-oc-gray-2 radius margin-tb-xs solid">
-			<textarea class="text-black padding-lr text-lg padding-tb" maxlength="-1" disabled="{{modalName!=null}}" bindinput="textareaAInput" placeholder="申请原因不少于15个字" style="height: 150rpx;"></textarea>
+			<textarea class="text-black padding-lr text-lg padding-tb" maxlength="-1" disabled="{{modalName!=null}}" bindinput="getReason" placeholder="申请原因不少于15个字" style="height: 150rpx;"></textarea>
 		</view>
 	</view>
 
@@ -115,9 +115,34 @@
 		<text class="">注册表示同意协议</text>
 	</view>
 
-	<view class="padding-xl" bindtap="register">
-		<button class="cu-btn block bg-cyan margin-tb-xl lg round ">
+	<view class="padding-xl">
+		<button class="cu-btn block bg-cyan margin-tb-xl lg round " bindtap="teamRegister">
 			注册
+		</button>
+	</view>
+</view>
+
+<view wx:else class="cu-list menu card-menu  shadow-lg radius padding-lr-sm">
+	<view class="grid col-1 text-center">
+		<view class="bg-img padding-tb-xl" style="background-image: url(/images/1-up.png);height: 170px;">
+		</view>
+		<view class="justify-center flex">
+			<text class="text-xl text-bold">管理员登录</text>
+		</view>
+	</view>
+	<view class="bg-oc-gray-2 radius margin-tb-xs solid cu-bar">
+		<text class="cuIcon-my text-black text-bold padding-left-sm"></text>
+		<input class="text-black padding-lr text-lg" placeholder="{{adminAccount?adminAccount:'管理员账户'}}" bindinput="getAdminAccount" style="width:100%;height: 80rpx;"></input>
+	</view>
+
+	<view class="bg-oc-gray-2 radius margin-tb-xs solid cu-bar">
+		<text class="cuIcon-attentionfill text-black text-bold padding-left-sm"></text>
+		<input class="text-black padding-lr text-lg" placeholder="{{adminPassword?adminPassword:'管理员密码'}}" bindinput="getAdminPassword" style="width:100%;height: 80rpx;"></input>
+	</view>
+
+	<view class="padding-tb">
+		<button class="cu-btn block bg-green margin-tb-xl lg round " bindtap="adminLogin">
+			登录
 		</button>
 	</view>
 </view>
