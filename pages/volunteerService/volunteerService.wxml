@@ -33,42 +33,26 @@
  height:{{show?(selectData.length>5?300:selectData.length*60):0}}rpx;-----给改变下拉框高度，实现下拉框的显示隐藏，每个下拉选项的高度为60，下拉框的最大高度这里设置的是300，所以这里写成当数据长度大于5时，下拉框高度为300，反之下拉框高度为数据长度乘以60
  index==selectData.length-1&&"border:0;"-----取消下拉选项的最后一个的下边框 -->
 
-<view class="cu-card article {{isCard?'no-card':''}} margin">
+<block wx:for="{{actionList}}" wx:key="index">
+<view class="cu-card article {{isCard?'no-card':''}} margin" bindtap="todetail" data-id="{{item._id}}">
 	<view class="cu-item shadow">
 		<view class="title">
-			<view class="text-cut">广州大学计算机科学与网络工程学院三下乡科技振兴团队</view>
+			<view class="text-cut">{{item.actName}}</view>
 		</view>
 		<view class="content">
-			<view class="desc">
+			<view class="desc" >
 
-				<view class="character">
-					<view class="cu-tag bg-red light sm round">公益服务团队</view>
-					<view class="cu-tag bg-green light sm round">三下乡</view>
-					<view class="cu-tag bg-green light sm round going-on">进行中</view>
-					<text class="data">2023-7-10</text>
+				<view class="character" >
+					<view class="cu-tag bg-red light sm round">{{item.teamName}}</view>
+					<view class="cu-tag bg-green light sm round" style="white-space:normal">{{item.tag}}</view>
+					<view class="cu-tag bg-green light sm round going-on" >{{item.status}}</view>
+					<view>
+					<text class="data">{{item.serviceDate}}</text>				
+					</view>			
 				</view>
 
 			</view>
 		</view>
 	</view>
 </view>
-
-<view class="cu-card article {{isCard?'no-card':''}} margin">
-	<view class="cu-item shadow">
-		<view class="title">
-			<view class="text-cut">7月8日社区义剪志愿服务活动</view>
-		</view>
-		<view class="content">
-			<view class="desc">
-
-				<view class="character">
-					<view class="cu-tag bg-red light sm round">暖心服务队</view>
-					<view class="cu-tag bg-green light sm round">便民服务</view>
-					<view class="cu-tag bg-green light sm round over">已结束</view>
-					<text class="data">2023-7-9</text>
-				</view>
-
-			</view>
-		</view>
-	</view>
-</view>
+</block>

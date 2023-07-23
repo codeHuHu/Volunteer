@@ -1,43 +1,88 @@
 <!--pages/newActivity/newActivity.wxml-->
 <view class="cu-list menu card-menu new_activity">
 	<form class="new_activity">
-    <view class="cu-form-group">
-      <view class="inline_name">名称：</view>
-      <input class="newName" placeholder="请输入名称"/>
+    <view class="cu-form-group" >
+      <view class="inline_name">活动名称：</view>
+      <input class="newName" placeholder="请输入名称" bindinput="getactName" model:value="{{actName}}"/>
     </view>
-    <view class="cu-form-group">
-      <view class="inline_name">开始时间：</view>
+		<view class="cu-form-group" style="justify-content: center;">
+		<view style="display: flex;align-items: center; ">
+			<view class="title inteam">负责人</view>
+			<input  bindinput="getholder" placeholder="姓名" model:value=""/>
+		</view>
+			<view style="display: flex;align-items: center; ">
+			<view class="title outteam" >联系电话</view>
+			<input class="tel" bindinput="getPhone" placeholder="" />
+			</view>
+		</view>
+		<view class="cu-form-group">
+			<view class="title">服务组织</view>
+			<picker bindchange="PickerChange" value="{{index}}" range="{{picker}}">
+			<view class="picker ">
+				{{index?picker[index]:'请选择组织单位'}}
+			</view>
+		</picker>
+		</view>
+		<view class="cu-form-group" style="justify-content: center;">
+		<view style="display: flex;align-items: center; ">
+			<view class="title inteam">队内招募</view>
+			<input maxlength="3" bindinput="getinnum" placeholder="人数"></input>
+		</view>
+			<view style="display: flex;align-items: center; ">
+			<view class="title outteam">公开招募</view>
+			<input maxlength="3" bindinput="getoutnum" placeholder="人数"></input>
+			</view>
+		</view>
+
+
+		<view class="cu-form-group">
+			<view class="inline_name">服务时间：</view>
 			<view class="new_date">
-				<picker class="time_pickers" mode="date" value="{{startDate}}" start="{{currentDate}}" end="" bindchange="bindStartChange">{{startDate}}
+				<picker class="time_pickers text-xs" mode="date" value="{{beginDate}}" start="{{currentDate}}" end="" bindchange="bindStartChange">{{beginDate}}
         </picker>
-				<picker class="time_pickers" mode="time" value="{{startTime}}" start="06:00" end="22:00" bindchange="bindSTimeChange">{{startTime}}
+				<view class="service_time" style="display: flex;">
+				<picker class="time_pickers text-xs" mode="time" value="{{startTime}}" start="00:00" end="24:00" bindchange="bindSTimeChange">{{startTime}}
+  			</picker>
+				<picker class="time_pickers text-xs" mode="time" value="{{endTime}}" start="00:00" end="24:00" bindchange="bindETimeChange">{{endTime}}
+  			</picker>
+				</view>
+
+			</view>
+		</view>
+		<view class="cu-form-group">
+			<view class="inline_name">截止报名时间：</view>
+			<view class="new_date">
+				<picker class="time_pickers text-xs" mode="date" value="{{beginDate}}" start="{{currentDate}}" end="{{beginDate}}" bindchange="binddeadChange">{{deadDate}}
+        </picker>
+				<picker class="time_pickers text-xs" mode="time" value="{{deadTime}}" start="00:00" end="24:00" bindchange="binddeadTimeChange">{{deadTime}}
   			</picker>
 			</view>
-    </view>
-    <view class="cu-form-group">
-      <view class="inline_name">结束时间：</view>
-			<view class="new_date">
-				<picker class="time_pickers" mode="date" value="{{endDate}}" start="{{currentDate}}" end="" bindchange="bindEndChange">{{endDate}}
-        </picker>
-				<picker class="time_pickers" mode="time" value="{{endTime}}" start="06:00" end="22:00" bindchange="bindETimeChange">{{endTime}}
-  			</picker>
-			</view>
-    </view>
+		</view>
+
+		<view class="cu-form-group" >
+		<view style="display: flex;align-items: center; ">
+			<view class="title inteam">服务地点</view>
+			<input  bindinput="getAddress" placeholder="地址"/>
+		</view>
+		</view>
     <view class="cu-form-group">
       <view class="inline_name">简介：</view>
-      <textarea class="new_profile" placeholder="请输入简介"></textarea>
+      <textarea class="new_profile" placeholder="请输入简介" 
+			bindinput="getintro" ></textarea>
     </view>
-<view class=" cu-form-group" style="display: flex;" >
+		
+<view class=" cu-form-group" style="display:grid">
 <view class="inline_name" style="width:40%" >添加标签：</view>
-<view wx:key="index" class="new_inline " style="">
-  <view wx:for="{{tagList}}" class="tag "  >
+<view  class="new_inline " >
+  <view wx:for="{{tagList}}" wx:key="index" class="tag {{showLightButton[index]?'red':'default'}} "  >
    <view bindtap="handlemyTagClick" data-index="{{index}}"
-	 class="{{showLightButton[index]?'red':'default'}} " >
+	 >
 		  {{item}}
 	 </view>
   </view>
 </view>
 	</view>
-    <button class="new_button" bindtap="sendNew">提交</button>
+
+    <button class="new_button" bindtap="sendNew">发布</button>
   </form> 
 </view>

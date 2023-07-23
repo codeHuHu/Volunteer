@@ -1,29 +1,52 @@
 // pages/newActivity/newActivity.js
+const db=wx.cloud.database()
+const app =getApp()
 Page({
 
 	/**
 	 * 页面的初始数据
 	 */
   data: {
-		startDate: '',
+		currentDate:'',
+		beginDate: '',
+		deadDate:'',
 		endDate:'',
 		startTime:'00:00', 
 		endTime:'00:00',
-		tagList:['青少年服务','便民服务','环境保护','扶贫帮困','其他'],
-	
+		deadTime:'00:00',
+		tagList:['党建引领','乡村振兴','新时代文明实践（文化/文艺/体育）','科普科教','社区/城中村治理','环境保护','弱势群体帮扶','志愿驿站值班','其他'],
+		picker:['广州大学城志愿者协会','阳光义工团'],
 		inputValue: '', // 清空输入框的值
-		showLightButton:[] // 控制按钮显示高光
-	
+		showLightButton:[], // 控制按钮显示高光
+		index:'',
+		tagindex:'',
+		ActName:'',
+		holder:'',
+		teamName:'',
+		innum:'',
+		outnum:'',
+		actAddress:'',
+		intro:'',
+		Phone:''	
   },
 
 	/**
 	 * 生命周期函数--监听页面加载
 	 */
   onLoad: function() {
-		const currentDate = new Date().toLocaleDateString().split('/').join('-');
+		// const currentDate = new Date().toLocaleDateString('en-GB', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/\//g, '-');
+		const currentDate = new Date().toISOString().slice(0, 10);
+	
+		const currentTime = new Date().toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit' });
+		console.log(currentDate)
+		console.log(currentTime)
     this.setData({
-			startDate: currentDate,
-			endDate:currentDate,
+			currentDate:currentDate,
+			beginDate: currentDate,
+			startTime:currentTime,
+			endTime:currentTime,
+			deadDate:currentDate,
+			deadTime:currentTime
     });
   },
 
@@ -79,48 +102,56 @@ Page({
 		if (end < start) {
 			wx.showToast({
 				icon: 'none',
-				title: '当前设置的时间有误！',
+				title: '当前设置的时间有误！请重新设置',
 			});
 			setTimeout(() => {
 				wx.hideToast()
 			}, 2000); // 延迟 2000 毫秒后执行
+	
 			return; // 结束函数执行，以免继续执行下方的 setData
 		}
 	},
+
 	bindStartChange: function (e) {
-		let combinedStartStr = e.detail.value + ' ' + this.data.startTime;
-		let combinedEndStr = this.data.endDate + ' ' + this.data.endTime;
-		let start = new Date(combinedStartStr).getTime();
-		let end = new Date(combinedEndStr).getTime();
-		this.checkTime(start, end);
+		// let combinedStartStr = this.data.beginDate;
+		// let combinedEndStr = e.detail.value;
+		// let start = new Date(combinedStartStr).getTime();
+		// let end = new Date(combinedEndStr).getTime();
+		// this.checkTime(start, end);
 		this.setData({
-			startDate: e.detail.value
+			beginDate: e.detail.value,
+			deadDate:e.detail.value
+		})
+		console.log(e.detail.value)
+	},
+	binddeadChange: function (e) {
+		// let combinedStartStr = this.data.beginDate;
+		// let combinedEndStr = e.detail.value;
+		// let start = new Date(combinedStartStr).getTime();
+		// let end = new Date(combinedEndStr).getTime();
+		// this.checkTime(start, end);
+		this.setData({
+		
+			deadDate:e.detail.value
 		})
 	},
-	bindEndChange: function(e) {
-		let combinedStartStr = this.data.startDate + ' ' + this.data.startTime;
-		let combinedEndStr = e.detail.value + ' ' + this.data.endTime;
-		let start = new Date(combinedStartStr).getTime();
-		let end = new Date(combinedEndStr).getTime();
-		this.checkTime(start, end);
-		this.setData({
-			endDate: e.detail.value
-		});
-	},
+
 	bindSTimeChange:function(e) {
-		let combinedStartStr = this.data.startDate + ' ' + e.detail.value;
-		let combinedEndStr = this.data.endDate + ' ' + this.data.endTime;
+		let combinedStartStr = this.data.beginDate + ' ' + e.detail.value;
+		let combinedEndStr = this.data.beginDate + ' ' + this.data.endTime;
 		let start = new Date(combinedStartStr).getTime();
 		let end = new Date(combinedEndStr).getTime();
-		this.checkTime(start, end);
+		this.checkTime(start, end)
+		
 		console.log(e);
 		this.setData({
-			startTime:e.detail.value
+			startTime:e.detail.value,
+			deadTime:e.detail.value
 		})
 	},	
 	bindETimeChange:function(e) {
-		let combinedStartStr = this.data.startDate + ' ' + this.data.startTime;
-		let combinedEndStr = this.data.endDate + ' ' + e.detail.value;
+		let combinedStartStr = this.data.beginDate + ' ' + this.data.startTime;
+		let combinedEndStr = this.data.beginDate + ' ' + e.detail.value;
 		let start = new Date(combinedStartStr).getTime();
 		let end = new Date(combinedEndStr).getTime();
 		this.checkTime(start, end);
@@ -128,34 +159,12 @@ Page({
 			endTime:e.detail.value
 		})
 	},
-sendNew(e) {
-	let combinedStartStr = this.data.startDate + ' ' + this.data.startTime;
-	let combinedEndStr = this.data.endDate + ' ' + this.data.endTime;
-	console.log(combinedStartStr);
-	console.log(combinedEndStr);
-	let start = new Date(combinedStartStr).getTime();
-	let end = new Date(combinedEndStr).getTime();
-	console.log(start);
-	console.log(end);
-	if (end < start) {
-		wx.showToast({
-			icon: 'none',
-			title: '开始时间和结束时间有误，请重新选择！',
-		});
-		setTimeout(() => {
-			wx.hideToast()
-		}, 2000); // 延迟 2000 毫秒后执行
-	}
-	else {
-		wx.showToast({
-			icon: 'success',
-			title: '提交成功！',
-		});
-		setTimeout(() => {
-			wx.hideToast()
-		}, 2000); // 延迟 2000 毫秒后执行
-	}
-},
+	binddeadTimeChange:function(e)
+		{
+			this.setData({
+				deadTime:e.detail.value
+			})
+		},
 
   // onConfirm(e) {
   //   const value = e.detail.value; // 获取输入框的内容
@@ -167,13 +176,16 @@ sendNew(e) {
   //   });
 	// },
 	handlemyTagClick(e) {
-		var index=e.currentTarget.dataset.index
-		var lb=[]
-		lb[index]=true
+		const index=e.currentTarget.dataset.index;
+		var lb=[];
+		lb[index]=true;
     this.setData({
+			tagindex:index,
       showLightButton:lb, // 点击标签时显示高光
 		});
+	
 		console.log(e.currentTarget.dataset.index)
+		console.log(this.data.tagList[this.data.tagindex])
   },
 
 	
@@ -194,5 +206,118 @@ sendNew(e) {
 			showCloseButton: false,
 		});
 		
-  },
+	},
+	
+	PickerChange(e)
+	{
+		this.setData({
+			index:e.detail.value
+		})
+		console.log(this.data.picker[this.data.index])
+	},
+	getactName(e)
+		{
+			console.log(e.detail.value)
+			this.setData({
+				ActName:e.detail.value
+			})
+			console.log(this.data.ActName)
+		},
+		getholder(e)
+		{
+			console.log(e.detail.value)
+			this.setData({
+				holder:e.detail.value
+			})
+		},
+		getPhone(e)
+		{
+			console.log(e.detail.value)
+			this.setData({
+			Phone:e.detail.value
+			})
+		},
+		getinnum(e)
+		{
+			console.log(e.detail.value)
+			this.setData({
+				innum:e.detail.value
+			})
+		},
+		getoutnum(e)
+		{
+			console.log(e.detail.value)
+			this.setData({
+				outnum:e.detail.value
+			})
+		},
+		getAddress(e)
+		{
+			this.setData({
+				Address:e.detail.value
+			})
+		},
+		getintro(e)
+		{
+			console.log(e.detail.value)
+			this.setData({
+				intro:e.detail.value
+			})
+		},
+
+		sendNew(e) {
+			let combinedStartStr = this.data.beginDate + ' ' + this.data.startTime;
+			let combinedEndStr = this.data.beginDate + ' ' + this.data.endTime;
+			console.log(combinedStartStr);
+			console.log(combinedEndStr);
+			let start = new Date(combinedStartStr).getTime();
+			let end = new Date(combinedEndStr).getTime();
+			console.log(start);
+			console.log(end);
+			if (end < start) {
+				wx.showToast({
+					icon: 'none',
+					title: '开始时间和结束时间有误，请重新选择！',
+				});
+				setTimeout(() => {
+					wx.hideToast()
+				}, 2000); // 延迟 2000 毫秒后执行
+			}
+			else {
+				
+					db.collection('ActivityInfo').add({
+						data:
+						{
+							actName:this.data.actName,
+							holder:this.data.holder,
+							phone:this.data.Phone,
+							teamName:this.data.picker[this.data.index],
+							innum:this.data.innum,
+							outnum:this.data.outnum,
+							serviceDate:this.data.beginDate ,
+							serviceSTime:this.data.startTime,
+							serviceETime:this.data.endTime,
+							DeadDate:this.data.deadDate,
+							deadTime:this.data.deadTime,
+							address:this.data.Address,
+							intro:this.data.intro,
+							tag:this.data.tagList[this.data.tagindex],
+							status:'进行中'
+						},
+						
+					success(res)
+					{
+					wx.showToast({
+										icon: 'success',
+										title: '提交成功！',
+							})			
+					}
+				});
+				setTimeout(() => {
+					wx.navigateBack(),
+					wx.hideToast()
+				}, 2000); // 延迟 2000 毫秒后执行
+			}
+		}
+		
 })

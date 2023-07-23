@@ -88,12 +88,12 @@ page{
 z-index: 0;
 }
 .character {
-	display: flex;
+	display:flex;
 	font-display: row;
+	justify-content: space-between;
 }
-.detail {
-	text-align: right;
-}
+
+
 
 .cu-tag.bg-green.light.sm.round.going-on {
 	background-color:red;
@@ -104,11 +104,11 @@ z-index: 0;
 	background-color:gray;
 	color: white;
 }
+
 .data {
 	color: rgb(184, 182, 182);
 	font-size: 24rpx;
-	position: relative;
-	left:160rpx;
+	
 }
 
 .cu-card 

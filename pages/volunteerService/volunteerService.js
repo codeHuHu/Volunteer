@@ -1,4 +1,7 @@
 // pages/service/service.js
+const app =getApp();
+const db=wx.cloud.database();
+
 Page({
 
 	/**
@@ -9,11 +12,17 @@ Page({
 		show2:false,
 		show3:false,
 		selectallData:['全部','我的'],//下拉列表的数据
-		selecttypeData:['青少年服务','便民服务','环境保护','扶贫帮困','其他'],
-		selectstatusData:['进行中','已截止','已结束'],
+		selecttypeData:['党建引领','乡村振兴','新时代文明实践（文化/文艺/体育）','科普科教','社区/城中村治理','环境保护','弱势群体帮扶','志愿驿站值班','其他'],
+		selectstatusData:['状态','进行中','已结束'],
 		index1:0,//选择的下拉列表下标
 		index2:0,
-		index3:0
+		index3:0,
+		actionList:[],
+		currentDate:'',
+		doing:'进行中',
+		finish:'已结束',
+		timestamp:'',
+		index:''
 	},
 	
 	// 点击下拉显示框
@@ -53,20 +62,102 @@ Page({
 	// 点击下拉列表
 	optionstatusTap(e){
 		let Index=e.currentTarget.dataset.index;//获取点击的下拉列表的下标
+		console.log(Index)
 		this.setData({
 		 index3:Index,
 		 show3:!this.data.show3
 		});
+		if(Index==1)
+		{
+			
+			const collection =db.collection('ActivityInfo');
+			collection.where({
+				'status':'进行中'
+			}).get().then(res=>{
+				console.log(res.data);
+				this.setData({
+					actionList:res.data
+				})
+			}).catch(err=>
+			{
+				console.log(err);
+			}
+			)
+		}
+		else if(Index==2)
+		{
+			const collection =db.collection('ActivityInfo');
+			collection.where({
+				'status':'已结束'
+			}).get().then(res=>{
+				console.log(res.data);
+				this.setData({
+					actionList:res.data
+				})
+			}).catch(err=>
+			{
+				console.log(err);
+			}
+			)
+		}
+		else {
+			this.onShow()
+		}
 	},
 	/**
 	 * 生命周期函数--监听页面加载
 	 */
-	onLoad(options) {
+	onLoad:function(event) {
 		wx.setNavigationBarTitle({
 			title: '志愿服务',
 		})
-	},
+		const currentDate = new Date().toLocaleDateString().split('/').join('-');
+		const currentDateObject = new Date(currentDate);
+		const timestamp = currentDateObject.getTime();
+		console.log(timestamp);
 
+		this.setData({
+			timestamp:timestamp,
+			currentDate:currentDate
+		})
+
+		this.getStatus()
+
+	},
+	getStatus()
+	{
+			var that=this
+			const collection =db.collection('ActivityInfo');
+		collection.get().then(res =>{
+					var actions=res.data
+						console.log(actions[0])
+					for(var l in actions)
+					{
+						var tmptimestamp=new Date(actions[l].serviceDate)
+						tmptimestamp=tmptimestamp.getTime()
+						console.log(tmptimestamp)
+							if(tmptimestamp<that.data.timestamp )
+							{
+								actions[l].status='已结束'
+							}
+					}
+				 // 更新集合中的文档属性
+  actions.forEach(action => {
+    collection.doc(action._id).update({
+      data: {
+        status: action.status
+      }
+    }).then(() => {
+      console.log('Document updated successfully.');
+    }).catch(error => {
+      console.error('Error while updating document:', error);
+    });
+  });
+
+}).catch(error => {
+  console.error('Error while finding documents:', error);
+});
+},		
 	/**
 	 * 生命周期函数--监听页面初次渲染完成
 	 */
@@ -77,9 +168,18 @@ Page({
 	/**
 	 * 生命周期函数--监听页面显示
 	 */
-	onShow() {
-			// // 隐藏返回按钮
-			// wx.hideHomeButton()
+	onShow:function() {
+			const db=wx.cloud.database()
+			db.collection('ActivityInfo')
+			.orderBy('serviceDate','desc').get().then((res)=>
+			{
+					console.log(res)
+					this.setData({
+						actionList:res.data
+					})
+					wx.stopPullDownRefresh()
+			})
+			.catch(console.error)
 	},
 
 	/**
@@ -116,5 +216,15 @@ Page({
 	onShareAppMessage() {
 
 	},
-	
+	todetail(e)
+	{
+		console.log(e.currentTarget.dataset.id)
+		wx.navigateTo({
+			url: '/pages/detail/detail?id='+e.currentTarget.dataset.id,
+		})
+	},
+	addstatus(e)
+	{
+		console.log(e.currentTarget.dataset.status)
+	}
 })
