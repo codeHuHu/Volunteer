@@ -90,8 +90,8 @@
 		</view>
 		<view class="cu-item arrow">
 			<view bindtap="toNewTeam" class="content">
-				<text class="cuIcon-creative lg text-green"></text>
-				<text class="text-green">创建队伍(管理员)</text>
+				<text class="cuIcon-creative text-gray"></text>
+				<text class="text-grey">创建队伍</text>
 			</view>
 		</view>
 	</view>
