@@ -1,21 +1,23 @@
 // pages/mySignUp/mySignUp.js
-const db = wx.cloud.database() 
-const app=getApp()
+const db = wx.cloud.database()
+const app = getApp()
 Page({
 
 	/**
 	 * 页面的初始数据
 	 */
 	data: {
-		
+
 		region: ['广东省', '广州市', '番禺区'],
 		picker: ['居民身份证', '香港居民身份证', '澳门居民身份证', '台湾身份证'],
+
 		team:	['广州大学城志愿者协会','阳光义工团'],
 		UserName:'',
 		UserIdnumber:'',
 		UserPhone:'',
 		ischeck:false,
 		List:[]
+
 	},
 
 	/**
@@ -76,9 +78,9 @@ Page({
 	RegionChange: function (e) {
 		this.setData({
 			region: e.detail.value
-		
+
 		})
-		console.log	(this.data.region)
+		console.log(this.data.region)
 	},
 	PickerChange(e) {
 		console.log(e);
@@ -87,117 +89,103 @@ Page({
 		})
 		console.log()
 	},
-	teamChange(e)
-	{
+	teamChange(e) {
 		console.log(e);
 		this.setData({
-			teamid:e.detail.value
+			teamid: e.detail.value
 		})
 	},
 
-	getName(event)
-	{
-			console.log(event.detail.value);
+	getName(event) {
+		console.log(event.detail.value);
 		this.setData({
-				UserName:event.detail.value
+			UserName: event.detail.value
 		})
 	},
-	getIdnumber(e)
-	{
+	getIdnumber(e) {
 		console.log(e.detail.value);
 		this.setData({
-			UserIdnumber:e.detail.value
+			UserIdnumber: e.detail.value
 		})
 	},
-	getPhone(e)
-	{
+	getPhone(e) {
 
 		console.log(e.detail.value);
 		this.setData({
-			UserPhone:e.detail.value
+			UserPhone: e.detail.value
 		})
 	},
-	register()
-	{			var that=this;
-		if( that.data.UserName == '')
-		{
+	register() {
+		var that = this;
+		if (that.data.UserName == '') {
 			wx.showToast({
 				title: '姓名不能为空',
 			})
 			return
-		}
-		else if(that.data.UserIdnumber  == '')
-		{
+		} else if (that.data.UserIdnumber == '') {
 			wx.showToast({
 				title: '证件号不能为空',
 			})
 			return
-		}	else if(that.data.UserPhone == '')
-		{
+		} else if (that.data.UserPhone == '') {
 			wx.showToast({
 				title: '请输入手机号',
 			})
 			return
-		} else if(!this.data.ischeck)
-		{
+		} else if (!this.data.ischeck) {
 			wx.showToast({
 				title: '请同意协议',
 			})
-		}
-		else
-		{
+		} else {
 
-		db.collection('UserInfo').add({
-				data:{
-					username:that.data.UserName,
-					idtype:that.data.picker[that.data.index],
-					idnumber:that.data.UserIdnumber,
-					team:that.data.team[that.data.teamid],
-					residence:that.data.region,
-					phone:that.data.UserPhone,
-					islogin:true
+			db.collection('UserInfo').add({
+				data: {
+					username: that.data.UserName,
+					idtype: that.data.picker[that.data.index],
+					idnumber: that.data.UserIdnumber,
+					team: that.data.team[that.data.teamid],
+					residence: that.data.region,
+					phone: that.data.UserPhone,
+					islogin: true
 				},
-				success(res){
+				success(res) {
 					console.log(res);
 					console.log("修改islogin");
-					app.globalData.islogin=true;
+					app.globalData.islogin = true;
 					console.log(app.globalData.islogin);
-				
-					try{
-					that.data.List.push([app.globalData.openid,app.globalData.islogin]);
-					console.log(that.data.List);
-					try{
-						wx.setStorageSync('user_status', that.data.List);
-					}catch(e)
-					{
-					
-					}
+
+					try {
+						that.data.List.push([app.globalData.openid, app.globalData.islogin]);
+						console.log(that.data.List);
+						try {
+							wx.setStorageSync('user_status', that.data.List);
+						} catch (e) {
+
+						}
 					} catch (e) {
 						console.log(123123);
 					}
 
 					wx.navigateBack(),
-					wx.showToast({
-						title: '注册成功',
-					})
-					
+						wx.showToast({
+							title: '注册成功',
+						})
+
 				}
 			})
 		}
 	},
-	checkchange()
-	{
+	checkchange() {
 		console.log(111)
-			this.setData({
-				ischeck:!this.data.ischeck
-			})
+		this.setData({
+			ischeck: !this.data.ischeck
+		})
 	},
 	//删除数据库
-	delete()
-		{
-			db.collection('UserInfo').where({
-				_openid:app.globalData.openid
-			}).remove()
-		}
+	delete() {
+		db.collection('UserInfo').where({
+			_openid: app.globalData.openid
+		}).remove()
+	}
 
 })

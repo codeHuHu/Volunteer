@@ -1,18 +1,26 @@
 // pages/jointeam/jointeam.js
+const db = wx.cloud.database()
 Page({
 
 	/**
 	 * 页面的初始数据
 	 */
 	data: {
-
+		teamList:[]
 	},
 
 	/**
 	 * 生命周期函数--监听页面加载
 	 */
 	onLoad(options) {
-
+    db.collection('TeamInfo').get()
+      .then(res => {
+        this.setData({
+          teamList:res.data
+        })
+        wx.stopPullDownRefresh()      
+      })
+      .catch(console.error)
 	},
 
 	/**
@@ -63,10 +71,9 @@ Page({
 	onShareAppMessage() {
 
 	},
-	toteamdetail()
-{
-	wx.navigateTo({
-		url: '/pages/teamdetail/teamdetail',
-	})
-}
+	toteamdetail(e) {
+		wx.navigateTo({
+			url: '/pages/teamdetail/teamdetail?info='+encodeURIComponent(JSON.stringify(this.data.teamList[e.currentTarget.dataset.index])),
+		})
+	}
 })

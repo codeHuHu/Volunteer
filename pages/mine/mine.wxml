@@ -1,66 +1,67 @@
 <scroll-view class="scrollPage">
-<block wx:if="{{islogin}}">
-	<view class="bg-img margin-lr" style="min-height: 35vh;">
-		<view class="bg-white radius-lg">
-			<view class="flex padding-sm justify-between">
-				<view class="padding-xs text-xxl text-black">
-					<view>{{actions[0].username}}<text class="text-gray text-df"> 志愿者</text></view>
-					<view class="text-gray text-df padding-top-sm">{{actions[0].team}}</view>
+	<block wx:if="{{islogin}}">
+		<view class="bg-img margin-lr" style="min-height: 35vh;">
+			<view class="bg-white radius-lg">
+				<view class="flex padding-sm justify-between">
+					<view class="padding-xs text-xxl text-black">
+						<view>{{actions[0].username}}<text class="text-gray text-df"> 志愿者</text></view>
+						<view class="text-gray text-df padding-top-sm">{{actions[0].team}}</view>
+					</view>
+					<view class="">
+						<view class="cu-avatar xl round" style="background-image:url(/images/青协头像.png)">
+						</view>
+					</view>
 				</view>
-				<view class="">
-					<view class="cu-avatar xl round" style="background-image:url(/images/青协头像.png)">
+			</view>
+			<view class="cu-list grid col-4 no-border padding-top">
+				<view class="cu-item">
+					<view class="text-black text-bold text-xxl">
+						500
+					</view>
+					<text>信用值</text>
+				</view>
+				<view class="cu-item">
+					<view class="text-black text-bold text-xxl">
+						10
+					</view>
+					<text>志愿时</text>
+				</view>
+				<view class="cu-item">
+					<view class="text-black text-bold text-xxl">
+						95
+					</view>
+					<text>能力</text>
+				</view>
+				<view class="cu-item">
+					<view class="text-black text-bold text-xxl">
+						5
+					</view>
+					<text>任务数</text>
+				</view>
+			</view>
+		</view>
+	</block>
+	<block wx:else>
+		<view class="bg-img margin-lr" style="min-height: 35vh;">
+			<view class="bg-img padding-tb-xl" style="background-image: url(/images/1-up.png);height: 414rpx;">
+				<view class="log-time margin-top" style="display: flex;">
+					<view class="margin-left cu-tag round bg-green margin-top-xs " bindtap="toregister">
+						注册
+					</view>
+					<view class="margin-top padding-xl text-white">
+						<view class="padding-top-xl flex-sub solid-bottom text-sl">
+							<text class="text-green text-bold ">志愿时长:0小时</text>
+						</view>
 					</view>
 				</view>
 			</view>
 		</view>
-		<view class="cu-list grid col-4 no-border padding-top">
-			<view class="cu-item">
-				<view class="text-black text-bold text-xxl">
-					500
-				</view>
-				<text>信用值</text>
-			</view>
-			<view class="cu-item">
-				<view class="text-black text-bold text-xxl">
-					10
-				</view>
-				<text>志愿时</text>
-			</view>
-			<view class="cu-item">
-				<view class="text-black text-bold text-xxl">
-					95
-				</view>
-				<text>能力</text>
-			</view>
-			<view class="cu-item">
-				<view class="text-black text-bold text-xxl">
-					5
-				</view>
-				<text>任务数</text>
-			</view>
-		</view>
-	</view>
-</block>
-<block wx:else>
-	<view class="bg-img margin-lr" style="min-height: 35vh;">
-		<view class="bg-img padding-tb-xl" style="background-image: url(/images/1-up.png);height: 414rpx;">
-		<view class="log-time margin-top" style="display: flex;">
-    <view class="margin-left cu-tag round bg-green margin-top-xs " bindtap="toregister">
-      注册
-    </view>
-    <view class="margin-top padding-xl text-white">
-      <view class="padding-top-xl flex-sub solid-bottom text-sl">
-        <text class="text-green text-bold ">志愿时长:0小时</text>
-      </view>
-    </view>	</view>
-		</view>
-		</view>
-</block>
+	</block>
 	<view class="cu-list menu card-menu margin-bottom-xl shadow-lg radius">
 		<view class="cu-item arrow">
 			<view bindtap="none" class="content">
 				<text class="cuIcon-my lg text-gray"></text>
-				<text class="text-grey">我的志愿服务</text>
+				<text class="text-grey">我的志愿</text>
 			</view>
 		</view>
 		<view class="cu-item arrow">
@@ -68,10 +69,10 @@
 				<text class="cuIcon-friend lg text-gray"></text>
 				<text class="text-grey">我的队伍</text>
 			</view>
-		</view>		
+		</view>
 		<view class="cu-item arrow">
 			<view bindtap="toNewActivity" class="content">
-				<text class="cuIcon-friend lg text-gray"></text>
+				<text class="cuIcon-activity lg text-gray"></text>
 				<text class="text-grey">发布活动</text>
 			</view>
 		</view>
@@ -89,11 +90,10 @@
 		</view>
 		<view class="cu-item arrow">
 			<view bindtap="toNewTeam" class="content">
-				<text class="cuIcon-settings lg text-green"></text>
-				<text class="text-green">创建队伍(管理员)</text>
+				<text class="cuIcon-creative text-gray"></text>
+				<text class="text-grey">创建队伍</text>
 			</view>
 		</view>
 	</view>
 
 </scroll-view>
-

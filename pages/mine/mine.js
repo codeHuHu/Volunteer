@@ -111,16 +111,6 @@ Page({
 			url: '/pages/accountSignUp/accountSignUp',
 		})
 	},
-	toshouye() {
-		wx.reLaunch({
-			url: '/pages/home/home'
-		})
-	},
-	toZhiyuanfuwu() {
-		wx.reLaunch({
-			url: '/pages/service/service'
-		})
-	},
 	toNewActivity() {
 		wx.navigateTo({
 			url: '/pages/newActivity/newActivity',
@@ -130,5 +120,5 @@ Page({
 		wx.navigateTo({
 			url: '/pages/newTeam/newTeam',
 		})
-	}
+	},
 })
