@@ -1,4 +1,5 @@
 <view class="cu-bar">
+
 	<view class="action sub-title">
 		<text class="text-xl text-bold text-black bg-oc-gray-2">{{actions.actName}}</text>
 		<view class="padding-left-xl">
@@ -75,7 +76,7 @@
 </view>
 
 <view>
-	<!-- <view class="margin-sm radius-lg bg-white">
+<!-- <view class="margin-sm radius-lg bg-white">
 	<view class="solid-bottom text-lg text-bold padding text-black">参与情况</view>
 	<view class="padding flex justify-between text-lg text-bold">
 		<text>姓名</text>
@@ -88,70 +89,12 @@
 		<text>0小时</text>
 	</view> -->
 
-	<!-- 分享按钮 -->
+	<!-- icon-icon-test20 -->
 	<view class="share cu-avatar round xl ">
 		<text class="iconfont icon-icon-test20 text-blue"></text>
 	</view>
-	<!-- 报名以及取消按钮 -->
-	<view bindtap="showModal" data-target="{{!volunteerStatus ?'Image':'DialogModal1'}}">
-		<button wx:if="{{!volunteerStatus}}" class="signUp cu-avatar round xl bg-green animation-{{animation=='scale-up'?'scale-up':''}}" bindtap="toggle" data-class="scale-up" role="button" aria-disabled="false">
-			<text class="avatar-text ">点击报名</text>
-		</button>
-		<button wx:else class="signUp cu-avatar round xl bg-red animation-{{animation=='scale-up'?'scale-up':''}}" bindtap="toggle" data-class="scale-up" role="button" aria-disabled="false">
-			<text class="avatar-text ">取消报名</text>
-		</button>
-	</view>
-
-	<!-- 报名窗口 -->
-	<view class="cu-modal {{modalName=='Image'?'show':''}}">
-		<view class="cu-dialog">
-			<swiper style="height: 500rpx;">
-				<swiper-item class="bg-img" style="background-image: url('https://image.meiye.art/FhHGe9NyO0uddb6D4203jevC_gzc?imageMogr2/thumbnail/450x/interlace/1');height: 360rpx;" show-menu-by-longpress="true" bindtap="previewImage">
-					<view class="cu-bar justify-end text-white">
-						<view class="action" catchtap="hideModal">
-							<text class="cuIcon-close "></text>
-						</view>
-					</view>
-				</swiper-item>
-				<swiper-item class="bg-img" style="background-image: url('https://image.meiye.art/FhHGe9NyO0uddb6D4203jevC_gzc?imageMogr2/thumbnail/450x/interlace/1');height: 360rpx;" show-menu-by-longpress="true" bindtap="previewImage">
-					<view class="cu-bar justify-end text-white">
-						<view class="action" catchtap="hideModal">
-							<text class="cuIcon-close "></text>
-						</view>
-					</view>
-				</swiper-item>
-			</swiper>
-			<view class="cu-bar bg-white">
-				<view class="action margin-0 flex-sub solid-left text-green" bindtap="hideModal" data-target="signUp">我已扫码完成</view>
-			</view>
-		</view>
-	</view>
-	<!-- 取消窗口 -->
-	<view class="cu-modal {{modalName=='DialogModal1'?'show':''}}">
-		<view class="cu-dialog">
-			<view class="cu-bar bg-white justify-end">
-				<view class="content">温馨提示</view>
-				<view class="action" bindtap="hideModal">
-					<text class="cuIcon-close text-red"></text>
-				</view>
-			</view>
-			<view class="padding-xl text-left justify-center flex">
-				<text>您确定取消吗</text>
-			</view>
-			<view class="cu-bar bg-white justify-end">
-				<view class="action">
-					<button class="cu-btn line-green text-green" bindtap="hideModal">算了</button>
-					<button class="cu-btn bg-green margin-left" bindtap="hideModal" data-target="cancle_signUp">我确定</button>
-				</view>
-			</view>
-		</view>
-	</view>
-
-	<!-- 轻提示 -->
-	<view class="toast-fixed-center" hidden="{{!show}}" style="z-index: 99;">
-		<view class="radius-lg padding animation-slide-top text-lg {{status == 'success' ? 'bg-green light':'bg-red light'}}">
-			<text class="cuIcon-info"></text> {{message}}
-		</view>
+	<view class="signUp cu-avatar round xl bg-red">
+		<text class="avatar-text ">报名</text>
 	</view>
 
 </view>
