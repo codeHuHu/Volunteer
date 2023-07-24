@@ -1,22 +1,38 @@
 // pages/home/home.js
 const app=getApp()
+const db=wx.cloud.database()
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    message: 123,
+		message: 123,
+		actions:[]
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function () {
+		var that =this
     wx.setNavigationBarTitle({
       title: '首页',
-    })
-  },
+		})
+		db.collection('ActivityInfo').where({
+			status:'进行中'
+		}).get().then(res=>
+			{
+				console.log(res.data)
+				that.setData({
+					actions:res.data
+				})
+			}).catch(err=>
+				{
+					console.log(err);
+					
+				})
+  },	
 
   /**
    * 生命周期函数--监听页面初次渲染完成
@@ -119,10 +135,10 @@ else {
     })
   },
   
-  todetail() {
-    wx.navigateTo({
-      url: '/pages/detail/detail',
-    })
+  todetail(e) {
+		wx.navigateTo({
+			url: '/pages/detail/detail?id='+e.currentTarget.dataset.id,
+		})
   }
 
 })

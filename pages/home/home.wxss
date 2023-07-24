@@ -121,6 +121,7 @@ page{
 .character {
 	display: flex;
 	font-display: row;
+	
 }
 .detail {
 	text-align: right;
@@ -133,7 +134,6 @@ page{
 .btn-detail {
 	display: flex;
 	position: relative;
-	right: -220rpx;
 	bottom: 5rpx;
 	background-color: #66a8d4;
   color: white;
@@ -208,3 +208,4 @@ z-index: 998;
 .bottom-icon{
 	font-size: 50rpx;
 }
+

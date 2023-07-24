@@ -14,20 +14,6 @@
 				},
 				{
 					"name": "",
-					"pathName": "pages/datail/detail",
-					"query": "",
-					"launchMode": "default",
-					"scene": null
-				},
-				{
-					"name": "",
-					"pathName": "pages/teamdetail/teamdetail",
-					"query": "",
-					"launchMode": "default",
-					"scene": null
-				},
-				{
-					"name": "",
 					"pathName": "pages/teamdetail/teamdetail",
 					"query": "",
 					"launchMode": "default",

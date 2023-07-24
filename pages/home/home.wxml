@@ -57,19 +57,21 @@
 	<text class="newest">最新志愿服务</text>
 	<button class="joinvolunteer" bindtap="toregister">成为志愿者</button>
 </view>
-<view class="cu-card article {{isCard?'no-card':''}} margin ">
+
+<block wx:for="{{actions}}" wx:key="index">
+<view  class="cu-card article {{isCard?'no-card':''}} margin ">
 	<view class="cu-item shadow">
 		<view class="title">
-			<view class="text-cut">广州大学计算机科学与网络工程学院三下乡科技振兴团队</view>
+			<view class="text-cut">{{item.actName}}</view>
 		</view>
 		<view class="content">
 			<view class="desc">
-				<view class="text-content"> 在社会课堂中受教育、长才干、做贡献，为地区发展和建设提供优质科技服务</view>
-				<view class="character">
-					<view class="cu-tag bg-red light sm round">公益服务团队</view>
-					<view class="cu-tag bg-green light sm round">三下乡</view>
+				<view class="text-content" style="font-size: 25rpx; height:auto; margin: -10rpx 0rpx 10rpx 0rpx;">{{item.intro}}</view>
+				<view class="character " style="justify-content: space-between;">
+					<view class="cu-tag bg-red light sm round">{{item.teamName}}</view>
+					<view class="cu-tag bg-green light sm round">{{item.tag}}</view>
 					<view class="detail">
-						<button class="btn-detail" bindtap="todetail">查看</button>
+						<button class="btn-detail" bindtap="todetail" data-id="{{item._id}}">查看</button>
 					</view>
 				</view>
 
@@ -77,23 +79,4 @@
 		</view>
 	</view>
 </view>
-<view class="cu-card article {{isCard?'no-card':''}} margin">
-	<view class="cu-item shadow">
-		<view class="title">
-			<view class="text-cut">广州大学计算机科学与网络工程学院三下乡科技振兴团队</view>
-		</view>
-		<view class="content">
-			<view class="desc">
-				<view class="text-content"> 在社会课堂中受教育、长才干、做贡献，为地区发展和建设提供优质科技服务</view>
-				<view class="character">
-					<view class="cu-tag bg-red light sm round">公益服务团队</view>
-					<view class="cu-tag bg-green light sm round">三下乡</view>
-					<view class="detail">
-						<button class="btn-detail">查看</button>
-					</view>
-				</view>
-
-			</view>
-		</view>
-	</view>
-</view>
+</block>

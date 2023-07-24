@@ -75,6 +75,7 @@
 	</view>
 </view>
 
+<view>
 <!-- <view class="margin-sm radius-lg bg-white">
 	<view class="solid-bottom text-lg text-bold padding text-black">参与情况</view>
 	<view class="padding flex justify-between text-lg text-bold">
