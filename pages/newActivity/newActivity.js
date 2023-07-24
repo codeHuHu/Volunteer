@@ -302,7 +302,8 @@ Page({
 							address:this.data.Address,
 							intro:this.data.intro,
 							tag:this.data.tagList[this.data.tagindex],
-							status:'进行中'
+							status:'1' //进行中
+
 						},
 						
 					success(res)

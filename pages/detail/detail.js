@@ -10,7 +10,8 @@ Page({
 		hours: '',
 		minutes: '',
 		//志愿者是否参加了此次志愿,需要通过数据库来获取,暂未完善
-		volunteerStatus: 0
+		volunteerStatus: 0,
+		status:''
 	},
 
 	/**
@@ -38,7 +39,8 @@ Page({
 				that.setData({
 					actions: res.data,
 					hours: hours,
-					minutes: minutes
+					minutes: minutes,
+					status:res.data.status
 				})
 			}
 		})

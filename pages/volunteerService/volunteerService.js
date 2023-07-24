@@ -12,7 +12,7 @@ Page({
 		show2:false,
 		show3:false,
 		selectallData:['全部','我的'],//下拉列表的数据
-		selecttypeData:['党建引领','乡村振兴','新时代文明实践（文化/文艺/体育）','科普科教','社区/城中村治理','环境保护','弱势群体帮扶','志愿驿站值班','其他'],
+		selecttypeData:['类型','党建引领','乡村振兴','新时代文明实践（文化/文艺/体育）','科普科教','社区/城中村治理','环境保护','弱势群体帮扶','志愿驿站值班','其他'],
 		selectstatusData:['状态','进行中','已结束'],
 		index1:0,//选择的下拉列表下标
 		index2:0,
@@ -53,11 +53,32 @@ Page({
 	},
 	// 点击下拉列表
 	optiontypeTap(e){
+		var that =this
 		let Index=e.currentTarget.dataset.index;//获取点击的下拉列表的下标
 		this.setData({
 		 index2:Index,
 		 show2:!this.data.show2
 		});
+		if(Index == 0)
+		{
+			this.onShow()
+		}
+		else {
+		const collection =db.collection('ActivityInfo');
+			collection.where({
+				'tag':that.data.selecttypeData[Index]
+			}).get().then(res=>{
+				console.log(res.data);
+				this.setData({
+					actionList:res.data
+				})
+			}).catch(err=>
+			{
+				console.log(err);
+			}
+			)
+		}
+	
 	},
 	// 点击下拉列表
 	optionstatusTap(e){
@@ -72,7 +93,7 @@ Page({
 			
 			const collection =db.collection('ActivityInfo');
 			collection.where({
-				'status':'进行中'
+				'status':'1'	//进行中
 			}).get().then(res=>{
 				console.log(res.data);
 				this.setData({
@@ -88,7 +109,7 @@ Page({
 		{
 			const collection =db.collection('ActivityInfo');
 			collection.where({
-				'status':'已结束'
+				'status':'2'	//已结束
 			}).get().then(res=>{
 				console.log(res.data);
 				this.setData({
@@ -138,7 +159,7 @@ Page({
 						console.log(tmptimestamp)
 							if(tmptimestamp<that.data.timestamp )
 							{
-								actions[l].status='已结束'
+								actions[l].status='2'
 							}
 					}
 				 // 更新集合中的文档属性

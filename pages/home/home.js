@@ -20,7 +20,7 @@ Page({
       title: '首页',
 		})
 		db.collection('ActivityInfo').where({
-			status:'进行中'
+			status:'1'
 		}).get().then(res=>
 			{
 				console.log(res.data)

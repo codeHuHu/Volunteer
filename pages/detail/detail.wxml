@@ -2,9 +2,8 @@
 	<view class="action sub-title">
 		<text class="text-xl text-bold text-black bg-oc-gray-2">{{actions.actName}}</text>
 		<view class="padding-left-xl">
-			<view class="cu-tag bg-red radius sm">
-				{{actions.status}}
-			</view>
+			<view class="cu-tag bg-green light sm round going-on" 	wx:if="{{status=='1'}}">进行中</view>
+			<view class="cu-tag bg-green light sm round going-on" 	wx:elif="{{status=='2'}}" style="background-color: gray; color: aliceblue;">已结束</view>
 		</view>
 	</view>
 </view>
@@ -15,8 +14,8 @@
 			{{actions.teamName}}
 		</view>
 	</view>
-	<view class="bg-oc-gray-6 radius padding-tb-xs text-center margin-tb-xs margin-right">
-		<view class="text-sm">
+	<view class="bg-oc-gray-6 radius padding-tb-xs text-center margin-tb-xs margin-right" style="background-color: rgb(78, 187, 78);">
+		<view class="text-sm" >
 			{{actions.tag}}
 		</view>
 	</view>
