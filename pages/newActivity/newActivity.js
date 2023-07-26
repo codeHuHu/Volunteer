@@ -1,54 +1,58 @@
 // pages/newActivity/newActivity.js
-const db=wx.cloud.database()
-const app =getApp()
+const db = wx.cloud.database()
+const app = getApp()
 Page({
 
 	/**
 	 * 页面的初始数据
 	 */
-  data: {
-		currentDate:'',
+	data: {
+		currentDate: '',
 		beginDate: '',
-		deadDate:'',
-		endDate:'',
-		startTime:'00:00', 
-		endTime:'00:00',
-		deadTime:'00:00',
-		tagList:['党建引领','乡村振兴','新时代文明实践（文化/文艺/体育）','科普科教','社区/城中村治理','环境保护','弱势群体帮扶','志愿驿站值班','其他'],
-		picker:['广州大学城志愿者协会','阳光义工团'],
+		deadDate: '',
+		endDate: '',
+		startTime: '00:00',
+		endTime: '00:00',
+		deadTime: '00:00',
+		tagList: ['党建引领', '乡村振兴', '新时代文明实践（文化/文艺/体育）', '科普科教', '社区/城中村治理', '环境保护', '弱势群体帮扶', '志愿驿站值班', '其他'],
+		picker: ['广州大学城志愿者协会', '阳光义工团'],
 		inputValue: '', // 清空输入框的值
-		showLightButton:[], // 控制按钮显示高光
-		index:'',
-		tagindex:'',
-		ActName:'',
-		holder:'',
-		teamName:'',
-		innum:'',
-		outnum:'',
-		actAddress:'',
-		intro:'',
-		Phone:''	
-  },
+		showLightButton: [], // 控制按钮显示高光
+		index: '',
+		tagIndex: '',
+		ActName: '',
+		holder: '',
+		teamName: '',
+		inNum: 0,
+		outNum: 0,
+		actAddress: '',
+		intro: '',
+		Phone: ''
+	},
 
 	/**
 	 * 生命周期函数--监听页面加载
 	 */
-  onLoad: function() {
+	onLoad: function () {
 		// const currentDate = new Date().toLocaleDateString('en-GB', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/\//g, '-');
 		const currentDate = new Date().toISOString().slice(0, 10);
-	
-		const currentTime = new Date().toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit' });
-		console.log(currentDate)
-		console.log(currentTime)
-    this.setData({
-			currentDate:currentDate,
+
+		const currentTime = new Date().toLocaleTimeString('en-US', {
+			hour12: false,
+			hour: '2-digit',
+			minute: '2-digit'
+		});
+		//console.log(currentDate)
+		//console.log(currentTime)
+		this.setData({
+			currentDate: currentDate,
 			beginDate: currentDate,
-			startTime:currentTime,
-			endTime:currentTime,
-			deadDate:currentDate,
-			deadTime:currentTime
-    });
-  },
+			startTime: currentTime,
+			endTime: currentTime,
+			deadDate: currentDate,
+			deadTime: currentTime
+		});
+	},
 
 	/**
 	 * 生命周期函数--监听页面初次渲染完成
@@ -95,10 +99,10 @@ Page({
 	/**
 	 * 用户点击右上角分享
 	 */
-		onShareAppMessage() {
+	onShareAppMessage() {
 
 	},
-	checkTime(start, end) {  
+	checkTime(start, end) {
 		if (end < start) {
 			wx.showToast({
 				icon: 'none',
@@ -107,7 +111,7 @@ Page({
 			setTimeout(() => {
 				wx.hideToast()
 			}, 2000); // 延迟 2000 毫秒后执行
-	
+
 			return; // 结束函数执行，以免继续执行下方的 setData
 		}
 	},
@@ -120,9 +124,9 @@ Page({
 		// this.checkTime(start, end);
 		this.setData({
 			beginDate: e.detail.value,
-			deadDate:e.detail.value
+			deadDate: e.detail.value
 		})
-		console.log(e.detail.value)
+		//console.log(e.detail.value)
 	},
 	binddeadChange: function (e) {
 		// let combinedStartStr = this.data.beginDate;
@@ -131,194 +135,183 @@ Page({
 		// let end = new Date(combinedEndStr).getTime();
 		// this.checkTime(start, end);
 		this.setData({
-		
-			deadDate:e.detail.value
+
+			deadDate: e.detail.value
 		})
 	},
 
-	bindSTimeChange:function(e) {
+	bindSTimeChange: function (e) {
 		let combinedStartStr = this.data.beginDate + ' ' + e.detail.value;
 		let combinedEndStr = this.data.beginDate + ' ' + this.data.endTime;
 		let start = new Date(combinedStartStr).getTime();
 		let end = new Date(combinedEndStr).getTime();
 		this.checkTime(start, end)
-		
+
 		console.log(e);
 		this.setData({
-			startTime:e.detail.value,
-			deadTime:e.detail.value
+			startTime: e.detail.value,
+			deadTime: e.detail.value
 		})
-	},	
-	bindETimeChange:function(e) {
+	},
+	bindETimeChange: function (e) {
 		let combinedStartStr = this.data.beginDate + ' ' + this.data.startTime;
 		let combinedEndStr = this.data.beginDate + ' ' + e.detail.value;
 		let start = new Date(combinedStartStr).getTime();
 		let end = new Date(combinedEndStr).getTime();
 		this.checkTime(start, end);
 		this.setData({
-			endTime:e.detail.value
+			endTime: e.detail.value
 		})
 	},
-	binddeadTimeChange:function(e)
-		{
-			this.setData({
-				deadTime:e.detail.value
-			})
-		},
+	binddeadTimeChange: function (e) {
+		this.setData({
+			deadTime: e.detail.value
+		})
+	},
 
-  // onConfirm(e) {
-  //   const value = e.detail.value; // 获取输入框的内容
-  //   const tagList = this.data.tagList; // 获取之前的内容数组
-  //   tagList.push(value); // 将新的内容添加到数组中
-  //   this.setData({
+	// onConfirm(e) {
+	//   const value = e.detail.value; // 获取输入框的内容
+	//   const tagList = this.data.tagList; // 获取之前的内容数组
+	//   tagList.push(value); // 将新的内容添加到数组中
+	//   this.setData({
 	// 		tagList: tagList, // 更新tagList的值
 	// 		inputValue: '', // 清空输入框的值
-  //   });
+	//   });
 	// },
 	handlemyTagClick(e) {
-		const index=e.currentTarget.dataset.index;
-		var lb=[];
-		lb[index]=true;
-    this.setData({
-			tagindex:index,
-      showLightButton:lb, // 点击标签时显示高光
+		const index = e.currentTarget.dataset.index;
+		var lb = [];
+		lb[index] = true;
+		this.setData({
+			tagIndex: index,
+			showLightButton: lb, // 点击标签时显示高光
 		});
-	
+
 		console.log(e.currentTarget.dataset.index)
 		console.log(this.data.tagList[this.data.tagindex])
-  },
+	},
 
-	
-  handleHiddenClick(e) {
-    const index = e.currentTarget.dataset.index; // 获取点击的标签索引
+
+	handleHiddenClick(e) {
+		const index = e.currentTarget.dataset.index; // 获取点击的标签索引
 		const tagList = this.data.tagList;
-		var mytagList=[]
+		var mytagList = []
 		mytagList.push(tagList[index])
 		this.setData({
-			mytagList:mytagList
+			mytagList: mytagList
 		})
 		tagList.splice(index, 1); // 从数组中删除该索引对应的元素
 		console.log(this.data.tagList);
 		console.log(this.data.mytagList);
 
-    this.setData({
-      tagList: tagList,
+		this.setData({
+			tagList: tagList,
 			showCloseButton: false,
 		});
-		
+
 	},
-	
-	PickerChange(e)
-	{
+
+	PickerChange(e) {
 		this.setData({
-			index:e.detail.value
+			index: e.detail.value
 		})
 		console.log(this.data.picker[this.data.index])
 	},
-	getactName(e)
-		{
-			console.log(e.detail.value)
-			this.setData({
-				ActName:e.detail.value
-			})
-			console.log(this.data.ActName)
-		},
-		getholder(e)
-		{
-			console.log(e.detail.value)
-			this.setData({
-				holder:e.detail.value
-			})
-		},
-		getPhone(e)
-		{
-			console.log(e.detail.value)
-			this.setData({
-			Phone:e.detail.value
-			})
-		},
-		getinnum(e)
-		{
-			console.log(e.detail.value)
-			this.setData({
-				innum:e.detail.value
-			})
-		},
-		getoutnum(e)
-		{
-			console.log(e.detail.value)
-			this.setData({
-				outnum:e.detail.value
-			})
-		},
-		getAddress(e)
-		{
-			this.setData({
-				Address:e.detail.value
-			})
-		},
-		getintro(e)
-		{
-			console.log(e.detail.value)
-			this.setData({
-				intro:e.detail.value
-			})
-		},
+	getactName(e) {
+		console.log(e.detail.value)
+		this.setData({
+			ActName: e.detail.value
+		})
+		console.log(this.data.ActName)
+	},
+	getholder(e) {
+		console.log(e.detail.value)
+		this.setData({
+			holder: e.detail.value
+		})
+	},
+	getPhone(e) {
+		console.log(e.detail.value)
+		this.setData({
+			Phone: e.detail.value
+		})
+	},
+	getinNum(e) {
+		console.log(e.detail.value)
+		this.setData({
+			inNum: Number(e.detail.value)
+		})
+	},
+	getoutNum(e) {
+		console.log(e.detail.value)
+		this.setData({
+			outNum: Number(e.detail.value)
+		})
+	},
+	getAddress(e) {
+		this.setData({
+			Address: e.detail.value
+		})
+	},
+	getintro(e) {
+		console.log(e.detail.value)
+		this.setData({
+			intro: e.detail.value
+		})
+	},
 
-		sendNew(e) {
-			let combinedStartStr = this.data.beginDate + ' ' + this.data.startTime;
-			let combinedEndStr = this.data.beginDate + ' ' + this.data.endTime;
-			console.log(combinedStartStr);
-			console.log(combinedEndStr);
-			let start = new Date(combinedStartStr).getTime();
-			let end = new Date(combinedEndStr).getTime();
-			console.log(start);
-			console.log(end);
-			if (end < start) {
-				wx.showToast({
-					icon: 'none',
-					title: '开始时间和结束时间有误，请重新选择！',
-				});
-				setTimeout(() => {
-					wx.hideToast()
-				}, 2000); // 延迟 2000 毫秒后执行
-			}
-			else {
-				
-					db.collection('ActivityInfo').add({
-						data:
-						{
-							actName:this.data.actName,
-							holder:this.data.holder,
-							phone:this.data.Phone,
-							teamName:this.data.picker[this.data.index],
-							innum:this.data.innum,
-							outnum:this.data.outnum,
-							serviceDate:this.data.beginDate ,
-							serviceSTime:this.data.startTime,
-							serviceETime:this.data.endTime,
-							DeadDate:this.data.deadDate,
-							deadTime:this.data.deadTime,
-							address:this.data.Address,
-							intro:this.data.intro,
-							tag:this.data.tagList[this.data.tagindex],
-							status:'1' //进行中
+	sendNew(e) {
+		let combinedStartStr = this.data.beginDate + ' ' + this.data.startTime;
+		let combinedEndStr = this.data.beginDate + ' ' + this.data.endTime;
+		//console.log(combinedStartStr);
+		//console.log(combinedEndStr);
+		let start = new Date(combinedStartStr).getTime();
+		let end = new Date(combinedEndStr).getTime();
+		//console.log(start);
+		//console.log(end);
+		if (end < start) {
+			wx.showToast({
+				icon: 'none',
+				title: '开始时间和结束时间有误，请重新选择！',
+			});
+			setTimeout(() => {
+				wx.hideToast()
+			}, 2000); // 延迟 2000 毫秒后执行
+		} else {
 
-						},
-						
-					success(res)
-					{
+			db.collection('ActivityInfo').add({
+				data: {
+					actName: this.data.actName,
+					holder: this.data.holder,
+					phone: this.data.Phone,
+					teamName: this.data.picker[this.data.index],
+					inNum: this.data.inNum,
+					outNum: this.data.outNum,
+					inJoin: 0,
+					outJoin: 0,
+					serviceDate: this.data.beginDate,
+					serviceSTime: this.data.startTime,
+					serviceETime: this.data.endTime,
+					DeadDate: this.data.deadDate,
+					deadTime: this.data.deadTime,
+					address: this.data.Address,
+					intro: this.data.intro,
+					tag: this.data.tagList[this.data.tagIndex],
+					status: '1' //进行中
+				},
+
+				success(res) {
 					wx.showToast({
-										icon: 'success',
-										title: '提交成功！',
-							})			
-					}
-				});
-				setTimeout(() => {
-					wx.navigateBack(),
+						icon: 'success',
+						title: '提交成功！',
+					})
+				}
+			});
+			setTimeout(() => {
+				wx.navigateBack(),
 					wx.hideToast()
-				}, 2000); // 延迟 2000 毫秒后执行
-			}
+			}, 2000); // 延迟 2000 毫秒后执行
 		}
-		
+	}
+
 })

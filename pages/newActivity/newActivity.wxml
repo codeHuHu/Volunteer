@@ -26,11 +26,11 @@
 		<view class="cu-form-group" style="justify-content: center;">
 		<view style="display: flex;align-items: center; ">
 			<view class="title inteam">队内招募</view>
-			<input maxlength="3" bindinput="getinnum" placeholder="人数"></input>
+			<input maxlength="3" bindinput="getinNum" placeholder="人数"></input>
 		</view>
 			<view style="display: flex;align-items: center; ">
 			<view class="title outteam">公开招募</view>
-			<input maxlength="3" bindinput="getoutnum" placeholder="人数"></input>
+			<input maxlength="3" bindinput="getoutNum" placeholder="人数"></input>
 			</view>
 		</view>
 

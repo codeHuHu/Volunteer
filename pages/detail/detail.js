@@ -1,94 +1,77 @@
 // pages/datail/detail.js
-
+// 目前只在活动中记录到志愿者,但为在志愿者中记录活动,之后在完善
+const app = getApp()
 let loading = false;
+const db = wx.cloud.database()
 Page({
 
-	/**
-	 * 页面的初始数据
-	 */
 	data: {
 		hours: '',
 		minutes: '',
-		//志愿者是否参加了此次志愿,需要通过数据库来获取,暂未完善
+		//志愿者是否参加了此次志愿
 		volunteerStatus: 0,
-		status:''
 	},
 
-	/**
-	 * 生命周期函数--监听页面加载
-	 */
 	onLoad: function (options) {
 		var that = this
 		that.data.id = options.id
-		console.log(options.id)
 		wx.cloud.database().collection('ActivityInfo').doc(that.data.id).get({
 			success(res) {
 				var startTime = res.data.serviceSTime
 				var endTime = res.data.serviceETime
-
 				var startMinutes = parseInt(startTime.split(":")[0]) * 60 + parseInt(startTime.split(":")[1]);
 				var endMinutes = parseInt(endTime.split(":")[0]) * 60 + parseInt(endTime.split(":")[1]);
-
 				// 计算时间差（以分钟为单位）
 				var duration = endMinutes - startMinutes;
-
 				// 将时间差转换为小时和分钟
 				var hours = Math.floor(duration / 60);
 				var minutes = duration % 60;
 
 				that.setData({
 					actions: res.data,
-					hours: hours,
-					minutes: minutes,
-					status:res.data.status
+					hours,
+					minutes,
 				})
+				// 如果名单里有该志愿者,改变报名按钮状态
+				for (var i in res.data.joinMembers) {
+					if (res.data.joinMembers[i] == app.globalData.openid)
+						that.setData({
+							volunteerStatus: 1
+						})
+				}
 			}
 		})
 
 	},
-	/**
-	 * 生命周期函数--监听页面初次渲染完成
-	 */
+
 	onReady() {
 
 	},
-	/**
-	 * 生命周期函数--监听页面显示
-	 */
+
 	onShow() {
 
 	},
-	/**
-	 * 生命周期函数--监听页面隐藏
-	 */
+
 	onHide() {
 
 	},
-	/**
-	 * 生命周期函数--监听页面卸载
-	 */
+
 	onUnload() {
 
 	},
-	/**
-	 * 页面相关事件处理函数--监听用户下拉动作
-	 */
+
 	onPullDownRefresh() {
 
 	},
-	/**
-	 * 页面上拉触底事件的处理函数
-	 */
+
 	onReachBottom() {
 
 	},
-	/**
-	 * 用户点击右上角分享
-	 */
+
 	onShareAppMessage() {
 
 	},
-	
+
 	/**
 	 * 轻提示展示
 	 * @param {*} status 
@@ -122,26 +105,110 @@ Page({
 			loading = false;
 		}
 	},
-	showModal(e) {
-		this.setData({
-			modalName: e.currentTarget.dataset.target
-		})
-
+	ifAvailableAndJoin() {
+		//先更新一下,查看是否满人了
+		db.collection('ActivityInfo').doc(this.data.id)
+			.get()
+			.then(res => {
+				this.setData({
+					actions: res.data
+				})
+				//如果没满人,就去新增人数
+				if (this.data.actions.inJoin < this.data.actions.inNum) {
+					//参加人数自增1 名单也加入改openid
+					db.collection('ActivityInfo').doc(this.data.id)
+						.update({
+							data: {
+								inJoin: db.command.inc(1),
+								joinMembers: db.command.push(app.globalData.openid)
+							}
+						})
+						.then(res => {
+							//更改按钮状态
+							this.setData({
+								volunteerStatus: 1
+							})
+							this.setShow("error", "报名成功");
+							//修改完毕,再次获取数据库
+							db.collection('ActivityInfo').doc(this.data.id)
+								.get()
+								.then(res => {
+									this.setData({
+										actions: res.data
+									})
+								})
+						})
+				} else {
+					//提示满人了
+					this.setShow("error", "人数已满");
+				}
+			})
+	},
+	unJoin() {
+		//先获取数据库
+		db.collection('ActivityInfo').doc(this.data.id)
+			.get()
+			.then(res => {
+				this.setData({
+					actions: res.data
+				})
+				// 比较安全地在名单中清除该志愿者
+				var tmp = this.data.actions.joinMembers
+				var result = []
+				var j = 0
+				for (var i in tmp) {
+					if (tmp[i] == app.globalData.openid) {
+						continue
+					}
+					result[j++] = tmp[i]
+				}
+				//人数自减1,赋值新的名单
+				db.collection('ActivityInfo').doc(this.data.id)
+					.update({
+						data: {
+							inJoin: db.command.inc(-1),
+							joinMembers: result
+						}
+					})
+					.then(res => {
+						//更改按钮状态
+						this.setData({
+							volunteerStatus: 0
+						})
+						this.setShow("error", "取消成功");
+						//再重新获取数据库
+						db.collection('ActivityInfo').doc(this.data.id)
+							.get()
+							.then(res => {
+								this.setData({
+									actions: res.data
+								})
+							})
+					})
+			})
 
 	},
+	showModal(e) {
+		var tmp = e.currentTarget.dataset.target
+		//报名窗口
+		if (tmp == 'Image') {
+			//先判断是否满人
+			if (this.data.actions.inJoin >= this.data.actions.inNum) {
+				//提示满人了
+				this.setShow("error", "人数已满");
+				return
+			}
+		}
+		this.setData({
+			modalName: tmp
+		})
+	},
 	hideModal(e) {
-		//	console.log(e)
 		var a = e.currentTarget.dataset.target
-		if (a == 'signUp') {
-			this.setData({
-				volunteerStatus: 1
-			})
-			this.setShow("error", "您已报名");
-		} else if (a == 'cancle_signUp') {
-			this.setData({
-				volunteerStatus: 0
-			})
-			this.setShow("error", "您已取消报名");
+		if (a == 'join') {
+			this.ifAvailableAndJoin()
+		} else if (a == 'unjoin') {
+			this.unJoin()
 		}
 		this.setData({
 			modalName: null

@@ -6,28 +6,30 @@ Page({
 	 * 页面的初始数据
 	 */
 	data: {
-		info:'',
-		teamName:'广州市交通运输志愿服务支队',
-		members:[6666,['张三',18319093951],['李四',18319093951]],
-		serviceNumber:'166',
-		volunteerTime:'999.8'
+		info: '',
+		teamName: '广州市交通运输志愿服务支队',
+		members: [6666, ['张三', 18319093951],
+			['李四', 18319093951]
+		],
+		serviceNumber: '166',
+		volunteerTime: '999.8'
 	},
 
 	/**
 	 * 生命周期函数--监听页面加载
 	 */
 	onLoad(options) {
-		if(options.info){
+		if (options.info) {
 			let info = JSON.parse(decodeURIComponent(options.info))
-      console.log(info)
-      this.setData({
-        teamLeader:info['teamLeader'],
-        teamName : info['teamName'],
-        members:info['teamMembers'],
-        volunteerTime:info['volunteerTime'],
-        teamIntro:info['teamIntro'],
-        mail:info['mail']
-      })
+			console.log(info)
+			this.setData({
+				teamLeader: info['teamLeader'],
+				teamName: info['teamName'],
+				members: info['teamMembers'],
+				volunteerTime: info['volunteerTime'],
+				teamIntro: info['teamIntro'],
+				mail: info['mail']
+			})
 		}
 	},
 
@@ -81,8 +83,6 @@ Page({
 	},
 	join() {
 
-		console.log(app.globalData.userInfo)
-
 		if (app.globalData.userInfo == null) {
 			wx.showModal({
 				title: '提示',
@@ -90,8 +90,8 @@ Page({
 				success(res) {
 					if (res.confirm) {
 						console.log("成功")
-						wx.navigateTo({
-							url: '/pages/home/home',
+						wx.reLaunch({
+							url: '/pages/mine/mine',
 						})
 					} else {
 
