@@ -1,5 +1,5 @@
 // pages/datail/detail.js
-// 目前只在活动中记录到志愿者,但为在志愿者中记录活动,之后在完善
+// 目前只在活动中记录到志愿者,而未在志愿者中记录活动,之后再完善
 const app = getApp()
 let loading = false;
 const db = wx.cloud.database()
@@ -186,7 +186,6 @@ Page({
 							})
 					})
 			})
-
 	},
 	showModal(e) {
 		var tmp = e.currentTarget.dataset.target
@@ -206,8 +205,14 @@ Page({
 	hideModal(e) {
 		var a = e.currentTarget.dataset.target
 		if (a == 'join') {
+			this.setData({
+				volunteerStatus: 1
+			})
 			this.ifAvailableAndJoin()
 		} else if (a == 'unjoin') {
+			this.setData({
+				volunteerStatus: 0
+			})
 			this.unJoin()
 		}
 		this.setData({
