@@ -1,41 +1,49 @@
 .new_activity {
-  margin:10rpx 30rpx;
+	margin: 10rpx 30rpx;
 	height: 100%;
 	background-color: #fff;
 }
+
 .new_inline {
-  display: block;
-  margin: 30rpx;
+	display: block;
+	margin: 30rpx;
 }
+
 .inline_name {
 	display: inline-flex;
 	margin-top: 10rpx;
 }
+
 .newName {
-  display: inline-flex;
-  width: 400rpx;
-  border: solid 1rpx #ddd;
+	display: inline-flex;
+	width: 400rpx;
+	border: solid 1rpx #ddd;
 }
+
 .new_date {
-  display: inline-flex;
-  width: 400rpx;
+	display: inline-flex;
+	width: 400rpx;
 }
+
 .time_pickers {
 	padding-right: 0;
-	margin:0 10rpx;
+	margin: 0 10rpx;
 }
+
 .new_profile {
-  margin:10rpx 0rpx;
-  width: 100%;
-  height:auto;
-  border: solid 1rpx #ddd;
+	margin: 10rpx 0rpx;
+	width: 100%;
+	height: auto;
+	border: solid 1rpx #ddd;
 }
+
 .new_button {
 	margin: 100rpx;
 	color: #fff;
 	border-radius: 100rpx;
 	background-color: rgb(95, 206, 95);
 }
+
 .tag {
 	display: inline-flex;
 	white-space: nowrap;
@@ -47,24 +55,24 @@
 	background-color: rgb(229, 241, 229);
 }
 
-.red{
-	 background-color: rgb(126, 223, 35);
+.red {
+	background-color: rgb(126, 223, 35);
 }
 
 .input {
-  height: 30px;
-  border: none;
-  background-color: transparent;
+	height: 30px;
+	border: none;
+	background-color: transparent;
 }
 
 /* 下划线样式 */
 .underline {
-  height: 1px;
-  background-color: black;
+	height: 1px;
+	background-color: black;
 }
 
-.tel{
+.tel {
 	display: inline-flex;
 	width: 330rpx;
-	border:solid 1rpx #ddd;
+	border: solid 1rpx #ddd;
 }

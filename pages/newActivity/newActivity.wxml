@@ -1,45 +1,45 @@
 <!--pages/newActivity/newActivity.wxml-->
 <view class="cu-list menu card-menu new_activity">
 	<form class="new_activity">
-		<view class="cu-form-group" >
-      <view class="inline_name">是否发起拼团：</view>
+		<view class="cu-form-group">
+			<view class="inline_name">是否发起拼团：</view>
 			<radio-group bindchange="isPintuan">
-				<radio value="1"/>是
-				<radio value="2" class="margin-left"/>否
+				<radio value="1" />是
+				<radio value="0" class="margin-left" />否
 			</radio-group>
-			
-    
-    </view>
-    <view class="cu-form-group" >
-      <view class="inline_name">活动名称：</view>
-      <input class="newName" placeholder="请输入名称" bindinput="getactName" model:value="{{actName}}"/>
-    </view>
-		<view class="cu-form-group" style="justify-content: center;">
-		<view style="display: flex;align-items: center; ">
-			<view class="title inteam">负责人</view>
-			<input  bindinput="getholder" placeholder="姓名" model:value=""/>
+
+
 		</view>
+		<view class="cu-form-group">
+			<view class="inline_name">活动名称：</view>
+			<input class="newName" placeholder="请输入名称" bindinput="getactName" model:value="{{actName}}" />
+		</view>
+		<view class="cu-form-group" style="justify-content: center;">
 			<view style="display: flex;align-items: center; ">
-			<view class="title outteam" >联系电话</view>
-			<input class="tel" bindinput="getPhone" placeholder="" />
+				<view class="title inteam">负责人</view>
+				<input bindinput="getholder" placeholder="姓名" model:value="" />
+			</view>
+			<view style="display: flex;align-items: center; ">
+				<view class="title outteam">联系电话</view>
+				<input class="tel" bindinput="getPhone" placeholder="" />
 			</view>
 		</view>
 		<view class="cu-form-group">
 			<view class="title">服务组织</view>
 			<picker bindchange="PickerChange" value="{{index}}" range="{{picker}}">
-			<view class="picker ">
-				{{index?picker[index]:'请选择组织单位'}}
-			</view>
-		</picker>
+				<view class="picker ">
+					{{index?picker[index]:'请选择组织单位'}}
+				</view>
+			</picker>
 		</view>
 		<view class="cu-form-group" style="justify-content: center;">
-		<view style="display: flex;align-items: center; ">
-			<view class="title inteam">队内招募</view>
-			<input maxlength="3" bindinput="getinNum" placeholder="人数"></input>
-		</view>
 			<view style="display: flex;align-items: center; ">
-			<view class="title outteam">公开招募</view>
-			<input maxlength="3" bindinput="getoutNum" placeholder="人数"></input>
+				<view class="title inteam">队内招募</view>
+				<input maxlength="3" bindinput="getinNum" placeholder="人数"></input>
+			</view>
+			<view style="display: flex;align-items: center; ">
+				<view class="title outteam">公开招募</view>
+				<input maxlength="3" bindinput="getoutNum" placeholder="人数"></input>
 			</view>
 		</view>
 
@@ -48,12 +48,12 @@
 			<view class="inline_name">服务时间：</view>
 			<view class="new_date">
 				<picker class="time_pickers text-xs" mode="date" value="{{beginDate}}" start="{{currentDate}}" end="" bindchange="bindStartChange">{{beginDate}}
-        </picker>
+				</picker>
 				<view class="service_time" style="display: flex;">
-				<picker class="time_pickers text-xs" mode="time" value="{{startTime}}" start="00:00" end="24:00" bindchange="bindSTimeChange">{{startTime}}
-  			</picker>
-				<picker class="time_pickers text-xs" mode="time" value="{{endTime}}" start="00:00" end="24:00" bindchange="bindETimeChange">{{endTime}}
-  			</picker>
+					<picker class="time_pickers text-xs" mode="time" value="{{startTime}}" start="00:00" end="24:00" bindchange="bindSTimeChange">{{startTime}}
+					</picker>
+					<picker class="time_pickers text-xs" mode="time" value="{{endTime}}" start="00:00" end="24:00" bindchange="bindETimeChange">{{endTime}}
+					</picker>
 				</view>
 
 			</view>
@@ -62,55 +62,53 @@
 			<view class="inline_name">截止报名时间：</view>
 			<view class="new_date">
 				<picker class="time_pickers text-xs" mode="date" value="{{beginDate}}" start="{{currentDate}}" end="{{beginDate}}" bindchange="binddeadChange">{{deadDate}}
-        </picker>
+				</picker>
 				<picker class="time_pickers text-xs" mode="time" value="{{deadTime}}" start="00:00" end="24:00" bindchange="binddeadTimeChange">{{deadTime}}
-  			</picker>
+				</picker>
 			</view>
 		</view>
 
-		<view class="cu-form-group" >
-		<view style="display: flex;align-items: center; ">
-			<view class="title inteam">服务地点</view>
-			<input  bindinput="getAddress" placeholder="地址"/>
-		</view>
-		</view>
-
-    <view class="cu-form-group">
-      <view class="inline_name">简介：</view>
-      <textarea class="new_profile" placeholder="请输入简介" 
-			bindinput="getintro" ></textarea>
-    </view>
-		
-		<view class="cu-bar bg-white margin-top-sm">
-    <view class="action">
-      请上传群二维码
-    </view>
-  </view>
 		<view class="cu-form-group">
-    <view class="grid col-4 grid-square flex-sub">
-      <view class="bg-img" wx:for="{{imgList}}" wx:key="item" bindtap="ViewImage" data-url="{{imgList[index]}}">
-        <image src='{{imgList[index]}}' mode='aspectFill'></image>
-        <view class="cu-tag bg-red" catchtap="DelImg" data-index="{{index}}">
-          <text class="cuIcon-close"></text>
-        </view>
-      </view>
-      <view class="solids" bindtap="ChooseImage" wx:if="{{imgList.length<1}}">
-        <text class="cuIcon-cameraadd"></text>
-      </view>
-    </view>
-  </view>
-<view class=" cu-form-group" style="display:grid">
-<view class="inline_name" style="width:40%" >添加标签：</view>
-<view  class="new_inline " >
-  <view wx:for="{{tagList}}" wx:key="index" class="tag {{showLightButton[index]?'red':'default'}} "  >
-   <view bindtap="handlemyTagClick" data-index="{{index}}"
-	 >
-		  {{item}}
-	 </view>
-  </view>
-</view>
-	</view>
+			<view style="display: flex;align-items: center; ">
+				<view class="title inteam">服务地点</view>
+				<input bindinput="getAddress" placeholder="地址" />
+			</view>
+		</view>
 
-    <button class="new_button" bindtap="sendNew">发布</button>
-  </form> 
+		<view class="cu-form-group">
+			<view class="inline_name">简介：</view>
+			<textarea class="new_profile" placeholder="请输入简介" bindinput="getintro"></textarea>
+		</view>
+
+		<view class="cu-bar bg-white margin-top-sm">
+			<view class="action">
+				请上传群二维码
+			</view>
+		</view>
+		<view class="cu-form-group">
+			<view class="grid col-4 grid-square flex-sub">
+				<view class="bg-img" wx:for="{{imgList}}" wx:key="item" bindtap="ViewImage" data-url="{{imgList[index]}}">
+					<image src='{{imgList[index]}}' mode='aspectFill'></image>
+					<view class="cu-tag bg-red" catchtap="DelImg" data-index="{{index}}">
+						<text class="cuIcon-close"></text>
+					</view>
+				</view>
+				<view class="solids" bindtap="ChooseImage" wx:if="{{imgList.length<1}}">
+					<text class="cuIcon-cameraadd"></text>
+				</view>
+			</view>
+		</view>
+		<view class=" cu-form-group" style="display:grid">
+			<view class="inline_name" style="width:40%">添加标签：</view>
+			<view class="new_inline ">
+				<view wx:for="{{tagList}}" wx:key="index" class="tag {{showLightButton[index]?'red':'default'}} ">
+					<view bindtap="handlemyTagClick" data-index="{{index}}">
+						{{item}}
+					</view>
+				</view>
+			</view>
+		</view>
+
+		<button class="new_button" bindtap="sendNew">发布</button>
+	</form>
 </view>

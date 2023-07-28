@@ -6,21 +6,21 @@ Page({
 	 * 页面的初始数据
 	 */
 	data: {
-		teamList:[]
+		teamList: []
 	},
 
 	/**
 	 * 生命周期函数--监听页面加载
 	 */
 	onLoad(options) {
-    db.collection('TeamInfo').get()
-      .then(res => {
-        this.setData({
-          teamList:res.data
-        })
-        wx.stopPullDownRefresh()      
-      })
-      .catch(console.error)
+		db.collection('TeamInfo').get()
+			.then(res => {
+				this.setData({
+					teamList: res.data
+				})
+				wx.stopPullDownRefresh()
+			})
+			.catch(console.error)
 	},
 
 	/**
@@ -73,7 +73,7 @@ Page({
 	},
 	toteamdetail(e) {
 		wx.navigateTo({
-			url: '/pages/teamdetail/teamdetail?info='+encodeURIComponent(JSON.stringify(this.data.teamList[e.currentTarget.dataset.index])),
+			url: '/pages/teamdetail/teamdetail?info=' + encodeURIComponent(JSON.stringify(this.data.teamList[e.currentTarget.dataset.index])),
 		})
 	}
 })

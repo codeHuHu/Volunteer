@@ -1,23 +1,15 @@
-// pages/datail/detail.js
 // 目前只在活动中记录到志愿者,而未在志愿者中记录活动,之后再完善
 const app = getApp()
 let loading = false;
 const db = wx.cloud.database()
 Page({
-
 	data: {
 		hours: '',
 		minutes: '',
 		//志愿者是否参加了此次志愿
-
-		volunteerStatus: 0,
-		ispintuan:0,
-		holder_phone:0,
-
 		ifJoin: 0,
 		//志愿者是否在组织志愿的队伍中
-		ifInTeam:0
-		
+		ifInTeam: 0
 	},
 
 	onLoad: function (options) {
@@ -39,14 +31,33 @@ Page({
 					actions: res.data,
 					hours,
 					minutes,
-					ispintuan:res.data.ispintuan,
-					holder_phone:res.data.phone
 				})
 				// 如果名单里有该志愿者,改变报名按钮状态
 				for (var i in res.data.joinMembers) {
-					if (res.data.joinMembers[i] == app.globalData.openid)
+					if (res.data.joinMembers[i] == app.globalData.openid) {
+						console.log('已报名')
 						that.setData({
 							ifJoin: 1
+						})
+					}
+				}
+				//如果在此小队里
+				if (res.data.teamName) {
+					db.collection('TeamInfo')
+						.where({
+							teamName: res.data.teamName
+						})
+						.get()
+						.then(Response => {
+							var teamMembers = Response.data[0]['teamMembers']
+							for (var i in teamMembers) {
+								if (teamMembers[i][0] == app.globalData.openid) {
+									console.log('在此小队里')
+									that.setData({
+										ifInTeam: 1
+									})
+								}
+							}
 						})
 				}
 			}
@@ -122,39 +133,47 @@ Page({
 			.then(res => {
 				this.setData({
 					actions: res.data,
-					
 				})
-				//如果没满人,就去新增人数
-				if (this.data.actions.inJoin < this.data.actions.inNum) {
-					wx.cloud.callFunction({
-							name: 'updateJoinActivity',
-							data: {
-								collectionName: 'ActivityInfo',
-								docName: this.data.id,
-								//操作变量
-								inJoinAdd: 1,
-							}
-						})
-						.then(res => {
-							//console.log(res)
-							//更改按钮状态
-							this.setData({
-								ifJoin: 1
-							})
-							this.setShow("success", "报名成功");
-							//(非云函数)修改完毕,再次获取数据库
-							db.collection('ActivityInfo').doc(this.data.id)
-								.get()
-								.then(res => {
-									this.setData({
-										actions: res.data
-									})
-								})
-						})
+				var ifInTeam = this.data.ifInTeam
+				//在队里
+				if (ifInTeam) {
+					if (this.data.actions.inJoin >= this.data.actions.inNum) {
+						this.setShow("error", "人数已满");
+						return
+					}
 				} else {
-					//提示满人了
-					this.setShow("error", "人数已满");
+					if (this.data.actions.outJoin >= this.data.actions.outNum) {
+						this.setShow("error", "人数已满");
+						return
+					}
 				}
+				//如果没满人,就去新增人数
+				wx.cloud.callFunction({
+						name: 'updateJoinActivity',
+						data: {
+							collectionName: 'ActivityInfo',
+							docName: this.data.id,
+							//操作变量
+							inJoinAdd: ifInTeam ? 1 : 0,
+							outJoinAdd: ifInTeam ? 0 : 1,
+						}
+					})
+					.then(res => {
+						//更改按钮状态
+						this.setData({
+							ifJoin: 1
+						})
+						this.setShow("success", "报名成功");
+						//(非云函数)修改完毕,再次获取数据库
+						db.collection('ActivityInfo').doc(this.data.id)
+							.get()
+							.then(res => {
+								this.setData({
+									actions: res.data
+								})
+							})
+					})
+
 			})
 	},
 	unJoin() {
@@ -175,19 +194,26 @@ Page({
 					}
 					result[j++] = tmpList[i]
 				}
-				//加入一个错误判断
-				if (this.data.actions.inNum < 0 || this.data.actions.inNum < 0) {
+				//加入两个错误判断
+				if (this.data.actions.inNum < 0 || this.data.actions.outNum < 0) {
+					this.setShow("error", "系统异常");
+					return
+				}
+				if (this.data.actions.inNum < this.data.actions.inJoin || this.data.actions.outNum < this.data.actions.outJoin) {
 					this.setShow("error", "系统异常");
 					return
 				}
 				//(云函数)人数自减1,赋值新的名单
+				var ifInTeam = this.data.ifInTeam
 				wx.cloud.callFunction({
 						name: 'updateJoinActivity',
 						data: {
 							collectionName: 'ActivityInfo',
 							docName: this.data.id,
 							//操作变量
-							inJoinAdd: j-i-1,//根据上面i和j的差来决定要减少多少
+							//根据上面i和j的差来决定要减少多少
+							inJoinAdd: ifInTeam ? j - i - 1 : 0,
+							outJoinAdd: ifInTeam ? 0 : j - i - 1,
 							newJoinMembers: result
 						}
 					})
@@ -213,10 +239,17 @@ Page({
 		//报名窗口
 		if (tmp == 'Image') {
 			//先判断是否满人
-			if (this.data.actions.inJoin >= this.data.actions.inNum) {
-				//提示满人了
-				this.setShow("error", "人数已满");
-				return
+			//在队里
+			if (this.data.ifInTeam) {
+				if (this.data.actions.inJoin >= this.data.actions.inNum) {
+					this.setShow("error", "人数已满");
+					return
+				}
+			} else {
+				if (this.data.actions.outJoin >= this.data.actions.outNum) {
+					this.setShow("error", "人数已满");
+					return
+				}
 			}
 		}
 		this.setData({

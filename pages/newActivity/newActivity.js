@@ -28,7 +28,7 @@ Page({
 		actAddress: '',
 		intro: '',
 		Phone: '',
-		imgList:[]
+		imgList: []
 	},
 
 	/**
@@ -51,7 +51,7 @@ Page({
 			endTime: currentTime,
 			deadDate: currentDate,
 			deadTime: currentTime,
-			picker:app.globalData.team
+			picker: app.globalData.team
 		});
 
 		db.collection('TeamInfo')
@@ -145,7 +145,7 @@ Page({
 	bindSTimeChange: function (e) {
 		let combinedStartStr = this.data.beginDate + ' ' + e.detail.value;
 		let combinedEndStr = this.data.beginDate + ' ' + this.data.endTime;
-	//	console.log(combinedStartStr)
+		//	console.log(combinedStartStr)
 		let start = new Date(combinedStartStr).getTime();
 		let end = new Date(combinedEndStr).getTime();
 		this.checkTime(start, end)
@@ -302,9 +302,9 @@ Page({
 					address: this.data.Address,
 					intro: this.data.intro,
 					tag: this.data.tagList[this.data.tagIndex],
-					status: '1' ,//进行中
-					ispintuan:this.data.ispintuan,
-					qr_code:this.data.imgList
+					status: '1', //进行中
+					ispintuan: this.data.ispintuan,
+					qr_code: this.data.imgList
 				},
 
 				success(res) {
@@ -321,51 +321,50 @@ Page({
 		}
 	},
 
-		isPintuan(e)
-		{
-			console.log(e.detail.value)
-			this.setData({
-				ispintuan:e.detail.value
-			})
-		},
-		ChooseImage() {
-			wx.chooseImage({
-				count: 4, //默认9
-				sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
-				sourceType: ['album'], //从相册选择
-				success: (res) => {
-					if (this.data.imgList.length != 0) {
-						this.setData({
-							imgList: this.data.imgList.concat(res.tempFilePaths)
-						})
-					} else {
-						this.setData({
-							imgList: res.tempFilePaths
-						})
-					}
+	isPintuan(e) {
+		console.log(e.detail.value)
+		this.setData({
+			ispintuan: e.detail.value
+		})
+	},
+	ChooseImage() {
+		wx.chooseImage({
+			count: 4, //默认9
+			sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
+			sourceType: ['album'], //从相册选择
+			success: (res) => {
+				if (this.data.imgList.length != 0) {
+					this.setData({
+						imgList: this.data.imgList.concat(res.tempFilePaths)
+					})
+				} else {
+					this.setData({
+						imgList: res.tempFilePaths
+					})
 				}
-			});
-		},
-		ViewImage(e) {
-			wx.previewImage({
-				urls: this.data.imgList,
-				current: e.currentTarget.dataset.url
-			});
-		},
-		DelImg(e) {
-			wx.showModal({
-				title: '提示',
-				content: '确定要删除图片吗？',
-				cancelText: '取消',
-				confirmText: '确定',
-				success: res => {
-					if (res.confirm) {
-						this.data.imgList.splice(e.currentTarget.dataset.index, 1);
-						this.setData({
-							imgList: this.data.imgList
-						})
-					}
+			}
+		});
+	},
+	ViewImage(e) {
+		wx.previewImage({
+			urls: this.data.imgList,
+			current: e.currentTarget.dataset.url
+		});
+	},
+	DelImg(e) {
+		wx.showModal({
+			title: '提示',
+			content: '确定要删除图片吗？',
+			cancelText: '取消',
+			confirmText: '确定',
+			success: res => {
+				if (res.confirm) {
+					this.data.imgList.splice(e.currentTarget.dataset.index, 1);
+					this.setData({
+						imgList: this.data.imgList
+					})
 				}
-			})
-		},
+			}
+		})
+	},
 })

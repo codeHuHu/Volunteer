@@ -77,29 +77,24 @@ Page({
 
 
 	toregister() {
-				if(this.Byhistory())
-				{
-					wx.showToast({
-							title: '你已注册成为志愿者',
-							icon: 'none'
-					})
-				}
-				else if(this.ByBase() != 0)
-				{
-					wx.showToast({
-						title: '你已注册成为志愿者',
-						icon: 'none'
-				})
-				}
-				else {
-					wx.navigateTo({
-						url: '/pages/accountSignUp/accountSignUp',
-					})
-				}
-			
+		if (this.Byhistory()) {
+			wx.showToast({
+				title: '你已注册成为志愿者',
+				icon: 'none'
+			})
+		} else if (this.ByBase() != 0) {
+			wx.showToast({
+				title: '你已注册成为志愿者',
+				icon: 'none'
+			})
+		} else {
+			wx.navigateTo({
+				url: '/pages/accountSignUp/accountSignUp',
+			})
+		}
+
 	},
-	Byhistory()
-	{
+	Byhistory() {
 		var value = wx.getStorageSync('user_status')
 		if (value) {
 			try {
@@ -109,31 +104,29 @@ Page({
 						// 	title: '你已注册成为志愿者',
 						// 	icon: 'none'
 						return true
-						}
 					}
 				}
-			 catch (e) {
+			} catch (e) {
 
 			}
 		} else {
 			return false
-			}
-		},
-		ByBase()
-		{
-			var that=this
-			wx.cloud.database().collection('UserInfo').where({
+		}
+	},
+	ByBase() {
+		var that = this
+		wx.cloud.database().collection('UserInfo').where({
 				_openid: app.globalData.openid
 			})
 			.get({
 				success(res) {
 					return res.data.length
-				},fail(err)
-			{	
-				
-			}
+				},
+				fail(err) {
+
+				}
 			})
-		},
+	},
 	/**
 	 * 用户点击右上角分享
 	 */
@@ -156,27 +149,19 @@ Page({
 		})
 	},
 	tojointeam() {
-		var value = wx.getStorageSync('user_status')
-		if (value) {
-			try {
-				for (var i = 0; i < value.length; i++) {
-					if (value[i][0] == app.globalData.openid && value[i][1] == true) {
-
-						wx.navigateTo({
-							url: '/pages/jointeam/jointeam',
-						})
-					}
-				}
-			} catch (e) {
-			}
-		} else {
+		if (this.Byhistory()) {
 			wx.navigateTo({
-					url: '/pages/accountSignUp/accountSignUp',
-				}),
-				wx.showToast({
-					title: '请前往注册',
-					icon: 'none'
-				})
+				url: '/pages/jointeam/jointeam',
+			})
+		} else if (this.ByBase() != 0) {
+			wx.navigateTo({
+				url: '/pages/jointeam/jointeam',
+			})
+		} else {
+			wx.showToast({
+				title: '请前往注册',
+				icon: 'none'
+			})
 		}
 	},
 

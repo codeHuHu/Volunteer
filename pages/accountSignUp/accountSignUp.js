@@ -11,12 +11,12 @@ Page({
 		region: ['广东省', '广州市', '番禺区'],
 		picker: ['居民身份证', '香港居民身份证', '澳门居民身份证', '台湾身份证'],
 
-		team:	['广州大学城志愿者协会','阳光义工团'],
-		UserName:'',
-		UserIdnumber:'',
-		UserPhone:'',
-		ischeck:false,
-		List:[]
+		team: ['广州大学城志愿者协会', '阳光义工团'],
+		UserName: '',
+		UserIdnumber: '',
+		UserPhone: '',
+		ischeck: false,
+		List: []
 
 	},
 

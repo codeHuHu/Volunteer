@@ -1,6 +1,6 @@
 <view class="cu-list menu card-menu margin-bottom-xl shadow-lg radius">
 	<view class="cu-form-group">
-		<view class="title" >您的真实姓名</view>
+		<view class="title">您的真实姓名</view>
 		<input placeholder="统一标题的宽度" bindinput="getName" model:value="{{UserName}}"></input>
 	</view>
 	<view class="cu-form-group">
@@ -38,7 +38,7 @@
 	<view class="cu-form-group ">
 		<view class="title">验证码:</view>
 		<input placeholder="23715"></input>
-		<button class="cu-btn round bg-green " style="width:auto" >获取</button>
+		<button class="cu-btn round bg-green " style="width:auto">获取</button>
 	</view>
 	<view class="cu-form-group justify-start">
 		<checkbox class="round margin-right" checked="{{ischeck}}" bindtap="checkchange"></checkbox>
