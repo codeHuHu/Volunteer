@@ -92,8 +92,8 @@
 		<text class="iconfont icon-icon-test20 text-blue"></text>
 	</view>
 	<!-- 报名以及取消按钮 -->
-	<view bindtap="showModal" data-target="{{!volunteerStatus ?'Image':'DialogModal1'}}">
-		<button wx:if="{{!volunteerStatus}}" class="signUp cu-avatar round xl bg-green animation-{{animation=='scale-up'?'scale-up':''}}" bindtap="toggle" data-class="scale-up" role="button" aria-disabled="false">
+	<view bindtap="showModal" data-target="{{!ifJoin ?'Image':'DialogModal1'}}">
+		<button wx:if="{{!ifJoin}}" class="signUp cu-avatar round xl bg-green animation-{{animation=='scale-up'?'scale-up':''}}" bindtap="toggle" data-class="scale-up" role="button" aria-disabled="false">
 			<text class="avatar-text ">点击报名</text>
 		</button>
 		<button wx:else class="signUp cu-avatar round xl bg-red animation-{{animation=='scale-up'?'scale-up':''}}" bindtap="toggle" data-class="scale-up" role="button" aria-disabled="false">
