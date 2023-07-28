@@ -152,6 +152,7 @@ Page({
 		collection.get().then(res =>{
 					var actions=res.data
 						console.log(actions[0])
+				
 					for(var l in actions)
 					{
 						var tmptimestamp=new Date(actions[l].serviceDate)

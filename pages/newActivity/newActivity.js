@@ -15,7 +15,7 @@ Page({
 		endTime: '00:00',
 		deadTime: '00:00',
 		tagList: ['党建引领', '乡村振兴', '新时代文明实践（文化/文艺/体育）', '科普科教', '社区/城中村治理', '环境保护', '弱势群体帮扶', '志愿驿站值班', '其他'],
-		picker: ['广州大学城志愿者协会', '阳光义工团'],
+		picker: [''],
 		inputValue: '', // 清空输入框的值
 		showLightButton: [], // 控制按钮显示高光
 		index: '',
@@ -27,7 +27,8 @@ Page({
 		outNum: 0,
 		actAddress: '',
 		intro: '',
-		Phone: ''
+		Phone: '',
+		imgList:[]
 	},
 
 	/**
@@ -42,16 +43,18 @@ Page({
 			hour: '2-digit',
 			minute: '2-digit'
 		});
-		//console.log(currentDate)
-		//console.log(currentTime)
+		console.log(currentTime)
 		this.setData({
 			currentDate: currentDate,
 			beginDate: currentDate,
 			startTime: currentTime,
 			endTime: currentTime,
 			deadDate: currentDate,
-			deadTime: currentTime
+			deadTime: currentTime,
+			picker:app.globalData.team
 		});
+
+		db.collection('TeamInfo')
 	},
 
 	/**
@@ -135,7 +138,6 @@ Page({
 		// let end = new Date(combinedEndStr).getTime();
 		// this.checkTime(start, end);
 		this.setData({
-
 			deadDate: e.detail.value
 		})
 	},
@@ -143,11 +145,14 @@ Page({
 	bindSTimeChange: function (e) {
 		let combinedStartStr = this.data.beginDate + ' ' + e.detail.value;
 		let combinedEndStr = this.data.beginDate + ' ' + this.data.endTime;
+	//	console.log(combinedStartStr)
 		let start = new Date(combinedStartStr).getTime();
 		let end = new Date(combinedEndStr).getTime();
 		this.checkTime(start, end)
+		// console.log(start)
+		// console.log(end)
+		// console.log(e.detail.value);
 
-		console.log(e);
 		this.setData({
 			startTime: e.detail.value,
 			deadTime: e.detail.value
@@ -297,7 +302,9 @@ Page({
 					address: this.data.Address,
 					intro: this.data.intro,
 					tag: this.data.tagList[this.data.tagIndex],
-					status: '1' //进行中
+					status: '1' ,//进行中
+					ispintuan:this.data.ispintuan,
+					qr_code:this.data.imgList
 				},
 
 				success(res) {
@@ -312,6 +319,53 @@ Page({
 					wx.hideToast()
 			}, 2000); // 延迟 2000 毫秒后执行
 		}
-	}
+	},
 
+		isPintuan(e)
+		{
+			console.log(e.detail.value)
+			this.setData({
+				ispintuan:e.detail.value
+			})
+		},
+		ChooseImage() {
+			wx.chooseImage({
+				count: 4, //默认9
+				sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
+				sourceType: ['album'], //从相册选择
+				success: (res) => {
+					if (this.data.imgList.length != 0) {
+						this.setData({
+							imgList: this.data.imgList.concat(res.tempFilePaths)
+						})
+					} else {
+						this.setData({
+							imgList: res.tempFilePaths
+						})
+					}
+				}
+			});
+		},
+		ViewImage(e) {
+			wx.previewImage({
+				urls: this.data.imgList,
+				current: e.currentTarget.dataset.url
+			});
+		},
+		DelImg(e) {
+			wx.showModal({
+				title: '提示',
+				content: '确定要删除图片吗？',
+				cancelText: '取消',
+				confirmText: '确定',
+				success: res => {
+					if (res.confirm) {
+						this.data.imgList.splice(e.currentTarget.dataset.index, 1);
+						this.setData({
+							imgList: this.data.imgList
+						})
+					}
+				}
+			})
+		},
 })

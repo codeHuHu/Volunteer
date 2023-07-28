@@ -26,14 +26,33 @@ App({
             wx.setStorageSync('openid', res.result.openid)
           }
         })
-    }}
-  },
+		}}
+
+		wx.cloud.database().collection('TeamInfo').where({}).get({
+			success(res)
+			{
+				const teams=[]
+				//console.log(res.data)
+				for(var l in res.data)
+				{
+					teams[l]=res.data[l].teamName
+				}
+				//console.log(teams)
+				that.globalData.team=teams
+			}
+		})
+	},
+	onshow:function()
+	{
+		console.log(11)
+	},
   globalData:
   {
     userinfo: null,
     openid: null,
     nickName: '',
 		avatar: null,
-		islogin:''
+		islogin:false,
+		team:[]
   }
 });

@@ -2,7 +2,7 @@
 @import "colorui/main.wxss";
 @import"colorui/icon.wxss";
 @import"./static/local_icon/iconfont.wxss";
-@import"colorui/animation.wxss";
+@import"./colorui/animation.wxss";
 
 .container {
   display: flex;

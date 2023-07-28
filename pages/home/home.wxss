@@ -1,7 +1,7 @@
 /* pages/home/home.wxss */
 
 page{
-	min-height: 1000px;
+	min-height: 100%;
 }
 .up image {
 	width: 100%;
@@ -121,7 +121,7 @@ page{
 .character {
 	display: flex;
 	font-display: row;
-	
+
 }
 .detail {
 	text-align: right;
@@ -133,7 +133,6 @@ page{
 }
 .btn-detail {
 	display: flex;
-	position: relative;
 	bottom: 5rpx;
 	background-color: #66a8d4;
   color: white;

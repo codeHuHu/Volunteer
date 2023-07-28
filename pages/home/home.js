@@ -77,28 +77,63 @@ Page({
 
 
 	toregister() {
+				if(this.Byhistory())
+				{
+					wx.showToast({
+							title: '你已注册成为志愿者',
+							icon: 'none'
+					})
+				}
+				else if(this.ByBase() != 0)
+				{
+					wx.showToast({
+						title: '你已注册成为志愿者',
+						icon: 'none'
+				})
+				}
+				else {
+					wx.navigateTo({
+						url: '/pages/accountSignUp/accountSignUp',
+					})
+				}
+			
+	},
+	Byhistory()
+	{
 		var value = wx.getStorageSync('user_status')
 		if (value) {
 			try {
 				for (var i = 0; i < value.length; i++) {
 					if (value[i][0] == app.globalData.openid && value[i][1] == true) {
-						wx.showToast({
-							title: '你已注册成为志愿者',
-							icon: 'none'
-						})
+						// wx.showToast({
+						// 	title: '你已注册成为志愿者',
+						// 	icon: 'none'
+						return true
+						}
 					}
 				}
-			} catch (e) {
+			 catch (e) {
 
 			}
 		} else {
-			wx.navigateTo({
-				url: '/pages/accountSignUp/accountSignUp',
+			return false
+			}
+		},
+		ByBase()
+		{
+			var that=this
+			wx.cloud.database().collection('UserInfo').where({
+				_openid: app.globalData.openid
 			})
-		}
-	},
-
-
+			.get({
+				success(res) {
+					return res.data.length
+				},fail(err)
+			{	
+				
+			}
+			})
+		},
 	/**
 	 * 用户点击右上角分享
 	 */

@@ -46,7 +46,8 @@ Page({
     this.setData({
       adminAccount: a,
       adminPassword: b
-    })
+		})
+		console.log(app.globalData.team)
   },
 
   /**
@@ -157,6 +158,7 @@ Page({
     })
   },
   teamRegister() {
+		var that=this
     console.log('register')
     //暂未添加纠错机制
     if (!this.data.ischeck) {
@@ -180,11 +182,14 @@ Page({
           volunteerTime: 0
         },
         success(res) {
-          console.log(res)
+					console.log(res)
+				
+					app.globalData.team.push(that.data.teamName)
           //wx.navigateBack()
           wx.showToast({
-            title: '注册成功',
-          })
+						title: '注册成功',
+					})
+					
         }
       })
     }

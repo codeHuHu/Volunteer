@@ -16,6 +16,11 @@ Page({
 	 * 生命周期函数--监听页面加载
 	 */
 	onLoad: function (event) {
+
+		this.setData({
+			openid: app.globalData.openid
+		})
+
 		var value = wx.getStorageSync('user_status');
 		if (value) {
 			for (var i = 0; i < value.length; i++) {
@@ -23,20 +28,16 @@ Page({
 					this.setData({
 						islogin: true
 					})
-
 				}
 			}
 		} else {
-			this.setData({
-				islogin: false
-			})
+			//去数据库看看有没有
+		this.getDetail();
 		}
 
 		console.log(this.data.islogin)
-		this.setData({
-			openid: app.globalData.openid
-		})
-		this.getDetail();
+		
+		
 
 	},
 	getDetail() {
@@ -49,11 +50,20 @@ Page({
 
 					console.log(res.data)
 					that.setData({
-						actions: res.data
+						actions: res.data,
+						islogin:true
 					})
-				}
+					app.globalData.islogin=that.data.islogin
+						return true;
+				},fail(err)
+			{
+				that.setData({
+					islogin:false
+				})
+				
+				return false;
+			}
 			})
-
 	},
 	/**
 	 * 生命周期函数--监听页面初次渲染完成

@@ -10,6 +10,8 @@ Page({
 		minutes: '',
 		//志愿者是否参加了此次志愿
 		volunteerStatus: 0,
+		ispintuan:0,
+		holder_phone:0
 	},
 
 	onLoad: function (options) {
@@ -31,6 +33,8 @@ Page({
 					actions: res.data,
 					hours,
 					minutes,
+					ispintuan:res.data.ispintuan,
+					holder_phone:res.data.phone
 				})
 				// 如果名单里有该志愿者,改变报名按钮状态
 				for (var i in res.data.joinMembers) {
@@ -111,7 +115,8 @@ Page({
 			.get()
 			.then(res => {
 				this.setData({
-					actions: res.data
+					actions: res.data,
+					
 				})
 				//如果没满人,就去新增人数
 				if (this.data.actions.inJoin < this.data.actions.inNum) {
@@ -233,7 +238,7 @@ Page({
 	},
 	previewImage(e) {
 		wx.previewImage({
-			urls: ['/images/青协头像.png'],
+			urls: ['/images/群二维码.jpg'],
 		})
 	}
 })

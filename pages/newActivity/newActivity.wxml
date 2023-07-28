@@ -1,6 +1,15 @@
 <!--pages/newActivity/newActivity.wxml-->
 <view class="cu-list menu card-menu new_activity">
 	<form class="new_activity">
+		<view class="cu-form-group" >
+      <view class="inline_name">是否发起拼团：</view>
+			<radio-group bindchange="isPintuan">
+				<radio value="1"/>是
+				<radio value="2" class="margin-left"/>否
+			</radio-group>
+			
+    
+    </view>
     <view class="cu-form-group" >
       <view class="inline_name">活动名称：</view>
       <input class="newName" placeholder="请输入名称" bindinput="getactName" model:value="{{actName}}"/>
@@ -65,12 +74,31 @@
 			<input  bindinput="getAddress" placeholder="地址"/>
 		</view>
 		</view>
+
     <view class="cu-form-group">
       <view class="inline_name">简介：</view>
       <textarea class="new_profile" placeholder="请输入简介" 
 			bindinput="getintro" ></textarea>
     </view>
 		
+		<view class="cu-bar bg-white margin-top-sm">
+    <view class="action">
+      请上传群二维码
+    </view>
+  </view>
+		<view class="cu-form-group">
+    <view class="grid col-4 grid-square flex-sub">
+      <view class="bg-img" wx:for="{{imgList}}" wx:key="item" bindtap="ViewImage" data-url="{{imgList[index]}}">
+        <image src='{{imgList[index]}}' mode='aspectFill'></image>
+        <view class="cu-tag bg-red" catchtap="DelImg" data-index="{{index}}">
+          <text class="cuIcon-close"></text>
+        </view>
+      </view>
+      <view class="solids" bindtap="ChooseImage" wx:if="{{imgList.length<1}}">
+        <text class="cuIcon-cameraadd"></text>
+      </view>
+    </view>
+  </view>
 <view class=" cu-form-group" style="display:grid">
 <view class="inline_name" style="width:40%" >添加标签：</view>
 <view  class="new_inline " >
