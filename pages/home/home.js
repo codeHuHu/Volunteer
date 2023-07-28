@@ -156,9 +156,28 @@ Page({
 		})
 	},
 	tojointeam() {
-		wx.navigateTo({
-			url: '/pages/jointeam/jointeam',
-		})
+		var value = wx.getStorageSync('user_status')
+		if (value) {
+			try {
+				for (var i = 0; i < value.length; i++) {
+					if (value[i][0] == app.globalData.openid && value[i][1] == true) {
+
+						wx.navigateTo({
+							url: '/pages/jointeam/jointeam',
+						})
+					}
+				}
+			} catch (e) {
+			}
+		} else {
+			wx.navigateTo({
+					url: '/pages/accountSignUp/accountSignUp',
+				}),
+				wx.showToast({
+					title: '请前往注册',
+					icon: 'none'
+				})
+		}
 	},
 
 	todetail(e) {

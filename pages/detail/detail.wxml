@@ -67,6 +67,7 @@
 	</view>
 </view>	
 </view>
+
 <view class="margin-sm radius-lg bg-white">
 	<view class="solid-bottom text-lg text-bold padding text-black">服务信息</view>
 	<view class="padding flex justify-between">
@@ -110,10 +111,11 @@
 		<text class="iconfont icon-icon-test20 text-blue"></text>
 	</view>
 	<!-- 报名以及取消按钮 -->
-	<view wx:if="{{ispintuan==1}}">
-	<view bindtap="showModal" data-target="{{!volunteerStatus ?'Image':'DialogModal1'}}">
-		<button wx:if="{{!volunteerStatus}}" class="signUp cu-avatar round xl bg-green animation-{{animation=='scale-up'?'scale-up':''}}" bindtap="toggle" data-class="scale-up" role="button" aria-disabled="false">
-			<text class="avatar-text ">点击拼团</text>
+
+	<view bindtap="showModal" data-target="{{!ifJoin ?'Image':'DialogModal1'}}">
+		<button wx:if="{{!ifJoin}}" class="signUp cu-avatar round xl bg-green animation-{{animation=='scale-up'?'scale-up':''}}" bindtap="toggle" data-class="scale-up" role="button" aria-disabled="false">
+			<text class="avatar-text ">点击报名</text>
+
 		</button>
 		<button wx:else class="signUp cu-avatar round xl bg-red animation-{{animation=='scale-up'?'scale-up':''}}" bindtap="toggle" data-class="scale-up" role="button" aria-disabled="false">
 			<text class="avatar-text ">取消拼团</text>
@@ -171,5 +173,3 @@
 			<text class="cuIcon-info"></text> {{message}}
 		</view>
 	</view>
-
-</view>

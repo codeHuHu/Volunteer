@@ -21,7 +21,8 @@
 			<text class="teamer bg-oc-yellow-3">队长 </text>
 			<text class="margin-xs text-grey">{{item.teamLeader[1]}}</text>
 			<text class="team-people margin-left-xl bg-oc-yellow-3">人数</text>
-			<text class="team-people margin-left-xs text-grey">{{item.teamMembers.length}}</text>
+			<text class="team-people margin-left-xs text-grey">{{item.member}}</text>
+
 			<text class="team-time margin-left-xl bg-oc-yellow-3">志愿时 </text>
 			<text class="margin-left-xs text-grey">{{item.volunteerTime}}小时</text>
 		</view>

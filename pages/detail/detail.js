@@ -9,9 +9,15 @@ Page({
 		hours: '',
 		minutes: '',
 		//志愿者是否参加了此次志愿
+
 		volunteerStatus: 0,
 		ispintuan:0,
-		holder_phone:0
+		holder_phone:0,
+
+		ifJoin: 0,
+		//志愿者是否在组织志愿的队伍中
+		ifInTeam:0
+		
 	},
 
 	onLoad: function (options) {
@@ -40,7 +46,7 @@ Page({
 				for (var i in res.data.joinMembers) {
 					if (res.data.joinMembers[i] == app.globalData.openid)
 						that.setData({
-							volunteerStatus: 1
+							ifJoin: 1
 						})
 				}
 			}
@@ -120,21 +126,23 @@ Page({
 				})
 				//如果没满人,就去新增人数
 				if (this.data.actions.inJoin < this.data.actions.inNum) {
-					//参加人数自增1 名单也加入改openid
-					db.collection('ActivityInfo').doc(this.data.id)
-						.update({
+					wx.cloud.callFunction({
+							name: 'updateJoinActivity',
 							data: {
-								inJoin: db.command.inc(1),
-								joinMembers: db.command.push(app.globalData.openid)
+								collectionName: 'ActivityInfo',
+								docName: this.data.id,
+								//操作变量
+								inJoinAdd: 1,
 							}
 						})
 						.then(res => {
+							//console.log(res)
 							//更改按钮状态
 							this.setData({
-								volunteerStatus: 1
+								ifJoin: 1
 							})
-							this.setShow("error", "报名成功");
-							//修改完毕,再次获取数据库
+							this.setShow("success", "报名成功");
+							//(非云函数)修改完毕,再次获取数据库
 							db.collection('ActivityInfo').doc(this.data.id)
 								.get()
 								.then(res => {
@@ -150,7 +158,7 @@ Page({
 			})
 	},
 	unJoin() {
-		//先获取数据库
+		//(非云函数)先获取数据库
 		db.collection('ActivityInfo').doc(this.data.id)
 			.get()
 			.then(res => {
@@ -158,30 +166,38 @@ Page({
 					actions: res.data
 				})
 				// 比较安全地在名单中清除该志愿者
-				var tmp = this.data.actions.joinMembers
+				var tmpList = this.data.actions.joinMembers
 				var result = []
 				var j = 0
-				for (var i in tmp) {
-					if (tmp[i] == app.globalData.openid) {
+				for (var i in tmpList) {
+					if (tmpList[i] == app.globalData.openid) {
 						continue
 					}
-					result[j++] = tmp[i]
+					result[j++] = tmpList[i]
 				}
-				//人数自减1,赋值新的名单
-				db.collection('ActivityInfo').doc(this.data.id)
-					.update({
+				//加入一个错误判断
+				if (this.data.actions.inNum < 0 || this.data.actions.inNum < 0) {
+					this.setShow("error", "系统异常");
+					return
+				}
+				//(云函数)人数自减1,赋值新的名单
+				wx.cloud.callFunction({
+						name: 'updateJoinActivity',
 						data: {
-							inJoin: db.command.inc(-1),
-							joinMembers: result
+							collectionName: 'ActivityInfo',
+							docName: this.data.id,
+							//操作变量
+							inJoinAdd: j-i-1,//根据上面i和j的差来决定要减少多少
+							newJoinMembers: result
 						}
 					})
 					.then(res => {
 						//更改按钮状态
 						this.setData({
-							volunteerStatus: 0
+							ifJoin: 0
 						})
-						this.setShow("error", "取消成功");
-						//再重新获取数据库
+						this.setShow("success", "取消成功");
+						//(非云函数)修改完毕,再次获取数据库
 						db.collection('ActivityInfo').doc(this.data.id)
 							.get()
 							.then(res => {
@@ -211,12 +227,12 @@ Page({
 		var a = e.currentTarget.dataset.target
 		if (a == 'join') {
 			this.setData({
-				volunteerStatus: 1
+				ifJoin: 1
 			})
 			this.ifAvailableAndJoin()
 		} else if (a == 'unjoin') {
 			this.setData({
-				volunteerStatus: 0
+				ifJoin: 0
 			})
 			this.unJoin()
 		}

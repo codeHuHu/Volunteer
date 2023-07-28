@@ -6,13 +6,7 @@ Page({
 	 * 页面的初始数据
 	 */
 	data: {
-		info: '',
-		teamName: '广州市交通运输志愿服务支队',
-		members: [6666, ['张三', 18319093951],
-			['李四', 18319093951]
-		],
-		serviceNumber: '166',
-		volunteerTime: '999.8'
+		ifJoined: 0
 	},
 
 	/**
@@ -21,14 +15,9 @@ Page({
 	onLoad(options) {
 		if (options.info) {
 			let info = JSON.parse(decodeURIComponent(options.info))
-			console.log(info)
+			console.log('传入参数并解析')
 			this.setData({
-				teamLeader: info['teamLeader'],
-				teamName: info['teamName'],
-				members: info['teamMembers'],
-				volunteerTime: info['volunteerTime'],
-				teamIntro: info['teamIntro'],
-				mail: info['mail']
+				teamDetail: info
 			})
 		}
 	},
@@ -37,7 +26,21 @@ Page({
 	 * 生命周期函数--监听页面初次渲染完成
 	 */
 	onReady() {
-
+		var cur = this.data.teamDetail.teamMembers
+		for (var i in cur) {
+			if (cur[i][0] == app.globalData.openid) {
+				//已在队伍当中了
+				this.setData({
+					ifJoined: 1
+				})
+				//是否为队长
+				if (this.data.teamDetail._openid == app.globalData.openid) {
+					this.setData({
+						ifLeader: 1
+					})
+				}
+			}
+		}
 	},
 
 	/**
@@ -80,26 +83,26 @@ Page({
 
 	},
 	join() {
-
-		if (app.globalData.userInfo == null) {
-			wx.showModal({
-				title: '提示',
-				content: '你未注册，请前往注册认证',
-				success(res) {
-					if (res.confirm) {
-						console.log("成功")
-						wx.reLaunch({
-							url: '/pages/mine/mine',
-						})
-					} else {
-
-					}
-				}
-			})
-		} else {
+		if (this.data.ifLeader) {
+			//已经加入了
 			wx.showToast({
-				title: '申请成功，等待管理员验证通过',
+				title: '你已是队长',
+				icon: 'none'
 			})
+			return
 		}
+		if (this.data.ifJoined) {
+			//已经加入了
+			wx.showToast({
+				title: '你已加入该队伍',
+				icon: 'none'
+			})
+			return
+		}
+		//云函数添加memberUndetermined到数据库(还没写)
+		wx.showToast({
+			title: '申请成功',
+			icon: 'none'
+		})
 	}
 })
