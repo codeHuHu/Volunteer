@@ -28,7 +28,7 @@ Page({
 		actAddress: '',
 		intro: '',
 		Phone: '',
-		imgList: []
+		temp_imgList: []
 	},
 
 	/**
@@ -264,7 +264,6 @@ Page({
 			intro: e.detail.value
 		})
 	},
-
 	sendNew(e) {
 		let combinedStartStr = this.data.beginDate + ' ' + this.data.startTime;
 		let combinedEndStr = this.data.beginDate + ' ' + this.data.endTime;
@@ -283,44 +282,56 @@ Page({
 				wx.hideToast()
 			}, 2000); // 延迟 2000 毫秒后执行
 		} else {
-
-			db.collection('ActivityInfo').add({
-				data: {
-					actName: this.data.actName,
-					holder: this.data.holder,
-					phone: this.data.Phone,
-					teamName: this.data.picker[this.data.index],
-					inNum: this.data.inNum,
-					outNum: this.data.outNum,
-					inJoin: 0,
-					outJoin: 0,
-					serviceDate: this.data.beginDate,
-					serviceSTime: this.data.startTime,
-					serviceETime: this.data.endTime,
-					DeadDate: this.data.deadDate,
-					deadTime: this.data.deadTime,
-					address: this.data.Address,
-					intro: this.data.intro,
-					tag: this.data.tagList[this.data.tagIndex],
-					status: '1', //进行中
-					ispintuan: this.data.ispintuan,
-					qr_code: this.data.imgList
-				},
-
-				success(res) {
-					wx.showToast({
-						icon: 'success',
-						title: '提交成功！',
-					})
-				}
-			});
+			console.log('执行提交中')
+			//创建异步上传任务数组
+			let uploadTask = []
+			for (let i in this.data.temp_imgList) {
+				uploadTask.push(this.uploadFile(this.data.temp_imgList[i]))
+			}
+			Promise.all(uploadTask)
+				.then(result => {
+					//等待完所有异步上传任务完成后
+					this.setData({
+							cloud_imgList: result
+						}),
+						//用逗号,表示setData完了之后再上传数据库
+						//若不用,则异步执行,则还没setData就执行上传数据库,导致cloud_imgList无值
+						db.collection('ActivityInfo').add({
+							data: {
+								actName: this.data.actName,
+								holder: this.data.holder,
+								phone: this.data.Phone,
+								teamName: this.data.picker[this.data.index],
+								inNum: this.data.inNum,
+								outNum: this.data.outNum,
+								inJoin: 0,
+								outJoin: 0,
+								serviceDate: this.data.beginDate,
+								serviceSTime: this.data.startTime,
+								serviceETime: this.data.endTime,
+								DeadDate: this.data.deadDate,
+								deadTime: this.data.deadTime,
+								address: this.data.Address,
+								intro: this.data.intro,
+								tag: this.data.tagList[this.data.tagIndex],
+								status: '1', //进行中
+								ispintuan: this.data.ispintuan,
+								qr_code: this.data.cloud_imgList
+							},
+							success(res) {
+								wx.showToast({
+									icon: 'success',
+									title: '提交成功！',
+								})
+							}
+						});
+				})
 			setTimeout(() => {
 				wx.navigateBack(),
-					wx.hideToast()
+				wx.hideToast()
 			}, 2000); // 延迟 2000 毫秒后执行
 		}
 	},
-
 	isPintuan(e) {
 		console.log(e.detail.value)
 		this.setData({
@@ -333,13 +344,13 @@ Page({
 			sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
 			sourceType: ['album'], //从相册选择
 			success: (res) => {
-				if (this.data.imgList.length != 0) {
+				if (this.data.temp_imgList.length != 0) {
 					this.setData({
-						imgList: this.data.imgList.concat(res.tempFilePaths)
+						temp_imgList: this.data.temp_imgList.concat(res.tempFilePaths)
 					})
 				} else {
 					this.setData({
-						imgList: res.tempFilePaths
+						temp_imgList: res.tempFilePaths
 					})
 				}
 			}
@@ -347,7 +358,7 @@ Page({
 	},
 	ViewImage(e) {
 		wx.previewImage({
-			urls: this.data.imgList,
+			urls: this.data.temp_imgList,
 			current: e.currentTarget.dataset.url
 		});
 	},
@@ -359,12 +370,34 @@ Page({
 			confirmText: '确定',
 			success: res => {
 				if (res.confirm) {
-					this.data.imgList.splice(e.currentTarget.dataset.index, 1);
+					this.data.temp_imgList.splice(e.currentTarget.dataset.index, 1);
 					this.setData({
-						imgList: this.data.imgList
+						temp_imgList: this.data.temp_imgList
 					})
 				}
 			}
+		})
+	},
+	// 异步上传单个文件
+	uploadFile: function (filePath) {
+		//返回上传文件后的信息
+		return new Promise(function (callback) {
+			wx.cloud.uploadFile({
+				cloudPath: './QR_CODE/' + new Date().getTime(),
+				filePath: filePath,
+				success: res => {
+					console.log('上传图片成功')
+					callback(res.fileID)
+				},
+				fail: err => {
+					console.log('上传图片失败', res)
+					wx.showToast({
+						title: '上传失败',
+						icon: "none"
+					})
+					console.log(err)
+				}
+			})
 		})
 	},
 })

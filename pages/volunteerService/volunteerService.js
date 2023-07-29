@@ -79,7 +79,7 @@ Page({
 	// 点击下拉列表
 	optionstatusTap(e) {
 		let Index = e.currentTarget.dataset.index; //获取点击的下拉列表的下标
-		console.log(Index)
+		//e.log(Index)
 		this.setData({
 			index3: Index,
 			show3: !this.data.show3
@@ -123,7 +123,7 @@ Page({
 		const currentDate = new Date().toLocaleDateString().split('/').join('-');
 		const currentDateObject = new Date(currentDate);
 		const timestamp = currentDateObject.getTime();
-		console.log(timestamp);
+		//console.log(timestamp);
 
 		this.setData({
 			timestamp: timestamp,
@@ -138,12 +138,11 @@ Page({
 		const collection = db.collection('ActivityInfo');
 		collection.get().then(res => {
 			var actions = res.data
-			console.log(actions[0])
-
+			//console.log(actions[0])
 			for (var l in actions) {
 				var tmptimestamp = new Date(actions[l].serviceDate)
 				tmptimestamp = tmptimestamp.getTime()
-				console.log(tmptimestamp)
+				//console.log(tmptimestamp)
 				if (tmptimestamp < that.data.timestamp) {
 					actions[l].status = '2'
 				}

@@ -126,18 +126,20 @@
 <view class="cu-modal {{modalName=='Image'?'show':''}}">
 	<view class="cu-dialog">
 		<swiper style="height: 500rpx;">
-			<swiper-item class="bg-img" style="background-image: url('/images/群二维码.jpg');height: 360rpx;" show-menu-by-longpress="true" bindtap="previewImage">
-				<view class="cu-bar justify-end text-white">
-					<view class="action text-bold" catchtap="hideModal">
-						<text class="cuIcon-close"></text>
-					</view>
+			<swiper-item wx:for="{{actions.qr_code}}" wx:key="index" class="bg-img" style="height: 360rpx;" show-menu-by-longpress="true">
+				<view class="cu-bar justify-center text-white">
+					<image class="margin-top" src="{{item}}" bindtap="previewImage" data-index="{{index}}" mode="aspectFit"/>
+				</view>
+				<view class="cu-tag cancleButton bg-white round button" catchtap="hideModal">
+					<text class="cuIcon-close text-xl text-bold text-black"></text>
 				</view>
 			</swiper-item>
-			<swiper-item class="bg-img" style="background-image: url('https://image.meiye.art/FhHGe9NyO0uddb6D4203jevC_gzc?imageMogr2/thumbnail/450x/interlace/1');height: 360rpx;" show-menu-by-longpress="true" bindtap="previewImage">
-				<view class="cu-bar justify-end text-white">
-					<view class="action text-bold" catchtap="hideModal">
-						<text class="cuIcon-close "></text>
-					</view>
+			<swiper-item wx:if="{{!actions.qr_code}}" wx:key="index" class="bg-img" style="height: 360rpx;" show-menu-by-longpress="true">
+				<view class="cu-bar justify-center text-white">
+					<image class="margin-top" src="/images/私密.png" bindtap="previewImage" data-index="{{index}}" mode="aspectFit"/>
+				</view>
+				<view class="cu-tag cancleButton bg-white round button" catchtap="hideModal">
+					<text class="cuIcon-close text-xl text-bold text-black"></text>
 				</view>
 			</swiper-item>
 		</swiper>

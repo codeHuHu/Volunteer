@@ -16,3 +16,8 @@
   font-size:100rpx;
 }
 
+.cancleButton{
+	position: fixed; 
+	top:20px;
+	right:20px;
+}

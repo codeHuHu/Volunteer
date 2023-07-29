@@ -15,21 +15,26 @@ Page({
 	 * 生命周期函数--监听页面加载
 	 */
 	onLoad: function () {
+		console.log('fuck', app.globalData)
 		var that = this
 		wx.setNavigationBarTitle({
 			title: '首页',
 		})
-		db.collection('ActivityInfo').where({
-			status: '1'
-		}).get().then(res => {
-			console.log(res.data)
-			that.setData({
-				actions: res.data
+		//查找活动
+		db.collection('ActivityInfo')
+			.where({
+				status: '1'
 			})
-		}).catch(err => {
-			console.log(err);
-
-		})
+			.get()
+			.then(res => {
+				console.log(res.data)
+				that.setData({
+					actions: res.data
+				})
+			})
+			.catch(err => {
+				console.log(err);
+			})
 	},
 
 	/**
@@ -43,6 +48,7 @@ Page({
 	 * 生命周期函数--监听页面显示
 	 */
 	onShow: function () {
+		console.log('fuck', app.globalData)
 		wx.hideHomeButton()
 	},
 
@@ -73,59 +79,57 @@ Page({
 	onReachBottom() {
 
 	},
-
-
-
 	toregister() {
 		if (this.Byhistory()) {
 			wx.showToast({
 				title: '你已注册成为志愿者',
 				icon: 'none'
 			})
-		} else if (this.ByBase() != 0) {
-			wx.showToast({
-				title: '你已注册成为志愿者',
-				icon: 'none'
-			})
-		} else {
-			wx.navigateTo({
-				url: '/pages/accountSignUp/accountSignUp',
-			})
-		}
+		} else if (this.ByBase()) {}
 
 	},
 	Byhistory() {
 		var value = wx.getStorageSync('user_status')
 		if (value) {
 			try {
-				for (var i = 0; i < value.length; i++) {
+				console.log(app.globalData)
+				for (var i in value) {
 					if (value[i][0] == app.globalData.openid && value[i][1] == true) {
-						// wx.showToast({
-						// 	title: '你已注册成为志愿者',
-						// 	icon: 'none'
 						return true
 					}
 				}
-			} catch (e) {
-
-			}
+				return false
+			} catch (e) {}
 		} else {
 			return false
 		}
 	},
 	ByBase() {
-		var that = this
-		wx.cloud.database().collection('UserInfo').where({
+		wx.cloud.database().collection('UserInfo')
+			.where({
 				_openid: app.globalData.openid
 			})
 			.get({
 				success(res) {
-					return res.data.length
+					console.log(res);
+					var n = res.data.length;
+					if (n) {
+						app.globalData.islogin = true
+						wx.setStorageSync('user_status', [
+							[res.data[0]._openid, app.globalData.islogin]
+						])
+						wx.showToast({
+							title: '你已注册成为志愿者',
+							icon: 'none'
+						})
+					} else {
+						wx.navigateTo({
+							url: '/pages/accountSignUp/accountSignUp',
+						})
+					}
 				},
-				fail(err) {
-
-				}
-			})
+				fail(err) {}
+			});
 	},
 	/**
 	 * 用户点击右上角分享
@@ -153,15 +157,8 @@ Page({
 			wx.navigateTo({
 				url: '/pages/jointeam/jointeam',
 			})
-		} else if (this.ByBase() != 0) {
-			wx.navigateTo({
-				url: '/pages/jointeam/jointeam',
-			})
-		} else {
-			wx.showToast({
-				title: '请前往注册',
-				icon: 'none'
-			})
+		} else if (this.ByBase()) {
+			
 		}
 	},
 
@@ -169,6 +166,5 @@ Page({
 		wx.navigateTo({
 			url: '/pages/detail/detail?id=' + e.currentTarget.dataset.id,
 		})
-	}
-
+	},
 })

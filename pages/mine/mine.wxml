@@ -1,11 +1,11 @@
 <scroll-view class="scrollPage">
-	<block wx:if="{{islogin}}">
+	<block wx:if="{{actions.islogin}}">
 		<view class="bg-img margin-lr" style="min-height: 35vh;">
 			<view class="bg-white radius-lg">
 				<view class="flex padding-sm justify-between">
 					<view class="padding-xs text-xxl text-black">
-						<view>{{actions[0].username}}<text class="text-gray text-df"> 志愿者</text></view>
-						<view class="text-gray text-df padding-top-sm">{{actions[0].team}}</view>
+						<view>{{actions.username}}<text class="text-gray text-df"> 志愿者</text></view>
+						<view class="text-gray text-df padding-top-sm">{{actions.team}}</view>
 					</view>
 					<view class="">
 						<view class="cu-avatar xl round" style="background-image:url(/images/青协头像.png)">

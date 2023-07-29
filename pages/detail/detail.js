@@ -286,8 +286,10 @@ Page({
 		}, 1000)
 	},
 	previewImage(e) {
+		console.log(e)
 		wx.previewImage({
-			urls: ['/images/群二维码.jpg'],
+			urls: this.data.actions.qr_code?this.data.actions.qr_code:['/images/私密.png'],
+			current:e.currentTarget.dataset.index
 		})
 	}
 })

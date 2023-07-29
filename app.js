@@ -1,58 +1,57 @@
 // app.js
 App({
-  onLaunch: function () {
-		var that =this
-    if (!wx.cloud) {
-      console.error('请使用 2.2.3 或以上的基础库以使用云能力');
-    } else {
-      wx.cloud.init({
-        // env 参数说明：
-        //   env 参数决定接下来小程序发起的云开发调用（wx.cloud.xxx）会默认请求到哪个云环境的资源
-        //   此处请填入环境 ID, 环境 ID 可打开云控制台查看
-        //   如不填则使用默认环境（第一个创建的环境）
-        env: 'volunteer-2ge0hjpsa1879e88',
-        traceUser: true,
+	onLaunch: function () {
+		var that = this
+		var openid 
+		if (!wx.cloud) {
+			console.error('请使用 2.2.3 或以上的基础库以使用云能力');
+		} else {
+			wx.cloud.init({
+				// env 参数说明：
+				//   env 参数决定接下来小程序发起的云开发调用（wx.cloud.xxx）会默认请求到哪个云环境的资源
+				//   此处请填入环境 ID, 环境 ID 可打开云控制台查看
+				//   如不填则使用默认环境（第一个创建的环境）
+				env: 'volunteer-2ge0hjpsa1879e88',
+				traceUser: true,
 			})
-			if(wx.getStorageSync('openid')){
-				console.log("此openid已登陆过")
-          this.globalData.openid = wx.getStorageSync('openid')
-				}
-				else{
+			if (wx.getStorageSync('openid')) {
+				this.globalData.openid = wx.getStorageSync('openid')
+			} else {
 				wx.cloud.callFunction({
-          name: 'getUserOpenid',
-          success(res) {
-            console.log("此openid未登陆过")
-            that.globalData.openid = res.result.openid
-            wx.setStorageSync('openid', res.result.openid)
-          }
-        })
-		}}
-
-		wx.cloud.database().collection('TeamInfo').where({}).get({
-			success(res)
-			{
-				const teams=[]
-				//console.log(res.data)
-				for(var l in res.data)
-				{
-					teams[l]=res.data[l].teamName
-				}
-				//console.log(teams)
-				that.globalData.team=teams
+					name: 'getUserOpenid',
+					success(res) {
+						that.globalData.openid = res.result.openid
+						wx.setStorageSync('openid', res.result.openid)
+					}
+				})
 			}
-		})
+			//只查自己的队伍
+			wx.cloud.database().collection('TeamInfo')
+				.where({
+					_openid: that.globalData.openid
+				})
+				.get({
+					success(res) {
+						console.log(res)
+						console.log(that.globalData.openid)
+						var teams = []
+						for (var l in res.data) {
+							teams[l] = res.data[l].teamName
+						}
+						that.globalData.team = teams
+					}
+				})
+		}
 	},
-	onshow:function()
-	{
-		console.log(11)
+	onshow: function () {
+
 	},
-  globalData:
-  {
-    userinfo: null,
-    openid: null,
-    nickName: '',
+	globalData: {
+		userinfo: null,
+		openid: null,
+		nickName: '',
 		avatar: null,
-		islogin:false,
-		team:[]
-  }
+		islogin: false,
+		team: []
+	}
 });
