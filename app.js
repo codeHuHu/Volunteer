@@ -2,7 +2,7 @@
 App({
 	onLaunch: function () {
 		var that = this
-		var openid 
+		var openid
 		if (!wx.cloud) {
 			console.error('请使用 2.2.3 或以上的基础库以使用云能力');
 		} else {
@@ -45,6 +45,9 @@ App({
 	},
 	onshow: function () {
 
+	},
+	Z(num, length=2) {
+		return ("0000000000000000" + num).substr(-length);
 	},
 	globalData: {
 		userinfo: null,

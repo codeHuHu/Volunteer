@@ -1,14 +1,14 @@
 .share {
   display: flex;
   position: fixed; 
-  top:400px;
+  top:250px;
   right:15px;
 }
 
 .signUp {
   display: flex;
   position: fixed; 
-  top:500px;
+  top:430px;
   right:15px;
 }
 

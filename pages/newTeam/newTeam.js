@@ -182,7 +182,7 @@ Page({
 					teamIntro: this.data.teamIntro,
 					serviceNumber: 0,
 					member:1,
-					memberDetail: [[app.globalData.openid, this.data.leaderName, this.data.leaderId, this.data.leaderPhone]],
+					teamMembers: [app.globalData.openid],
 					volunteerTime: 0
 				},
 				success(res) {

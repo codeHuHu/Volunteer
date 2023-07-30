@@ -3,6 +3,7 @@
 	<image mode="aspectFill" src="../../images/1-up1.png" />
 </view>
 
+
 <view class="cu-bar bg-white search search-bar" style="top:{{CustomBar}}px col-display">
 	<view class="search-form round">
 		<text class="cuIcon-search"></text>

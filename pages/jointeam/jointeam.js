@@ -13,14 +13,7 @@ Page({
 	 * 生命周期函数--监听页面加载
 	 */
 	onLoad(options) {
-		db.collection('TeamInfo').get()
-			.then(res => {
-				this.setData({
-					teamList: res.data
-				})
-				wx.stopPullDownRefresh()
-			})
-			.catch(console.error)
+		this.getData()
 	},
 
 	/**
@@ -34,7 +27,7 @@ Page({
 	 * 生命周期函数--监听页面显示
 	 */
 	onShow() {
-
+		this.getData()
 	},
 
 	/**
@@ -70,6 +63,16 @@ Page({
 	 */
 	onShareAppMessage() {
 
+	},
+	getData() {
+		db.collection('TeamInfo').get()
+			.then(res => {
+				this.setData({
+					teamList: res.data
+				})
+				wx.stopPullDownRefresh()
+			})
+			.catch(console.error)
 	},
 	toteamdetail(e) {
 		wx.navigateTo({
