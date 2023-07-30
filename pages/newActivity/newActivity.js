@@ -28,7 +28,11 @@ Page({
 		actAddress: '',
 		intro: '',
 		Phone: '',
-		temp_imgList: []
+		temp_imgList: [],
+		//三个时间戳
+		starttimestamp:'',
+		endtimestamp:'',
+		deadtimestamp:''
 	},
 
 	/**
@@ -36,13 +40,14 @@ Page({
 	 */
 	onLoad: function () {
 		// const currentDate = new Date().toLocaleDateString('en-GB', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/\//g, '-');
+		//const currentDate = new Date()
 		const currentDate = new Date().toISOString().slice(0, 10);
-
 		const currentTime = new Date().toLocaleTimeString('en-US', {
 			hour12: false,
 			hour: '2-digit',
 			minute: '2-digit'
 		});
+
 		console.log(currentTime)
 		this.setData({
 			currentDate: currentDate,
@@ -125,9 +130,20 @@ Page({
 		// let start = new Date(combinedStartStr).getTime();
 		// let end = new Date(combinedEndStr).getTime();
 		// this.checkTime(start, end);
+		let combinedStartStr = e.detail.value + ' ' + this.data.startTime;
+		let combinedEndStr = e.detail.value + ' ' + this.data.endTime;
+		//	console.log(combinedStartStr)
+		let start = new Date(combinedStartStr).getTime();
+		let end = new Date(combinedEndStr).getTime();
+
+		let dead=e.detail.value+' '+this.data.deadTime;
+		let deadstamp = new Date(dead).getTime()
 		this.setData({
 			beginDate: e.detail.value,
-			deadDate: e.detail.value
+			deadDate: e.detail.value,
+			starttimestamp:start,
+			endtimestamp:end,
+			deadtimestamp:deadstamp
 		})
 		//console.log(e.detail.value)
 	},
@@ -137,8 +153,12 @@ Page({
 		// let start = new Date(combinedStartStr).getTime();
 		// let end = new Date(combinedEndStr).getTime();
 		// this.checkTime(start, end);
+		let dead=e.detail.value+' '+this.data.deadTime;
+		let deadstamp = new Date(dead).getTime()
+
 		this.setData({
-			deadDate: e.detail.value
+			deadDate: e.detail.value,
+			deadtimestamp:deadstamp
 		})
 	},
 
@@ -152,10 +172,14 @@ Page({
 		// console.log(start)
 		// console.log(end)
 		// console.log(e.detail.value);
-
+		let dead=this.data.deadDate+' '+e.detail.value;
+		let deadstamp = new Date(dead).getTime()
 		this.setData({
 			startTime: e.detail.value,
-			deadTime: e.detail.value
+			deadTime: e.detail.value,
+			starttimestamp:start,
+			endtimestamp:end,
+			deadtimestamp:deadstamp
 		})
 	},
 	bindETimeChange: function (e) {
@@ -164,13 +188,22 @@ Page({
 		let start = new Date(combinedStartStr).getTime();
 		let end = new Date(combinedEndStr).getTime();
 		this.checkTime(start, end);
+
+		let dead=this.data.deadDate+' '+this.data.deadTime;
+		let deadstamp = new Date(dead).getTime()
 		this.setData({
-			endTime: e.detail.value
+			endTime: e.detail.value,
+			endtimestamp:end,
+			starttimestamp:start,
+			deadtimestamp:deadstamp
 		})
 	},
 	binddeadTimeChange: function (e) {
+		let dead=this.data.deadDate+' '+e.detail.value;
+		let deadstamp = new Date(dead).getTime()
 		this.setData({
-			deadTime: e.detail.value
+			deadTime: e.detail.value,
+			deadtimestamp:deadstamp
 		})
 	},
 
@@ -306,11 +339,14 @@ Page({
 								outNum: this.data.outNum,
 								inJoin: 0,
 								outJoin: 0,
-								serviceDate: this.data.beginDate,
-								serviceSTime: this.data.startTime,
-								serviceETime: this.data.endTime,
-								DeadDate: this.data.deadDate,
-								deadTime: this.data.deadTime,
+								// serviceDate: this.data.beginDate,
+								// serviceSTime: this.data.startTime,
+								// serviceETime: this.data.endTime,
+								// DeadDate: this.data.deadDate,
+								//	deadTime: this.data.deadTime,
+								serviceStamp:this.data.starttimestamp,
+								serviceEstamp:this.data.endtimestamp,
+								deadtimestamp:this.data.deadtimestamp,
 								address: this.data.Address,
 								intro: this.data.intro,
 								tag: this.data.tagList[this.data.tagIndex],

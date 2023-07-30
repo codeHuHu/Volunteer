@@ -9,7 +9,11 @@ Page({
 		//志愿者是否参加了此次志愿
 		ifJoin: 0,
 		//志愿者是否在组织志愿的队伍中
-		ifInTeam: 0
+		ifInTeam: 0,
+		deadtime:'',
+		serviceDate:'',
+		serviceSTime:'',
+		serviceETime:''
 	},
 
 	onLoad: function (options) {
@@ -17,20 +21,76 @@ Page({
 		that.data.id = options.id
 		wx.cloud.database().collection('ActivityInfo').doc(that.data.id).get({
 			success(res) {
-				var startTime = res.data.serviceSTime
-				var endTime = res.data.serviceETime
-				var startMinutes = parseInt(startTime.split(":")[0]) * 60 + parseInt(startTime.split(":")[1]);
-				var endMinutes = parseInt(endTime.split(":")[0]) * 60 + parseInt(endTime.split(":")[1]);
-				// 计算时间差（以分钟为单位）
-				var duration = endMinutes - startMinutes;
-				// 将时间差转换为小时和分钟
-				var hours = Math.floor(duration / 60);
-				var minutes = duration % 60;
+				// var startTime = res.data.serviceSTime
+				// var endTime = res.data.serviceETime
+				// var startMinutes = parseInt(startTime.split(":")[0]) * 60 + parseInt(startTime.split(":")[1]);
+				// var endMinutes = parseInt(endTime.split(":")[0]) * 60 + parseInt(endTime.split(":")[1]);
+				// // 计算时间差（以分钟为单位）
+				// var duration = endMinutes - startMinutes;
+				// // 将时间差转换为小时和分钟
+				// var hours = Math.floor(duration / 60);
+				// var minutes = duration % 60;
+
+				// that.setData({
+				// 	actions: res.data,
+				// 	hours,
+				// 	minutes,
+				// })
+
+				//截止时间
+				console.log(res.data)
+				console.log(res.data.deadtimestamp)
+				const timestamp = res.data.deadtimestamp; // 示例时间戳
+				const date1 = new Date(timestamp);			
+				const hours = date1.getHours();
+				const minutes = date1.getMinutes();				
+				const formattedTime = `${hours}:${minutes < 10 ? '0' : ''}${minutes}`;
+				console.log(formattedTime);
+
+				//截止日期
+				const date2 =new Date(res.data.deadtimestamp);
+				const year = date2.getFullYear();
+				const month = date2.getMonth() + 1; // 月份需要加1
+				const day = date2.getDate();
+				const formattedDate = `${year}-${month}-${day}`;
+				console.log(formattedDate)
+
+				console.log(formattedDate+' '+formattedTime)
+				//活动日期
+				const date3 =new Date(res.data.serviceStamp);
+				const syear = date3.getFullYear();
+				const smonth = date3.getMonth() + 1; // 月份需要加1
+				const sday = date3.getDate();
+				const serviceDate = `${syear}-${smonth}-${sday}`;
+				console.log(formattedDate)
+
+				//服务开始时间
+				const timestamp1 = res.data.serviceStamp; // 示例时间戳
+				const date4 = new Date(timestamp1);
+				const shours = date4.getHours();
+				const sminutes = date4.getMinutes();
+				const serviceSTime = `${shours}:${sminutes < 10 ? '0' : ''}${sminutes}`;
+
+					//服务结束时间
+				const timestamp2 = res.data.serviceEstamp; // 示例时间戳
+				const date5 = new Date(timestamp2);
+				const ehours = date5.getHours();
+				const eminutes = date5.getMinutes();				
+				const serviceETime = `${ehours}:${eminutes < 10 ? '0' : ''}${eminutes}`;
+
+				const tmpstamp=new Date(res.data.serviceEstamp)-new Date(res.data.serviceStamp);
+				//const date6 = new Date(tmpstamp);
+				const thours = Math.floor(tmpstamp / (1000 * 60 * 60));
+				const tminutes = Math.floor((tmpstamp % (1000 * 60 * 60)) / (1000 * 60));
 
 				that.setData({
-					actions: res.data,
-					hours,
-					minutes,
+					actions:res.data,
+					deadtime:formattedDate+' '+formattedTime,
+					serviceDate:serviceDate,
+					serviceSTime:serviceSTime,
+					serviceETime:serviceETime,
+					hours:thours,
+					minutes:tminutes,
 				})
 				// 如果名单里有该志愿者,改变报名按钮状态
 				for (var i in res.data.joinMembers) {

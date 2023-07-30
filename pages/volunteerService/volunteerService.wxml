@@ -47,7 +47,7 @@
 						<view class="cu-tag bg-green light sm round going-on" wx:if="{{item.status==1}}">进行中</view>
 						<view class="cu-tag bg-green light sm round going-on" wx:elif="{{item.status==2}}" style="background-color: gray;">已结束</view>
 						<view>
-							<text class="data">{{item.serviceDate}}</text>
+							<text class="data">{{data_Arr[index]}}</text>
 						</view>
 					</view>
 

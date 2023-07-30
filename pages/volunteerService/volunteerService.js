@@ -22,7 +22,8 @@ Page({
 		doing: '进行中',
 		finish: '已结束',
 		timestamp: '',
-		index: ''
+		index: '',
+		data_Arr:[],
 	},
 
 	// 点击下拉显示框
@@ -120,10 +121,11 @@ Page({
 		wx.setNavigationBarTitle({
 			title: '志愿服务',
 		})
-		const currentDate = new Date().toLocaleDateString().split('/').join('-');
-		const currentDateObject = new Date(currentDate);
-		const timestamp = currentDateObject.getTime();
+		const currentDate = new Date();
+		// const currentDateObject = new Date(currentDate);
+		const timestamp = currentDate.getTime();
 		//console.log(timestamp);
+		const date = new Date(timestamp);
 
 		this.setData({
 			timestamp: timestamp,
@@ -140,8 +142,9 @@ Page({
 			var actions = res.data
 			//console.log(actions[0])
 			for (var l in actions) {
-				var tmptimestamp = new Date(actions[l].serviceDate)
-				tmptimestamp = tmptimestamp.getTime()
+				//活动结束之前
+				var tmptimestamp = actions[l].serviceEstamp
+				// tmptimestamp = tmptimestamp.getTime()
 				//console.log(tmptimestamp)
 				if (tmptimestamp < that.data.timestamp) {
 					actions[l].status = '2'
@@ -162,7 +165,7 @@ Page({
 
 		}).catch(error => {
 			console.error('Error while finding documents:', error);
-		});
+		});	
 	},
 	/**
 	 * 生命周期函数--监听页面初次渲染完成
@@ -177,11 +180,26 @@ Page({
 	onShow: function () {
 		const db = wx.cloud.database()
 		db.collection('ActivityInfo')
-			.orderBy('serviceDate', 'desc').get().then((res) => {
+			.orderBy('serviceStamp', 'desc').get().then((res) => {
 				console.log(res)
+				var dataArr=[]
+				for(var l in res.data)
+				{
+					const date =new Date(res.data[l].serviceStamp);
+					const year = date.getFullYear();
+					const month = date.getMonth() + 1; // 月份需要加1
+					const day = date.getDate();
+
+					const formattedDate = `${year}-${month}-${day}`;
+					dataArr.push(formattedDate)
+					console.log(formattedDate)
+				}
 				this.setData({
-					actionList: res.data
+					actionList: res.data,
+					data_Arr:dataArr
 				})
+			
+
 				wx.stopPullDownRefresh()
 			})
 			.catch(console.error)
