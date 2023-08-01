@@ -8,7 +8,8 @@ Page({
 	 */
 	data: {
 		message: 123,
-		actions: []
+		actions: [],
+		keyword:'',
 	},
 
 	/**
@@ -20,23 +21,28 @@ Page({
 		wx.setNavigationBarTitle({
 			title: '首页',
 		})
-		//查找活动
-		db.collection('ActivityInfo')
-			.where({
-				status: '1'
-			})
-			.get()
-			.then(res => {
-				console.log(res.data)
-				that.setData({
-					actions: res.data
-				})
-			})
-			.catch(err => {
-				console.log(err);
-			})
+		this.getData()
 	},
-
+		//查找活动
+		getData()
+		{
+			var that =this;
+				//查找活动
+		db.collection('ActivityInfo')
+		.where({
+			status: '1'
+		})
+		.get()
+		.then(res => {
+			console.log(res.data)
+			that.setData({
+				actions: res.data
+			})
+		})
+		.catch(err => {
+			console.log(err);
+		})
+		},
 	/**
 	 * 生命周期函数--监听页面初次渲染完成
 	 */
@@ -142,6 +148,22 @@ Page({
 			PageCur: e.currentTarget.dataset.cur
 		})
 	},
+	togift()
+	{
+		wx.showToast({
+			title: '加急开发中...',
+			icon: 'loading',
+			duration:1000
+		})
+	},
+	tohonor()
+	{
+		wx.showToast({
+			title: '加急开发中...',
+			icon: 'loading',
+			duration:1000
+		})
+	},
 	toZhiyuanfuwu() {
 		wx.reLaunch({
 			url: '/pages/volunteerService/volunteerService',
@@ -167,4 +189,38 @@ Page({
 			url: '/pages/detail/detail?id=' + e.currentTarget.dataset.id,
 		})
 	},
+	searchIcon(e)
+	{
+		console.log(e.detail.value)
+		this.setData({
+			keyword:e.detail.value
+		})
+	},
+	searchActivity()
+	{
+		var that =this
+		//搜索栏不为空
+		if(this.data.keyword)
+		{
+		wx.cloud.callFunction({
+			name : 'searchTeam',
+			data : { 
+				collection:'ActivityInfo',
+				keyword: this.data.keyword,
+				name:'actName'
+			}
+		})
+		.then (res =>
+			{
+				console.log(res.result)
+				that.setData({
+					actions: res.result
+				})
+			})
+	}
+	else {
+		this.getData();
+	}
+	
+	}
 })

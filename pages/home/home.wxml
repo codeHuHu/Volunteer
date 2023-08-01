@@ -4,22 +4,22 @@
 </view>
 
 
-<view class="cu-bar bg-white search search-bar" style="top:{{CustomBar}}px col-display">
-	<view class="search-form round">
-		<text class="cuIcon-search"></text>
-		<input type="text" placeholder="搜索志愿" confirm-type="search" bindinput="searchIcon"></input>
+<view class="cu-bar bg-white search search-bar" style="top:{{CustomBar}}px col-display;">
+	<view class="search-form round padding">
+		<input type="text" placeholder="搜索志愿" confirm-type="search" bindinput="searchIcon" value=""></input>
+		<text class="cuIcon-search text-bold" style="color:rgb(40, 166, 216)"  bindtap="searchActivity"></text>
 	</view>
 </view>
 
 <view class="icon-bar">
-	<view class="item">
+	<view class="item" bind:tap="togift">
 		<view class="greencircle">
 			<view class="bar-icon">
 				<text class="cuIcon-present lg "></text>
 			</view>
 		</view>
 		<view>
-			<text class="fontsize">志愿福利</text>
+			<text class="fontsize" >志愿福利</text>
 		</view>
 	</view>
 	<view class="item" bindtap="toZhiyuanfuwu">
@@ -32,7 +32,7 @@
 			<text class="fontsize">志愿服务</text>
 		</view>
 	</view>
-	<view class="item">
+	<view class="item" bind:tap="tohonor">
 		<view class="greencircle">
 			<view class="bar-icon">
 				<text class="cuIcon-selection lg "></text>

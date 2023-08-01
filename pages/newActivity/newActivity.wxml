@@ -75,7 +75,7 @@
 			</view>
 		</view>
 
-		<view class="cu-form-group">
+		<view class="cu-form-group ">
 			<view class="inline_name">简介：</view>
 			<textarea class="new_profile" placeholder="请输入简介" bindinput="getintro"></textarea>
 		</view>

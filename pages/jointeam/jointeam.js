@@ -86,17 +86,7 @@ Page({
 		this.setData({
 			keyword:e.detail.value
 		})
-		wx.cloud.callFunction({
-			name : 'searchTeam',
-
-			data : { 
-				keyword: e.detail.value
-			}
-		})
-		.then (res =>
-			{
-
-			})
+		
 	},
 	search()
 	{
@@ -106,14 +96,14 @@ Page({
 		{
 		wx.cloud.callFunction({
 			name : 'searchTeam',
-
 			data : { 
-				keyword: this.data.keyword
+				collection:'TeamInfo',
+				keyword: this.data.keyword,
+				name:'teamName'
 			}
 		})
 		.then (res =>
 			{
-				
 
 				console.log(res.result)
 				that.setData({
