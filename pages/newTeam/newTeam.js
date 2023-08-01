@@ -27,7 +27,11 @@ Page({
 	 * 生命周期函数--监听页面加载
 	 */
 	onLoad(options) {
-
+		this.setData({
+			leaderName: app.globalData.Name,
+			leaderId: app.globalData.Id,
+			leaderPhone: app.globalData.phone,
+		})
 	},
 
 	/**
@@ -38,18 +42,12 @@ Page({
 	},
 
 
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow() {
-    let a = wx.getStorageSync('adminAccount')
-    let b = wx.getStorageSync('adminPassword')
-    this.setData({
-      adminAccount: a,
-      adminPassword: b
-		})
-		console.log(app.globalData.team)
-  },
+	/**
+	 * 生命周期函数--监听页面显示
+	 */
+	onShow() {
+
+	},
 
 
 
@@ -89,47 +87,9 @@ Page({
 
 
 	},
-	getAdminAccount(e) {
-		this.setData({
-			adminAccount: e.detail.value
-		})
-	},
-	getAdminPassword(e) {
-		this.setData({
-			adminPassword: e.detail.value
-		})
-	},
-	adminLogin() {
-		if (this.data.adminAccount == '123456' && this.data.adminPassword == '123456') {
-			this.setData({
-				ifAdmin: true
-			})
-			wx.setStorageSync('adminAccount', this.data.adminAccount)
-			wx.setStorageSync('adminPassword', this.data.adminPassword)
-		} else {
-			wx.showToast({
-				title: '验证错误',
-			})
-		}
-	},
 	getTeamName(e) {
 		this.setData({
 			teamName: e.detail.value
-		})
-	},
-	getCaptainName(e) {
-		this.setData({
-			leaderName: e.detail.value
-		})
-	},
-	getCaptainNumber(e) {
-		this.setData({
-			leaderId: e.detail.value
-		})
-	},
-	getCaptainPhone(e) {
-		this.setData({
-			leaderPhone: e.detail.value
 		})
 	},
 	getMail(e) {
@@ -169,20 +129,27 @@ Page({
 			wx.showToast({
 				title: '未同意协议',
 			})
-			// db.collection('TeamInfo').where({
-			// 	_openid: app.globalData.openid
-			// }).remove()
 		} else {
 			db.collection('TeamInfo').add({
 				data: {
 					teamName: this.data.teamName,
-					teamLeader: [app.globalData.openid, this.data.leaderName, this.data.leaderId, this.data.leaderPhone],
+					teamLeader: [{
+						openid: app.globalData.openid,
+						Name: this.data.leaderName,
+						Id: this.data.leaderId,
+						Phone: this.data.leaderPhone
+					}],
 					mail: this.data.mail,
 					region: this.data.region[0] + this.data.region[1] + this.data.region[2],
 					teamIntro: this.data.teamIntro,
 					serviceNumber: 0,
-					member:1,
-					teamMembers: [app.globalData.openid],
+					member: 1,
+					teamMembers: [{
+						openid: app.globalData.openid,
+						Name: this.data.leaderName,
+						Id: this.data.leaderId,
+						Phone: this.data.leaderPhone
+					}],
 					volunteerTime: 0
 				},
 				success(res) {

@@ -28,27 +28,25 @@ App({
 			}
 
 			//openid不为空，获取当前用户的信息
-			if(that.globalData.openid)
-			{
-			wx.cloud.callFunction({
-				name:'getUserInfo',
-				data :{
-					openid:that.globalData.openid
-				},
-				success(res)
-				{
-					// console.log(res.result);
-					// console.log(res.result.data[0].username);
-					that.globalData.Name = res.result.data[0].username;
-					that.globalData.phone = res.result.data[0].phone;
-					that.globalData.status = res.result.data[0].status
-				},
-				fail(err)
-				{
-					console.log(err)
-				}
-			})
-		}
+			if (that.globalData.openid) {
+				wx.cloud.callFunction({
+					name: 'getUserInfo',
+					data: {
+						openid: that.globalData.openid
+					},
+					success(res) {
+						// console.log(res.result);
+						// console.log(res.result.data[0].username);
+						that.globalData.Name = res.result.data[0].username;
+						that.globalData.phone = res.result.data[0].phone;
+						that.globalData.status = res.result.data[0].status;
+						that.globalData.Id = res.result.data[0].idnumber;
+					},
+					fail(err) {
+						console.log(err)
+					}
+				})
+			}
 			//只查自己的队伍
 			wx.cloud.database().collection('TeamInfo')
 				.where({
@@ -70,7 +68,7 @@ App({
 	onshow: function () {
 
 	},
-	Z(num, length=2) {
+	Z(num, length = 2) {
 		return ("0000000000000000" + num).substr(-length);
 	},
 	globalData: {
@@ -80,7 +78,7 @@ App({
 		avatar: null,
 		islogin: false,
 		team: [],
-		phone:0,
-		status:0,
+		phone: 0,
+		status: 0,
 	}
 });

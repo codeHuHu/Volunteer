@@ -61,10 +61,11 @@ Page({
 						.then(Response => {
 							var teamMembers = Response.data[0]['teamMembers']
 							for (var i in teamMembers) {
-								if (teamMembers[i] == app.globalData.openid) {
+								if (teamMembers[i].openid == app.globalData.openid) {
 									that.setData({
 										ifInTeam: 1
 									})
+									break
 								}
 							}
 						})

@@ -16,8 +16,6 @@ Page({
 	 * 生命周期函数--监听页面加载
 	 */
 	onLoad: function () {
-		console.log('fuck', app.globalData.openid)
-		var that = this
 		wx.setNavigationBarTitle({
 			title: '首页',
 		})
@@ -54,7 +52,6 @@ Page({
 	 * 生命周期函数--监听页面显示
 	 */
 	onShow: function () {
-		console.log('fuck', app.globalData)
 		wx.hideHomeButton()
 	},
 
@@ -98,7 +95,6 @@ Page({
 		var value = wx.getStorageSync('user_status')
 		if (value) {
 			try {
-				console.log(app.globalData)
 				for (var i in value) {
 					if (value[i][0] == app.globalData.openid && value[i][1] == true) {
 						return true
@@ -117,7 +113,6 @@ Page({
 			})
 			.get({
 				success(res) {
-					console.log(res);
 					var n = res.data.length;
 					if (n) {
 						app.globalData.islogin = true
@@ -191,7 +186,6 @@ Page({
 	},
 	searchIcon(e)
 	{
-		console.log(e.detail.value)
 		this.setData({
 			keyword:e.detail.value
 		})
