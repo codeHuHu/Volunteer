@@ -9,7 +9,8 @@
 		"pages/jointeam/jointeam",
 		"pages/teamdetail/teamdetail",
 		"pages/accountSignUp/accountSignUp",
-		"pages/None/None"
+		"pages/None/None",
+		"pages/teammenbers/teammenbers"
 	],
 	"usingComponents": {
     "cu-custom": "colorui/components/cu-custom/cu-custom"

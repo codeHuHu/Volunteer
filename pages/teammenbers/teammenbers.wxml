@@ -1,0 +1,25 @@
+<view class="cu-bar bg-white shadow">
+	<text class="text-black text-bold text-xxl padding-xs">志愿队员</text>
+</view>
+
+<view class="margin-left text-xs text-gray  " style="position: relative; top:22rpx;"> 
+<text class="bg-oc-yellow-3">队长</text></view>
+<view class=" margin leader padding" style="background-color: aliceblue; display: flex; flex-direction:column;">
+	<view >
+	<text class="margin-xs  text-xl">{{leader[1]}}</text>
+	<text>{{leader[3]}}</text>
+	</view>
+
+</view>
+
+<view class="margin-left text-xs text-gray ">
+	<text class="bg-oc-yellow-3">队员</text></view>
+
+<view class=" margin members padding" style="background-color: aliceblue; display: flex; flex-direction:column; position: relative; top:-20rpx" wx:for="{{teammembers}}" wx:key="index">
+
+<view class="{{index==teammembers.length-1?' ':'margin-bottom'}}">
+<text class="margin-xs  text-xl">{{item.Name}}</text>
+<text> {{item.phone}}</text>
+</view>
+
+</view>

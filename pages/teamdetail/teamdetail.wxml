@@ -27,7 +27,7 @@
 	</view>
 	<view class="padding flex  justify-between ">
 		<text class="">本队成员</text>
-		<view style="display:flex">
+		<view style="display:flex" bindtap="members">
 			<text class="text-df ">{{teamDetail.member}}</text>
 			<view class="cuIcon-right"></view>
 		</view>

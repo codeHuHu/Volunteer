@@ -6,10 +6,10 @@
 <view class="cu-bar bg-white search " style="top:-10px;">
 	<view class="search-form round">
 		<text class="cuIcon-search"></text>
-		<input type="text" placeholder="输入相关队伍" confirm-type="search"></input>
+		<input type="text" placeholder="输入相关队伍" confirm-type="search" bindinput="getkeyword"></input>
 	</view>
 	<view class="action">
-		<button class="cu-btn bg-gradual-blue shadow-blur round" style="width: auto;">搜索</button>
+		<button class="cu-btn bg-gradual-blue shadow-blur round" style="width: auto;" bindtap="search">搜索</button>
 	</view>
 </view>
 

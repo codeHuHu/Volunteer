@@ -31,7 +31,7 @@ Page({
 	onReady() {
 		var cur = this.data.teamDetail.teamMembers
 		for (var i in cur) {
-			if (cur[i] == app.globalData.openid) {
+			if (cur[i].openid == app.globalData.openid) {
 				//已在队伍当中了
 				this.setData({
 					ifJoined: 1
@@ -102,12 +102,17 @@ Page({
 			})
 			return
 		}//
+		
 		//云函数添加memberUndetermined到数据库(还没写)
 		wx.cloud.callFunction({
 			name: 'updateJoinTeam',
+			
 			data: {
+
 				collectionName: 'TeamInfo',
 				docName: this.data.id,
+				myname:app.globalData.Name,
+				myphone:app.globalData.phone,
 				//操作变量
 				Add: 1,
 				//newTeamMembers:result
@@ -125,5 +130,12 @@ Page({
 			//this.setShow("success", "加入成功");
 		})
 		
+	
+	},
+	members()
+	{
+		wx.navigateTo({
+			url: '/pages/teammenbers/teammenbers?id=' +this.data.id,
+		})
 	}
 })

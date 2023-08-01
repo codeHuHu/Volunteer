@@ -1,6 +1,7 @@
 // app.js
 App({
 	onLaunch: function () {
+		console.log('来啦')
 		var that = this
 		var openid
 		if (!wx.cloud) {
@@ -25,6 +26,29 @@ App({
 					}
 				})
 			}
+
+			//openid不为空，获取当前用户的信息
+			if(that.globalData.openid)
+			{
+			wx.cloud.callFunction({
+				name:'getUserInfo',
+				data :{
+					openid:that.globalData.openid
+				},
+				success(res)
+				{
+					// console.log(res.result);
+					// console.log(res.result.data[0].username);
+					that.globalData.Name = res.result.data[0].username;
+					that.globalData.phone = res.result.data[0].phone;
+					that.globalData.status = res.result.data[0].status
+				},
+				fail(err)
+				{
+					console.log(err)
+				}
+			})
+		}
 			//只查自己的队伍
 			wx.cloud.database().collection('TeamInfo')
 				.where({
@@ -52,9 +76,11 @@ App({
 	globalData: {
 		userinfo: null,
 		openid: null,
-		nickName: '',
+		Name: '',
 		avatar: null,
 		islogin: false,
-		team: []
+		team: [],
+		phone:0,
+		status:0,
 	}
 });

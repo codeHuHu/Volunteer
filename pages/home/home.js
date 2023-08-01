@@ -15,7 +15,7 @@ Page({
 	 * 生命周期函数--监听页面加载
 	 */
 	onLoad: function () {
-		console.log('fuck', app.globalData)
+		console.log('fuck', app.globalData.openid)
 		var that = this
 		wx.setNavigationBarTitle({
 			title: '首页',
