@@ -83,7 +83,7 @@
 			</view>
 		</view>
 		<view class="cu-item arrow">
-			<view bindtap="none" class="content">
+			<view bindtap="toPersonalSetting" class="content">
 				<text class="cuIcon-settings lg text-gray"></text>
 				<text class="text-grey">个人设置</text>
 			</view>

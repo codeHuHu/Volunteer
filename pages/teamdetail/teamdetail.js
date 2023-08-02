@@ -111,8 +111,9 @@ Page({
 
 				collectionName: 'TeamInfo',
 				docName: this.data.id,
-				myname:app.globalData.Name,
-				myphone:app.globalData.phone,
+				myId:app.globalData.Id,
+				myName:app.globalData.Name,
+				myPhone:app.globalData.phone,
 				//操作变量
 				Add: 1,
 				//newTeamMembers:result
