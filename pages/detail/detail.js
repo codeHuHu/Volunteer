@@ -61,20 +61,67 @@ Page({
 						.then(Response => {
 							var teamMembers = Response.data[0]['teamMembers']
 							for (var i in teamMembers) {
-								if (teamMembers[i].openid == app.globalData.openid) {
+								if (teamMembers[i] == app.globalData.openid) {
 									that.setData({
 										ifInTeam: 1
 									})
-									break
 								}
 							}
 						})
 				}
 			}
 		})
-
+		// this.updateUserInfo()
 	},
-
+		// updateUserInfo()
+		// {
+		// 	var id = this.data.id
+		// 	console.log(app.globalData.openid)
+		// 	if(this.data.ifJoin == 1)
+		// 	{
+		// 		console.log('id是',id)
+		// 		console.log('why')
+		// 		db.collection('UserInfo').where({
+		// 			_openid : app.globalData.openid
+		// 		}).update({
+		// 			data: 
+		// 			{
+		// 				myActivity : db.command.push(id)
+		// 			},
+		// 			success(res)
+		// 			{
+		// 				console.log('添加活动记录成功');
+		// 			}
+		// 		})	
+		// 	}
+		// 	else 
+		// 	{
+		// 		const myActivityList=[];
+		// 		db.collection('UserInfo').where({
+		// 			_openid : app.globalData.openid
+		// 		}).get({
+		// 			success(res)
+		// 			{
+		// 				var actions =res.data
+		// 				for(var l in actions.myActivity)
+		// 				{
+		// 					if(actions.myActivity[l] != that.data.id )
+		// 					{
+		// 						myActivityList.push(actions.myActivity[l])
+		// 					}
+		// 				}
+		// 				db.collection('UserInfo').where({
+		// 					_openid : app.globalData.openid
+		// 				}).update({
+		// 				data:{
+		// 					myActivity: myActivityList
+		// 				}	
+		// 			})
+		// 			},
+					
+		// 		})
+		// 	}
+		// },
 	onReady() {
 
 	},
@@ -137,6 +184,7 @@ Page({
 		}
 	},
 	ifAvailableAndJoin() {
+		var that=this
 		//先更新一下,查看是否满人了
 		db.collection('ActivityInfo').doc(this.data.id)
 			.get()
@@ -173,6 +221,21 @@ Page({
 						this.setData({
 							ifJoin: 1
 						})
+
+						//将该活动id加入到userInfo
+						db.collection('UserInfo').where({
+							_openid : app.globalData.openid,
+							myActivity: db.command.not(db.command.elemMatch(db.command.eq(that.data.id)))
+						}).update({
+							data: 
+							{
+								myActivity : db.command.push(that.data.id)
+							},
+							success(res)
+							{
+								console.log('添加活动记录成功');
+							}
+						})	
 						this.setShow("success", "报名成功");
 						//(非云函数)修改完毕,再次获取数据库
 						db.collection('ActivityInfo').doc(this.data.id)
@@ -181,12 +244,14 @@ Page({
 								this.setData({
 									actions: res.data
 								})
+								console.log(that.data.ifJoin)
 							})
 					})
 
 			})
 	},
 	unJoin() {
+		var that =this
 		//(非云函数)先获取数据库
 		db.collection('ActivityInfo').doc(this.data.id)
 			.get()
@@ -232,6 +297,36 @@ Page({
 						this.setData({
 							ifJoin: 0
 						})
+
+						//在userInfo中删除此活动id
+						const myActivityList=[];
+				db.collection('UserInfo').where({
+					_openid : app.globalData.openid
+				}).get({
+					success(res)
+					{
+						var actions =res.data
+						var myActivity = actions[0].myActivity
+						console.log(myActivity)
+						console.log(that.data.id)
+						for(var l in myActivity)
+						{
+							if(myActivity[l] != that.data.id )
+							{
+									console.log(1)
+								myActivityList.push(myActivity[l])
+							}
+						}
+					
+						db.collection('UserInfo').where({
+							_openid : app.globalData.openid
+						}).update({
+						data:{
+							myActivity: myActivityList
+						}	
+					})
+				
+
 						this.setShow("success", "取消成功");
 						//(非云函数)修改完毕,再次获取数据库
 						db.collection('ActivityInfo').doc(this.data.id)
@@ -241,7 +336,9 @@ Page({
 									actions: res.data
 								})
 							})
-					})
+					}
+				})
+			})
 			})
 	},
 	showModal(e) {
@@ -302,4 +399,5 @@ Page({
 			current: e.currentTarget.dataset.index
 		})
 	},
+	
 })

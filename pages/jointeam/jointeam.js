@@ -90,6 +90,10 @@ Page({
 	},
 	search()
 	{
+		wx.showLoading({
+			title:'搜索中...',
+			mask:true
+		})
 		var that =this
 		//搜索栏不为空
 		if(this.data.keyword)
@@ -109,7 +113,7 @@ Page({
 				that.setData({
 					teamList: res.result
 				})
-			
+				wx.hideLoading()
 			})
 	}
 	else {

@@ -24,6 +24,8 @@ Page({
 		timestamp: '',
 		index: '',
 		data_Arr:[],
+		toUpdateArr:[''],
+		actions_Status:['1'],
 	},
 
 	// 点击下拉显示框
@@ -51,6 +53,40 @@ Page({
 			index1: Index,
 			show1: !this.data.show1
 		});
+		console.log(Index)
+		if(Index == 0)
+		{
+			this.onLoad()
+		}
+		else {
+			 db.collection('UserInfo').where({
+				_openid : app.globalData.openid
+			 }).get().then(res =>{
+				 console.log(res.data)
+						var actions = res.data
+						var myActivity = actions[0].myActivity
+						db.collection('ActivityInfo').where({
+							_id : db.command.in(myActivity)
+						}).field({
+							_id : true,
+							actName : true,
+							serviceEstamp :true,
+							serviceStamp:true,
+							status:true,
+							tag :true,
+							teamName :true,
+							_openid:true
+						}).orderBy('serviceStamp', 'desc').get().then(res =>
+							{
+								this.setData({
+									actionList: res.data
+								})
+								this.setTime(res.data)
+							}).catch(err => {
+								console.log(err);
+							})
+			})
+		}
 	},
 	// 点击下拉列表
 	optiontypeTap(e) {
@@ -61,16 +97,26 @@ Page({
 			show2: !this.data.show2
 		});
 		if (Index == 0) {
-			this.onShow()
+			this.onLoad()
 		} else {
 			const collection = db.collection('ActivityInfo');
 			collection.where({
 				'tag': that.data.selecttypeData[Index]
-			}).get().then(res => {
+			}).field({
+				_id : true,
+				actName : true,
+				serviceEstamp :true,
+				serviceStamp:true,
+				status:true,
+				tag :true,
+				teamName :true,
+				_openid:true
+			}).orderBy('serviceStamp', 'desc').get().then(res => {
 				console.log(res.data);
 				this.setData({
 					actionList: res.data
 				})
+				this.setTime(res.data)
 			}).catch(err => {
 				console.log(err);
 			})
@@ -90,11 +136,21 @@ Page({
 			const collection = db.collection('ActivityInfo');
 			collection.where({
 				'status': '1' //进行中
-			}).get().then(res => {
+			}).field({
+				_id : true,
+				actName : true,
+				serviceEstamp :true,
+				serviceStamp:true,
+				status:true,
+				tag :true,
+				teamName :true,
+				_openid:true
+			}).orderBy('serviceStamp', 'desc').get().then(res => {
 				console.log(res.data);
 				this.setData({
 					actionList: res.data
 				})
+				this.setTime(res.data)
 			}).catch(err => {
 				console.log(err);
 			})
@@ -102,16 +158,26 @@ Page({
 			const collection = db.collection('ActivityInfo');
 			collection.where({
 				'status': '2' //已结束
-			}).get().then(res => {
+			}).field({
+				_id : true,
+				actName : true,
+				serviceEstamp :true,
+				serviceStamp:true,
+				status:true,
+				tag :true,
+				teamName :true,
+				_openid:true
+			}).orderBy('serviceStamp', 'desc').get().then(res => {
 				console.log(res.data);
 				this.setData({
 					actionList: res.data
 				})
+				this.setTime(res.data)
 			}).catch(err => {
 				console.log(err);
 			})
 		} else {
-			this.onShow()
+			this.onLoad()
 		}
 	},
 	/**
@@ -136,37 +202,53 @@ Page({
 
 	},
 	getStatus() {
-		var that = this
+		var that = this;
+		var toupdateArr = [];
+	
 		const collection = db.collection('ActivityInfo');
-		collection.get().then(res => {
-			var actions = res.data
-			//console.log(actions[0])
+		collection.field({
+			_id : true,
+			actName : true,
+			serviceEstamp :true,
+			serviceStamp:true,
+			status:true,
+			tag :true,
+			teamName :true,
+			_openid:true
+		}).orderBy('serviceStamp', 'desc').get().then(res => {
+			var actions = res.data;
+			var k = 0;
 			for (var l in actions) {
-				//活动结束之前
-				var tmptimestamp = actions[l].serviceEstamp
-				// tmptimestamp = tmptimestamp.getTime()
-				//console.log(tmptimestamp)
-				if (tmptimestamp < that.data.timestamp) {
-					actions[l].status = '2'
+				var tmptimestamp = actions[l].serviceEstamp;
+				if (actions[l].status != '2' && tmptimestamp <= that.data.timestamp) {
+					actions[l].status = '2';
+					toupdateArr[k++] = actions[l]._id;
 				}
 			}
-			// 更新集合中的文档属性
-			actions.forEach(action => {
-				collection.doc(action._id).update({
-					data: {
-						status: action.status
-					}
-				}).then(() => {
-					console.log('Document updated successfully.');
-				}).catch(error => {
-					console.error('Error while updating document:', error);
-				});
+			that.setData({
+				actionList: actions,
+				toUpdateArr: toupdateArr
 			});
-
+			this.setTime(res.data)
+			console.log(that.data.toUpdateArr);
+			return Promise.resolve(); // 返回一个 resolved 状态的 Promise 对象
+		}).then(() => {
+			console.log(that.data.toUpdateArr);
+			return wx.cloud.callFunction({
+				name: 'changeStatus',
+				data: {
+					toChangeArr: that.data.toUpdateArr,
+					collection: 'ActivityInfo'
+				}
+			});
+		}).then(res => {
+			console.log(res);
+			console.log("更新状态成功");
 		}).catch(error => {
-			console.error('Error while finding documents:', error);
-		});	
+			console.error(error);
+		});
 	},
+	
 	/**
 	 * 生命周期函数--监听页面初次渲染完成
 	 */
@@ -178,33 +260,31 @@ Page({
 	 * 生命周期函数--监听页面显示
 	 */
 	onShow: function () {
-		const db = wx.cloud.database()
-		db.collection('ActivityInfo')
-			.orderBy('serviceStamp', 'desc').get().then((res) => {
-				console.log(res)
-				var dataArr=[]
-				for(var l in res.data)
-				{
-					const date =new Date(res.data[l].serviceStamp);
-					const year = date.getFullYear();
-					const month = date.getMonth() + 1; // 月份需要加1
-					const day = date.getDate();
-
-					const formattedDate = `${year}-${month}-${day}`;
-					dataArr.push(formattedDate)
-					console.log(formattedDate)
-				}
-				this.setData({
-					actionList: res.data,
-					data_Arr:dataArr
-				})
-			
-
-				wx.stopPullDownRefresh()
-			})
-			.catch(console.error)
+		
 	},
+	setTime(result)
+{
+			var res = result
+			console.log(res)
+			var dataArr=[]
+			for(var l in res)
+			{
+				const date =new Date(res[l].serviceStamp);
+				const year = date.getFullYear();
+				const month = date.getMonth() + 1; // 月份需要加1
+				const day = date.getDate();
 
+				const formattedDate = `${year}-${month}-${day}`;
+				dataArr.push(formattedDate)
+				console.log(formattedDate)
+			}
+			this.setData({
+				data_Arr:dataArr
+			})
+			wx.stopPullDownRefresh()
+		
+		.catch(console.error)
+},
 	/**
 	 * 生命周期函数--监听页面隐藏
 	 */

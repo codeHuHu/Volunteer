@@ -351,7 +351,7 @@ Page({
 								intro: this.data.intro,
 								tag: this.data.tagList[this.data.tagIndex],
 								status: '1', //进行中
-								ispintuan: Number(this.data.ispintuan),
+								ispintuan:  Number(this.data.ispintuan),
 								qr_code: this.data.cloud_imgList
 							},
 							success(res) {

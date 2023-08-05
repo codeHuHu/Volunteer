@@ -196,6 +196,10 @@ Page({
 		//搜索栏不为空
 		if(this.data.keyword)
 		{
+			wx.showLoading({
+				title:'搜索中...',
+				mask:true
+			})
 		wx.cloud.callFunction({
 			name : 'searchTeam',
 			data : { 
@@ -210,7 +214,9 @@ Page({
 				that.setData({
 					actions: res.result
 				})
+				wx.hideLoading()
 			})
+		
 	}
 	else {
 		this.getData();
