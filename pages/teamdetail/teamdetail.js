@@ -7,7 +7,8 @@ Page({
 	 */
 	data: {
 		ifJoined: 0,
-		id:'',
+		ifLeader:0,
+		id: '',
 
 	},
 
@@ -20,7 +21,7 @@ Page({
 			console.log('传入参数并解析')
 			this.setData({
 				teamDetail: info,
-				id:info._id
+				id: info._id
 			})
 		}
 	},
@@ -102,41 +103,37 @@ Page({
 			})
 			return
 		}//
-		
-		//云函数添加memberUndetermined到数据库(还没写)
+
+		//云函数添加memberUndetermined到数据库
 		wx.cloud.callFunction({
 			name: 'updateJoinTeam',
-			
 			data: {
-
 				collectionName: 'TeamInfo',
 				docName: this.data.id,
-				myId:app.globalData.Id,
-				myName:app.globalData.Name,
-				myPhone:app.globalData.phone,
+				myId: app.globalData.Id,
+				myName: app.globalData.Name,
+				myPhone: app.globalData.phone,
 				//操作变量
 				Add: 1,
 				//newTeamMembers:result
 			}
 		})
-		.then(res => {
-			//更改按钮状态
-			this.setData({
-				ifJoined: 1
+			.then(res => {
+				//更改按钮状态
+				this.setData({
+					ifJoined: 1
+				})
+				wx.showToast({
+					title: '申请成功',
+					icon: 'none'
+				})
 			})
-			wx.showToast({
-				title: '申请成功',
-				icon: 'none'
-			})
-			//this.setShow("success", "加入成功");
-		})
-		
-	
+
+
 	},
-	members()
-	{
+	members() {
 		wx.navigateTo({
-			url: '/pages/teammenbers/teammenbers?id=' +this.data.id,
+			url: '/pages/teammenbers/teammenbers?id=' + this.data.id,
 		})
 	}
 })
