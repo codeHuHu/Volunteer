@@ -7,7 +7,7 @@ Page({
 	 */
 	data: {
 		ifJoined: 0,
-		ifLeader:0,
+		ifLeader: 0,
 		id: '',
 
 	},
@@ -102,22 +102,22 @@ Page({
 				icon: 'none'
 			})
 			return
-		}//
+		} //
 
 		//云函数添加memberUndetermined到数据库
 		wx.cloud.callFunction({
-			name: 'updateJoinTeam',
-			data: {
-				collectionName: 'TeamInfo',
-				docName: this.data.id,
-				myId: app.globalData.Id,
-				myName: app.globalData.Name,
-				myPhone: app.globalData.phone,
-				//操作变量
-				Add: 1,
-				//newTeamMembers:result
-			}
-		})
+				name: 'updateJoinTeam',
+				data: {
+					collectionName: 'TeamInfo',
+					docName: this.data.id,
+					myId: app.globalData.Id,
+					myName: app.globalData.Name,
+					myPhone: app.globalData.phone,
+					//操作变量
+					Add: 1,
+					//newTeamMembers:result
+				}
+			})
 			.then(res => {
 				//更改按钮状态
 				this.setData({

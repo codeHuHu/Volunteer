@@ -99,6 +99,14 @@
 	父子之间的冒泡绑定事件 
 	嵌套三目运算符
 	-->
+
+	<!-- 
+	分为以下情况
+	1. 当已经截止了,如果是报名则直接表示 报名截止 ,此后禁止操作
+	2. 当已经截止了,如果是拼团则判断是否满人,来表示 拼团的成功与失败 ,当成功时再次点击按钮弹出群二维码；反之禁止操作
+	3. 当未截止时,如果是报名,则保持原状态,仍可以进行再次取消与报名操作
+	3. 当未截止时,如果是拼团,且如果满人了,则表示 拼团成功 ,再次点击按钮弹出群二维码；若未满人时保持原状态
+	-->
 	<view bindtap="showModal" data-target="{{ifEnd ?(actions.ispintuan?(ifFull?'toGroup':'拼团失败无操作'):'报名已截止无操作'):(ifJoin?'toUnJoin':'toJoin')}}">
 		<button wx:if="{{ifEnd||(ifFull&&actions.ispintuan)}}" class="signUp cu-avatar round xl bg-{{ifFull?'purple':'grey'}} animation-{{animation}}" bindtap="toggle" data-class="scale-up" role="button" aria-disabled="false">
 			<text class="avatar-text">{{actions.ispintuan?'拼团'+(ifFull?'成功':'失败'):'报名截止'}}</text>

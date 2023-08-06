@@ -7,7 +7,7 @@
 <view class="cu-bar bg-white search search-bar" style="top:{{CustomBar}}px col-display;">
 	<view class="search-form round padding">
 		<input type="text" placeholder="搜索志愿" confirm-type="search" bindinput="searchIcon" value=""></input>
-		<text class="cuIcon-search text-bold" style="color:rgb(40, 166, 216)"  bindtap="searchActivity"></text>
+		<text class="cuIcon-search text-bold" style="color:rgb(40, 166, 216)" bindtap="searchActivity"></text>
 	</view>
 </view>
 
@@ -19,7 +19,7 @@
 			</view>
 		</view>
 		<view>
-			<text class="fontsize" >志愿福利</text>
+			<text class="fontsize">志愿福利</text>
 		</view>
 	</view>
 	<view class="item" bindtap="toZhiyuanfuwu">
