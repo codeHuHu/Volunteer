@@ -124,4 +124,15 @@ Page({
 			url: '/pages/newTeam/newTeam',
 		})
 	},
+	toPersonalSetting() {
+		wx.navigateTo({
+			url: '/pages/personalSetting/personalSetting',
+		})
+	},
+	toMyActivity()
+	{
+		wx.navigateTo({
+			url: '/pages/myActivity/myActivity',
+		})
+	}
 })

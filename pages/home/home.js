@@ -9,7 +9,7 @@ Page({
 	data: {
 		message: 123,
 		actions: [],
-		keyword:'',
+		keyword: '',
 	},
 
 	/**
@@ -21,26 +21,25 @@ Page({
 		})
 		this.getData()
 	},
+	//查找活动
+	getData() {
+		var that = this;
 		//查找活动
-		getData()
-		{
-			var that =this;
-				//查找活动
 		db.collection('ActivityInfo')
-		.where({
-			status: '1'
-		})
-		.get()
-		.then(res => {
-			console.log(res.data)
-			that.setData({
-				actions: res.data
+			.where({
+				status: '1'
 			})
-		})
-		.catch(err => {
-			console.log(err);
-		})
-		},
+			.get()
+			.then(res => {
+				console.log(res.data)
+				that.setData({
+					actions: res.data
+				})
+			})
+			.catch(err => {
+				console.log(err);
+			})
+	},
 	/**
 	 * 生命周期函数--监听页面初次渲染完成
 	 */
@@ -143,20 +142,22 @@ Page({
 			PageCur: e.currentTarget.dataset.cur
 		})
 	},
-	togift()
-	{
+	togift() {
 		wx.showToast({
 			title: '加急开发中...',
 			icon: 'loading',
-			duration:1000
+			duration:1000,
+			mask:true
+
 		})
 	},
-	tohonor()
-	{
+	tohonor() {
 		wx.showToast({
 			title: '加急开发中...',
 			icon: 'loading',
-			duration:1000
+			duration:1000,
+			mask:true
+
 		})
 	},
 	toZhiyuanfuwu() {
@@ -175,7 +176,7 @@ Page({
 				url: '/pages/jointeam/jointeam',
 			})
 		} else if (this.ByBase()) {
-			
+
 		}
 	},
 
@@ -184,37 +185,38 @@ Page({
 			url: '/pages/detail/detail?id=' + e.currentTarget.dataset.id,
 		})
 	},
-	searchIcon(e)
-	{
+	searchIcon(e) {
 		this.setData({
-			keyword:e.detail.value
+			keyword: e.detail.value
 		})
 	},
-	searchActivity()
-	{
-		var that =this
+	searchActivity() {
+		var that = this
 		//搜索栏不为空
-		if(this.data.keyword)
-		{
-		wx.cloud.callFunction({
-			name : 'searchTeam',
-			data : { 
-				collection:'ActivityInfo',
-				keyword: this.data.keyword,
-				name:'actName'
-			}
-		})
-		.then (res =>
-			{
-				console.log(res.result)
-				that.setData({
-					actions: res.result
-				})
+		if (this.data.keyword) {
+			wx.showLoading({
+				title: '搜索中...',
+				mask: true
 			})
-	}
-	else {
-		this.getData();
-	}
-	
+			wx.cloud.callFunction({
+					name: 'searchTeam',
+					data: {
+						collection: 'ActivityInfo',
+						keyword: this.data.keyword,
+						name: 'actName'
+					}
+				})
+				.then(res => {
+					console.log(res.result)
+					that.setData({
+						actions: res.result
+					})
+					wx.hideLoading()
+				})
+
+		} else {
+			this.getData();
+		}
+
 	}
 })

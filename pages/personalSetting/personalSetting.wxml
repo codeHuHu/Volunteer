@@ -1,0 +1,36 @@
+<scroll-view scroll-y class="scrollPage">
+
+<view class="cu-list menu card-menu margin-top-xl margin-bottom-xl shadow-lg radius">
+	
+	
+	<view class="cu-item arrow ">
+		<navigator class="content cu-form-group " url="/pages/about/log/log" hover-class="none">
+			<text class="text-grey margin-right">昵称</text>
+			<input placeholder="{{nickname}}" bindinput="getInputValue" value="{{inputValue}}"></input>
+		</navigator>
+	</view>
+	<view class="cu-item arrow ">
+		<navigator class="content cu-form-group " url="/pages/about/log/log" hover-class="none">
+			<text class="text-grey margin-right">学校</text>
+			<input placeholder="{{nickname}}" bindinput="getInputValue" value="{{inputValue}}"></input>
+		</navigator>
+	</view>
+	<view class="cu-item arrow ">
+		<navigator class="content cu-form-group " url="/pages/about/log/log" hover-class="none">
+			<text class="text-grey margin-right">学院</text>
+			<input placeholder="{{nickname}}" bindinput="getInputValue" value="{{inputValue}}"></input>
+		</navigator>
+	</view>
+	<view class="cu-item arrow ">
+		<navigator class="content cu-form-group " url="/pages/about/log/log" hover-class="none">
+			<text class="text-grey margin-right">队伍</text>
+			<input placeholder="{{nickname}}" bindinput="getInputValue" value="{{inputValue}}"></input>
+		</navigator>
+	</view>
+
+
+	
+</view>
+<view class="cu-tabbar-height"></view>
+
+</scroll-view>

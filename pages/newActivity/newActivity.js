@@ -313,7 +313,7 @@ Page({
 			});
 			setTimeout(() => {
 				wx.hideToast()
-			}, 2000); // 延迟 2000 毫秒后执行
+			}, 1000); // 延迟 2000 毫秒后执行
 		} else {
 			console.log('执行提交中')
 			//创建异步上传任务数组
@@ -351,7 +351,7 @@ Page({
 								intro: this.data.intro,
 								tag: this.data.tagList[this.data.tagIndex],
 								status: '1', //进行中
-								ispintuan: Number(this.data.ispintuan),
+								ispintuan:  Number(this.data.ispintuan),
 								qr_code: this.data.cloud_imgList
 							},
 							success(res) {
@@ -365,7 +365,7 @@ Page({
 			setTimeout(() => {
 				wx.navigateBack(),
 				wx.hideToast()
-			}, 2000); // 延迟 2000 毫秒后执行
+			}, 1000); // 延迟 2000 毫秒后执行
 		}
 	},
 	isPintuan(e) {

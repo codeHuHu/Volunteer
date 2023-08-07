@@ -10,10 +10,10 @@ exports.main = async (event, context) => {
 	const wxContext = cloud.getWXContext()
 	if (event.docName) {
 		var tmp ={
-		
+			Id:event.myId,
 			openid: wxContext.OPENID,
-			Name:event.myname,
-			Phone:event.myphone,
+			Name:event.myName,
+			Phone:event.myPhone,
 		}
 		return cloud.database().collection(event.collectionName)
 			.doc(event.docName)

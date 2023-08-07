@@ -3,6 +3,7 @@
     "pages/home/home",
 		"pages/volunteerService/volunteerService",
 		"pages/mine/mine",
+	  "pages/personalSetting/personalSetting",
 		"pages/detail/detail",
 		"pages/newActivity/newActivity",
 		"pages/checkActivity/checkActivity",		
@@ -11,7 +12,8 @@
 		"pages/teamdetail/teamdetail",
 		"pages/accountSignUp/accountSignUp",
 		"pages/None/None",
-		"pages/teammenbers/teammenbers"
+		"pages/teammenbers/teammenbers",
+		"pages/myActivity/myActivity"
 	],
 	"usingComponents": {
     "cu-custom": "colorui/components/cu-custom/cu-custom"
