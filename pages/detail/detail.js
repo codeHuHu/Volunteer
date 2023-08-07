@@ -193,79 +193,74 @@ Page({
 					actions: res.data
 				})
 				// 比较安全地在名单中清除该志愿者
-				var tmpList = this.data.actions.joinMembers
+				var tmpList = res.data.joinMembers
 				var result = []
-				var j = 0
 				for (var i in tmpList) {
-					if (tmpList[i] == app.globalData.openid) {
-						continue
+					if (tmpList[i] != app.globalData.openid) {
+						result.push(tmpList[i])
 					}
-					result[j++] = tmpList[i]
+				
 				}
 				//加入两个错误判断
-				if (this.data.actions.inNum < 0 || this.data.actions.outNum < 0) {
+				if (res.data.inNum < 0 || res.data.outNum < 0) {
 					this.setShow("error", "系统异常");
 					return
 				}
-				if (this.data.actions.inNum < this.data.actions.inJoin || this.data.actions.outNum < this.data.actions.outJoin) {
+				if (res.data.inNum < res.data.inJoin || res.data.outNum < res.data.outJoin) {
 					this.setShow("error", "系统异常");
 					return
 				}
 				//(云函数)人数自减1,赋值新的名单
-				var ifInTeam = this.data.ifInTeam
+				var ifInTeam = that.data.ifInTeam
 				wx.cloud.callFunction({
 						name: 'updateJoinActivity',
 						data: {
 							collectionName: 'ActivityInfo',
-							docName: this.data.id,
+							docName: that.data.id,
 							//操作变量
 							//根据上面i和j的差来决定要减少多少
-							inJoinAdd: ifInTeam ? j - i - 1 : 0,
-							outJoinAdd: ifInTeam ? 0 : j - i - 1,
+							inJoinAdd: ifInTeam ? -1 : 0,
+							outJoinAdd: ifInTeam ? 0 : -1,
 							newJoinMembers: result
 						}
 					})
 					.then(res => {
 						//更改按钮状态
-						this.setData({
+						that.setData({
 							ifJoin: 0
 						})
 
 						//在userInfo中删除此活动id
-						const myActivityList=[];
+						
 				db.collection('UserInfo').where({
 					_openid : app.globalData.openid
 				}).get({
 					success(res)
 					{
-						var actions =res.data
-						var myActivity = actions[0].myActivity
-						console.log(myActivity)
-						console.log(that.data.id)
-						for(var l in myActivity)
-						{
-							if(myActivity[l] != that.data.id )
-							{
-									console.log(1)
-								myActivityList.push(myActivity[l])
-							}
-						}
+						var myActivityList = []
+								var myActivity = res.data[0].myActivity
+								for (var l in myActivity) {
+									if (myActivity[l] != that.data.id) {
+										myActivityList.push(myActivity[l])
+									}
+								}
+								db.collection('UserInfo')
+									.where({
+										_openid: app.globalData.openid
+									}).update({
+										data: {
+											myActivity: myActivityList
+										}
+									})
+									.then(res => {
+										that.setShow("success", "取消成功");
+									})
 					
-						db.collection('UserInfo').where({
-							_openid : app.globalData.openid
-						}).update({
-						data:{
-							myActivity: myActivityList
-						}	
-					})
-				
-
-						this.setShow("success", "取消成功");
 						//(非云函数)修改完毕,再次获取数据库
-						db.collection('ActivityInfo').doc(this.data.id)
+						db.collection('ActivityInfo').doc(that.data.id)
 							.get()
 							.then(res => {
-								this.setData({
+								that.setData({
 									actions: res.data
 								})
 							})
@@ -302,7 +297,7 @@ Page({
 			this.setData({
 				ifJoin: 1
 			})
-			this.ifAvailableAndJoin()
+			this.Join()
 		} else if (a == 'unjoin') {
 			this.setData({
 				ifJoin: 0
