@@ -134,5 +134,10 @@ Page({
 		wx.navigateTo({
 			url: '/pages/myActivity/myActivity',
 		})
+	},
+	toCheckActivity() {
+		wx.navigateTo({
+			url: '/pages/checkActivity/checkActivity',
+		})
 	}
 })

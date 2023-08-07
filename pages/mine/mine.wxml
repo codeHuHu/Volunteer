@@ -77,6 +77,12 @@
 			</view>
 		</view>
 		<view class="cu-item arrow">
+			<view bindtap="toCheckActivity" class="content">
+				<text class="cuIcon-activity lg text-gray"></text>
+				<text class="text-grey">活动审核</text>
+			</view>
+		</view>
+		<view class="cu-item arrow">
 			<view bindtap="none" class="content">
 				<text class="cuIcon-rank lg text-gray"></text>
 				<text class="text-grey">我的排名</text>
