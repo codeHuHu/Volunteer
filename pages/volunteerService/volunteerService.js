@@ -23,9 +23,9 @@ Page({
 		finish: '已结束',
 		timestamp: '',
 		index: '',
-		data_Arr:[],
-		toUpdateArr:[''],
-		actions_Status:['1'],
+		data_Arr: [],
+		toUpdateArr: [''],
+		actions_Status: ['1'],
 	},
 
 	// 点击下拉显示框
@@ -53,38 +53,35 @@ Page({
 			index1: Index,
 			show1: !this.data.show1
 		});
-		console.log(Index)
-		if(Index == 0)
-		{
+		//console.log(Index)
+		if (Index == 0) {
 			this.onLoad()
-		}
-		else {
-			 db.collection('UserInfo').where({
-				_openid : app.globalData.openid
-			 }).get().then(res =>{
-				 console.log(res.data)
-						var actions = res.data
-						var myActivity = actions[0].myActivity
-						db.collection('ActivityInfo').where({
-							_id : db.command.in(myActivity)
-						}).field({
-							_id : true,
-							actName : true,
-							serviceEstamp :true,
-							serviceStamp:true,
-							status:true,
-							tag :true,
-							teamName :true,
-							_openid:true
-						}).orderBy('serviceStamp', 'desc').get().then(res =>
-							{
-								this.setData({
-									actionList: res.data
-								})
-								this.setTime(res.data)
-							}).catch(err => {
-								console.log(err);
-							})
+		} else {
+			db.collection('UserInfo').where({
+				_openid: app.globalData.openid
+			}).get().then(res => {
+				//console.log(res.data)
+				var actions = res.data
+				var myActivity = actions[0].myActivity
+				db.collection('ActivityInfo').where({
+					_id: db.command.in(myActivity)
+				}).field({
+					_id: true,
+					actName: true,
+					serviceEstamp: true,
+					serviceStamp: true,
+					status: true,
+					tag: true,
+					teamName: true,
+					_openid: true
+				}).orderBy('serviceStamp', 'desc').get().then(res => {
+					this.setData({
+						actionList: res.data
+					})
+					this.setTime(res.data)
+				}).catch(err => {
+					console.log(err);
+				})
 			})
 		}
 	},
@@ -103,16 +100,16 @@ Page({
 			collection.where({
 				'tag': that.data.selecttypeData[Index]
 			}).field({
-				_id : true,
-				actName : true,
-				serviceEstamp :true,
-				serviceStamp:true,
-				status:true,
-				tag :true,
-				teamName :true,
-				_openid:true
+				_id: true,
+				actName: true,
+				serviceEstamp: true,
+				serviceStamp: true,
+				status: true,
+				tag: true,
+				teamName: true,
+				_openid: true
 			}).orderBy('serviceStamp', 'desc').get().then(res => {
-				console.log(res.data);
+				//console.log(res.data);
 				this.setData({
 					actionList: res.data
 				})
@@ -137,16 +134,16 @@ Page({
 			collection.where({
 				'status': '1' //进行中
 			}).field({
-				_id : true,
-				actName : true,
-				serviceEstamp :true,
-				serviceStamp:true,
-				status:true,
-				tag :true,
-				teamName :true,
-				_openid:true
+				_id: true,
+				actName: true,
+				serviceEstamp: true,
+				serviceStamp: true,
+				status: true,
+				tag: true,
+				teamName: true,
+				_openid: true
 			}).orderBy('serviceStamp', 'desc').get().then(res => {
-				console.log(res.data);
+				//console.log(res.data);
 				this.setData({
 					actionList: res.data
 				})
@@ -159,16 +156,16 @@ Page({
 			collection.where({
 				'status': '2' //已结束
 			}).field({
-				_id : true,
-				actName : true,
-				serviceEstamp :true,
-				serviceStamp:true,
-				status:true,
-				tag :true,
-				teamName :true,
-				_openid:true
+				_id: true,
+				actName: true,
+				serviceEstamp: true,
+				serviceStamp: true,
+				status: true,
+				tag: true,
+				teamName: true,
+				_openid: true
 			}).orderBy('serviceStamp', 'desc').get().then(res => {
-				console.log(res.data);
+				//console.log(res.data);
 				this.setData({
 					actionList: res.data
 				})
@@ -203,52 +200,52 @@ Page({
 	},
 	getStatus() {
 		var that = this;
-		var toupdateArr = [];
-	
+		var toUpdateArr = [];
+
 		const collection = db.collection('ActivityInfo');
 		collection.field({
-			_id : true,
-			actName : true,
-			serviceEstamp :true,
-			serviceStamp:true,
-			status:true,
-			tag :true,
-			teamName :true,
-			_openid:true
-		}).orderBy('serviceStamp', 'desc').get().then(res => {
-			var actions = res.data;
-			var k = 0;
-			for (var l in actions) {
-				var tmptimestamp = actions[l].serviceEstamp;
-				if (actions[l].status != '2' && tmptimestamp <= that.data.timestamp) {
-					actions[l].status = '2';
-					toupdateArr[k++] = actions[l]._id;
+				_id: true,
+				actName: true,
+				serviceEstamp: true,
+				serviceStamp: true,
+				status: true,
+				tag: true,
+				teamName: true,
+				_openid: true
+			})
+			.orderBy('serviceStamp', 'desc')
+			.get()
+			.then(res => {
+				var actions = res.data;
+				var k = 0;
+				for (var l in actions) {
+					var tmptimestamp = actions[l].serviceEstamp;
+					if (actions[l].status != '2' && tmptimestamp <= that.data.timestamp) {
+						actions[l].status = '2';
+						toUpdateArr[k++] = actions[l]._id;
+					}
 				}
-			}
-			that.setData({
-				actionList: actions,
-				toUpdateArr: toupdateArr
+				that.setData({
+					actionList: actions,
+					toUpdateArr: toUpdateArr
+				});
+				this.setTime(res.data)
+				return Promise.resolve(); // 返回一个 resolved 状态的 Promise 对象
+			}).then(() => {
+				return wx.cloud.callFunction({
+					name: 'changeStatus',
+					data: {
+						toChangeArr: that.data.toUpdateArr,
+						collection: 'ActivityInfo'
+					}
+				});
+			}).then(res => {
+				console.log("更新状态成功");
+			}).catch(error => {
+				console.error(error);
 			});
-			this.setTime(res.data)
-			console.log(that.data.toUpdateArr);
-			return Promise.resolve(); // 返回一个 resolved 状态的 Promise 对象
-		}).then(() => {
-			console.log(that.data.toUpdateArr);
-			return wx.cloud.callFunction({
-				name: 'changeStatus',
-				data: {
-					toChangeArr: that.data.toUpdateArr,
-					collection: 'ActivityInfo'
-				}
-			});
-		}).then(res => {
-			console.log(res);
-			console.log("更新状态成功");
-		}).catch(error => {
-			console.error(error);
-		});
 	},
-	
+
 	/**
 	 * 生命周期函数--监听页面初次渲染完成
 	 */
@@ -260,31 +257,29 @@ Page({
 	 * 生命周期函数--监听页面显示
 	 */
 	onShow: function () {
-		
-	},
-	setTime(result)
-{
-			var res = result
-			console.log(res)
-			var dataArr=[]
-			for(var l in res)
-			{
-				const date =new Date(res[l].serviceStamp);
-				const year = date.getFullYear();
-				const month = date.getMonth() + 1; // 月份需要加1
-				const day = date.getDate();
 
-				const formattedDate = `${year}-${month}-${day}`;
-				dataArr.push(formattedDate)
-				console.log(formattedDate)
-			}
-			this.setData({
-				data_Arr:dataArr
-			})
-			wx.stopPullDownRefresh()
-		
-		.catch(console.error)
-},
+	},
+	setTime(result) {
+		var res = result
+		console.log(res)
+		var dataArr = []
+		for (var l in res) {
+			const date = new Date(res[l].serviceStamp);
+			const year = date.getFullYear();
+			const month = date.getMonth() + 1; // 月份需要加1
+			const day = date.getDate();
+
+			const formattedDate = `${year}-${month}-${day}`;
+			dataArr.push(formattedDate)
+			//console.log(formattedDate)
+		}
+		this.setData({
+			data_Arr: dataArr
+		})
+		wx.stopPullDownRefresh()
+
+			.catch(console.error)
+	},
 	/**
 	 * 生命周期函数--监听页面隐藏
 	 */
@@ -320,12 +315,12 @@ Page({
 
 	},
 	todetail(e) {
-		console.log(e.currentTarget.dataset.id)
+		//console.log(e.currentTarget.dataset.id)
 		wx.navigateTo({
 			url: '/pages/detail/detail?id=' + e.currentTarget.dataset.id,
 		})
 	},
 	addstatus(e) {
-		console.log(e.currentTarget.dataset.status)
+		//console.log(e.currentTarget.dataset.status)
 	}
 })

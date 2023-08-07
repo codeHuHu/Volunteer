@@ -1,4 +1,3 @@
-// 目前只在活动中记录到志愿者,而未在志愿者中记录活动,之后再完善
 const app = getApp()
 let loading = false;
 const db = wx.cloud.database()
@@ -6,53 +5,45 @@ const db = wx.cloud.database()
 Page({
 	data: {
 		//志愿者是否参加了此次志愿
-		ifJoin: 0,
+		//ifJoin: 0,
 		//志愿者是否在组织志愿的队伍中
-		ifInTeam: 0,
+		//ifInTeam: 0,
+		//该活动是否截止报名
+		//ifEnd: 0,
 		hours: '',
 		minutes: '',
+
 		deadtime: '',
 		serviceTime:'',
 		actions:[]
-	},
 
+	},
 	onLoad: function (options) {
 		var that = this
 		that.data.id = options.id
-		wx.cloud.database().collection('ActivityInfo').doc(that.data.id).get({
+		db.collection('ActivityInfo').doc(that.data.id).get({
 			success(res) {
-				//app.Z()函数在app.js,作用是固定长度补零
-				//截止时间	截止日期
-				let t = new Date(res.data.deadtimestamp);	
-				const formattedTime = `${app.Z(t.getHours())}:${app.Z(t.getMinutes())}`;
-				const formattedDate = `${t.getFullYear()}-${app.Z(t.getMonth()+1)}-${app.Z(t.getDate())}`;
-				//活动日期 服务开始时间 服务结束时间
-				t = new Date(res.data.serviceStamp);
-				const serviceDate = `${t.getFullYear()}-${app.Z(t.getMonth()+1)}-${app.Z(t.getDate())}`;
-				const serviceSTime = `${app.Z(t.getHours())}:${app.Z(t.getMinutes())}`;
-				t = new Date(res.data.serviceEstamp);
-				const serviceETime = `${app.Z(t.getHours())}:${app.Z(t.getMinutes())}`;
-				//服务时长
-				t = res.data.serviceEstamp - res.data.serviceStamp
-				const thours = Math.floor(t / (1000 * 60 * 60));
-				const tminutes = Math.floor((t % (1000 * 60 * 60)) / (1000 * 60));
-				
-				that.setData({
-					actions: res.data,
-					deadtime: formattedDate + ' ' + formattedTime,
-					serviceTime: serviceDate+' '+serviceSTime+'-'+serviceETime,
-					hours: thours,
-					minutes: tminutes,
-				})
+				// 时间戳的转换
+				that.adjustTimeStamp(res)
+
+				//检测活动的报名成功状态
+				let t = res.data
+				if (t.inJoin == t.inNum && t.outJoin == t.outNum) {
+					that.setData({
+						ifFull: 1
+					})
+				}
+
 				// 如果名单里有该志愿者,改变报名按钮状态
 				for (var i in res.data.joinMembers) {
 					if (res.data.joinMembers[i] == app.globalData.openid) {
 						that.setData({
 							ifJoin: 1
 						})
+						break
 					}
 				}
-				//如果在此小队里
+				//如果在此小队里(看以后能不能改进一下)
 				if (res.data.teamName) {
 					db.collection('TeamInfo')
 						.where({
@@ -62,67 +53,19 @@ Page({
 						.then(Response => {
 							var teamMembers = Response.data[0]['teamMembers']
 							for (var i in teamMembers) {
-								if (teamMembers[i] == app.globalData.openid) {
+								if (teamMembers[i].openid == app.globalData.openid) {
 									that.setData({
 										ifInTeam: 1
 									})
+									break
 								}
 							}
 						})
 				}
 			}
 		})
-		// this.updateUserInfo()
 	},
-		// updateUserInfo()
-		// {
-		// 	var id = this.data.id
-		// 	console.log(app.globalData.openid)
-		// 	if(this.data.ifJoin == 1)
-		// 	{
-		// 		console.log('id是',id)
-		// 		console.log('why')
-		// 		db.collection('UserInfo').where({
-		// 			_openid : app.globalData.openid
-		// 		}).update({
-		// 			data: 
-		// 			{
-		// 				myActivity : db.command.push(id)
-		// 			},
-		// 			success(res)
-		// 			{
-		// 				console.log('添加活动记录成功');
-		// 			}
-		// 		})	
-		// 	}
-		// 	else 
-		// 	{
-		// 		const myActivityList=[];
-		// 		db.collection('UserInfo').where({
-		// 			_openid : app.globalData.openid
-		// 		}).get({
-		// 			success(res)
-		// 			{
-		// 				var actions =res.data
-		// 				for(var l in actions.myActivity)
-		// 				{
-		// 					if(actions.myActivity[l] != that.data.id )
-		// 					{
-		// 						myActivityList.push(actions.myActivity[l])
-		// 					}
-		// 				}
-		// 				db.collection('UserInfo').where({
-		// 					_openid : app.globalData.openid
-		// 				}).update({
-		// 				data:{
-		// 					myActivity: myActivityList
-		// 				}	
-		// 			})
-		// 			},
-					
-		// 		})
-		// 	}
-		// },
+
 	onReady() {
 
 	},
@@ -147,62 +90,52 @@ Page({
 
 	},
 
-	onShareAppMessage() {
 
-	},
 
-	/**
-	 * 轻提示展示
-	 * @param {*} status 
-	 * @param {*} message 
-	 * @param {*} time 
-	 * @param {*} fun 
-	 */
-	setShow(status, message, time = 2000, fun = false) {
-		if (loading) {
-			return
-		}
-		loading = true;
-		try {
-			this.setData({
-				status,
-				message,
-				time,
-				show: true,
-			})
-			setTimeout(() => {
-				this.setData({
-					show: false,
-				})
-				loading = false;
-				// 触发回调函数
-				if (fun) {
-					this.end()
-				}
-			}, time)
-		} catch {
-			loading = false;
-		}
+	adjustTimeStamp(res) {
+		//app.Z()函数在app.js,作用是固定长度补零
+		//报名截止时间	报名截止日期
+		let t = new Date(res.data.deadtimestamp);
+		const formattedTime = `${app.Z(t.getHours())}:${app.Z(t.getMinutes())}`;
+		const formattedDate = `${t.getFullYear()}-${app.Z(t.getMonth() + 1)}-${app.Z(t.getDate())}`;
+		//活动日期 服务开始时间 服务结束时间
+		t = new Date(res.data.serviceStamp);
+		const serviceDate = `${t.getFullYear()}-${app.Z(t.getMonth() + 1)}-${app.Z(t.getDate())}`;
+		const serviceSTime = `${app.Z(t.getHours())}:${app.Z(t.getMinutes())}`;
+		t = new Date(res.data.serviceEstamp);
+		const serviceETime = `${app.Z(t.getHours())}:${app.Z(t.getMinutes())}`;
+		//服务时长
+		t = res.data.serviceEstamp - res.data.serviceStamp
+		const thours = Math.floor(t / (1000 * 60 * 60));
+		const tminutes = Math.floor((t % (1000 * 60 * 60)) / (1000 * 60));
+		this.setData({
+			actions: res.data,
+			deadTime: formattedDate + ' ' + formattedTime,
+			serviceTime: serviceDate + ' ' + serviceSTime + '-' + serviceETime,
+			hours: thours,
+			minutes: tminutes,
+			ifEnd: res.data.deadtimestamp - new Date().getTime() <= 0 ? 1 : 0
+		})
 	},
-	ifAvailableAndJoin() {
-		var that=this
+	Join() {
+		var that = this
 		//先更新一下,查看是否满人了
-		db.collection('ActivityInfo').doc(this.data.id)
+		db.collection('ActivityInfo').doc(that.data.id)
 			.get()
 			.then(res => {
-				this.setData({
+				that.setData({
 					actions: res.data,
 				})
-				var ifInTeam = this.data.ifInTeam
+				var ifInTeam = that.data.ifInTeam
 				//在队里
 				if (ifInTeam) {
-					if (this.data.actions.inJoin >= this.data.actions.inNum) {
-						this.setShow("error", "人数已满");
+					if (that.data.actions.inJoin >= that.data.actions.inNum) {
+						that.setShow("error", "人数已满");
 						return
 					}
 				} else {
-					if (this.data.actions.outJoin >= this.data.actions.outNum) {
-						this.setShow("error", "人数已满");
+					if (that.data.actions.outJoin >= that.data.actions.outNum) {
+						that.setShow("error", "人数已满");
 						return
 					}
 				}
@@ -211,7 +144,7 @@ Page({
 						name: 'updateJoinActivity',
 						data: {
 							collectionName: 'ActivityInfo',
-							docName: this.data.id,
+							docName: that.data.id,
 							//操作变量
 							inJoinAdd: ifInTeam ? 1 : 0,
 							outJoinAdd: ifInTeam ? 0 : 1,
@@ -219,36 +152,35 @@ Page({
 					})
 					.then(res => {
 						//更改按钮状态
-						this.setData({
+						that.setData({
 							ifJoin: 1
 						})
-
 						//将该活动id加入到userInfo
 						db.collection('UserInfo').where({
-							_openid : app.globalData.openid,
-							myActivity: db.command.not(db.command.elemMatch(db.command.eq(that.data.id)))
+							_openid: app.globalData.openid,
+							//myActivity: db.command.not(db.command.elemMatch(db.command.eq(that.data.id)))
 						}).update({
-							data: 
-							{
-								myActivity : db.command.push(that.data.id)
-							},
-							success(res)
-							{
-								console.log('添加活动记录成功');
+							data: {
+								myActivity: db.command.push(that.data.id)
 							}
-						})	
-						this.setShow("success", "报名成功");
-						//(非云函数)修改完毕,再次获取数据库
-						db.collection('ActivityInfo').doc(this.data.id)
+						})
+						that.setShow("success", "报名成功");
+						//修改完毕,再次获取数据库
+						db.collection('ActivityInfo').doc(that.data.id)
 							.get()
 							.then(res => {
-								this.setData({
+								that.setData({
 									actions: res.data
 								})
-								console.log(that.data.ifJoin)
+								//检测活动的报名成功状态
+								let t = res.data
+								if (t.inJoin == t.inNum && t.outJoin == t.outNum) {
+									that.setData({
+										ifFull: 1
+									})
+								}
 							})
 					})
-
 			})
 	},
 	unJoin() {
@@ -345,7 +277,7 @@ Page({
 	showModal(e) {
 		var tmp = e.currentTarget.dataset.target
 		//报名窗口
-		if (tmp == 'Image') {
+		if (tmp == 'toJoin') {
 			//先判断是否满人
 			//在队里
 			if (this.data.ifInTeam) {
@@ -408,4 +340,38 @@ Page({
       path: 'pages/detail/detail?id=' + this.data.id
     }
   },
+
+	/**
+	 * 轻提示展示
+	 * @param {*} status 
+	 * @param {*} message 
+	 * @param {*} time 
+	 * @param {*} fun 
+	 */
+	setShow(status, message, time = 2000, fun = false) {
+		if (loading) {
+			return
+		}
+		loading = true;
+		try {
+			this.setData({
+				status,
+				message,
+				time,
+				show: true,
+			})
+			setTimeout(() => {
+				this.setData({
+					show: false,
+				})
+				loading = false;
+				// 触发回调函数
+				if (fun) {
+					this.end()
+				}
+			}, time)
+		} catch {
+			loading = false;
+		}
+	},
 })
