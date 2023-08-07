@@ -46,7 +46,7 @@
 		<view class="title">差评队员</view>
 		<view class="showname">
 			<view wx:for="{{checkbox}}" wx:key="{{id}}" wx:for-item="item">
-			<button wx:if="{{item.checked}}" bindtap="showNGModal" data-target="BottomModal" data-btnid="{{item.id}}">
+			<button wx:if="{{!item.checked}}" bindtap="showNGModal" data-target="BottomModal" data-btnid="{{item.id}}">
 				{{item.name}}
 			</button>
 		</view>
