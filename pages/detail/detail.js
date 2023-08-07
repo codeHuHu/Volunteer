@@ -14,8 +14,8 @@ Page({
 		minutes: '',
 
 		deadtime: '',
-		serviceTime:'',
-		actions:[]
+		serviceTime: '',
+		actions: []
 
 	},
 	onLoad: function (options) {
@@ -35,19 +35,19 @@ Page({
 				}
 
 				// 如果名单里有该志愿者,改变报名按钮状态
-				for (var i in res.data.joinMembers) {
-					if (res.data.joinMembers[i] == app.globalData.openid) {
+				for (var i in t.joinMembers) {
+					if (t.joinMembers[i] == app.globalData.openid) {
 						that.setData({
-							ifJoin: 1
+							ifJoin: 1,
 						})
 						break
 					}
 				}
 				//如果在此小队里(看以后能不能改进一下)
-				if (res.data.teamName) {
+				if (t.teamName) {
 					db.collection('TeamInfo')
 						.where({
-							teamName: res.data.teamName
+							teamName: t.teamName
 						})
 						.get()
 						.then(Response => {
@@ -89,9 +89,6 @@ Page({
 	onReachBottom() {
 
 	},
-
-
-
 	adjustTimeStamp(res) {
 		//app.Z()函数在app.js,作用是固定长度补零
 		//报名截止时间	报名截止日期
@@ -114,7 +111,8 @@ Page({
 			serviceTime: serviceDate + ' ' + serviceSTime + '-' + serviceETime,
 			hours: thours,
 			minutes: tminutes,
-			ifEnd: res.data.deadtimestamp - new Date().getTime() <= 0 ? 1 : 0
+			ifEnd: res.data.deadtimestamp - new Date().getTime() <= 0 ? 1 : 0,
+			isPintuan: res.data.ispintuan
 		})
 	},
 	Join() {
@@ -164,7 +162,8 @@ Page({
 								myActivity: db.command.push(that.data.id)
 							}
 						})
-						that.setShow("success", "报名成功");
+						wx.hideLoading()
+						that.setShow("success", `成功参与${this.data.actions.ispintuan?'拼团':'报名'}`);
 						//修改完毕,再次获取数据库
 						db.collection('ActivityInfo').doc(that.data.id)
 							.get()
@@ -184,7 +183,7 @@ Page({
 			})
 	},
 	unJoin() {
-		var that =this
+		var that = this
 		//(非云函数)先获取数据库
 		db.collection('ActivityInfo').doc(this.data.id)
 			.get()
@@ -199,7 +198,7 @@ Page({
 					if (tmpList[i] != app.globalData.openid) {
 						result.push(tmpList[i])
 					}
-				
+
 				}
 				//加入两个错误判断
 				if (res.data.inNum < 0 || res.data.outNum < 0) {
@@ -231,13 +230,12 @@ Page({
 						})
 
 						//在userInfo中删除此活动id
-						
-				db.collection('UserInfo').where({
-					_openid : app.globalData.openid
-				}).get({
-					success(res)
-					{
-						var myActivityList = []
+
+						db.collection('UserInfo').where({
+							_openid: app.globalData.openid
+						}).get({
+							success(res) {
+								var myActivityList = []
 								var myActivity = res.data[0].myActivity
 								for (var l in myActivity) {
 									if (myActivity[l] != that.data.id) {
@@ -253,20 +251,21 @@ Page({
 										}
 									})
 									.then(res => {
+										wx.hideLoading()
 										that.setShow("success", "取消成功");
 									})
-					
-						//(非云函数)修改完毕,再次获取数据库
-						db.collection('ActivityInfo').doc(that.data.id)
-							.get()
-							.then(res => {
-								that.setData({
-									actions: res.data
-								})
-							})
-					}
-				})
-			})
+
+								//(非云函数)修改完毕,再次获取数据库
+								db.collection('ActivityInfo').doc(that.data.id)
+									.get()
+									.then(res => {
+										that.setData({
+											actions: res.data
+										})
+									})
+							}
+						})
+					})
 			})
 	},
 	showModal(e) {
@@ -286,6 +285,26 @@ Page({
 					return
 				}
 			}
+		} else if (tmp == 'toPintuan') {
+			wx.showLoading()
+			//先判断是否满人
+			//在队里
+			if (this.data.ifInTeam) {
+				if (this.data.actions.inJoin >= this.data.actions.inNum) {
+					this.setShow("error", "人数已满");
+					return
+				}
+			} else {
+				if (this.data.actions.outJoin >= this.data.actions.outNum) {
+					this.setShow("error", "人数已满");
+					return
+				}
+			}
+			this.setData({
+				ifJoin: 1
+			})
+			this.Join()
+			return
 		}
 		this.setData({
 			modalName: tmp
@@ -294,11 +313,13 @@ Page({
 	hideModal(e) {
 		var a = e.currentTarget.dataset.target
 		if (a == 'join') {
+			wx.showLoading()
 			this.setData({
 				ifJoin: 1
 			})
 			this.Join()
 		} else if (a == 'unjoin') {
+			wx.showLoading()
 			this.setData({
 				ifJoin: 0
 			})
@@ -328,13 +349,13 @@ Page({
 		})
 	},
 	onShareAppMessage(event) {
-    console.log(event)
-    return {
-      title: 'Volunteer',
-      //imageUrl: this.data.actions.images[0],
-      path: 'pages/detail/detail?id=' + this.data.id
-    }
-  },
+		console.log(event)
+		return {
+			title: 'Volunteer',
+			//imageUrl: this.data.actions.images[0],
+			path: 'pages/detail/detail?id=' + this.data.id
+		}
+	},
 
 	/**
 	 * 轻提示展示
