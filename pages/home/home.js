@@ -148,7 +148,8 @@ Page({
 		wx.showToast({
 			title: '加急开发中...',
 			icon: 'loading',
-			duration:1000
+			duration:1000,
+			mask:true
 		})
 	},
 	tohonor()
@@ -156,7 +157,8 @@ Page({
 		wx.showToast({
 			title: '加急开发中...',
 			icon: 'loading',
-			duration:1000
+			duration:1000,
+			mask:true
 		})
 	},
 	toZhiyuanfuwu() {

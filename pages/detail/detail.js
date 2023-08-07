@@ -12,7 +12,8 @@ Page({
 		hours: '',
 		minutes: '',
 		deadtime: '',
-		serviceTime:''
+		serviceTime:'',
+		actions:[]
 	},
 
 	onLoad: function (options) {
@@ -399,5 +400,12 @@ Page({
 			current: e.currentTarget.dataset.index
 		})
 	},
-	
+	onShareAppMessage(event) {
+    console.log(event)
+    return {
+      title: 'Volunteer',
+      //imageUrl: this.data.actions.images[0],
+      path: 'pages/detail/detail?id=' + this.data.id
+    }
+  },
 })

@@ -107,9 +107,9 @@
 	</view> -->
 
 	<!-- 分享按钮 -->
-	<view class="share cu-avatar round xl ">
-		<text class="iconfont icon-icon-test20 text-blue"></text>
-	</view>
+	<button open-type="share" class="share cu-avatar round xl ">
+		<text class="iconfont icon-icon-test20 text-green"></text>
+	</button>
 	<!-- 报名以及取消按钮 -->
 
 	<view bindtap="showModal" data-target="{{!ifJoin ?'Image':'DialogModal1'}}">
