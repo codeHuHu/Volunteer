@@ -313,7 +313,7 @@ Page({
 			});
 			setTimeout(() => {
 				wx.hideToast()
-			}, 2000); // 延迟 2000 毫秒后执行
+			}, 1000); // 延迟 2000 毫秒后执行
 		} else {
 			console.log('执行提交中')
 			//创建异步上传任务数组
@@ -365,7 +365,7 @@ Page({
 			setTimeout(() => {
 				wx.navigateBack(),
 				wx.hideToast()
-			}, 2000); // 延迟 2000 毫秒后执行
+			}, 1000); // 延迟 2000 毫秒后执行
 		}
 	},
 	isPintuan(e) {

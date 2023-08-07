@@ -58,7 +58,7 @@
 		</view>
 	</block>
 	<view class="cu-list menu card-menu margin-bottom-xl shadow-lg radius">
-		<view class="cu-item arrow">
+		<view class="cu-item arrow" bind:tap="toMyActivity">
 			<view bindtap="none" class="content">
 				<text class="cuIcon-my lg text-gray"></text>
 				<text class="text-grey">我的志愿</text>

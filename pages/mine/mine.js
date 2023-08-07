@@ -129,4 +129,10 @@ Page({
 			url: '/pages/personalSetting/personalSetting',
 		})
 	},
+	toMyActivity()
+	{
+		wx.navigateTo({
+			url: '/pages/myActivity/myActivity',
+		})
+	}
 })
