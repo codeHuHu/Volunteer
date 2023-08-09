@@ -33,7 +33,7 @@
  index==selectData.length-1&&"border:0;"-----取消下拉选项的最后一个的下边框 -->
 
 <block wx:for="{{actionList}}" wx:key="index">
-	<view class="cu-card article {{isCard?'no-card':''}} margin" bindtap="todetail" data-id="{{item._id}}">
+	<view class="cu-card article {{isCard?'no-card':''}} margin" bindtap="toDetail" data-id="{{item._id}}">
 		<view class="cu-item shadow">
 			<view class="title">
 				<view class="text-cut">{{item.actName}}</view>

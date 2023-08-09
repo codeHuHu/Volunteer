@@ -180,7 +180,7 @@ Page({
 		}
 	},
 
-	todetail(e) {
+	toDetail(e) {
 		wx.navigateTo({
 			url: '/pages/detail/detail?id=' + e.currentTarget.dataset.id,
 		})

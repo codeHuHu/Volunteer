@@ -171,6 +171,7 @@
 		</view>
 	</view>
 </view>
+<!-- 群二维码窗口 -->
 <view class="cu-modal {{modalName=='toGroup'?'show':''}}">
 	<view class="cu-dialog">
 		<swiper style="height: 500rpx;">

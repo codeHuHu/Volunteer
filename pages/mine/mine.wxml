@@ -8,7 +8,10 @@
 						<view class="text-gray text-df padding-top-sm">{{actions.team}}</view>
 					</view>
 					<view class="">
-						<view class="cu-avatar xl round" style="background-image:url(/images/青协头像.png)">
+						<view class="cu-avatar xl round">
+							<view class="cu-avatar lg">
+								<image class="cu-avatar round lg" src="cloud://volunteer-2ge0hjpsa1879e88.766f-volunteer-2ge0hjpsa1879e88-1314668114/QR_CODE/青协头像.png" mode="widthFix" style="max-height: 360rpx;"></image>
+							</view>
 						</view>
 					</view>
 				</view>

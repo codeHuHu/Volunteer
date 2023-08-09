@@ -63,7 +63,11 @@ Page({
 
 			.catch(console.error)
 	},
+	toDetail(e){
+		wx.navigateTo({
+			url: '/pages/detail/detail?id=' + e.currentTarget.dataset.id,
+		})
+	}
 
 
-	 
 })

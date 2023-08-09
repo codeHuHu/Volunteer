@@ -30,9 +30,9 @@ Page({
 		Phone: '',
 		temp_imgList: [],
 		//三个时间戳
-		starttimestamp:'',
-		endtimestamp:'',
-		deadtimestamp:''
+		starttimestamp: '',
+		endtimestamp: '',
+		deadtimestamp: ''
 	},
 
 	/**
@@ -46,9 +46,7 @@ Page({
 			hour12: false,
 			hour: '2-digit',
 			minute: '2-digit'
-		});
-
-		console.log(currentTime)
+		}).slice(0, 8);
 		this.setData({
 			currentDate: currentDate,
 			beginDate: currentDate,
@@ -125,61 +123,45 @@ Page({
 	},
 
 	bindStartChange: function (e) {
-		// let combinedStartStr = this.data.beginDate;
-		// let combinedEndStr = e.detail.value;
-		// let start = new Date(combinedStartStr).getTime();
-		// let end = new Date(combinedEndStr).getTime();
-		// this.checkTime(start, end);
 		let combinedStartStr = e.detail.value + ' ' + this.data.startTime;
 		let combinedEndStr = e.detail.value + ' ' + this.data.endTime;
-		//	console.log(combinedStartStr)
 		let start = new Date(combinedStartStr).getTime();
 		let end = new Date(combinedEndStr).getTime();
-
-		let dead=e.detail.value+' '+this.data.deadTime;
+		let dead = e.detail.value + ' ' + this.data.deadTime;
 		let deadstamp = new Date(dead).getTime()
+
 		this.setData({
 			beginDate: e.detail.value,
 			deadDate: e.detail.value,
-			starttimestamp:start,
-			endtimestamp:end,
-			deadtimestamp:deadstamp
+			starttimestamp: start,
+			endtimestamp: end,
+			deadtimestamp: deadstamp
 		})
-		//console.log(e.detail.value)
 	},
 	binddeadChange: function (e) {
-		// let combinedStartStr = this.data.beginDate;
-		// let combinedEndStr = e.detail.value;
-		// let start = new Date(combinedStartStr).getTime();
-		// let end = new Date(combinedEndStr).getTime();
-		// this.checkTime(start, end);
-		let dead=e.detail.value+' '+this.data.deadTime;
+		let dead = e.detail.value + ' ' + this.data.deadTime;
 		let deadstamp = new Date(dead).getTime()
 
 		this.setData({
 			deadDate: e.detail.value,
-			deadtimestamp:deadstamp
+			deadtimestamp: deadstamp
 		})
 	},
 
 	bindSTimeChange: function (e) {
 		let combinedStartStr = this.data.beginDate + ' ' + e.detail.value;
 		let combinedEndStr = this.data.beginDate + ' ' + this.data.endTime;
-		//	console.log(combinedStartStr)
 		let start = new Date(combinedStartStr).getTime();
 		let end = new Date(combinedEndStr).getTime();
 		this.checkTime(start, end)
-		// console.log(start)
-		// console.log(end)
-		// console.log(e.detail.value);
-		let dead=this.data.deadDate+' '+e.detail.value;
+		let dead = this.data.deadDate + ' ' + e.detail.value;
 		let deadstamp = new Date(dead).getTime()
 		this.setData({
 			startTime: e.detail.value,
 			deadTime: e.detail.value,
-			starttimestamp:start,
-			endtimestamp:end,
-			deadtimestamp:deadstamp
+			starttimestamp: start,
+			endtimestamp: end,
+			deadtimestamp: deadstamp
 		})
 	},
 	bindETimeChange: function (e) {
@@ -188,34 +170,24 @@ Page({
 		let start = new Date(combinedStartStr).getTime();
 		let end = new Date(combinedEndStr).getTime();
 		this.checkTime(start, end);
-
-		let dead=this.data.deadDate+' '+this.data.deadTime;
+		let dead = this.data.deadDate + ' ' + this.data.deadTime;
 		let deadstamp = new Date(dead).getTime()
 		this.setData({
 			endTime: e.detail.value,
-			endtimestamp:end,
-			starttimestamp:start,
-			deadtimestamp:deadstamp
+			endtimestamp: end,
+			starttimestamp: start,
+			deadtimestamp: deadstamp
 		})
 	},
 	binddeadTimeChange: function (e) {
-		let dead=this.data.deadDate+' '+e.detail.value;
+		let dead = this.data.deadDate + ' ' + e.detail.value;
 		let deadstamp = new Date(dead).getTime()
 		this.setData({
 			deadTime: e.detail.value,
-			deadtimestamp:deadstamp
+			deadtimestamp: deadstamp
 		})
 	},
 
-	// onConfirm(e) {
-	//   const value = e.detail.value; // 获取输入框的内容
-	//   const tagList = this.data.tagList; // 获取之前的内容数组
-	//   tagList.push(value); // 将新的内容添加到数组中
-	//   this.setData({
-	// 		tagList: tagList, // 更新tagList的值
-	// 		inputValue: '', // 清空输入框的值
-	//   });
-	// },
 	handlemyTagClick(e) {
 		const index = e.currentTarget.dataset.index;
 		var lb = [];
@@ -300,12 +272,8 @@ Page({
 	sendNew(e) {
 		let combinedStartStr = this.data.beginDate + ' ' + this.data.startTime;
 		let combinedEndStr = this.data.beginDate + ' ' + this.data.endTime;
-		//console.log(combinedStartStr);
-		//console.log(combinedEndStr);
 		let start = new Date(combinedStartStr).getTime();
 		let end = new Date(combinedEndStr).getTime();
-		//console.log(start);
-		//console.log(end);
 		if (end < start) {
 			wx.showToast({
 				icon: 'none',
@@ -339,19 +307,15 @@ Page({
 								outNum: this.data.outNum,
 								inJoin: 0,
 								outJoin: 0,
-								// serviceDate: this.data.beginDate,
-								// serviceSTime: this.data.startTime,
-								// serviceETime: this.data.endTime,
-								// DeadDate: this.data.deadDate,
-								//	deadTime: this.data.deadTime,
-								serviceStamp:this.data.starttimestamp,
-								serviceEstamp:this.data.endtimestamp,
-								deadtimestamp:this.data.deadtimestamp,
+
+								serviceStamp: this.data.starttimestamp,
+								serviceEstamp: this.data.endtimestamp,
+								deadtimestamp: this.data.deadtimestamp,
 								address: this.data.Address,
 								intro: this.data.intro,
 								tag: this.data.tagList[this.data.tagIndex],
 								status: '1', //进行中
-								ispintuan:  Number(this.data.ispintuan),
+								ispintuan: Number(this.data.ispintuan),
 								qr_code: this.data.cloud_imgList
 							},
 							success(res) {
@@ -364,7 +328,7 @@ Page({
 				})
 			setTimeout(() => {
 				wx.navigateBack(),
-				wx.hideToast()
+					wx.hideToast()
 			}, 1000); // 延迟 2000 毫秒后执行
 		}
 	},
@@ -375,18 +339,29 @@ Page({
 		})
 	},
 	ChooseImage() {
-		wx.chooseImage({
+
+		wx.chooseMedia({
 			count: 4, //默认9
+			mediaType: ['image'],
 			sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
-			sourceType: ['album'], //从相册选择
+			sourceType: ['album', 'camera'], //从相册选择
 			success: (res) => {
+				console.log(res)
 				if (this.data.temp_imgList.length != 0) {
+					var t = []
+					for (var i in res.tempFiles) {
+						t.push(res.tempFiles[i].tempFilePath)
+					}
 					this.setData({
-						temp_imgList: this.data.temp_imgList.concat(res.tempFilePaths)
+						temp_imgList: this.data.temp_imgList.concat(t)
 					})
 				} else {
+					var t = []
+					for (var i in res.tempFiles) {
+						t.push(res.tempFiles[i].tempFilePath)
+					}
 					this.setData({
-						temp_imgList: res.tempFilePaths
+						temp_imgList: t
 					})
 				}
 			}

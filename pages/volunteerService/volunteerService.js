@@ -263,14 +263,10 @@ Page({
 		var res = result
 		console.log(res)
 		var dataArr = []
+		var t
 		for (var l in res) {
-			const date = new Date(res[l].serviceStamp);
-			const year = date.getFullYear();
-			const month = date.getMonth() + 1; // 月份需要加1
-			const day = date.getDate();
-
-			const formattedDate = `${year}-${month}-${day}`;
-			dataArr.push(formattedDate)
+			t = new Date(res[l].serviceStamp)
+			dataArr.push(`${t.getFullYear()}-${app.Z(t.getMonth() + 1)}-${app.Z(t.getDate())}`)
 			//console.log(formattedDate)
 		}
 		this.setData({
@@ -314,7 +310,7 @@ Page({
 	onShareAppMessage() {
 
 	},
-	todetail(e) {
+	toDetail(e) {
 		//console.log(e.currentTarget.dataset.id)
 		wx.navigateTo({
 			url: '/pages/detail/detail?id=' + e.currentTarget.dataset.id,
