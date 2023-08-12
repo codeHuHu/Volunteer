@@ -1,0 +1,26 @@
+
+.character {
+	display: flex;
+	font-display: row;
+	justify-content: space-between;
+}
+.cu-tag.bg-green.light.sm.round.going-on {
+	background-color: red;
+	color: white;
+}
+
+.cu-tag.bg-green.light.sm.round.over {
+	background-color: gray;
+	color: white;
+}
+
+.data {
+	color: rgb(184, 182, 182);
+	font-size: 24rpx;
+
+}
+
+.cu-card {
+	margin-bottom: -20rpx;
+
+}

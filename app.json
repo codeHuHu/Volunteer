@@ -13,7 +13,8 @@
 		"pages/accountSignUp/accountSignUp",
 		"pages/None/None",
 		"pages/teammenbers/teammenbers",
-		"pages/myActivity/myActivity"
+		"pages/myActivity/myActivity",
+		"pages/myJoin/myJoin"
 	],
 	"usingComponents": {
     "cu-custom": "colorui/components/cu-custom/cu-custom"

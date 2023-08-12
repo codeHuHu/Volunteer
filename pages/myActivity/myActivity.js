@@ -14,32 +14,51 @@ Page({
 	 * 生命周期函数--监听页面加载
 	 */
 	onLoad(options) {
-		db.collection('UserInfo').where({
+		db.collection('ActivityInfo').where({
 			_openid: app.globalData.openid
-		}).get().then(res => {
-			//console.log(res.data)
-			var actions = res.data
-			var myActivity = actions[0].myActivity
-			db.collection('ActivityInfo').where({
-				_id: db.command.in(myActivity)
-			}).field({
-				_id: true,
-				actName: true,
-				serviceEstamp: true,
-				serviceStamp: true,
-				status: true,
-				tag: true,
-				teamName: true,
-				_openid: true
-			}).orderBy('serviceStamp', 'desc').get().then(res => {
-				this.setData({
-					actionList: res.data
-				})
-				this.setTime(res.data)
-			}).catch(err => {
-				console.log(err);
+		}).field({
+			_id: true,
+			actName: true,
+			serviceEstamp: true,
+			serviceStamp: true,
+			status: true,
+			tag: true,
+			teamName: true,
+			_openid: true
+		}).orderBy('serviceStamp', 'desc').get().then(res => {
+			this.setData({
+				actionList: res.data
 			})
+			this.setTime(res.data)
+		}).catch(err => {
+			console.log(err);
 		})
+		// db.collection('UserInfo').where({
+		// 	_openid: app.globalData.openid
+		// }).get().then(res => {
+		// 	var actions = res.data
+		// 	var myActivity = actions[0].myActivity
+		// 	console.log(actions)
+		// 	db.collection('ActivityInfo').where({
+		// 		_id: db.command.in(myActivity)
+		// 	}).field({
+		// 		_id: true,
+		// 		actName: true,
+		// 		serviceEstamp: true,
+		// 		serviceStamp: true,
+		// 		status: true,
+		// 		tag: true,
+		// 		teamName: true,
+		// 		_openid: true
+		// 	}).orderBy('serviceStamp', 'desc').get().then(res => {
+		// 		this.setData({
+		// 			actionList: res.data
+		// 		})
+		// 		this.setTime(res.data)
+		// 	}).catch(err => {
+		// 		console.log(err);
+		// 	})
+		// })
 	},
 
 	setTime(result) {
@@ -63,7 +82,7 @@ Page({
 
 			.catch(console.error)
 	},
-	toDetail(e){
+	toDetail(e) {
 		wx.navigateTo({
 			url: '/pages/detail/detail?id=' + e.currentTarget.dataset.id,
 		})

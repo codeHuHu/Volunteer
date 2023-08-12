@@ -46,7 +46,8 @@
 	</block>
 	<block wx:else>
 		<view class="bg-img margin-lr" style="min-height: 35vh;">
-			<view class="bg-img padding-tb-xl" style="background-image: url(/images/1-up.png);height: 414rpx;">
+			<view class="bg-img padding-tb-xl" style="background-image: url(/images/1-up1.png);height: 414rpx;">
+			
 				<view class="log-time margin-top" style="display: flex;">
 					<view class="margin-left cu-tag round bg-green margin-top-xs " bindtap="toregister">
 						注册
@@ -61,10 +62,16 @@
 		</view>
 	</block>
 	<view class="cu-list menu card-menu margin-bottom-xl shadow-lg radius">
-		<view class="cu-item arrow" bind:tap="toMyActivity">
+		<view class="cu-item arrow" bindtap="toMyActivity">
 			<view bindtap="none" class="content">
 				<text class="cuIcon-my lg text-gray"></text>
 				<text class="text-grey">我发布的</text>
+			</view>
+		</view>
+		<view class="cu-item arrow" bindtap="toMyJoin">
+			<view bindtap="none" class="content">
+				<text class="cuIcon-my lg text-gray"></text>
+				<text class="text-grey">我参与的</text>
 			</view>
 		</view>
 		<view class="cu-item arrow">
