@@ -42,15 +42,7 @@ Page({
               }
             })
         }
-        // 如果名单里有该志愿者,改变报名按钮状态
-        for (var i in t.joinMembers) {
-          if (t.joinMembers[i] == app.globalData.openid) {
-            that.setData({
-              ifJoin: 1,
-            })
-            break
-          }
-        }
+
       }
     })
   },
@@ -126,6 +118,25 @@ Page({
     this.setData({
       ifFull: (res.inJoin == res.inNum && res.outJoin == res.outNum) ? 1 : 0
     })
+    if (res.joinMembers) {
+      var flag = 0
+      // 如果名单里有该志愿者,改变报名按钮状态
+      for (var i in res.joinMembers) {
+        if (res.joinMembers[i] == app.globalData.openid) {
+          flag = 1
+          break
+        }
+      }
+      this.setData({
+        ifJoin: flag,
+        fuck:'sss'
+      })
+    }
+    else{
+      this.setData({
+        ifJoin: 0
+      })
+    }
   },
   Join() {
     var that = this
@@ -151,15 +162,15 @@ Page({
         }
         //如果没满人,就去新增人数
         wx.cloud.callFunction({
-            name: 'updateJoinActivity',
-            data: {
-              collectionName: 'ActivityInfo',
-              docName: that.data.id,
-              //操作变量
-              inJoinAdd: ifInTeam ? 1 : 0,
-              outJoinAdd: ifInTeam ? 0 : 1,
-            }
-          })
+          name: 'updateJoinActivity',
+          data: {
+            collectionName: 'ActivityInfo',
+            docName: that.data.id,
+            //操作变量
+            inJoinAdd: ifInTeam ? 1 : 0,
+            outJoinAdd: ifInTeam ? 0 : 1,
+          }
+        })
           .then(res => {
             //更改按钮状态
             that.setData({
@@ -175,7 +186,7 @@ Page({
               }
             })
             wx.hideLoading()
-            that.setShow("success", `成功参与${this.data.actions.ispintuan?'拼团':'报名'}`);
+            that.setShow("success", `成功参与${this.data.actions.ispintuan ? '拼团' : '报名'}`);
           })
       })
   },
@@ -209,17 +220,17 @@ Page({
         //(云函数)人数自减1,赋值新的名单
         var ifInTeam = that.data.ifInTeam
         wx.cloud.callFunction({
-            name: 'updateJoinActivity',
-            data: {
-              collectionName: 'ActivityInfo',
-              docName: that.data.id,
-              //操作变量
-              //根据上面i和j的差来决定要减少多少
-              inJoinAdd: ifInTeam ? -1 : 0,
-              outJoinAdd: ifInTeam ? 0 : -1,
-              newJoinMembers: result
-            }
-          })
+          name: 'updateJoinActivity',
+          data: {
+            collectionName: 'ActivityInfo',
+            docName: that.data.id,
+            //操作变量
+            //根据上面i和j的差来决定要减少多少
+            inJoinAdd: ifInTeam ? -1 : 0,
+            outJoinAdd: ifInTeam ? 0 : -1,
+            newJoinMembers: result
+          }
+        })
           .then(res => {
             //更改按钮状态
             that.setData({
