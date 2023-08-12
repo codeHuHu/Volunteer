@@ -125,7 +125,7 @@
 			</swiper-item>
 			<swiper-item wx:if="{{!actions.qr_code}}" wx:key="index" class="bg-img" style="height: 360rpx;" show-menu-by-longpress="true">
 				<view class="cu-bar justify-center text-white">
-					<image class="margin-top" src="/images/私密.png" bindtap="previewImage" data-index="{{index}}" mode="aspectFit" />
+					<image class="margin-top" src="/images/青协头像.png" bindtap="previewImage" data-index="{{index}}" mode="aspectFit" />
 				</view>
 				<view class="cu-tag cancleButton bg-white round button" catchtap="hideModal">
 					<text class="cuIcon-close text-xl text-bold text-black"></text>
@@ -171,7 +171,7 @@
 			</swiper-item>
 			<swiper-item wx:if="{{!actions.qr_code}}" wx:key="index" class="bg-img" style="height: 360rpx;" show-menu-by-longpress="true">
 				<view class="cu-bar justify-center text-white">
-					<image class="margin-top" src="/images/私密.png" bindtap="previewImage" data-index="{{index}}" mode="aspectFit" />
+					<image class="margin-top" src="/images/青协头像.png" bindtap="previewImage" data-index="{{index}}" mode="aspectFit" />
 				</view>
 				<view class="cu-tag cancleButton bg-white round button" catchtap="hideModal">
 					<text class="cuIcon-close text-xl text-bold text-black"></text>

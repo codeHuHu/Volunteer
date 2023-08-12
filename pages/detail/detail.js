@@ -350,7 +350,7 @@ Page({
   },
   previewImage(e) {
     wx.previewImage({
-      urls: this.data.actions.qr_code ? this.data.actions.qr_code : ['/images/私密.png'],
+      urls: this.data.actions.qr_code ? this.data.actions.qr_code : ['/images/青协头像.png'],
       current: e.currentTarget.dataset.index
     })
   },

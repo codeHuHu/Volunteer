@@ -26,6 +26,7 @@
 		"navigationBarTextStyle": "black",
 		"enablePullDownRefresh": true
 	},
+	"lazyCodeLoading": "requiredComponents",
 	"tabBar": {
     "list": [
       {
