@@ -64,7 +64,7 @@
 		<view class="cu-item arrow" bind:tap="toMyActivity">
 			<view bindtap="none" class="content">
 				<text class="cuIcon-my lg text-gray"></text>
-				<text class="text-grey">我的志愿</text>
+				<text class="text-grey">我发布的</text>
 			</view>
 		</view>
 		<view class="cu-item arrow">
