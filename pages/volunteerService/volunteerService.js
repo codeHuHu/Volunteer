@@ -57,31 +57,24 @@ Page({
 		if (Index == 0) {
 			this.onLoad()
 		} else {
-			db.collection('UserInfo').where({
+			db.collection('ActivityInfo').where({
 				_openid: app.globalData.openid
-			}).get().then(res => {
-				//console.log(res.data)
-				var actions = res.data
-				var myActivity = actions[0].myActivity
-				db.collection('ActivityInfo').where({
-					_id: db.command.in(myActivity)
-				}).field({
-					_id: true,
-					actName: true,
-					serviceEstamp: true,
-					serviceStamp: true,
-					status: true,
-					tag: true,
-					teamName: true,
-					_openid: true
-				}).orderBy('serviceStamp', 'desc').get().then(res => {
-					this.setData({
-						actionList: res.data
-					})
-					this.setTime(res.data)
-				}).catch(err => {
-					console.log(err);
+			}).field({
+				_id: true,
+				actName: true,
+				serviceEstamp: true,
+				serviceStamp: true,
+				status: true,
+				tag: true,
+				teamName: true,
+				_openid: true
+			}).orderBy('serviceStamp', 'desc').get().then(res => {
+				this.setData({
+					actionList: res.data
 				})
+				this.setTime(res.data)
+			}).catch(err => {
+				console.log(err);
 			})
 		}
 	},

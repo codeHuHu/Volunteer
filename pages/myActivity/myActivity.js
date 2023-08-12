@@ -33,32 +33,6 @@ Page({
 		}).catch(err => {
 			console.log(err);
 		})
-		// db.collection('UserInfo').where({
-		// 	_openid: app.globalData.openid
-		// }).get().then(res => {
-		// 	var actions = res.data
-		// 	var myActivity = actions[0].myActivity
-		// 	console.log(actions)
-		// 	db.collection('ActivityInfo').where({
-		// 		_id: db.command.in(myActivity)
-		// 	}).field({
-		// 		_id: true,
-		// 		actName: true,
-		// 		serviceEstamp: true,
-		// 		serviceStamp: true,
-		// 		status: true,
-		// 		tag: true,
-		// 		teamName: true,
-		// 		_openid: true
-		// 	}).orderBy('serviceStamp', 'desc').get().then(res => {
-		// 		this.setData({
-		// 			actionList: res.data
-		// 		})
-		// 		this.setTime(res.data)
-		// 	}).catch(err => {
-		// 		console.log(err);
-		// 	})
-		// })
 	},
 
 	setTime(result) {
@@ -87,6 +61,4 @@ Page({
 			url: '/pages/detail/detail?id=' + e.currentTarget.dataset.id,
 		})
 	}
-
-
 })
