@@ -13,8 +13,12 @@ Page({
   },
   onLoad: function (options) {
     var that = this
-    that.data.id = options.id
-    db.collection('ActivityInfo').doc(that.data.id).get({
+		this.data.id = options.id
+		if(options.actions){
+			let info = JSON.parse(decodeURIComponent(options.actions))
+			this.data.actions = info
+		}
+    db.collection('ActivityInfo').doc(options.id).get({
       success(res) {
         var t = res.data
         // 时间戳的转换
@@ -64,7 +68,7 @@ Page({
   },
 
   onPullDownRefresh() {
-
+		wx.stopPullDownRefresh()
   },
 
   onReachBottom() {
@@ -129,7 +133,6 @@ Page({
       }
       this.setData({
         ifJoin: flag,
-        fuck:'sss'
       })
     }
     else{
@@ -206,7 +209,6 @@ Page({
           if (tmpList[i] != app.globalData.openid) {
             result.push(tmpList[i])
           }
-
         }
         //加入两个错误判断
         if (res.data.inNum < 0 || res.data.outNum < 0) {
@@ -266,7 +268,8 @@ Page({
       })
   },
   showModal(e) {
-    var tmp = e.currentTarget.dataset.target
+		var tmp = e.currentTarget.dataset.target
+		console.log(tmp)
     if (tmp == 'toJoin') {
       //报名窗口
       //先判断是否满人
@@ -314,7 +317,8 @@ Page({
     })
   },
   hideModal(e) {
-    var a = e.currentTarget.dataset.target
+		var a = e.currentTarget.dataset.target
+		console.log(a)
     if (a == 'join') {
       wx.showLoading()
       this.setData({
@@ -351,13 +355,20 @@ Page({
     })
   },
   onShareAppMessage(event) {
+		console.log('shareApp',this.data.actions.actName)
     return {
-      title: 'Volunteer',
+      title: this.data.actions.actName,
       //imageUrl: this.data.actions.images[0],
       path: 'pages/detail/detail?id=' + this.data.id
     }
   },
-
+	onShareTimeline(event){
+		console.log('shareTimeLine',this.data.actions.actName)
+		return {
+			title:this.data.actions.actName,
+			query:'id=' + this.data.id+'&actions='+encodeURIComponent(JSON.stringify(this.data.actions))
+		}
+	},
   /**
    * 轻提示展示
    * @param {*} status 
