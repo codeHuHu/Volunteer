@@ -8,20 +8,19 @@
 				<radio value="0" class="margin-left" />否
 			</radio-group>
 
-
 		</view>
 		<view class="cu-form-group">
-			<view class="inline_name">活动名称：</view>
+			<view class="title inteam">活动名称：</view>
 			<input class="newName" placeholder="请输入名称" bindinput="getactName" model:value="{{actName}}" />
 		</view>
 		<view class="cu-form-group" style="justify-content: center;">
 			<view style="display: flex;align-items: center; ">
 				<view class="title inteam">负责人</view>
-				<input bindinput="getholder" placeholder="姓名" model:value="" />
+				<input bindinput="getholder" placeholder="{{holder}}" disabled="1" model:value="" />
 			</view>
 			<view style="display: flex;align-items: center; ">
 				<view class="title outteam">联系电话</view>
-				<input class="tel" bindinput="getPhone" placeholder="" />
+				<input class="tel" bindinput="getPhone" placeholder="{{Phone}}" disabled="1" />
 			</view>
 		</view>
 		<view class="cu-form-group">
@@ -32,20 +31,19 @@
 				</view>
 			</picker>
 		</view>
-		<view class="cu-form-group" style="justify-content: center;">
-			<view style="display: flex;align-items: center; ">
-				<view class="title inteam">队内招募</view>
-				<input maxlength="3" bindinput="getinNum" placeholder="人数"></input>
+		<view class="cu-form-group flex justify-between">
+			<view wx:if="{{index&&index!=0}}" class="flex">
+				<view class="title inteam">队内招募:</view>
+				<input class="title inteam" maxlength="3" bindinput="getinNum" placeholder="{{inNum}}"></input>
 			</view>
-			<view style="display: flex;align-items: center; ">
-				<view class="title outteam">公开招募</view>
-				<input maxlength="3" bindinput="getoutNum" placeholder="人数"></input>
+			<view class="flex">
+				<view class="title outteam">公开招募:</view>
+				<input class="title inteam" maxlength="3" bindinput="getoutNum" placeholder="{{outNum}}"></input>
 			</view>
 		</view>
 
-
 		<view class="cu-form-group">
-			<view class="inline_name">服务时间：</view>
+			<view class="title inteam">服务时间：</view>
 			<view class="new_date">
 				<picker class="time_pickers text-xs" mode="date" value="{{beginDate}}" start="{{currentDate}}" end="" bindchange="bindStartChange">{{beginDate}}
 				</picker>
@@ -59,7 +57,7 @@
 			</view>
 		</view>
 		<view class="cu-form-group">
-			<view class="inline_name">截止报名时间：</view>
+			<view class="title inteam">截止报名时间：</view>
 			<view class="new_date">
 				<picker class="time_pickers text-xs" mode="date" value="{{beginDate}}" start="{{currentDate}}" end="{{beginDate}}" bindchange="binddeadChange">{{deadDate}}
 				</picker>
@@ -76,7 +74,7 @@
 		</view>
 
 		<view class="cu-form-group ">
-			<view class="inline_name">简介：</view>
+			<view class="title inteam">简介：</view>
 			<textarea class="new_profile" placeholder="请输入简介" bindinput="getintro"></textarea>
 		</view>
 
@@ -111,4 +109,10 @@
 
 		<button class="new_button" bindtap="sendNew">发布</button>
 	</form>
+</view>
+<!-- 轻提示 -->
+<view class="toast-fixed-center" hidden="{{!show}}" style="z-index: 99;">
+	<view class="radius-lg padding animation-slide-top text-lg {{status == 'success' ? 'bg-green light':'bg-red light'}}">
+		<text class="cuIcon-info"></text> {{message}}
+	</view>
 </view>

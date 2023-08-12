@@ -31,6 +31,14 @@
 <!-- show&&"select_img_rotate"-----给显示框右边的下拉箭头添加动画
  height:{{show?(selectData.length>5?300:selectData.length*60):0}}rpx;-----给改变下拉框高度，实现下拉框的显示隐藏，每个下拉选项的高度为60，下拉框的最大高度这里设置的是300，所以这里写成当数据长度大于5时，下拉框高度为300，反之下拉框高度为数据长度乘以60
  index==selectData.length-1&&"border:0;"-----取消下拉选项的最后一个的下边框 -->
+<view wx:if = "{{!actionList.length}}" class="margin-tb-sm padding-top-lg padding-bottom-xl">
+  <view class="flex justify-center text-xsl">
+    <view class="cuIcon-searchlist text-gray icon"></view>
+  </view>
+  <view class="flex justify-center padding-top-sm">
+    <view class="text-gray text">暂无数据</view>
+  </view>
+</view>
 
 <block wx:for="{{actionList}}" wx:key="index">
 	<view class="cu-card article {{isCard?'no-card':''}} margin" bindtap="toDetail" data-id="{{item._id}}">
@@ -42,7 +50,7 @@
 				<view class="desc">
 
 					<view class="character">
-						<view class="cu-tag bg-red light sm round">{{item.teamName}}</view>
+						<view wx:if="{{item.teamName.length!=0}}" class="cu-tag bg-red light sm round">{{item.teamName}}</view>
 						<view class="cu-tag bg-green light sm round" style="white-space:normal;">{{item.tag}}</view>
 						<view class="cu-tag bg-green light sm round going-on" wx:if="{{item.status==1}}">进行中</view>
 						<view class="cu-tag bg-green light sm round going-on" wx:elif="{{item.status==2}}" style="background-color: gray;">已结束</view>

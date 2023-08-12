@@ -204,15 +204,15 @@ Page({
 
 		const collection = db.collection('ActivityInfo');
 		collection.field({
-				_id: true,
-				actName: true,
-				serviceEstamp: true,
-				serviceStamp: true,
-				status: true,
-				tag: true,
-				teamName: true,
-				_openid: true
-			})
+			_id: true,
+			actName: true,
+			serviceEstamp: true,
+			serviceStamp: true,
+			status: true,
+			tag: true,
+			teamName: true,
+			_openid: true
+		})
 			.orderBy('serviceStamp', 'desc')
 			.get()
 			.then(res => {

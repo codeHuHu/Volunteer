@@ -1,5 +1,6 @@
 // pages/newActivity/newActivity.js
 const db = wx.cloud.database()
+let loading = false;
 const app = getApp()
 Page({
 
@@ -18,16 +19,12 @@ Page({
 		picker: [''],
 		inputValue: '', // 清空输入框的值
 		showLightButton: [], // 控制按钮显示高光
-		index: '',
-		tagIndex: '',
-		ActName: '',
-		holder: '',
+		actName: '',
 		teamName: '',
 		inNum: 0,
 		outNum: 0,
-		actAddress: '',
+		Address: '',
 		intro: '',
-		Phone: '',
 		temp_imgList: [],
 		//三个时间戳
 		starttimestamp: '',
@@ -41,12 +38,17 @@ Page({
 	onLoad: function () {
 		// const currentDate = new Date().toLocaleDateString('en-GB', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/\//g, '-');
 		//const currentDate = new Date()
+		this.setData({
+			holder: app.globalData.Name,
+			Phone: app.globalData.phone,
+		})
 		const currentDate = new Date().toISOString().slice(0, 10);
 		const currentTime = new Date().toLocaleTimeString('en-US', {
 			hour12: false,
 			hour: '2-digit',
 			minute: '2-digit'
 		}).slice(0, 8);
+		var teamPicker = ['不勾选队伍'].concat(app.globalData.team)
 		this.setData({
 			currentDate: currentDate,
 			beginDate: currentDate,
@@ -54,7 +56,7 @@ Page({
 			endTime: currentTime,
 			deadDate: currentDate,
 			deadTime: currentTime,
-			picker: app.globalData.team
+			picker: teamPicker
 		});
 
 		db.collection('TeamInfo')
@@ -198,7 +200,6 @@ Page({
 		});
 
 		console.log(e.currentTarget.dataset.index)
-		console.log(this.data.tagList[this.data.tagindex])
 	},
 
 
@@ -241,19 +242,16 @@ Page({
 		})
 	},
 	getPhone(e) {
-		console.log(e.detail.value)
 		this.setData({
 			Phone: e.detail.value
 		})
 	},
 	getinNum(e) {
-		console.log(e.detail.value)
 		this.setData({
 			inNum: Number(e.detail.value)
 		})
 	},
 	getoutNum(e) {
-		console.log(e.detail.value)
 		this.setData({
 			outNum: Number(e.detail.value)
 		})
@@ -270,67 +268,61 @@ Page({
 		})
 	},
 	sendNew(e) {
-		let combinedStartStr = this.data.beginDate + ' ' + this.data.startTime;
-		let combinedEndStr = this.data.beginDate + ' ' + this.data.endTime;
-		let start = new Date(combinedStartStr).getTime();
-		let end = new Date(combinedEndStr).getTime();
-		if (end < start) {
-			wx.showToast({
-				icon: 'none',
-				title: '开始时间和结束时间有误，请重新选择！',
-			});
-			setTimeout(() => {
-				wx.hideToast()
-			}, 1000); // 延迟 2000 毫秒后执行
-		} else {
-			console.log('执行提交中')
-			//创建异步上传任务数组
-			let uploadTask = []
-			for (let i in this.data.temp_imgList) {
-				uploadTask.push(this.uploadFile(this.data.temp_imgList[i]))
-			}
-			Promise.all(uploadTask)
-				.then(result => {
-					//等待完所有异步上传任务完成后
-					this.setData({
-							cloud_imgList: result
-						}),
-						//用逗号,表示setData完了之后再上传数据库
-						//若不用,则异步执行,则还没setData就执行上传数据库,导致cloud_imgList无值
-						db.collection('ActivityInfo').add({
-							data: {
-								actName: this.data.actName,
-								holder: this.data.holder,
-								phone: this.data.Phone,
-								teamName: this.data.picker[this.data.index],
-								inNum: this.data.inNum,
-								outNum: this.data.outNum,
-								inJoin: 0,
-								outJoin: 0,
-
-								serviceStamp: this.data.starttimestamp,
-								serviceEstamp: this.data.endtimestamp,
-								deadtimestamp: this.data.deadtimestamp,
-								address: this.data.Address,
-								intro: this.data.intro,
-								tag: this.data.tagList[this.data.tagIndex],
-								status: '1', //进行中
-								ispintuan: Number(this.data.ispintuan),
-								qr_code: this.data.cloud_imgList
-							},
-							success(res) {
-								wx.showToast({
-									icon: 'success',
-									title: '提交成功！',
-								})
-							}
-						});
-				})
-			setTimeout(() => {
-				wx.navigateBack(),
-					wx.hideToast()
-			}, 1000); // 延迟 2000 毫秒后执行
+		//检测是否输入完整
+		if(this.check()==0){
+			return
 		}
+		console.log('执行提交中')
+		this.setShow("success", "可以提交");
+		//创建异步上传任务数组
+		let uploadTask = []
+		for (let i in this.data.temp_imgList) {
+			uploadTask.push(this.uploadFile(this.data.temp_imgList[i]))
+		}
+		Promise.all(uploadTask)
+			.then(result => {
+				//等待完所有异步上传任务完成后
+				this.setData({
+					cloud_imgList: result
+				}),
+					//用逗号,表示setData完了之后再上传数据库
+					//若不用,则异步执行,则还没setData就执行上传数据库,导致cloud_imgList无值
+					db.collection('ActivityInfo').add({
+						data: {
+							//string
+							actName: this.data.actName,
+							holder: this.data.holder,
+							phone: this.data.Phone,
+							intro: this.data.intro,
+							status: '1', //进行中
+							address: this.data.Address,
+							//number
+							inJoin: 0,
+							outJoin: 0,
+							serviceStamp: this.data.starttimestamp,
+							serviceEstamp: this.data.endtimestamp,
+							deadtimestamp: this.data.deadtimestamp,
+							ispintuan: Number(this.data.ispintuan),
+							inNum: this.data.inNum,
+							outNum: this.data.outNum,
+							teamName: this.data.index == 0 ? "" : this.data.picker[this.data.index],
+							tag: this.data.tagList[this.data.tagIndex],
+							//else	
+							qr_code: this.data.cloud_imgList
+						},
+						success(res) {
+							wx.showToast({
+								icon: 'success',
+								title: '提交成功！',
+							})
+						}
+					});
+			})
+		setTimeout(() => {
+			wx.navigateBack(),
+				wx.hideToast()
+		}, 1000); // 延迟 2000 毫秒后执行
+
 	},
 	isPintuan(e) {
 		console.log(e.detail.value)
@@ -410,5 +402,85 @@ Page({
 				}
 			})
 		})
+	},
+	check(){
+		if (!this.data.ispintuan) {
+			this.setShow("error", "请勾选是否拼团");
+			return 0
+		}
+		if (!this.data.holder || !this.data.Phone) {
+			this.setShow("error", "请重启本小程序");
+			return 0
+		}
+		if (this.data.actName.length == 0 || this.data.intro.length == 0 || this.data.Address.length == 0) {
+			this.setShow("error", "名称/地点/简介错误");
+			return 0
+		}
+		if (this.data.index != 0) {
+			if (!this.data.inNum) {
+				if (this.data.inNum != 0) {
+					this.setShow("error", "队内招募错误");
+					return 0
+				}
+			}
+		}
+		if (!this.data.outNum) {
+			if (this.data.outNum != 0) {
+				this.setShow("error", "公开招募错误");
+				return 0
+			}
+		}
+		if (!this.data.index) {
+			this.setShow("error", "未选定队伍");
+			return 0
+		}
+		if (!this.data.tagIndex) {
+			if (this.data.tagIndex != 0) {
+				this.setShow("error", "未选择标签");
+				return 0
+			}
+		}
+		if (this.data.starttimestamp < this.data.deadtimestamp) {
+			this.setShow("error", "截止时间有误");
+			return 0
+		}
+		if (this.data.endtimestamp < this.data.starttimestamp) {
+			this.setShow("error", "开始和结束时间有误");
+			return 0
+		} 
+		//return 1
+	},
+	/**
+	 * 轻提示展示
+	 * @param {*} status 
+	 * @param {*} message 
+	 * @param {*} time 
+	 * @param {*} fun 
+	 */
+	setShow(status, message, time = 1000, fun = false) {
+		if (loading) {
+			return
+		}
+		loading = true;
+		try {
+			this.setData({
+				status,
+				message,
+				time,
+				show: true,
+			})
+			setTimeout(() => {
+				this.setData({
+					show: false,
+				})
+				loading = false;
+				// 触发回调函数
+				if (fun) {
+					this.end()
+				}
+			}, time)
+		} catch {
+			loading = false;
+		}
 	},
 })
