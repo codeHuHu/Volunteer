@@ -22,17 +22,17 @@
 			<text class="fontsize">志愿福利</text>
 		</view>
 	</view>
-	<view class="item" bindtap="toZhiyuanfuwu">
-		<view class="bluecircle" bindtap="toZhiyuanfuwu">
+	<view class="item" bindtap="toNewActivity">
+		<view class="bluecircle">
 			<view class="bar-icon">
 				<text class="iconfont icon-jushou "></text>
 			</view>
 		</view>
 		<view>
-			<text class="fontsize">志愿服务</text>
+			<text class="fontsize">发起拼团</text>
 		</view>
 	</view>
-	<view class="item" bind:tap="toHonor">
+	<view class="item" bindtap="toHonor">
 		<view class="greencircle">
 			<view class="bar-icon">
 				<text class="cuIcon-selection lg "></text>

@@ -142,10 +142,14 @@ Page({
 			mask: true
 		})
 	},
-	toZhiyuanfuwu() {
-		wx.reLaunch({
-			url: '/pages/volunteerService/volunteerService',
-		})
+	toNewActivity() {
+		if (this.Byhistory()) {
+			wx.navigateTo({
+				url: '/pages/newActivity/newActivity',
+			})
+		} else if (this.ByBase()) {
+
+		}
 	},
 	tomine(event) {
 		wx.navigateTo({
