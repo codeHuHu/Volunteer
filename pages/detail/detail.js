@@ -12,12 +12,15 @@ Page({
 
   },
   onLoad: function (options) {
+    console.log('app.globalData:', app.globalData)
+    this.data.isLogin = app.globalData.islogin
+    this.data.id = options.id
     var that = this
-		this.data.id = options.id
-		if(options.actions){
-			let info = JSON.parse(decodeURIComponent(options.actions))
-			this.data.actions = info
-		}
+
+    if (options.actions) {
+      let info = JSON.parse(decodeURIComponent(options.actions))
+      this.data.actions = info
+    }
     db.collection('ActivityInfo').doc(options.id).get({
       success(res) {
         var t = res.data
@@ -68,7 +71,7 @@ Page({
   },
 
   onPullDownRefresh() {
-		wx.stopPullDownRefresh()
+    wx.stopPullDownRefresh()
   },
 
   onReachBottom() {
@@ -135,7 +138,7 @@ Page({
         ifJoin: flag,
       })
     }
-    else{
+    else {
       this.setData({
         ifJoin: 0
       })
@@ -268,8 +271,16 @@ Page({
       })
   },
   showModal(e) {
-		var tmp = e.currentTarget.dataset.target
-		console.log(tmp)
+    var tmp = e.currentTarget.dataset.target
+    console.log(tmp)
+    if(e.currentTarget.dataset.target=='None'){
+      //无操作
+      return
+    }
+    if(!this.data.isLogin){
+      this.setShow("error", "您尚未注册");
+      return
+    }
     if (tmp == 'toJoin') {
       //报名窗口
       //先判断是否满人
@@ -293,11 +304,13 @@ Page({
       if (this.data.ifInTeam) {
         if (this.data.actions.inJoin >= this.data.actions.inNum) {
           this.setShow("error", "人数已满");
+          wx.hideLoading()
           return
         }
       } else {
         if (this.data.actions.outJoin >= this.data.actions.outNum) {
           this.setShow("error", "人数已满");
+          wx.hideLoading()
           return
         }
       }
@@ -317,8 +330,8 @@ Page({
     })
   },
   hideModal(e) {
-		var a = e.currentTarget.dataset.target
-		console.log(a)
+    var a = e.currentTarget.dataset.target
+    console.log(a)
     if (a == 'join') {
       wx.showLoading()
       this.setData({
@@ -355,20 +368,20 @@ Page({
     })
   },
   onShareAppMessage(event) {
-		console.log('shareApp',this.data.actions.actName)
+    console.log('shareApp', this.data.actions.actName)
     return {
       title: this.data.actions.actName,
       //imageUrl: this.data.actions.images[0],
       path: 'pages/detail/detail?id=' + this.data.id
     }
   },
-	onShareTimeline(event){
-		console.log('shareTimeLine',this.data.actions.actName)
-		return {
-			title:this.data.actions.actName,
-			query:'id=' + this.data.id+'&actions='+encodeURIComponent(JSON.stringify(this.data.actions))
-		}
-	},
+  onShareTimeline(event) {
+    console.log('shareTimeLine', this.data.actions.actName)
+    return {
+      title: this.data.actions.actName,
+      query: 'id=' + this.data.id + '&actions=' + encodeURIComponent(JSON.stringify(this.data.actions))
+    }
+  },
   /**
    * 轻提示展示
    * @param {*} status 

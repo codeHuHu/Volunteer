@@ -1,6 +1,7 @@
 // pages/mySignUp/mySignUp.js
 const db = wx.cloud.database()
 const app = getApp()
+let loading = false;
 Page({
 
 	/**
@@ -15,7 +16,8 @@ Page({
 		UserName: '',
 		UserIdnumber: '',
 		UserPhone: '',
-		ischeck: false,
+		UserAliPay: '',
+		isCheck: false,
 		List: []
 
 	},
@@ -24,7 +26,7 @@ Page({
 	 * 生命周期函数--监听页面加载
 	 */
 	onLoad(options) {
-
+		console.log('app.globalData', app.globalData)
 	},
 
 	/**
@@ -109,83 +111,106 @@ Page({
 		})
 	},
 	getPhone(e) {
-
 		console.log(e.detail.value);
 		this.setData({
-			UserPhone: e.detail.value
+			UserPhone: e.detail.value,
+			UserAliPay: e.detail.value
+		})
+	},
+	getAliPay(e) {
+		console.log(e.detail.value);
+		this.setData({
+			UserAliPay: e.detail.value
 		})
 	},
 	register() {
-		var that = this;
-		if (that.data.UserName == '') {
-			wx.showToast({
-				title: '姓名不能为空',
-			})
+		if (this.check() == 0) {
 			return
-		} else if (that.data.UserIdnumber == '') {
-			wx.showToast({
-				title: '证件号不能为空',
-			})
-			return
-		} else if (that.data.UserPhone == '') {
-			wx.showToast({
-				title: '请输入手机号',
-			})
-			return
-		} else if (!this.data.ischeck) {
-			wx.showToast({
-				title: '请同意协议',
-			})
-		} else {
-
-			db.collection('UserInfo').add({
-				data: {
-					username: that.data.UserName,
-					idtype: that.data.picker[that.data.index],
-					idnumber: that.data.UserIdnumber,
-					team: that.data.team[that.data.teamid],
-					residence: that.data.region,
-					phone: that.data.UserPhone,
-					islogin: true
-				},
-				success(res) {
-					console.log(res);
-					console.log("修改islogin");
-					app.globalData.islogin = true;
-					console.log(app.globalData.islogin);
-
-					try {
-						that.data.List.push([app.globalData.openid, app.globalData.islogin]);
-						console.log(that.data.List);
-						try {
-							wx.setStorageSync('user_status', that.data.List);
-						} catch (e) {
-
-						}
-					} catch (e) {
-						console.log(123123);
-					}
-
-					wx.navigateBack(),
-						wx.showToast({
-							title: '注册成功',
-						})
-
-				}
-			})
 		}
-	},
-	checkchange() {
-		console.log(111)
-		this.setData({
-			ischeck: !this.data.ischeck
+
+		var that = this;
+		db.collection('UserInfo').add({
+			data: {
+				username: that.data.UserName,
+				idtype: that.data.picker[that.data.index],
+				idnumber: that.data.UserIdnumber,
+				//team: that.data.team[that.data.teamid],
+				residence: that.data.region,
+				phone: that.data.UserPhone,
+				aliPay: this.data.UserAliPay,
+				islogin: true
+			},
+			success(res) {
+				console.log('注册成功')
+				app.globalData.Name = that.data.UserName;
+				app.globalData.phone = that.data.UserPhone;
+				app.globalData.Id = that.data.UserIdnumber;
+				app.globalData.islogin = true;
+				wx.setStorageSync('user_status', [app.globalData.openid, app.globalData.islogin]);
+				wx.navigateBack()
+				wx.showToast({
+					title: '注册成功',
+				})
+			}
 		})
 	},
-	//删除数据库
-	delete() {
-		db.collection('UserInfo').where({
-			_openid: app.globalData.openid
-		}).remove()
-	}
-
+	check() {
+		if (this.data.UserName == '') {
+			this.setShow("error", "姓名为空");
+			return 0
+		}
+		if (!this.data.index) {
+			if (this.data.index != 0) {
+				this.setShow("error", "请选择证件类型");
+				return 0
+			}
+		}
+		if (this.data.UserIdnumber == '') {
+			this.setShow("error", "证件号不能为空");
+			return 0
+		}
+		if (this.data.UserPhone == '') {
+			this.setShow("error", "请输入手机号");
+			return 0
+		}
+		if (this.data.UserAliPay == '') {
+			this.setShow("error", "请输入支付宝账号");
+			return 0
+		}
+		if (!this.data.isCheck) {
+			this.setShow("error", "请同意协议");
+			return 0
+		}
+	},
+	checkChange() {
+		this.setData({
+			isCheck: !this.data.isCheck
+		})
+	},
+	setShow(status, message, time = 1000, fun = false) {
+		if (loading) {
+			return
+		}
+		loading = true;
+		try {
+			this.setData({
+				status,
+				message,
+				time,
+				show: true,
+			})
+			setTimeout(() => {
+				this.setData({
+					show: false,
+				})
+				loading = false;
+				// 触发回调函数
+				if (fun) {
+					this.end()
+				}
+			}, time)
+		} catch {
+			loading = false;
+		}
+	},
 })

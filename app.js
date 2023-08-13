@@ -1,9 +1,7 @@
 // app.js
 App({
 	onLaunch: function () {
-		console.log('来啦')
 		var that = this
-		var openid
 		if (!wx.cloud) {
 			console.error('请使用 2.2.3 或以上的基础库以使用云能力');
 		} else {
@@ -15,32 +13,75 @@ App({
 				env: 'volunteer-2ge0hjpsa1879e88',
 				traceUser: true,
 			})
-			if (wx.getStorageSync('openid')) {
-				this.globalData.openid = wx.getStorageSync('openid')
+			//从storage获取openid
+			var tmp = wx.getStorageSync('openid')
+			if (tmp) {
+				console.log('从storage获取openid:')
+				this.globalData.openid = tmp
 			} else {
+				//从云函数获取openid
 				wx.cloud.callFunction({
 					name: 'getUserOpenid',
 					success(res) {
+						console.log('从云函数获取openid', res.result.openid)
+						wx.cloud.callFunction({
+							name: 'getUserInfo',
+							data: {
+								openid: res.result.openid
+							},
+							success(res) {
+								console.log('openid不为空,获取当前用户的信息', res)
+
+								if (res.result.data.length) {
+									console.log('用户注册信息获取到了,正在配置globalData')
+									that.globalData.name = res.result.data[0].username;
+									that.globalData.phone = res.result.data[0].phone;
+									that.globalData.status = res.result.data[0].status;
+									that.globalData.Id = res.result.data[0].idnumber;
+									that.globalData.islogin = res.result.data[0].islogin;
+									try {
+										wx.setStorageSync('user_status', [that.globalData.openid, that.globalData.islogin]);
+									} catch (e) {
+										console.log('app配置storage:status错误', e);
+									}
+								} else {
+									console.log('用户还没注册,获得不到信息')
+								}
+							},
+							fail(err) {
+								console.log(err)
+							}
+						})
 						that.globalData.openid = res.result.openid
 						wx.setStorageSync('openid', res.result.openid)
 					}
 				})
 			}
-
 			//openid不为空，获取当前用户的信息
-			if (that.globalData.openid) {
+			if (tmp) {
 				wx.cloud.callFunction({
 					name: 'getUserInfo',
 					data: {
-						openid: that.globalData.openid
+						openid: tmp
 					},
 					success(res) {
-						// console.log(res.result);
-						// console.log(res.result.data[0].username);
-						that.globalData.Name = res.result.data[0].username;
-						that.globalData.phone = res.result.data[0].phone;
-						that.globalData.status = res.result.data[0].status;
-						that.globalData.Id = res.result.data[0].idnumber;
+						console.log('openid不为空,获取当前用户的信息', res)
+
+						if (res.result.data.length) {
+							console.log('用户注册信息获取到了,正在配置globalData')
+							that.globalData.name = res.result.data[0].username;
+							that.globalData.phone = res.result.data[0].phone;
+							that.globalData.status = res.result.data[0].status;
+							that.globalData.Id = res.result.data[0].idnumber;
+							that.globalData.islogin = res.result.data[0].islogin;
+							try {
+								wx.setStorageSync('user_status', [that.globalData.openid, that.globalData.islogin]);
+							} catch (e) {
+								console.log('app配置storage:status错误', e);
+							}
+						} else {
+							console.log('用户还没注册,获得不到信息')
+						}
 					},
 					fail(err) {
 						console.log(err)
@@ -48,21 +89,22 @@ App({
 				})
 			}
 			//只查自己的队伍
-			wx.cloud.database().collection('TeamInfo')
-				.where({
-					_openid: that.globalData.openid
-				})
-				.get({
-					success(res) {
-						console.log(res)
-						console.log(that.globalData.openid)
-						var teams = []
-						for (var l in res.data) {
-							teams[l] = res.data[l].teamName
+			if (that.globalData.openid) {
+				console.log('正在查询队伍')
+				wx.cloud.database().collection('TeamInfo')
+					.where({
+						_openid: that.globalData.openid
+					})
+					.get({
+						success(res) {
+							var teams = []
+							for (var l in res.data) {
+								teams[l] = res.data[l].teamName
+							}
+							that.globalData.team = teams
 						}
-						that.globalData.team = teams
-					}
-				})
+					})
+			}
 		}
 	},
 	onshow: function () {
@@ -74,7 +116,7 @@ App({
 	globalData: {
 		userinfo: null,
 		openid: null,
-		Name: '',
+		name: '',
 		avatar: null,
 		islogin: false,
 		team: [],

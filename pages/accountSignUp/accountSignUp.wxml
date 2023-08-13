@@ -1,27 +1,38 @@
 <view class="cu-list menu card-menu margin-bottom-xl shadow-lg radius">
-	<view class="cu-form-group">
-		<view class="title">您的真实姓名</view>
-		<input placeholder="统一标题的宽度" bindinput="getName" model:value="{{UserName}}"></input>
+	<view class="cu-form-group flex">
+		<view class="flex-sub title justify-center flex">真实姓名</view>
+		<view class="flex-treble">
+			<input placeholder="请输入名字" bindinput="getName" model:value="{{UserName}}"></input>
+		</view>
 	</view>
-	<view class="cu-form-group">
-		<view class="title">证件类型</view>
-		<picker bindchange="PickerChange" value="{{index}}" range="{{picker}}">
-			<view class="picker ">
-				{{index?picker[index]:'请选择证件类型'}}
-			</view>
-		</picker>
+	<view class="cu-form-group flex">
+		<view class="flex-sub title justify-center flex">证件类型</view>
+		<view class="flex-treble">
+			<picker bindchange="PickerChange" value="{{index}}" range="{{picker}}">
+				<view class="picker ">
+					{{index?picker[index]:'请选择证件类型'}}
+				</view>
+			</picker>
+		</view>
+
 	</view>
-	<view class="cu-form-group">
-		<view class="title">证件号码</view>
-		<input placeholder="请输入证件号码" bindinput="getIdnumber" model:value="{{UserIdnumber}}"></input>
+	<view class="cu-form-group flex">
+		<view class="flex-sub title justify-center flex">证件号码</view>
+		<view class="flex-treble">
+			<input placeholder="请输入证件号码" bindinput="getIdnumber" model:value="{{UserIdnumber}}"></input>
+		</view>
+
 	</view>
-	<view class="cu-form-group">
-		<view class="title">现居住地</view>
-		<picker mode="region" bindchange="RegionChange" value="{{region}}" custom-item="{{customItem}}">
-			<view class="picker">
-				{{region[0]}}，{{region[1]}}，{{region[2]}}
-			</view>
-		</picker>
+	<view class="cu-form-group flex">
+		<view class="flex-sub title justify-center flex">现居住地</view>
+		<view class="flex-treble">
+			<picker mode="region" bindchange="RegionChange" value="{{region}}" custom-item="{{customItem}}">
+				<view class="picker">
+					{{region[0]}}，{{region[1]}}，{{region[2]}}
+				</view>
+			</picker>
+		</view>
+
 	</view>
 	<!-- <view class="cu-form-group">
 		<view class="title">我的队伍</view>
@@ -31,22 +42,39 @@
 			</view>
 		</picker>
 	</view> -->
-	<view class="cu-form-group ">
-		<view class="title">手机号码</view>
-		<input placeholder="请输入手机号码" bindinput="getPhone" model:value="{{UserPhone}}"></input>
+	<view class="cu-form-group flex ">
+		<view class="flex-sub title justify-center flex">手机号码</view>
+		<view class="flex-treble">
+			<input placeholder="请输入手机号码" bindinput="getPhone" model:value="{{UserPhone}}"></input>
+		</view>
+
 	</view>
-	<view class="cu-form-group ">
+	<view class="cu-form-group flex ">
+		<view class="flex-sub title justify-center flex">
+			支付宝
+		</view>
+		<view class="flex-treble">
+			<input placeholder="请输入支付宝账号" bindinput="getAliPay" model:value="{{UserAliPay}}"></input>
+		</view>
+	</view>
+	<!-- <view class="cu-form-group ">
 		<view class="title">验证码:</view>
 		<input placeholder="23715"></input>
 		<button class="cu-btn round bg-green " style="width:auto">获取</button>
-	</view>
+	</view> -->
 	<view class="cu-form-group justify-start">
-		<checkbox class="round margin-right" checked="{{ischeck}}" bindtap="checkchange"></checkbox>
+		<checkbox class="round margin-right" checked="{{isCheck}}" bindtap="checkChange"></checkbox>
 		<text class="">注册表示同意协议</text>
 	</view>
 	<view class="padding-xl" bindtap="register">
 		<button class="cu-btn block bg-cyan margin-tb-xl lg round ">
 			注册
 		</button>
+	</view>
+</view>
+<!-- 轻提示 -->
+<view class="toast-fixed-center" hidden="{{!show}}" style="z-index: 99;">
+	<view class="radius-lg padding animation-slide-top text-lg {{status == 'success' ? 'bg-green light':'bg-red light'}}">
+		<text class="cuIcon-info"></text> {{message}}
 	</view>
 </view>

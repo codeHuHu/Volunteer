@@ -3,35 +3,27 @@ const app = getApp()
 const db = wx.cloud.database()
 Page({
 
-	/**
-	 * 页面的初始数据
-	 */
 	data: {
-		message: 123,
 		actions: [],
 		keyword: '',
 	},
 
-	/**
-	 * 生命周期函数--监听页面加载
-	 */
 	onLoad: function () {
 		wx.setNavigationBarTitle({
 			title: '首页',
 		})
+		//查找活动
 		this.getData()
 	},
 	//查找活动
 	getData() {
 		var that = this;
-		//查找活动
 		db.collection('ActivityInfo')
 			.where({
 				status: '1'
 			})
 			.get()
 			.then(res => {
-				console.log(res.data)
 				that.setData({
 					actions: res.data
 				})
@@ -75,32 +67,25 @@ Page({
 
 	},
 
-	/**
-	 * 页面上拉触底事件的处理函数
-	 */
-	onReachBottom() {
-
-	},
 	toregister() {
 		if (this.Byhistory()) {
 			wx.showToast({
 				title: '你已注册成为志愿者',
 				icon: 'none'
 			})
-		} else if (this.ByBase()) {}
-
+		} else if (this.ByBase()) { }
 	},
 	Byhistory() {
 		var value = wx.getStorageSync('user_status')
 		if (value) {
 			try {
-				for (var i in value) {
-					if (value[i][0] == app.globalData.openid && value[i][1] == true) {
-						return true
-					}
+				if (value[0] == app.globalData.openid && value[1] == true) {
+					return true
 				}
 				return false
-			} catch (e) {}
+			} catch (e) {
+
+			}
 		} else {
 			return false
 		}
@@ -112,12 +97,9 @@ Page({
 			})
 			.get({
 				success(res) {
-					var n = res.data.length;
-					if (n) {
+					if (res.data.length) {
 						app.globalData.islogin = true
-						wx.setStorageSync('user_status', [
-							[res.data[0]._openid, app.globalData.islogin]
-						])
+						wx.setStorageSync('user_status', [res.data[0]._openid, app.globalData.islogin])
 						wx.showToast({
 							title: '你已注册成为志愿者',
 							icon: 'none'
@@ -128,7 +110,9 @@ Page({
 						})
 					}
 				},
-				fail(err) {}
+				fail(err) {
+
+				}
 			});
 	},
 	/**
@@ -142,22 +126,20 @@ Page({
 			PageCur: e.currentTarget.dataset.cur
 		})
 	},
-	togift() {
+	toGift() {
 		wx.showToast({
 			title: '加急开发中...',
 			icon: 'loading',
-			duration:1000,
-			mask:true
-
+			duration: 500,
+			mask: true
 		})
 	},
-	tohonor() {
+	toHonor() {
 		wx.showToast({
 			title: '加急开发中...',
 			icon: 'loading',
-			duration:1000,
-			mask:true
-
+			duration: 500,
+			mask: true
 		})
 	},
 	toZhiyuanfuwu() {
@@ -170,7 +152,7 @@ Page({
 			url: '/pages/mine/mine',
 		})
 	},
-	tojointeam() {
+	toJoinTeam() {
 		if (this.Byhistory()) {
 			wx.navigateTo({
 				url: '/pages/jointeam/jointeam',
@@ -199,15 +181,14 @@ Page({
 				mask: true
 			})
 			wx.cloud.callFunction({
-					name: 'searchTeam',
-					data: {
-						collection: 'ActivityInfo',
-						keyword: this.data.keyword,
-						name: 'actName'
-					}
-				})
+				name: 'searchTeam',
+				data: {
+					collection: 'ActivityInfo',
+					keyword: this.data.keyword,
+					name: 'actName'
+				}
+			})
 				.then(res => {
-					console.log(res.result)
 					that.setData({
 						actions: res.result
 					})
