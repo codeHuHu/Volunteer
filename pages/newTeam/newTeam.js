@@ -1,5 +1,6 @@
 const db = wx.cloud.database()
 const app = getApp()
+let loading = false;
 // pages/newTeam/newTeam.js
 Page({
 
@@ -123,44 +124,94 @@ Page({
 		})
 	},
 	teamRegister() {
-		console.log('register')
-		//暂未添加纠错机制
-		if (!this.data.ischeck) {
-			wx.showToast({
-				title: '未同意协议',
-			})
-		} else {
-			db.collection('TeamInfo').add({
-				data: {
-					teamName: this.data.teamName,
-					teamLeader: [{
-						openid: app.globalData.openid,
-						Name: this.data.leaderName,
-						Id: this.data.leaderId,
-						Phone: this.data.leaderPhone
-					}],
-					mail: this.data.mail,
-					region: this.data.region[0] + this.data.region[1] + this.data.region[2],
-					teamIntro: this.data.teamIntro,
-					serviceNumber: 0,
-					member: 1,
-					teamMembers: [{
-						openid: app.globalData.openid,
-						Name: this.data.leaderName,
-						Id: this.data.leaderId,
-						Phone: this.data.leaderPhone
-					}],
-					volunteerTime: 0
-				},
-				success(res) {
-					console.log(res)
-					//wx.navigateBack()
-					wx.showToast({
-						title: '注册成功',
-					})
-				}
-			})
+		if(this.check()==0){
+			return
 		}
-	}
+		console.log('执行提交中')
+		this.setShow("success", "可以提交");
+		//return
+		var that = this
+		//暂未添加纠错机制
+		
+		db.collection('TeamInfo').add({
+			data: {
+				teamName: that.data.teamName,
+				teamLeader: [{
+					openid: app.globalData.openid,
+					Name: that.data.leaderName,
+					Id: that.data.leaderId,
+					Phone: that.data.leaderPhone
+				}],
+				mail: that.data.mail,
+				region: that.data.region[0] + that.data.region[1] + that.data.region[2],
+				teamIntro: that.data.teamIntro,
+				serviceNumber: 0,
+				member: 1,
+				teamMembers: [{
+					openid: app.globalData.openid,
+					Name: that.data.leaderName,
+					Id: that.data.leaderId,
+					Phone: that.data.leaderPhone
+				}],
+				volunteerTime: 0
+			},
+			success(res) {
+				console.log(res)
+				wx.navigateBack()
+				wx.showToast({
+					title: '注册成功',
+				})
+			}
+		})
+
+	},
+	check(){
+		if (!this.data.leaderId || !this.data.leaderName|| !this.data.leaderPhone) {
+			this.setShow("error", "请重启本小程序");
+			return 0
+		}
+		if (this.data.teamName.length == 0 || this.data.teamIntro.length == 0 || this.data.mail.length == 0) {
+			this.setShow("error", "名称/介绍/邮箱错误");
+			return 0
+		}
+		if (!this.data.ischeck) {
+			this.setShow("error", "未同意协议");
+			return 0
+		}
+		//return 1
+	},
+	/**
+   * 轻提示展示
+   * @param {*} status 
+   * @param {*} message 
+   * @param {*} time 
+   * @param {*} fun 
+   */
+	setShow(status, message, time = 2000, fun = false) {
+		if (loading) {
+		  return
+		}
+		loading = true;
+		try {
+		  this.setData({
+			status,
+			message,
+			time,
+			show: true,
+		  })
+		  setTimeout(() => {
+			this.setData({
+			  show: false,
+			})
+			loading = false;
+			// 触发回调函数
+			if (fun) {
+			  this.end()
+			}
+		  }, time)
+		} catch {
+		  loading = false;
+		}
+	  },
 
 })

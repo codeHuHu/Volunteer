@@ -129,10 +129,14 @@ Page({
 			url: '/pages/personalSetting/personalSetting',
 		})
 	},
-	toMyActivity()
-	{
+	toMyActivity() {
 		wx.navigateTo({
 			url: '/pages/myActivity/myActivity',
+		})
+	},
+	toMyJoin() {
+		wx.navigateTo({
+			url: '/pages/myJoin/myJoin',
 		})
 	},
 	toCheckActivity() {

@@ -57,31 +57,24 @@ Page({
 		if (Index == 0) {
 			this.onLoad()
 		} else {
-			db.collection('UserInfo').where({
+			db.collection('ActivityInfo').where({
 				_openid: app.globalData.openid
-			}).get().then(res => {
-				//console.log(res.data)
-				var actions = res.data
-				var myActivity = actions[0].myActivity
-				db.collection('ActivityInfo').where({
-					_id: db.command.in(myActivity)
-				}).field({
-					_id: true,
-					actName: true,
-					serviceEstamp: true,
-					serviceStamp: true,
-					status: true,
-					tag: true,
-					teamName: true,
-					_openid: true
-				}).orderBy('serviceStamp', 'desc').get().then(res => {
-					this.setData({
-						actionList: res.data
-					})
-					this.setTime(res.data)
-				}).catch(err => {
-					console.log(err);
+			}).field({
+				_id: true,
+				actName: true,
+				serviceEstamp: true,
+				serviceStamp: true,
+				status: true,
+				tag: true,
+				teamName: true,
+				_openid: true
+			}).orderBy('serviceStamp', 'desc').get().then(res => {
+				this.setData({
+					actionList: res.data
 				})
+				this.setTime(res.data)
+			}).catch(err => {
+				console.log(err);
 			})
 		}
 	},
@@ -204,15 +197,15 @@ Page({
 
 		const collection = db.collection('ActivityInfo');
 		collection.field({
-				_id: true,
-				actName: true,
-				serviceEstamp: true,
-				serviceStamp: true,
-				status: true,
-				tag: true,
-				teamName: true,
-				_openid: true
-			})
+			_id: true,
+			actName: true,
+			serviceEstamp: true,
+			serviceStamp: true,
+			status: true,
+			tag: true,
+			teamName: true,
+			_openid: true
+		})
 			.orderBy('serviceStamp', 'desc')
 			.get()
 			.then(res => {
@@ -263,14 +256,10 @@ Page({
 		var res = result
 		console.log(res)
 		var dataArr = []
+		var t
 		for (var l in res) {
-			const date = new Date(res[l].serviceStamp);
-			const year = date.getFullYear();
-			const month = date.getMonth() + 1; // 月份需要加1
-			const day = date.getDate();
-
-			const formattedDate = `${year}-${month}-${day}`;
-			dataArr.push(formattedDate)
+			t = new Date(res[l].serviceStamp)
+			dataArr.push(`${t.getFullYear()}-${app.Z(t.getMonth() + 1)}-${app.Z(t.getDate())}`)
 			//console.log(formattedDate)
 		}
 		this.setData({
@@ -315,7 +304,7 @@ Page({
 	onShareAppMessage() {
 
 	},
-	todetail(e) {
+	toDetail(e) {
 		//console.log(e.currentTarget.dataset.id)
 		wx.navigateTo({
 			url: '/pages/detail/detail?id=' + e.currentTarget.dataset.id,

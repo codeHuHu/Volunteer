@@ -44,7 +44,7 @@
       <input class="text-black padding-lr text-lg" placeholder="{{leaderPhone}}" disabled="1" style="width:100%;height: 80rpx;"></input>
     </view>
   </view>
-  <view class="content margin-bottom">
+  <!-- <view class="content margin-bottom">
     <view class="text-lg text-black text-bold ">
       <text>验证码:</text>
     </view>
@@ -54,7 +54,7 @@
       </view>
       <button class="flex-sub cu-btn bg-green shadow-blur round lg">获取验证码</button>
     </view>
-  </view>
+  </view> -->
   <view class="content margin-bottom">
     <view class="text-lg text-black text-bold ">
       <text>邮箱:</text>
@@ -109,7 +109,12 @@
     </button>
   </view>
 </view>
-
+<!-- 轻提示 -->
+<view class="toast-fixed-center" hidden="{{!show}}" style="z-index: 99;">
+	<view class="radius-lg padding animation-slide-top text-lg {{status == 'success' ? 'bg-green light':'bg-red light'}}">
+		<text class="cuIcon-info"></text> {{message}}
+	</view>
+</view>
 <!-- <view wx:else class="cu-list menu card-menu  shadow-lg radius padding-lr-sm">
   <view class="grid col-1 text-center">
     <view class="bg-img padding-tb-xl" style="background-image: url(/images/1-up.png);height: 170px;"></view>

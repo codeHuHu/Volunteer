@@ -8,7 +8,10 @@
 						<view class="text-gray text-df padding-top-sm">{{actions.team}}</view>
 					</view>
 					<view class="">
-						<view class="cu-avatar xl round" style="background-image:url(/images/青协头像.png)">
+						<view class="cu-avatar xl round">
+							<view class="cu-avatar lg">
+								<image class="cu-avatar round lg" src="cloud://volunteer-2ge0hjpsa1879e88.766f-volunteer-2ge0hjpsa1879e88-1314668114/QR_CODE/青协头像.png" mode="widthFix" style="max-height: 360rpx;"></image>
+							</view>
 						</view>
 					</view>
 				</view>
@@ -43,7 +46,8 @@
 	</block>
 	<block wx:else>
 		<view class="bg-img margin-lr" style="min-height: 35vh;">
-			<view class="bg-img padding-tb-xl" style="background-image: url(/images/1-up.png);height: 414rpx;">
+			<view class="bg-img padding-tb-xl" style="background-image: url(/images/1-up1.png);height: 414rpx;">
+			
 				<view class="log-time margin-top" style="display: flex;">
 					<view class="margin-left cu-tag round bg-green margin-top-xs " bindtap="toregister">
 						注册
@@ -58,10 +62,16 @@
 		</view>
 	</block>
 	<view class="cu-list menu card-menu margin-bottom-xl shadow-lg radius">
-		<view class="cu-item arrow" bind:tap="toMyActivity">
+		<view class="cu-item arrow" bindtap="toMyActivity">
 			<view bindtap="none" class="content">
 				<text class="cuIcon-my lg text-gray"></text>
-				<text class="text-grey">我的志愿</text>
+				<text class="text-grey">我发布的</text>
+			</view>
+		</view>
+		<view class="cu-item arrow" bindtap="toMyJoin">
+			<view bindtap="none" class="content">
+				<text class="cuIcon-my lg text-gray"></text>
+				<text class="text-grey">我参与的</text>
 			</view>
 		</view>
 		<view class="cu-item arrow">

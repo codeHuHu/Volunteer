@@ -1,4 +1,4 @@
-// pages/myActivity/myActivity.js
+// pages/myJoin/myJoin.js
 const app = getApp()
 const db = wx.cloud.database()
 Page({
@@ -14,27 +14,47 @@ Page({
 	 * 生命周期函数--监听页面加载
 	 */
 	onLoad(options) {
-		db.collection('ActivityInfo').where({
+		db.collection('UserInfo').where({
 			_openid: app.globalData.openid
-		}).field({
-			_id: true,
-			actName: true,
-			serviceEstamp: true,
-			serviceStamp: true,
-			status: true,
-			tag: true,
-			teamName: true,
-			_openid: true
-		}).orderBy('serviceStamp', 'desc').get().then(res => {
-			this.setData({
-				actionList: res.data
+		}).get().then(res => {
+			var actions = res.data
+			var myActivity = actions[0].myActivity
+			console.log(actions)
+			db.collection('ActivityInfo').where({
+				_id: db.command.in(myActivity)
+			}).field({
+				_id: true,
+				actName: true,
+				serviceEstamp: true,
+				serviceStamp: true,
+				status: true,
+				tag: true,
+				teamName: true,
+				_openid: true
+			}).orderBy('serviceStamp', 'desc').get().then(res => {
+				this.setData({
+					actionList: res.data
+				})
+				this.setTime(res.data)
+			}).catch(err => {
+				console.log(err);
 			})
-			this.setTime(res.data)
-		}).catch(err => {
-			console.log(err);
 		})
 	},
 
+	/**
+	 * 生命周期函数--监听页面初次渲染完成
+	 */
+	onReady() {
+
+	},
+
+	/**
+	 * 生命周期函数--监听页面显示
+	 */
+	onShow() {
+
+	},
 	setTime(result) {
 		var res = result
 		console.log(res)
