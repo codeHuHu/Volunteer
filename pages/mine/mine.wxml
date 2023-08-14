@@ -1,5 +1,5 @@
 <scroll-view class="scrollPage">
-	<block wx:if="{{actions.islogin}}">
+	<block wx:if="{{islogin}}">
 		<view class="bg-img margin-lr" style="min-height: 35vh;">
 			<view class="bg-white radius-lg">
 				<view class="flex padding-sm justify-between">
@@ -45,37 +45,32 @@
 		</view>
 	</block>
 	<block wx:else>
+
 		<view class="bg-img margin-lr" style="min-height: 35vh;">
-			<view class="bg-img padding-tb-xl" style="background-image: url(/images/1-up1.png);height: 414rpx;">
-			
-				<view class="log-time margin-top" style="display: flex;">
-					<view class="margin-left cu-tag round bg-green margin-top-xs " bindtap="toregister">
+			<view class="bg-img">
+				<image class="margin-left-sm" src="cloud://volunteer-2ge0hjpsa1879e88.766f-volunteer-2ge0hjpsa1879e88-1314668114/1-up1.png" mode="aspectFill">
+					<view class="margin-left cu-tag round bg-green margin-top-xs button" bindtap="toregister">
 						注册
 					</view>
-					<view class="margin-top padding-xl text-white">
-						<view class="padding-top-xl flex-sub solid-bottom text-sl">
-							<text class="text-green text-bold ">志愿时长:0小时</text>
-						</view>
-					</view>
-				</view>
+				</image>
 			</view>
 		</view>
 	</block>
 	<view class="cu-list menu card-menu margin-bottom-xl shadow-lg radius">
 		<view class="cu-item arrow" bindtap="toMyActivity">
-			<view bindtap="none" class="content">
+			<view class="content">
 				<text class="cuIcon-my lg text-gray"></text>
 				<text class="text-grey">我发布的</text>
 			</view>
 		</view>
 		<view class="cu-item arrow" bindtap="toMyJoin">
-			<view bindtap="none" class="content">
+			<view class="content">
 				<text class="cuIcon-my lg text-gray"></text>
 				<text class="text-grey">我参与的</text>
 			</view>
 		</view>
 		<view class="cu-item arrow">
-			<view bindtap="none" class="content">
+			<view class="content">
 				<text class="cuIcon-friend lg text-gray"></text>
 				<text class="text-grey">我的队伍</text>
 			</view>
@@ -93,7 +88,7 @@
 			</view>
 		</view>
 		<view class="cu-item arrow">
-			<view bindtap="none" class="content">
+			<view class="content">
 				<text class="cuIcon-rank lg text-gray"></text>
 				<text class="text-grey">我的排名</text>
 			</view>
@@ -119,3 +114,9 @@
 	</view>
 
 </scroll-view>
+<!-- 轻提示 -->
+<view class="toast-fixed-center" hidden="{{!show}}" style="z-index: 99;">
+	<view class="radius-lg padding animation-slide-top text-lg {{status == 'success' ? 'bg-green light':'bg-red light'}}">
+		<text class="cuIcon-info"></text> {{message}}
+	</view>
+</view>

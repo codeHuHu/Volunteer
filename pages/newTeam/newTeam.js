@@ -124,7 +124,7 @@ Page({
 		})
 	},
 	teamRegister() {
-		if(this.check()==0){
+		if (this.check() == 0) {
 			return
 		}
 		console.log('执行提交中')
@@ -132,7 +132,7 @@ Page({
 		//return
 		var that = this
 		//暂未添加纠错机制
-		
+
 		db.collection('TeamInfo').add({
 			data: {
 				teamName: that.data.teamName,
@@ -165,8 +165,8 @@ Page({
 		})
 
 	},
-	check(){
-		if (!this.data.leaderId || !this.data.leaderName|| !this.data.leaderPhone) {
+	check() {
+		if (!this.data.leaderId || !this.data.leaderName || !this.data.leaderPhone) {
 			this.setShow("error", "请重启本小程序");
 			return 0
 		}
@@ -189,29 +189,29 @@ Page({
    */
 	setShow(status, message, time = 2000, fun = false) {
 		if (loading) {
-		  return
+			return
 		}
 		loading = true;
 		try {
-		  this.setData({
-			status,
-			message,
-			time,
-			show: true,
-		  })
-		  setTimeout(() => {
 			this.setData({
-			  show: false,
+				status,
+				message,
+				time,
+				show: true,
 			})
-			loading = false;
-			// 触发回调函数
-			if (fun) {
-			  this.end()
-			}
-		  }, time)
+			setTimeout(() => {
+				this.setData({
+					show: false,
+				})
+				loading = false;
+				// 触发回调函数
+				if (fun) {
+					this.end()
+				}
+			}, time)
 		} catch {
-		  loading = false;
+			loading = false;
 		}
-	  },
+	},
 
 })

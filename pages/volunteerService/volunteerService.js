@@ -69,7 +69,10 @@ Page({
 				tag: true,
 				teamName: true,
 				_openid: true
-			}).orderBy('serviceStamp', 'desc').get().then(res => {
+			}).limit(20)
+			.orderBy('serviceStamp', 'desc')
+			.get()
+			.then(res => {
 				this.setData({
 					actionList: res.data
 				})
@@ -103,7 +106,11 @@ Page({
 				tag: true,
 				teamName: true,
 				_openid: true
-			}).orderBy('serviceStamp', 'desc').get().then(res => {
+			})
+			.limit(20)
+			.orderBy('serviceStamp', 'desc')
+			.get()
+			.then(res => {
 				//console.log(res.data);
 				this.setData({
 					actionList: res.data
@@ -137,7 +144,11 @@ Page({
 				tag: true,
 				teamName: true,
 				_openid: true
-			}).orderBy('serviceStamp', 'desc').get().then(res => {
+			})
+			.limit(20)
+			.orderBy('serviceStamp', 'desc')
+			.get()
+			.then(res => {
 				//console.log(res.data);
 				this.setData({
 					actionList: res.data
@@ -159,7 +170,11 @@ Page({
 				tag: true,
 				teamName: true,
 				_openid: true
-			}).orderBy('serviceStamp', 'desc').get().then(res => {
+			})
+			.limit(20)
+			.orderBy('serviceStamp', 'desc')
+			.get()
+			.then(res => {
 				//console.log(res.data);
 				this.setData({
 					actionList: res.data
@@ -180,18 +195,12 @@ Page({
 			title: '志愿服务',
 		})
 		const currentDate = new Date();
-		// const currentDateObject = new Date(currentDate);
 		const timestamp = currentDate.getTime();
-		//console.log(timestamp);
-		const date = new Date(timestamp);
-
 		this.setData({
 			timestamp: timestamp,
 			currentDate: currentDate
 		})
-
 		this.getStatus()
-
 	},
 	getStatus() {
 		var that = this;
@@ -210,6 +219,8 @@ Page({
 			teamName: true,
 			_openid: true
 		})
+
+			.limit(20)
 			.orderBy('serviceStamp', 'desc')
 			.get()
 			.then(res => {
