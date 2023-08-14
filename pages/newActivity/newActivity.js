@@ -41,6 +41,7 @@ Page({
 		this.setData({
 			holder: app.globalData.Name,
 			Phone: app.globalData.phone,
+			myPos : app.globalData.pos
 		})
 		const currentDate = new Date().toISOString().slice(0, 10);
 		const currentTime = new Date().toLocaleTimeString('en-US', {
@@ -294,7 +295,7 @@ Page({
 							holder: this.data.holder,
 							phone: this.data.Phone,
 							intro: this.data.intro,
-							status: '1', //进行中
+							status: that.data.myPos == 1 ?'0':'1' ,// 如果pos为1，活动状态为0：待审核，否则为1：进行中
 							address: this.data.Address,
 							//number
 							inJoin: 0,
@@ -311,10 +312,21 @@ Page({
 							qr_code: this.data.cloud_imgList
 						},
 						success(res) {
-							wx.showToast({
-								icon: 'success',
-								title: '提交成功！',
+							if(that.data.myPos == 1)
+							{
+								wx.showToast({
+								icon: 'loading',
+								title: '请尽快联系管理员审核并发布',
 							})
+							}
+							else 
+							{
+								wx.showToast({
+									icon: 'success',
+									title: '发布成功',
+								})
+							}
+						
 						}
 					});
 			})

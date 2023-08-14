@@ -7,7 +7,7 @@
 <view class=" margin leader padding" style="background-color: aliceblue; display: flex; flex-direction:column;">
 	<view >
 	<text class="margin-xs  text-xl">{{leader[0].Name}}</text>
-	<text>{{leader[0].Phone}}</text>
+	<text>{{leaderPhone[0].Phone }}</text>
 	</view>
 
 </view>
@@ -18,7 +18,7 @@
 <view class=" margin-top margin-left margin-right members padding" style="background-color: aliceblue; display: flex; flex-direction:column; position: relative; top:-20rpx">
 <view  wx:for="{{teammembers}}" wx:key="index" class="{{index==teammembers.length-1?' ':'margin-bottom'}}">
 <text class="margin-xs  text-xl">{{item.Name}}</text>
-<text> {{item.Phone}}</text>
+<text>{{memberPhone[index].Phone}}</text>
 </view>
 
 </view>

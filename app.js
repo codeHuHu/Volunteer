@@ -39,7 +39,7 @@ App({
 						// console.log(res.result.data[0].username);
 						that.globalData.Name = res.result.data[0].username;
 						that.globalData.phone = res.result.data[0].phone;
-						that.globalData.status = res.result.data[0].status;
+						that.globalData.pos = res.result.data[0].pos;
 						that.globalData.Id = res.result.data[0].idnumber;
 					},
 					fail(err) {
@@ -79,6 +79,6 @@ App({
 		islogin: false,
 		team: [],
 		phone: 0,
-		status: 0,
+		pos: 0,	//pos为0表示普通志愿者，1表示队长，2表示管理员
 	}
 });

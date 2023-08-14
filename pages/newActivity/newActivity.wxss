@@ -38,7 +38,7 @@
 }
 
 .new_button {
-	margin: 100rpx;
+	margin: 50rpx 100rpx;
 	color: #fff;
 	border-radius: 100rpx;
 	background-color: rgb(95, 206, 95);

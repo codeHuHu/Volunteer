@@ -18,7 +18,8 @@ Page({
 	onLoad: function (event) {
 		console.log(app.globalData)
 		this.setData({
-			openid: app.globalData.openid
+			openid: app.globalData.openid,
+			myPos : app.globalData.pos
 		})
 		var value = wx.getStorageSync('user_status');
 		if (value) {
@@ -33,6 +34,7 @@ Page({
 			//去数据库看看有没有
 			this.getDetail()
 		}
+
 	},
 	getDetail() {
 		var that = this
@@ -139,9 +141,13 @@ Page({
 			url: '/pages/myJoin/myJoin',
 		})
 	},
-	toCheckActivity() {
+	toCommentActivity() {
 		wx.navigateTo({
-			url: '/pages/checkActivity/checkActivity',
+			url: '/pages/CommentActivity/CommentActivity',
 		})
+	},
+	toCheckActivity()
+	{
+
 	}
 })

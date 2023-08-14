@@ -16,7 +16,8 @@ Page({
 		UserIdnumber: '',
 		UserPhone: '',
 		ischeck: false,
-		List: []
+		List: [],
+		ZhiFuBao:''
 
 	},
 
@@ -108,6 +109,12 @@ Page({
 			UserIdnumber: e.detail.value
 		})
 	},
+	getZhiFuBao(e)
+	{
+		this.setData({
+		ZhiFuBao: e.detail.value
+		})
+	},
 	getPhone(e) {
 
 		console.log(e.detail.value);
@@ -146,7 +153,9 @@ Page({
 					team: that.data.team[that.data.teamid],
 					residence: that.data.region,
 					phone: that.data.UserPhone,
-					islogin: true
+					ZhiFuBao:that.data.ZhiFuBao,
+					islogin: true,
+					pos:0,	//0表示普通志愿者，1表示队长，2表示管理员
 				},
 				success(res) {
 					console.log(res);

@@ -35,15 +35,21 @@
 		<view class="title">手机号码</view>
 		<input placeholder="请输入手机号码" bindinput="getPhone" model:value="{{UserPhone}}"></input>
 	</view>
-	<view class="cu-form-group ">
+	<view class="cu-form-group" >
+		<view class="title">支付宝账号</view>
+		<input placeholder="选填" bindinput="getZhiFuBao" model:value="{{ZhiFuBao}}"></input>
+	</view>
+	<!-- <view class="cu-form-group ">
 		<view class="title">验证码:</view>
 		<input placeholder="23715"></input>
 		<button class="cu-btn round bg-green " style="width:auto">获取</button>
-	</view>
-	<view class="cu-form-group justify-start">
-		<checkbox class="round margin-right" checked="{{ischeck}}" bindtap="checkchange"></checkbox>
-		<text class="">注册表示同意协议</text>
-	</view>
+	</view> -->
+	<view class="margin-top">
+	<text class="text-xs text-grey " style="letter-spacing:2rpx">注：支付宝账号仅用来对部分活动发放补贴</text></view>
+	<view class="margin-top">
+	<checkbox class="round margin-right " checked="{{ischeck}}" bindtap="checkchange" ></checkbox>
+		<text class="text-xs text-grey ">注册表示同意并已阅读</text>
+		<text class="text-xs" style="color: rgb(248, 179, 28);">《协议》</text></view>
 	<view class="padding-xl" bindtap="register">
 		<button class="cu-btn block bg-cyan margin-tb-xl lg round ">
 			注册

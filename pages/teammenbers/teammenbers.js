@@ -17,6 +17,7 @@ Page({
 	onLoad(options) {
 		var that =this
 		console.log(options.id)
+		
 		db.collection('TeamInfo').doc(options.id).get({
 			success(res)
 			{
@@ -25,9 +26,28 @@ Page({
 					leader:res.data.teamLeader,
 					teammembers:res.data.teamMembers,
 				})
-			}
+						
+					that.setData(
+						{
+							leaderPhone : that.data.leader.map(item => {
+								item.Phone = that.maskPhoneNumber(item.Phone);
+								return item;
+							}),
+							memberPhone :that.data.teammembers.map(item => {
+								item.Phone = that.maskPhoneNumber(item.Phone);
+								return item;})
 
-		})
+						}
+					)
+
+		},
+		fail(err)
+		{
+			console.log('失败')
+		}
+	
+	})
+
 	},
 
 	/**
@@ -77,5 +97,10 @@ Page({
 	 */
 	onShareAppMessage() {
 
+	},
+
+	maskPhoneNumber(phoneNumber) {
+		// 替换中间四位数字为星号
+		return phoneNumber.replace(/(\d{3})\d{4}(\d{4})/, '$1****$2');
 	}
 })

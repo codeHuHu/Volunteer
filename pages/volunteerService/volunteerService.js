@@ -58,7 +58,8 @@ Page({
 			this.onLoad()
 		} else {
 			db.collection('ActivityInfo').where({
-				_openid: app.globalData.openid
+				_openid: app.globalData.openid,
+				'status' :db.command.not(db.command.eq('0'))
 			}).field({
 				_id: true,
 				actName: true,
@@ -91,7 +92,8 @@ Page({
 		} else {
 			const collection = db.collection('ActivityInfo');
 			collection.where({
-				'tag': that.data.selecttypeData[Index]
+				'tag': that.data.selecttypeData[Index],
+				'status' :db.command.not(db.command.eq('0')) 
 			}).field({
 				_id: true,
 				actName: true,
@@ -196,7 +198,9 @@ Page({
 		var toUpdateArr = [];
 
 		const collection = db.collection('ActivityInfo');
-		collection.field({
+		collection.where({
+			'status' :db.command.not(db.command.eq('0'))
+		}).field({
 			_id: true,
 			actName: true,
 			serviceEstamp: true,

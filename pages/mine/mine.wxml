@@ -80,16 +80,16 @@
 				<text class="text-grey">我的队伍</text>
 			</view>
 		</view>
-		<view class="cu-item arrow">
-			<view bindtap="toNewActivity" class="content">
+		<view bindtap="toNewActivity" class="cu-item arrow" wx:if="{{myPos>0}}">
+			<view class="content">
 				<text class="cuIcon-activity lg text-gray"></text>
 				<text class="text-grey">发布活动</text>
 			</view>
 		</view>
-		<view class="cu-item arrow">
-			<view bindtap="toCheckActivity" class="content">
+		<view bindtap="toCommentActivity" class="cu-item arrow"  wx:if="{{myPos>0}}">
+			<view class="content">
 				<text class="cuIcon-activity lg text-gray"></text>
-				<text class="text-grey">活动审核</text>
+				<text class="text-grey">活动评价</text>
 			</view>
 		</view>
 		<view class="cu-item arrow">
@@ -104,10 +104,16 @@
 				<text class="text-grey">个人设置</text>
 			</view>
 		</view>
-		<view class="cu-item arrow">
+		<view class="cu-item arrow"  >
 			<view bindtap="toNewTeam" class="content">
 				<text class="cuIcon-creative text-gray"></text>
 				<text class="text-grey">创建队伍</text>
+			</view>
+		</view>
+		<view bindtap="toCheckActivity" class="cu-item arrow"  wx:if="{{myPos>0}}" style="background-color: rgb(163, 219, 163);">
+			<view class="content">
+				<text class="cuIcon-activity lg text-white"></text>
+				<text class="text-white">审核</text>
 			</view>
 		</view>
 	</view>

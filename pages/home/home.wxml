@@ -1,6 +1,6 @@
 <!--pages/home/home.wxml-->
 <view class="up">
-	<image mode="aspectFill" src="/images/1-up1.png" />
+	<image mode="aspectFill" src="/images/2-up.png" />
 </view>
 
 
