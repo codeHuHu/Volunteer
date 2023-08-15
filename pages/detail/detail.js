@@ -303,7 +303,7 @@ Page({
 				}
 			}
 		} else if (tmp == 'toPintuan') {
-			wx.showLoading()
+			wx.showLoading()			
 			//拼团
 			//先判断是否满人
 			//在队里

@@ -39,7 +39,7 @@ Page({
 		// const currentDate = new Date().toLocaleDateString('en-GB', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/\//g, '-');
 		//const currentDate = new Date()
 		this.setData({
-			holder: app.globalData.Name,
+			holder: app.globalData.name,
 			Phone: app.globalData.phone,
 			myPos : app.globalData.pos
 		})
@@ -274,7 +274,7 @@ Page({
 			return
 		}
 		console.log('执行提交中')
-		this.setShow("success", "可以提交");
+	
 		//创建异步上传任务数组
 		let uploadTask = []
 		for (let i in this.data.temp_imgList) {
@@ -295,7 +295,7 @@ Page({
 							holder: this.data.holder,
 							phone: this.data.Phone,
 							intro: this.data.intro,
-							status: that.data.myPos == 1 ?'0':'1' ,// 如果pos为1，活动状态为0：待审核，否则为1：进行中
+							status: this.data.myPos == 1 ?'0':'1' ,// 如果pos为1，活动状态为0：待审核，否则为1：进行中
 							address: this.data.Address,
 							//number
 							inJoin: 0,
@@ -321,10 +321,7 @@ Page({
 							}
 							else 
 							{
-								wx.showToast({
-									icon: 'success',
-									title: '发布成功',
-								})
+								this.setShow("success", "发布成功");
 							}
 						
 						}

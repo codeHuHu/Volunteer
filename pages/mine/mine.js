@@ -173,7 +173,9 @@ Page({
 	},
 	toCheckActivity()
 	{
-
+			wx.navigateTo({
+				url: '/pages/checkActivity/checkActivity',
+			})
 	}
 	, setShow(status, message, time = 500, fun = false) {
 		if (loading) {

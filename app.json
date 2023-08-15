@@ -15,7 +15,8 @@
 		"pages/None/None",
 		"pages/teammenbers/teammenbers",
 		"pages/myActivity/myActivity",
-		"pages/myJoin/myJoin"
+		"pages/myJoin/myJoin",
+		"pages/RecycleBin/RecycleBin"
 	],
 	"usingComponents": {
     "cu-custom": "colorui/components/cu-custom/cu-custom"

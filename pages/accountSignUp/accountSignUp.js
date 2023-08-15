@@ -187,6 +187,14 @@ Page({
 			ischeck: !this.data.ischeck
 		})
 	},
+
+		/**
+	 * 轻提示展示
+	 * @param {*} status 
+	 * @param {*} message 
+	 * @param {*} time 
+	 * @param {*} fun 
+	 */
 	setShow(status, message, time = 1000, fun = false) {
 		if (loading) {
 			return

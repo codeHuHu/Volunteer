@@ -39,6 +39,13 @@
 					"query": "",
 					"launchMode": "default",
 					"scene": null
+				},
+				{
+					"name": "",
+					"pathName": "pages/RecycleBin/RecycleBin",
+					"query": "",
+					"launchMode": "default",
+					"scene": null
 				}
 			]
 		}
