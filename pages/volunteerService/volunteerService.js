@@ -208,7 +208,9 @@ Page({
 
 		const collection = db.collection('ActivityInfo');
 		collection.where({
-			'status' :db.command.not(db.command.eq('0'))
+			//获取非待审核或拒绝发布的活动
+			'status' :db.command.nor(db.command.eq('0'),db.command.eq('-1'))
+
 		}).field({
 			_id: true,
 			actName: true,

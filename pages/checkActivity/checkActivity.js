@@ -12,7 +12,7 @@ Page({
 
 	},
 
-	onLoad: function (event) {
+	onLoad: async function (event) {
 		wx.setNavigationBarTitle({
 			title: '审核发布',
 		})
@@ -23,66 +23,82 @@ Page({
 			currentDate: currentDate
 		})
 		//生成两个actionsList
-		this.getList('0');
-		this.getList('-1');
+	await	this.getList('0');
+	await	this.getList('-1');
 	},
 
-	getList(e)
+	getList:async function(e)
 	{
 		console.log(e)
 		var s = e;
 		var that = this;
 		const collection = db.collection('ActivityInfo');
-		collection.where({
-			status : s
+		const res = await collection.where({
+			status: s
 		}).field({
 			_id: true,
 			actName: true,
 			serviceEstamp: true,
 			serviceStamp: true,
+			deadtimestamp: true,
 			status: true,
 			tag: true,
 			teamName: true,
-			_openid: true
+			_openid: true,
+			ispintuan: true,
 		})
-			.limit(20)
-			.orderBy('serviceStamp', 'desc')
-			.get()
-			.then(res => {
-				var actions = res.data;
-				if(s == '0')
-				{
-				that.setData({
-					actionList: actions,
-				});
-			}
-			else
-			{
-				that.setData({
-					BinactionList: actions,
-				});
-			}
-				this.setTime(res.data)
-				return Promise.resolve(); // 返回一个 resolved 状态的 Promise 对象
+		.limit(20)
+		.orderBy('serviceStamp', 'desc')
+		.get();
+		
+		var actions = res.data;
+		if (s == '0') {
+			that.setData({
+				actionList: actions,
 			});
+		} else {
+			that.setData({
+				BinactionList: actions,
+			});
+		}
+				this.setTime(res.data)
+
 	},
 
-	setTime(result) {
+	setTime:async function(result) {
 		var res = result
 		console.log(res)
 		var dataArr = []
+		let status=''
 		var t
 		for (var l in res) {
-			t = new Date(res[l].serviceStamp)
+			t = new Date(res[l].deadtimestamp)
 			dataArr.push(`${t.getFullYear()}-${app.Z(t.getMonth() + 1)}-${app.Z(t.getDate())}`)
 			//console.log(formattedDate)
+			status = res[l].status
 		}
+		if(status == '0')
+		{
 		this.setData({
-			data_Arr: dataArr
+			toCheck_Arr: dataArr
 		})
-		wx.stopPullDownRefresh()
-
-			.catch(console.error)
+		try{
+				wx.stopPullDownRefresh()
+		}catch(error){
+	console.error(error);
+		}
+	}
+	else 
+	{
+		this.setData({
+			Reject_Arr: dataArr
+		})
+		try{
+				wx.stopPullDownRefresh()
+		}catch(error){
+	console.error(error);
+		}
+	}
 	},
 
 	toDetail(e) {
