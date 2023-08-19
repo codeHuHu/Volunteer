@@ -83,9 +83,15 @@ Page({
 	/**
 	 * 生命周期函数--监听页面卸载
 	 */
-	onUnload() {
-
-	},
+  onLoad(options) {
+	    var that = this
+	    wx.request({
+	        url: 'http://127.0.0.1:3000/',
+	        success: function (res) {
+	            console.log(res)
+	        }
+	    })
+  },
 
 	/**
 	 * 页面相关事件处理函数--监听用户下拉动作
