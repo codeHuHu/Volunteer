@@ -384,7 +384,7 @@ Page({
 	onShareTimeline(event) {
 		console.log('shareTimeLine', this.data.actions.actName)
 		return {
-			title: this.data.actions.actName,
+			title: this.data.actions.actName+'	 '+'~快来一起参加吧!',
 			query: 'id=' + this.data.id + '&actions=' + encodeURIComponent(JSON.stringify(this.data.actions))
 		}
 	},

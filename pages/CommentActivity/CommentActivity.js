@@ -1,10 +1,15 @@
 // pages/newActivity/newActivity.js
+const db=wx.cloud.database()
+const app =getApp()
+
 Page({
 
 	/**
 	 * 页面的初始数据
 	 */
   data: {
+		picker:'',
+		index1:'',
 		index: null,
 		modalName: null,
 		tempID:null,
@@ -14,49 +19,46 @@ Page({
 		imgList: [], //活动图片
 		people:[],  //活动人员
 		checkbox: [{
-      id: 0,
-      name: '张三',
-			checked: false,
-			isCome:true,
-			notGoodReason:''
-    }, {
-      id: 1,
-      name: '李四',
+			id:'',
+			name:'',
 			checked: true,
 			isCome:true,
-			notGoodReason:''
-    }, {
-      id: 2,
-      name: '王五',
-			checked: true,
-			isCome:false,
-			notGoodReason:''
-    }, {
-      id: 3,
-      name: '赵六',
-			checked: false,
-			isCome:true,
-			notGoodReason:''
-    }, {
-      id: 4,
-      name: '赵四',
-			checked: false,
-			isCome:true,
-			notGoodReason:''
-    }, {
-      id: 5,
-      name: '沈六',
-			checked: false,
-			isCome:true,
-			notGoodReason:''
-    }]
+			feedBack:''
+		}],
+		members:[],
+		count:0
   },
 
 	/**
 	 * 生命周期函数--监听页面加载
 	 */
   onLoad: function() {
+		var tmpPicker = []
+		var that =this
+		db.collection('ActivityInfo').where({
+			_openid: app.globalData.openid
+		}).field({
+			_id: true,
+			actName: true,
+			joinMembers:true,
+			_openid: true
+		}).get().then(res => {
+			that.setData({
+				actionList: res.data
+			})
+				for(var i in that.data.actionList)
+				{
+					tmpPicker.push(that.data.actionList[i].actName)
+				}
+				console.log(tmpPicker)
+				that.setData({
+					picker:tmpPicker
+				})
 
+		}).catch(err => {
+			console.log(err);
+		})
+		
   },
 
 	/**
@@ -79,19 +81,81 @@ Page({
 	onHide() {
 
 	},
-
+	PickerChange(e)
+	{
+		var that =this
+		this.setData({
+			index1: e.detail.value
+		})
+		console.log(this.data.picker[this.data.index1])
+		db.collection('ActivityInfo').where({
+			actName:that.data.picker[that.data.index1]
+		})
+		.get().then(res=>{
+					that.setData({
+						result:res.data
+					})
+			}
+		).then(()=>{
+			console.log(that.data.result)
+			var result=that.data.result
+			var NameList=[]
+			var members = result[0].joinMembers
+			db.collection('UserInfo').where({
+				_openid:db.command.in(members)
+			}).field({
+				username:true
+			}).get().then(res=>
+				{
+					console.log(res.data)
+					var tmp =res.data
+				
+					for(var l in tmp)
+					{
+						NameList.push(tmp[l].username)
+					}
+				that.setData({
+					NameList:NameList,
+					count:tmp.length
+				})
+				}).then(res=>
+					{
+						console.log(that.data.count)
+							const newArray=[]
+						for(var l=0;l<that.data.count;l++)
+						{
+							const item={
+								id:l,
+								name:that.data.NameList[l],
+								checked:true,
+								isCome:true,
+								feedBack:''
+							}
+							newArray.push(item)
+						
+						}
+							console.log(newArray)
+							that.setData({
+								checkbox:newArray
+							})
+					})
+			
+		
+		
+		})
+	},
 	/**
 	 * 生命周期函数--监听页面卸载
 	 */
-  onLoad(options) {
-	    var that = this
-	    wx.request({
-	        url: 'http://127.0.0.1:3000/',
-	        success: function (res) {
-	            console.log(res)
-	        }
-	    })
-  },
+//   onLoad(options) {
+// 	    var that = this
+// 	    wx.request({
+// 	        url: 'http://127.0.0.1:3000/',
+// 	        success: function (res) {
+// 	            console.log(res)
+// 	        }
+// 	    })
+//   },
 
 	/**
 	 * 页面相关事件处理函数--监听用户下拉动作
@@ -191,7 +255,7 @@ Page({
 		this.setData({
 			tempValue:value
 		})
-		this.showModal(e);
+		this.showModal(e);			
 	},
   hideModal(e) {
     this.setData({
@@ -216,10 +280,19 @@ Page({
     let items = this.data.checkbox;
     let values = e.currentTarget.dataset.value;
     for (let i = 0, lenI = items.length; i < lenI; ++i) {
-      if (items[i].id === values) {
-        items[i].checked = !items[i].checked;
-        break
-      }
+			if(items[i].isCome)
+			{
+					if (items[i].id === values) {
+									items[i].checked = !items[i].checked;
+									break
+								}
+			}
+			else 
+			{
+				items[i].checked = !items[i].checked;
+				break;
+			}
+     
     }
     this.setData({
       checkbox: items
@@ -230,12 +303,28 @@ Page({
 	const btnId = this.data.tempID;
 	const checkbox = this.data.checkbox.map(item => {
 		if (item.id === btnId) {
-			item.notGoodReason = e.detail.value;
+			item.feedBack = e.detail.value;
 		}
 		return item;
 	});
 	this.setData({
 		checkbox: checkbox
 	});
-  },
+	},
+	commitfb()
+	{
+		
+		console.log(this.data.result)
+		console.log(this.data.checkbox)
+		var result =this.data.result
+
+		db.collection('ActFeedBack').add({
+			data: 
+			{
+				actName:result[0].actName,
+				FBmembers:this.data.checkbox
+				
+			}
+		})
+	}
 })
