@@ -26,7 +26,8 @@ Page({
 			feedBack:''
 		}],
 		members:[],
-		count:0
+		count:0,
+		id:''
   },
 
 	/**
@@ -92,8 +93,9 @@ Page({
 			actName:that.data.picker[that.data.index1]
 		})
 		.get().then(res=>{
+			console.log(res.data)
 					that.setData({
-						result:res.data
+						result:res.data,
 					})
 			}
 		).then(()=>{
@@ -101,6 +103,9 @@ Page({
 			var result=that.data.result
 			var NameList=[]
 			var members = result[0].joinMembers
+			that.setData({
+				id:result[0]._id
+			})
 			db.collection('UserInfo').where({
 				_openid:db.command.in(members)
 			}).field({
@@ -116,7 +121,8 @@ Page({
 					}
 				that.setData({
 					NameList:NameList,
-					count:tmp.length
+					count:tmp.length,
+				
 				})
 				}).then(res=>
 					{
@@ -267,7 +273,8 @@ Page({
     let values = e.currentTarget.dataset.value;
     for (let i = 0, lenI = items.length; i < lenI; ++i) {
       if (items[i].id === values) {
-        items[i].isCome = !items[i].isCome;
+				items[i].isCome = !items[i].isCome;
+				items[i].checked=!items[i].checked;
         break
       }
     }
@@ -280,19 +287,10 @@ Page({
     let items = this.data.checkbox;
     let values = e.currentTarget.dataset.value;
     for (let i = 0, lenI = items.length; i < lenI; ++i) {
-			if(items[i].isCome)
-			{
 					if (items[i].id === values) {
 									items[i].checked = !items[i].checked;
 									break
-								}
-			}
-			else 
-			{
-				items[i].checked = !items[i].checked;
-				break;
-			}
-     
+								}   
     }
     this.setData({
       checkbox: items
@@ -313,17 +311,21 @@ Page({
 	},
 	commitfb()
 	{
-		
-		console.log(this.data.result)
-		console.log(this.data.checkbox)
-		var result =this.data.result
 
-		db.collection('ActFeedBack').add({
+		console.log(this.data.checkbox)
+
+		db.collection('ActivityInfo').doc(this.data.id).update({
 			data: 
 			{
-				actName:result[0].actName,
-				FBmembers:this.data.checkbox
+				feedBack:this.data.checkbox
 				
+			},
+			success: function (res) {
+				console.log('更新成功', res);
+				// 在此处执行其他操作
+			},
+			fail: function (error) {
+				console.error('更新失败', error);
 			}
 		})
 	}
