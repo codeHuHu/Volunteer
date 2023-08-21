@@ -42,6 +42,7 @@
 			</view>
 		</picker>
 	</view> -->
+
 	<view class="cu-form-group flex ">
 		<view class="flex-sub title justify-center flex">手机号码</view>
 		<view class="flex-treble">
@@ -59,6 +60,22 @@
 		</view>
 
 	</view>
+	<view class="cu-form-group flex ">
+		<view class="flex-sub title justify-center flex">所在学校</view>
+		<view class="flex-treble">
+			<input placeholder="选填（下同）" bindinput="getSchool" model:value="{{School}}"></input>
+		</view>
+	</view>
+	<view class="cu-form-group flex">
+	<view class="flex">
+				<view class="title ">年级:</view>
+				<input class="title " bindinput="getGrade" placeholder="{{Grade}}"></input>
+	</view>
+			<view class="flex">
+				<view class="title ">班级:</view>
+				<input class="title " bindinput="getClass" placeholder="{{Class}}"></input>
+			</view>
+		</view>
 	<!-- <view class="cu-form-group ">
 		<view class="title">验证码:</view>
 		<input placeholder="23715"></input>

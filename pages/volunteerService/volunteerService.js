@@ -96,7 +96,7 @@ Page({
 			const collection = db.collection('ActivityInfo');
 			collection.where({
 				'tag': that.data.selecttypeData[Index],
-				'status' :db.command.not(db.command.eq('0')) 
+				'status' :db.command.nor(db.command.eq('0'),db.command.eq('-1')) 
 			}).field({
 				_id: true,
 				actName: true,

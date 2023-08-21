@@ -1,4 +1,5 @@
 // pages/mySignUp/mySignUp.js
+let loading = false;
 const db = wx.cloud.database()
 const app = getApp()
 Page({
@@ -122,6 +123,24 @@ Page({
 			UserPhone: e.detail.value
 		})
 	},
+	getSchool(e)
+	{
+		this.setData({
+			School:e.detail.value
+		})
+	},
+	getCrade(e)
+	{
+		this.setData({
+			Grade:e.detail.value
+		})
+	},
+	getClass(e)
+	{
+		this.setData({
+			Class:e.detail.value
+		})
+	},
 	register() {
 		if (this.check() == 0) {
 			return
@@ -137,6 +156,9 @@ Page({
 				residence: that.data.region,
 				phone: that.data.UserPhone,
 				aliPay: this.data.UserAliPay,
+				school:this.data.School,
+				grade:this.data.Grade,
+				class:this.data.Class,
 				islogin: true
 			},
 			success(res) {

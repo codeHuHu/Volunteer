@@ -2,34 +2,131 @@
 
 <view class="cu-list menu card-menu margin-top-xl margin-bottom-xl shadow-lg radius">
 	
-	
 	<view class="cu-item arrow ">
-		<navigator class="content cu-form-group " url="/pages/about/log/log" hover-class="none">
-			<text class="text-grey margin-right">昵称</text>
-			<input placeholder="{{nickname}}" bindinput="getInputValue" value="{{inputValue}}"></input>
-		</navigator>
+		<view class="content cu-form-group" bindtap="openModal" data-target="nameModal">
+		<view>
+		<text class="iconfont icon-nickname margin-right-xs"></text>
+			<text class=" text-grey margin-right">名字</text></view>
+			<view><text>{{name}}</text></view>
+		</view>
 	</view>
-	<view class="cu-item arrow ">
-		<navigator class="content cu-form-group " url="/pages/about/log/log" hover-class="none">
-			<text class="text-grey margin-right">学校</text>
-			<input placeholder="{{nickname}}" bindinput="getInputValue" value="{{inputValue}}"></input>
-		</navigator>
-	</view>
-	<view class="cu-item arrow ">
-		<navigator class="content cu-form-group " url="/pages/about/log/log" hover-class="none">
-			<text class="text-grey margin-right">学院</text>
-			<input placeholder="{{nickname}}" bindinput="getInputValue" value="{{inputValue}}"></input>
-		</navigator>
-	</view>
-	<view class="cu-item arrow ">
-		<navigator class="content cu-form-group " url="/pages/about/log/log" hover-class="none">
-			<text class="text-grey margin-right">队伍</text>
-			<input placeholder="{{nickname}}" bindinput="getInputValue" value="{{inputValue}}"></input>
-		</navigator>
-	</view>
+	<view class="modal-mask" wx:if="{{ showModal == 'nameModal' }}" bindtap="closeModal" >
+  <view class="modal"  catchtap>
+		<view class="modal-title">修改名字</view>
+    <view><input class="input-field" bindinput="handleNameInput" placeholder="请输入新的昵称" value="{{}}" /></view>
+    <button bindtap="handleSave" class="button">保存</button>
+  </view>
+</view>
 
+	<view class="cu-item arrow ">
+		<view class="content cu-form-group " bindtap="openModal" data-target="schoolModal">
+		<view>
+			<text class="iconfont icon-xuexiaomingcheng margin-right-xs"></text>
+			<text class="text-grey margin-right">学校</text></view>
+			<view><text>{{school?school:'未填写'}}</text></view>
+		</view>
+	</view>
+	<view class="modal-mask" wx:if="{{ showModal == 'schoolModal' }}" bindtap="closeModal" >
+  <view class="modal"  catchtap>
+		<view class="modal-title">修改学校</view>
+    <view><input class="input-field" bindinput="handleSchoolInput" placeholder="请输入学校名称" value="{{}}" /></view>
+    <button bindtap="handleSave" class="button">保存</button>
+  </view>
+</view>
+	<view class="cu-item arrow ">
+		<view class="content cu-form-group " bindtap="openModal" data-target="gradeModal">
+		<view>
+		<text class="iconfont icon-duiwu margin-right-xs"></text>
+			<text class="text-grey margin-right">年级</text></view>
+			<view><text>{{grade?grade:'未填写'}}</text></view>
+		</view>
+	</view>
+	<view class="modal-mask" wx:if="{{ showModal == 'gradeModal' }}" bindtap="closeModal" >
+  <view class="modal"  catchtap>
+		<view class="modal-title">修改年级</view>
+    <view><input class="input-field" bindinput="handleGradeInput" placeholder="请输入年级" value="{{}}" /></view>
+    <button bindtap="handleSave" class="button">保存</button>
+  </view>
+</view>
 
+	<view class="cu-item arrow ">
+		<view class="content cu-form-group " bindtap="openModal" data-target="classModal">
+		<view >
+		<text class="cuIcon-friend margin-right-xs"></text>
+			<text class="text-grey margin-right">班级</text></view>
+			<view><text>{{class?class:'未填写'}}</text></view>
+		</view>
+	</view>
+	<view class="modal-mask" wx:if="{{ showModal == 'classModal' }}" bindtap="closeModal" >
+  <view class="modal"  catchtap>
+		<view class="modal-title">修改班级</view>
+    <view><input class="input-field" bindinput="handleClassInput" placeholder="请输入班级" value="{{}}" /></view>
+    <button bindtap="handleSave" class="button">保存</button>
+  </view>
+</view>
+
+	<view class="cu-item arrow ">
+		<view class="content cu-form-group " bindtap="openModal" data-target="phoneModal">
+			<view >
+		<text class="cuIcon-phone margin-right-xs"></text>
+			<text class="text-grey margin-right">电话</text></view>
+			<view><text>{{phone}}</text></view>
+		</view>
+	</view>
+	<view class="modal-mask" wx:if="{{ showModal == 'phoneModal' }}" bindtap="closeModal" >
+  <view class="modal"  catchtap>
+		<view class="modal-title">修改电话</view>
+    <view><input class="input-field" bindinput="handlePhoneInput" placeholder="请输入电话" value="{{}}" /></view>
+    <button bindtap="handleSave" class="button">保存</button>
+  </view>
+</view>
+
+	<view class="cu-item arrow ">
+		<view class="content cu-form-group " bindtap="openModal" data-target="aliPayModal">
+			<view >
+		<text class="cuIcon-coin margin-right-xs"></text>
+			<text class="text-grey margin-right">支付宝账号</text></view>
+			<view><text>{{aliPay?aliPay:'未填写'}}</text></view>
+		</view>
+	</view>
+	<view class="modal-mask" wx:if="{{ showModal == 'aliPayModal' }}" bindtap="closeModal" >
+  <view class="modal"  catchtap>
+		<view class="modal-title">修改支付宝</view>
+    <view><input class="input-field" bindinput="handlealiPayInput" placeholder="请输入账号" value="{{}}" /></view>
+    <button bindtap="handleSave" class="button">保存</button>
+  </view>
+</view>
+
+	<view class="cu-item  ">
+		<navigator class="content cu-form-group " url="/pages/about/log/log" hover-class="none">
+			<view >
+		<text class="cuIcon-friendaddfill margin-right-xs"></text>
+			<text class="text-grey margin-right">队伍</text></view>
+			<view><text>{{team}}</text></view>
+		</navigator>
+	</view>
 	
+</view>
+
+<view class="cu-list menu card-menu margin-top-xl margin-bottom-xl shadow-lg radius">
+	<view class="cu-item arrow "bindtap="tohome" >
+		<navigator class="content cu-form-group " url="../home/home" >
+			<text class="text-grey margin-right">我有建议</text>
+		</navigator>
+		
+	</view>	
+	<view class="cu-item arrow ">
+		<navigator class="content cu-form-group " url="/pages/about/log/log" hover-class="none">
+			<text class="text-grey margin-right">关于我们</text>
+		</navigator>
+
+	</view>	
+	<view class="cu-item arrow ">
+		<navigator class="content cu-form-group " url="/pages/about/log/log" hover-class="none">
+			<text class="text-grey margin-right">联系我们</text>
+		</navigator>
+		
+	</view>	
 </view>
 <view class="cu-tabbar-height"></view>
 

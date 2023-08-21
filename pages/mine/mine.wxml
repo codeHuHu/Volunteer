@@ -19,25 +19,25 @@
 			<view class="cu-list grid col-4 no-border padding-top">
 				<view class="cu-item">
 					<view class="text-black text-bold text-xxl">
-						500
+						-
 					</view>
 					<text>信用值</text>
 				</view>
 				<view class="cu-item">
 					<view class="text-black text-bold text-xxl">
-						10
+						-
 					</view>
 					<text>志愿时</text>
 				</view>
 				<view class="cu-item">
 					<view class="text-black text-bold text-xxl">
-						95
+						-
 					</view>
 					<text>能力</text>
 				</view>
 				<view class="cu-item">
 					<view class="text-black text-bold text-xxl">
-						5
+						-
 					</view>
 					<text>任务数</text>
 				</view>
