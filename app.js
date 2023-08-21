@@ -34,7 +34,7 @@ App({
 
 								if (res.result.data.length) {
 									console.log('用户注册信息获取到了,正在配置globalData')
-									that.globalData.name = res.result.data[0].username;
+									that.globalData.Name = res.result.data[0].username;
 									that.globalData.phone = res.result.data[0].phone;
 									that.globalData.pos = res.result.data[0].pos;
 									that.globalData.Id = res.result.data[0].idnumber;
@@ -74,7 +74,7 @@ App({
 
 						if (res.result.data.length) {
 							console.log('用户注册信息获取到了,正在配置globalData')
-							that.globalData.name = res.result.data[0].username;
+							that.globalData.Name = res.result.data[0].username;
 							that.globalData.phone = res.result.data[0].phone;
 							that.globalData.pos = res.result.data[0].pos;
 							that.globalData.Id = res.result.data[0].idnumber;

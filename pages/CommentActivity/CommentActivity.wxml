@@ -19,7 +19,7 @@
 	</view>
 	<view class="cu-form-group">
 		<view class="grid col-4 grid-square flex-sub">
-			<view class="bg-img" wx:for="{{signInList}}" wx:key="index" bindtap="ViewImage"  data-url="{{signInList[index]}}">
+			<view class="bg-img" wx:for="{{signInList}}" wx:key="index" bindtap="ViewImage" data-urls="signInList"  data-url="{{signInList[index]}}">
 				<image src='{{signInList[index]}}' mode='aspectFill'></image>
 				<view class="cu-tag bg-red" catchtap="DelImg" data-param="signInList" data-index="{{index}}">
 					<text class="cuIcon-close"></text>
