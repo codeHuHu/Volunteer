@@ -39,9 +39,9 @@ Page({
 		// const currentDate = new Date().toLocaleDateString('en-GB', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/\//g, '-');
 		//const currentDate = new Date()
 		this.setData({
-			holder: app.globalData.name,
+			holder: app.globalData.Name,
 			Phone: app.globalData.phone,
-			myPos : app.globalData.pos
+			myPos: app.globalData.pos
 		})
 		const currentDate = new Date().toISOString().slice(0, 10);
 		const currentTime = new Date().toLocaleTimeString('en-US', {
@@ -270,11 +270,11 @@ Page({
 	},
 	sendNew(e) {
 		//检测是否输入完整
-		if(this.check()==0){
+		if (this.check() == 0) {
 			return
 		}
 		console.log('执行提交中')
-	
+
 		//创建异步上传任务数组
 		let uploadTask = []
 		for (let i in this.data.temp_imgList) {
@@ -295,7 +295,7 @@ Page({
 							holder: this.data.holder,
 							phone: this.data.Phone,
 							intro: this.data.intro,
-							status: this.data.myPos == 1 ?'0':'1' ,// 如果pos为1，活动状态为0：待审核，否则为1：进行中
+							status: this.data.myPos == 1 ? '0' : '1',// 如果pos为1，活动状态为0：待审核，否则为1：进行中
 							address: this.data.Address,
 							//number
 							inJoin: 0,
@@ -312,18 +312,16 @@ Page({
 							qr_code: this.data.cloud_imgList
 						},
 						success(res) {
-							if(that.data.myPos == 1)
-							{
+							if (that.data.myPos == 1) {
 								wx.showToast({
-								icon: 'loading',
-								title: '请尽快联系管理员审核并发布',
-							})
+									icon: 'loading',
+									title: '请尽快联系管理员审核并发布',
+								})
 							}
-							else 
-							{
+							else {
 								this.setShow("success", "发布成功");
 							}
-						
+
 						}
 					});
 			})
@@ -412,7 +410,7 @@ Page({
 			})
 		})
 	},
-	check(){
+	check() {
 		if (!this.data.ispintuan) {
 			this.setShow("error", "请勾选是否拼团");
 			return 0
@@ -456,7 +454,7 @@ Page({
 		if (this.data.endtimestamp < this.data.starttimestamp) {
 			this.setShow("error", "开始和结束时间有误");
 			return 0
-		} 
+		}
 		//return 1
 	},
 	/**
