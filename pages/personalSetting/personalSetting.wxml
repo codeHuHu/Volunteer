@@ -109,7 +109,7 @@
 </view>
 
 <view class="cu-list menu card-menu margin-top-xl margin-bottom-xl shadow-lg radius">
-	<view class="cu-item arrow "bindtap="tohome" >
+	<view class="cu-item arrow "bindtap="" >
 		<navigator class="content cu-form-group " url="../home/home" >
 			<text class="text-grey margin-right">我有建议</text>
 		</navigator>

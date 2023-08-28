@@ -12,6 +12,31 @@
 </view>
 
 <view class="icon-bar">
+
+
+
+	<view class="item" bindtap="toHonor">
+		<view class="greencircle">
+			<view class="bar-icon">
+				<text class="cuIcon-selection lg "></text>
+			</view>
+		</view>
+		<view>
+			<text class="fontsize">我的排名</text>
+		</view>
+	</view>
+
+	<view class="item" bindtap="toNewActivity">
+		<view class="bluecircle">
+			<view class="bar-icon">
+				<text class="iconfont icon-jushou "></text>
+			</view>
+		</view>
+		<view >
+			<text class="fontsize1 text-green" >发起拼团</text>
+		</view>
+	</view>
+
 	<view class="item" bind:tap="toGift">
 		<view class="greencircle">
 			<view class="bar-icon">
@@ -22,40 +47,20 @@
 			<text class="fontsize">志愿福利</text>
 		</view>
 	</view>
-	<view class="item" bindtap="toNewActivity">
-		<view class="bluecircle">
-			<view class="bar-icon">
-				<text class="iconfont icon-jushou "></text>
-			</view>
-		</view>
-		<view>
-			<text class="fontsize">发起拼团</text>
-		</view>
-	</view>
-	<view class="item" bindtap="toHonor">
-		<view class="greencircle">
-			<view class="bar-icon">
-				<text class="cuIcon-selection lg "></text>
-			</view>
-		</view>
-		<view>
-			<text class="fontsize">荣誉墙</text>
-		</view>
-	</view>
-	<view class="item" bindtap="toJoinTeam">
+	<!-- <view class="item" bindtap="toJoinTeam">
 		<view class="bluecircle">
 			<view class="bar-icon">
 				<text class="iconfont icon-duiwu"></text>
 			</view>
 		</view>
 		<text class="fontsize">加入队伍</text>
-	</view>
+	</view> -->
 </view>
 <!-- 分割线 -->
 <view class="home-header-line1"></view>
 
 <view class="new-join">
-	<text class="newest">最新志愿服务</text>
+	<text class="newest text-xl" >参与拼团</text>
 	<button class="joinvolunteer" bindtap="toregister">成为志愿者</button>
 </view>
 

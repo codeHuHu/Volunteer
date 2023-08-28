@@ -64,12 +64,17 @@ page{
 	border-radius: 50%;
 	background-color: rgb(101, 146, 231);
 	margin-bottom: 10rpx;
-	box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
+	box-shadow: 0px 0px 15px rgba(76, 240, 11, 0.5);
 }
 
 .fontsize {
 	font-weight: 600;
 	font-size: 24rpx;
+}
+
+.fontsize1 {
+	font-weight: 600;
+	font-size: 30rpx;
 }
 .cuIcon-present.lg {
 	display: inline;
