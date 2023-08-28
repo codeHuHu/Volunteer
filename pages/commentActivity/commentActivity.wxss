@@ -1,0 +1,28 @@
+
+.signinBtn {
+	font-size: small;
+}
+.btn-green{
+	background-color: rgb(62, 185, 59) !important; 
+	color: #fff;
+}
+.showname {
+	display: inline-flex;
+	flex-wrap: wrap;
+}
+.showname button {
+	font-size: medium;
+}
+.not-good-reason {
+	padding-top: 50rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.font-black {
+	color: black;
+}
+.not-good-reason-textarea {
+  text-align: left;
+  margin: 0 auto;
+}
