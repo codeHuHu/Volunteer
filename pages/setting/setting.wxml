@@ -10,7 +10,7 @@
 			<view><text>{{name}}</text></view>
 		</view>
 	</view>
-	<view class="modal-mask" wx:if="{{ showModal == 'nameModal' }}" bindtap="closeModal" >
+	<view class="modal-mask" wx:if="{{showModal == 'nameModal' }}" bindtap="closeModal" >
   <view class="modal"  catchtap>
 		<view class="modal-title">修改名字</view>
     <view><input class="input-field" bindinput="handleNameInput" placeholder="请输入新的昵称" value="{{}}" /></view>
@@ -26,7 +26,7 @@
 			<view><text>{{school?school:'未填写'}}</text></view>
 		</view>
 	</view>
-	<view class="modal-mask" wx:if="{{ showModal == 'schoolModal' }}" bindtap="closeModal" >
+	<view class="modal-mask" wx:if="{{showModal == 'schoolModal' }}" bindtap="closeModal" >
   <view class="modal"  catchtap>
 		<view class="modal-title">修改学校</view>
     <view><input class="input-field" bindinput="handleSchoolInput" placeholder="请输入学校名称" value="{{}}" /></view>

@@ -1,6 +1,6 @@
 // pages/checkActivity/checkActivity.js
 const db = wx.cloud.database()
-const app =getApp()
+const app = getApp()
 let loading = false;
 
 Page({
@@ -17,18 +17,17 @@ Page({
 			title: '审核发布',
 		})
 		const currentDate = new Date();
-		const timestamp = currentDate.getTime();
+		const timeStamp = currentDate.getTime();
 		this.setData({
-			timestamp: timestamp,
-			currentDate: currentDate
+			timeStamp,
+			currentDate
 		})
 		//生成两个actionsList
-	await	this.getList('0');
-	await	this.getList('-1');
+		await this.getList('0');
+		await this.getList('-1');
 	},
 
-	getList:async function(e)
-	{
+	getList: async function (e) {
 		console.log(e)
 		var s = e;
 		var that = this;
@@ -38,19 +37,19 @@ Page({
 		}).field({
 			_id: true,
 			actName: true,
-			serviceEstamp: true,
-			serviceStamp: true,
-			deadtimestamp: true,
+			serviceEndStamp: true,
+			serviceStartStamp: true,
+			deadTimeStamp: true,
 			status: true,
 			tag: true,
 			teamName: true,
 			_openid: true,
-			ispintuan: true,
+			isPintuan: true,
 		})
-		.limit(20)
-		.orderBy('serviceStamp', 'desc')
-		.get();
-		
+			.limit(20)
+			.orderBy('serviceStamp', 'desc')
+			.get();
+
 		var actions = res.data;
 		if (s == '0') {
 			that.setData({
@@ -58,47 +57,45 @@ Page({
 			});
 		} else {
 			that.setData({
-				BinactionList: actions,
+				binActionList: actions,
 			});
 		}
-				this.setTime(res.data)
+		this.setTime(res.data)
 
 	},
 
-	setTime:async function(result) {
+	setTime: async function (result) {
 		var res = result
 		console.log(res)
 		var dataArr = []
-		let status=''
+		let status = ''
 		var t
 		for (var l in res) {
-			t = new Date(res[l].deadtimestamp)
+			t = new Date(res[l].deadTimeStamp)
 			dataArr.push(`${t.getFullYear()}-${app.Z(t.getMonth() + 1)}-${app.Z(t.getDate())}`)
 			//console.log(formattedDate)
 			status = res[l].status
 		}
-		if(status == '0')
-		{
-		this.setData({
-			toCheck_Arr: dataArr
-		})
-		try{
+		if (status == '0') {
+			this.setData({
+				toCheck_Arr: dataArr
+			})
+			try {
 				wx.stopPullDownRefresh()
-		}catch(error){
-	console.error(error);
+			} catch (error) {
+				console.error(error);
+			}
 		}
-	}
-	else 
-	{
-		this.setData({
-			Reject_Arr: dataArr
-		})
-		try{
+		else {
+			this.setData({
+				Reject_Arr: dataArr
+			})
+			try {
 				wx.stopPullDownRefresh()
-		}catch(error){
-	console.error(error);
+			} catch (error) {
+				console.error(error);
+			}
 		}
-	}
 	},
 
 	toDetail(e) {
@@ -108,8 +105,7 @@ Page({
 		})
 	},
 
-	Agree(e)
-	{
+	Agree(e) {
 		var that = this
 		wx.showModal({
 			title: '确认',
@@ -118,65 +114,62 @@ Page({
 				// 用户点击了确定按钮
 				if (res.confirm) {
 					console.log(e.currentTarget.dataset.id)
-		const id = e.currentTarget.dataset.id
-		const collection = db.collection('ActivityInfo');
-		collection.doc(id).update({
-			data:{
-					status: '1'
-			}
-		}).then(res=>
-		{
-			console.log(res)
-			that.setShow("success","发布成功")
-			that.onLoad()
-		}
-		)
+					const id = e.currentTarget.dataset.id
+					const collection = db.collection('ActivityInfo');
+					collection.doc(id).update({
+						data: {
+							status: '1'
+						}
+					}).then(res => {
+						console.log(res)
+						that.setShow("success", "发布成功")
+						that.onLoad()
+					}
+					)
 				} else if (res.cancel) {
-					
+
 				}
 			}
 		})
 	},
-		Reject(e)
-		{
-			var that = this
-			wx.showModal({
-				title: '确认',
-				content: '是否拒绝发布',
-				success(res) {
-					// 用户点击了确定按钮
-					if (res.confirm) {
-						console.log(e.currentTarget.dataset.id)
-			const id = e.currentTarget.dataset.id
-			const collection = db.collection('ActivityInfo');
-			collection.doc(id).update({
-				data:{
-						status: '-1'	//-1表示活动不被通过发布
-				}
-			}).then(res=>
-			{
-				console.log(res)
-				that.setShow("error","已移入回收站")
-				that.onLoad()
-			}
-			)
-					} else if (res.cancel) {
-						
+	Reject(e) {
+		var that = this
+		wx.showModal({
+			title: '确认',
+			content: '是否拒绝发布',
+			success(res) {
+				// 用户点击了确定按钮
+				if (res.confirm) {
+					console.log(e.currentTarget.dataset.id)
+					const id = e.currentTarget.dataset.id
+					const collection = db.collection('ActivityInfo');
+					collection.doc(id).update({
+						data: {
+							status: '-1'	//-1表示活动不被通过发布
+						}
+					}).then(res => {
+						console.log(res)
+						that.setShow("error", "已移入回收站")
+						that.onLoad()
 					}
-				}
-			})
-		},
+					)
+				} else if (res.cancel) {
 
-		showModal(e) {
-			this.setData({
-				modalName: e.currentTarget.dataset.target
-			})
-		},
-		hideModal(e) {
-			this.setData({
-				modalName: null
-			})
-		},
+				}
+			}
+		})
+	},
+
+	showModal(e) {
+		this.setData({
+			modalName: e.currentTarget.dataset.target
+		})
+	},
+	hideModal(e) {
+		this.setData({
+			modalName: null
+		})
+	},
 	/**
 	 * 轻提示展示
 	 * @param {*} status 
@@ -211,10 +204,10 @@ Page({
 		}
 	},
 	tabSelect(e) {
-    console.log(e);
-    this.setData({
-      TabCur: e.currentTarget.dataset.id,
-      scrollLeft: (e.currentTarget.dataset.id - 1) * 60
-    })
-  }
+		console.log(e);
+		this.setData({
+			TabCur: e.currentTarget.dataset.id,
+			scrollLeft: (e.currentTarget.dataset.id - 1) * 60
+		})
+	}
 })

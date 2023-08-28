@@ -6,8 +6,8 @@
 <text class="bg-oc-yellow-3">队长</text></view>
 <view class=" margin leader padding" style="background-color: aliceblue; display: flex; flex-direction:column;">
 	<view >
-	<text class="margin-xs  text-xl">{{leader[0].Name}}</text>
-	<text>{{leaderPhone[0].Phone }}</text>
+	<text class="margin-xs  text-xl">{{leader[0].name}}</text>
+	<text>{{leaderPhone[0].phone }}</text>
 	</view>
 
 </view>
@@ -16,9 +16,9 @@
 	<text class="bg-oc-yellow-3">队员</text></view>
 
 <view class=" margin-top margin-left margin-right members padding" style="background-color: aliceblue; display: flex; flex-direction:column; position: relative; top:-20rpx">
-<view  wx:for="{{teammembers}}" wx:key="index" class="{{index==teammembers.length-1?' ':'margin-bottom'}}">
-<text class="margin-xs  text-xl">{{item.Name}}</text>
-<text>{{memberPhone[index].Phone}}</text>
+<view  wx:for="{{teamMembers}}" wx:key="index" class="{{index==teamMembers.length-1?' ':'margin-bottom'}}">
+<text class="margin-xs  text-xl">{{item.name}}</text>
+<text>{{memberPhone[index].phone}}</text>
 </view>
 
 </view>

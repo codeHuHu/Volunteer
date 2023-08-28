@@ -6,18 +6,18 @@ Page({
 	data: {
 		hours: '',
 		minutes: '',
-		deadtime: '',
+		deadTime: '',
 		serviceTime: '',
 		actions: []
 
 	},
 	onLoad: function (options) {
 		console.log('app.globalData:', app.globalData)
-		this.data.isLogin = app.globalData.islogin
+		this.data.isLogin = app.globalData.isLogin
 		this.data.id = options.id
 		var that = this
 
-		//判断是否为从朋友圈进来的
+		//判断是否为从转发进来的
 		if (options.actions) {
 			console.log('从转发进来的')
 			let info = JSON.parse(decodeURIComponent(options.actions))
@@ -37,26 +37,6 @@ Page({
 				that.adjustStatus(t);
 				//开启监听(传入该页面的id)
 				that.watcher(options.id);
-				//如果在此小队里(看以后能不能改进一下)
-				if (t.teamName) {
-					db.collection('TeamInfo')
-						.where({
-							teamName: t.teamName
-						})
-						.get()
-						.then(Response => {
-							var teamMembers = Response.data[0]['teamMembers']
-							for (var i in teamMembers) {
-								if (teamMembers[i].openid == app.globalData.openid) {
-									that.setData({
-										ifInTeam: 1
-									})
-									break
-								}
-							}
-						})
-				}
-
 			}
 		})
 	},
@@ -90,10 +70,10 @@ Page({
 		db.collection('ActivityInfo')
 			.doc(id)
 			.watch({
-				onChange: function (snapshot) {
-					that.adjustStatus(snapshot.docs[0])
+				onChange: function (snapShot) {
+					that.adjustStatus(snapShot.docs[0])
 					that.setData({
-						actions: snapshot.docs[0]
+						actions: snapShot.docs[0]
 					})
 				},
 				onError: function (err) {
@@ -104,33 +84,33 @@ Page({
 	adjustTimeStamp(res) {
 		//app.Z()函数在app.js,作用是固定长度补零
 		//报名截止时间	报名截止日期
-		let t = new Date(res.deadtimestamp);
+		let t = new Date(res.deadTimeStamp);
 		const formattedTime = `${app.Z(t.getHours())}:${app.Z(t.getMinutes())}`;
 		const formattedDate = `${t.getFullYear()}-${app.Z(t.getMonth() + 1)}-${app.Z(t.getDate())}`;
 		//活动日期 服务开始时间 服务结束时间
-		t = new Date(res.serviceStamp);
+		t = new Date(res.serviceStartStamp);
 		const serviceDate = `${t.getFullYear()}-${app.Z(t.getMonth() + 1)}-${app.Z(t.getDate())}`;
-		const serviceSTime = `${app.Z(t.getHours())}:${app.Z(t.getMinutes())}`;
-		t = new Date(res.serviceEstamp);
-		const serviceETime = `${app.Z(t.getHours())}:${app.Z(t.getMinutes())}`;
+		const serviceStartTime = `${app.Z(t.getHours())}:${app.Z(t.getMinutes())}`;
+		t = new Date(res.serviceEndStamp);
+		const serviceEndTime = `${app.Z(t.getHours())}:${app.Z(t.getMinutes())}`;
 		//服务时长
-		t = res.serviceEstamp - res.serviceStamp
+		t = res.serviceEndStamp - res.serviceStartStamp
 		const thours = Math.floor(t / (1000 * 60 * 60));
 		const tminutes = Math.floor((t % (1000 * 60 * 60)) / (1000 * 60));
 		this.setData({
 			actions: res,
 			deadTime: formattedDate + ' ' + formattedTime,
-			serviceTime: serviceDate + ' ' + serviceSTime + '-' + serviceETime,
+			serviceTime: serviceDate + ' ' + serviceStartTime + '-' + serviceEndTime,
 			hours: thours,
 			minutes: tminutes,
-			ifEnd: res.deadtimestamp - new Date().getTime() <= 0 ? 1 : 0,
-			isPintuan: res.ispintuan
+			isEnd: res.deadTimeStamp - new Date().getTime() <= 0 ? 1 : 0,
+			isPintuan: res.isPintuan
 		})
 	},
 	adjustStatus(res) {
 		//检测活动的报名成功状态
 		this.setData({
-			ifFull: (res.inJoin == res.inNum && res.outJoin == res.outNum) ? 1 : 0
+			isFull: (res.outJoin == res.outNum) ? 1 : 0
 		})
 		if (res.joinMembers) {
 			var flag = 0
@@ -142,11 +122,11 @@ Page({
 				}
 			}
 			this.setData({
-				ifJoin: flag,
+				isJoin: flag,
 			})
 		} else {
 			this.setData({
-				ifJoin: 0
+				isJoin: 0
 			})
 		}
 	},
@@ -159,30 +139,21 @@ Page({
 				that.setData({
 					actions: res.data,
 				})
-				var ifInTeam = that.data.ifInTeam
-				//在队里
-				if (ifInTeam) {
-					if (that.data.actions.inJoin >= that.data.actions.inNum) {
-						that.setShow("error", "人数已满");
-						return
-					}
-				} else {
-					if (that.data.actions.outJoin >= that.data.actions.outNum) {
-						that.setShow("error", "人数已满");
-						return
-					}
+				if (that.data.actions.outJoin >= that.data.actions.outNum) {
+					that.setShow("error", "人数已满");
+					return
 				}
+
 				//如果没满人,就去新增人数
 				wx.cloud.callFunction({
-						name: 'updateJoinActivity',
-						data: {
-							collectionName: 'ActivityInfo',
-							docName: that.data.id,
-							//操作变量
-							inJoinAdd: ifInTeam ? 1 : 0,
-							outJoinAdd: ifInTeam ? 0 : 1,
-						}
-					})
+					name: 'updateJoinActivity',
+					data: {
+						collectionName: 'ActivityInfo',
+						docName: that.data.id,
+						//操作变量
+						outJoinAdd: 1,
+					}
+				})
 					.then(res => {
 						//更改按钮状态
 						that.setData({
@@ -220,28 +191,25 @@ Page({
 					}
 				}
 				//加入两个错误判断
-				if (res.data.inNum < 0 || res.data.outNum < 0) {
+				if (res.data.outNum < 0) {
 					this.setShow("error", "系统异常");
 					return
 				}
-				if (res.data.inNum < res.data.inJoin || res.data.outNum < res.data.outJoin) {
+				if (res.data.outNum < res.data.outJoin) {
 					this.setShow("error", "系统异常");
 					return
 				}
 				//(云函数)人数自减1,赋值新的名单
-				var ifInTeam = that.data.ifInTeam
 				wx.cloud.callFunction({
-						name: 'updateJoinActivity',
-						data: {
-							collectionName: 'ActivityInfo',
-							docName: that.data.id,
-							//操作变量
-							//根据上面i和j的差来决定要减少多少
-							inJoinAdd: ifInTeam ? -1 : 0,
-							outJoinAdd: ifInTeam ? 0 : -1,
-							newJoinMembers: result
-						}
-					})
+					name: 'updateJoinActivity',
+					data: {
+						collectionName: 'ActivityInfo',
+						docName: that.data.id,
+						//操作变量
+						outJoinAdd: -1,
+						newJoinMembers: result
+					}
+				})
 					.then(res => {
 						//更改按钮状态
 						that.setData({
@@ -290,43 +258,27 @@ Page({
 		if (tmp == 'toJoin') {
 			//报名窗口
 			//先判断是否满人
-			//在队里
-			if (this.data.ifInTeam) {
-				if (this.data.actions.inJoin >= this.data.actions.inNum) {
-					this.setShow("error", "人数已满");
-					return
-				}
-			} else {
-				if (this.data.actions.outJoin >= this.data.actions.outNum) {
-					this.setShow("error", "人数已满");
-					return
-				}
+			if (this.data.actions.outJoin >= this.data.actions.outNum) {
+				this.setShow("error", "人数已满");
+				return
 			}
+
 		} else if (tmp == 'toPintuan') {
-			wx.showLoading()			
+			wx.showLoading()
 			//拼团
 			//先判断是否满人
-			//在队里
-			if (this.data.ifInTeam) {
-				if (this.data.actions.inJoin >= this.data.actions.inNum) {
-					this.setShow("error", "人数已满");
-					wx.hideLoading()
-					return
-				}
-			} else {
-				if (this.data.actions.outJoin >= this.data.actions.outNum) {
-					this.setShow("error", "人数已满");
-					wx.hideLoading()
-					return
-				}
+			if (this.data.actions.outJoin >= this.data.actions.outNum) {
+				this.setShow("error", "人数已满");
+				wx.hideLoading()
+				return
 			}
 			this.setData({
-				ifJoin: 1
+				isJoin: 1
 			})
 			this.Join()
 			return
 		} else if (tmp == 'toGroup') {
-			if (!this.data.ifJoin) {
+			if (!this.data.isJoin) {
 				this.setShow("error", "你尚未参与此活动");
 				return
 			}
@@ -341,13 +293,13 @@ Page({
 		if (a == 'join') {
 			wx.showLoading()
 			this.setData({
-				ifJoin: 1
+				isJoin: 1
 			})
 			this.Join()
 		} else if (a == 'unjoin') {
 			wx.showLoading()
 			this.setData({
-				ifJoin: 0
+				isJoin: 0
 			})
 			this.unJoin()
 		}
@@ -373,6 +325,7 @@ Page({
 			current: e.currentTarget.dataset.index
 		})
 	},
+	//转发朋友
 	onShareAppMessage(event) {
 		console.log('shareApp', this.data.actions.actName)
 		return {
@@ -381,10 +334,11 @@ Page({
 			path: 'pages/detail/detail?id=' + this.data.id + '&actions=' + encodeURIComponent(JSON.stringify(this.data.actions))
 		}
 	},
+	//转发朋友圈
 	onShareTimeline(event) {
 		console.log('shareTimeLine', this.data.actions.actName)
 		return {
-			title: this.data.actions.actName+'	 '+'~快来一起参加吧!',
+			title: this.data.actions.actName + '~快来一起参加吧!',
 			query: 'id=' + this.data.id + '&actions=' + encodeURIComponent(JSON.stringify(this.data.actions))
 		}
 	},

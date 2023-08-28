@@ -7,37 +7,42 @@
 				<radio value="1" />是
 				<radio value="0" class="margin-left" />否
 			</radio-group>
-
+		</view>
+		<view class=" cu-form-group" style="display:grid">
+			<view class="inline_name" style="width:40%">添加标签：</view>
+			<view class="new_inline ">
+				<view wx:for="{{tagList}}" wx:key="index" class="tag {{showLightButton[index]?'red':'default'}} ">
+					<view bindtap="handlemyTagClick" data-index="{{index}}">
+						{{item}}
+					</view>
+				</view>
+			</view>
 		</view>
 		<view class="cu-form-group">
-			<view class="title inteam">活动名称：</view>
+			<view class="title inteam">活动名称:</view>
 			<input class="newName" placeholder="请输入名称" bindinput="getactName" model:value="{{actName}}" />
 		</view>
 		<view class="cu-form-group" style="justify-content: center;">
 			<view style="display: flex;align-items: center; ">
-				<view class="title inteam">负责人</view>
+				<view class="title inteam">负责人:</view>
 				<input bindinput="getholder" placeholder="{{holder}}" disabled="1" model:value="" />
 			</view>
 			<view style="display: flex;align-items: center; ">
-				<view class="title outteam">联系电话</view>
-				<input class="tel" bindinput="getPhone" placeholder="{{Phone}}" disabled="1" />
+				<view class="title outteam">联系电话:</view>
+				<input class="tel" bindinput="getPhone" placeholder="{{phone}}" disabled="1" />
 			</view>
 		</view>
-		<view class="cu-form-group">
-			<view class="title">服务组织</view>
+		<!-- <view class="cu-form-group">
+			<view class="title">服务组织:</view>
 			<picker bindchange="PickerChange" value="{{index}}" range="{{picker}}">
 				<view class="picker ">
 					{{index?picker[index]:'请选择组织单位'}}
 				</view>
 			</picker>
-		</view>
-		<view class="cu-form-group flex justify-between">
-			<view wx:if="{{index&&index!=0}}" class="flex">
-				<view class="title inteam">队内招募:</view>
-				<input class="title inteam" maxlength="3" bindinput="getinNum" placeholder="{{inNum}}"></input>
-			</view>
+		</view> -->
+		<view wx:if="{{isPintuan}}" class="cu-form-group flex justify-between">
 			<view class="flex">
-				<view class="title outteam">公开招募:</view>
+				<view class="title outteam">{{isPintuan==1?'成团':'报名'}}人数:</view>
 				<input class="title inteam" maxlength="3" bindinput="getoutNum" placeholder="{{outNum}}"></input>
 			</view>
 		</view>
@@ -57,7 +62,7 @@
 			</view>
 		</view>
 		<view class="cu-form-group">
-			<view class="title inteam">截止报名时间：</view>
+			<view class="title inteam">截止{{isPintuan==1?'拼团':'报名'}}时间:</view>
 			<view class="new_date">
 				<picker class="time_pickers text-xs" mode="date" value="{{beginDate}}" start="{{currentDate}}" end="{{beginDate}}" bindchange="binddeadChange">{{deadDate}}
 				</picker>
@@ -68,14 +73,14 @@
 
 		<view class="cu-form-group">
 			<view style="display: flex;align-items: center; ">
-				<view class="title inteam">服务地点</view>
+				<view class="title inteam">服务地点:</view>
 				<input bindinput="getAddress" placeholder="地址" />
 			</view>
 		</view>
 
 		<view class="cu-form-group ">
-			<view class="title inteam">简介：</view>
-			<textarea class="new_profile" placeholder="请输入简介" bindinput="getintro"></textarea>
+			<view class="title inteam">简介:</view>
+			<textarea class="new_profile" placeholder="(选填，标注: 填写后可增强活动吸引力，吸引更多志愿者参与拼团)" bindinput="getintro"></textarea>
 		</view>
 
 		<view class="cu-bar bg-white margin-top-sm">
@@ -96,16 +101,7 @@
 				</view>
 			</view>
 		</view>
-		<view class=" cu-form-group" style="display:grid">
-			<view class="inline_name" style="width:40%">添加标签：</view>
-			<view class="new_inline ">
-				<view wx:for="{{tagList}}" wx:key="index" class="tag {{showLightButton[index]?'red':'default'}} ">
-					<view bindtap="handlemyTagClick" data-index="{{index}}">
-						{{item}}
-					</view>
-				</view>
-			</view>
-		</view>
+
 
 		<button class="new_button" bindtap="sendNew">发布</button>
 	</form>

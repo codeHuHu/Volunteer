@@ -19,13 +19,13 @@ Page({
 		}).field({
 			_id: true,
 			actName: true,
-			serviceEstamp: true,
-			serviceStamp: true,
+			serviceEndStamp: true,
+			serviceStartStamp: true,
 			status: true,
 			tag: true,
 			teamName: true,
 			_openid: true
-		}).orderBy('serviceStamp', 'desc').get().then(res => {
+		}).orderBy('serviceStartStamp', 'desc').get().then(res => {
 			this.setData({
 				actionList: res.data
 			})
@@ -40,25 +40,22 @@ Page({
 		console.log(res)
 		var dataArr = []
 		for (var l in res) {
-			const date = new Date(res[l].serviceStamp);
+			const date = new Date(res[l].serviceStartStamp);
 			const year = date.getFullYear();
 			const month = date.getMonth() + 1; // 月份需要加1
 			const day = date.getDate();
 
 			const formattedDate = `${year}-${month}-${day}`;
 			dataArr.push(formattedDate)
-			//console.log(formattedDate)
 		}
 		this.setData({
 			data_Arr: dataArr
 		})
 		wx.stopPullDownRefresh()
-
-			.catch(console.error)
 	},
 	toDetail(e) {
 		wx.navigateTo({
-			url: '/pages/detail/detail?id=' + e.currentTarget.dataset.id,
+			url: '/pages/activityDetail/activityDetail?id=' + e.currentTarget.dataset.id,
 		})
 	}
 })

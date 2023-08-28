@@ -34,9 +34,9 @@ App({
 
 								if (res.result.data.length) {
 									console.log('用户注册信息获取到了,正在配置globalData')
-									that.globalData.Name = res.result.data[0].username;
+									that.globalData.name = res.result.data[0].username;
 									that.globalData.phone = res.result.data[0].phone;
-									that.globalData.pos = res.result.data[0].pos;
+									that.globalData.position = res.result.data[0].position;
 									that.globalData.Id = res.result.data[0].idnumber;
 									that.globalData.aliPay = res.result.data[0].aliPay;
 									that.globalData.school = res.result.data[0].school;
@@ -74,17 +74,17 @@ App({
 
 						if (res.result.data.length) {
 							console.log('用户注册信息获取到了,正在配置globalData')
-							that.globalData.Name = res.result.data[0].username;
+							that.globalData.name = res.result.data[0].userName;
 							that.globalData.phone = res.result.data[0].phone;
-							that.globalData.pos = res.result.data[0].pos;
-							that.globalData.Id = res.result.data[0].idnumber;
+							that.globalData.position = res.result.data[0].position;
+							that.globalData.id = res.result.data[0].idNumber;
 							that.globalData.aliPay = res.result.data[0].aliPay;
 							that.globalData.school = res.result.data[0].school;
 							that.globalData.grade = res.result.data[0].grade;
 							that.globalData.class = res.result.data[0].class;
-							that.globalData.islogin = res.result.data[0].islogin;
+							that.globalData.isLogin = res.result.data[0].isLogin;
 							try {
-								wx.setStorageSync('user_status', [that.globalData.openid, that.globalData.islogin]);
+								wx.setStorageSync('user_status', [that.globalData.openid, that.globalData.isLogin]);
 							} catch (e) {
 								console.log('app配置storage:status错误', e);
 							}
@@ -128,7 +128,7 @@ App({
 		openid: null,
 		name: '',
 		avatar: null,
-		islogin: false,
+		isLogin: false,
 		team: [],
 		phone: 0,
 		aliPay:'',

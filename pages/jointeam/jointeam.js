@@ -7,7 +7,7 @@ Page({
 	 */
 	data: {
 		teamList: [],
-		keyword:'',
+		keyword: '',
 	},
 
 	/**
@@ -76,47 +76,42 @@ Page({
 	},
 	toteamdetail(e) {
 		wx.navigateTo({
-			url: '/pages/teamdetail/teamdetail?info=' + encodeURIComponent(JSON.stringify(this.data.teamList[e.currentTarget.dataset.index])),
+			url: '/pages/teamDetail/teamDetail?info=' + encodeURIComponent(JSON.stringify(this.data.teamList[e.currentTarget.dataset.index])),
 		})
 	},
-	getkeyword(e)
-	{
+	getkeyword(e) {
 		console.log(e.detail.value)
 		this.setData({
-			keyword:e.detail.value
+			keyword: e.detail.value
 		})
-		
-	},
-	search()
-	{
-		wx.showLoading({
-			title:'搜索中...',
-			mask:true
-		})
-		var that =this
-		//搜索栏不为空
-		if(this.data.keyword)
-		{
-		wx.cloud.callFunction({
-			name : 'searchTeam',
-			data : { 
-				collection:'TeamInfo',
-				keyword: this.data.keyword,
-				name:'teamName'
-			}
-		})
-		.then (res =>
-			{
 
-				console.log(res.result)
-				that.setData({
-					teamList: res.result
-				})
-				wx.hideLoading()
+	},
+	search() {
+		wx.showLoading({
+			title: '搜索中...',
+			mask: true
+		})
+		var that = this
+		//搜索栏不为空
+		if (this.data.keyword) {
+			wx.cloud.callFunction({
+				name: 'searchTeam',
+				data: {
+					collection: 'TeamInfo',
+					keyword: this.data.keyword,
+					name: 'teamName'
+				}
 			})
-	}
-	else {
-		this.getData();
-	}
+				.then(res => {
+					console.log(res.result)
+					that.setData({
+						teamList: res.result
+					})
+					wx.hideLoading()
+				})
+		}
+		else {
+			this.getData();
+		}
 	}
 })

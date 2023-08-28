@@ -11,9 +11,9 @@ Page({
 		show1: false, //控制下拉列表的显示隐藏，false隐藏、true显示
 		show2: false,
 		show3: false,
-		selectallData: ['全部', '我的'], //下拉列表的数据
-		selecttypeData: ['类型', '党建引领', '乡村振兴', '新时代文明实践（文化/文艺/体育）', '科普科教', '社区/城中村治理', '环境保护', '弱势群体帮扶', '志愿驿站值班', '其他'],
-		selectstatusData: ['状态', '进行中', '已结束'],
+		selectAll: ['全部', '我的'], //下拉列表的数据
+		selectType: ['类型', '党建引领', '乡村振兴', '新时代文明实践（文化/文艺/体育）', '科普科教', '社区/城中村治理', '环境保护', '弱势群体帮扶', '志愿驿站值班', '其他'],
+		selectStatus: ['状态', '进行中', '已结束'],
 		index1: 0, //选择的下拉列表下标
 		index2: 0,
 		index3: 0,
@@ -21,7 +21,7 @@ Page({
 		currentDate: '',
 		doing: '进行中',
 		finish: '已结束',
-		timestamp: '',
+		timeStamp: '',
 		index: '',
 		data_Arr: [],
 		toUpdateArr: [''],
@@ -48,89 +48,87 @@ Page({
 	},
 	// 点击下拉列表
 	optionallTap(e) {
-		let Index = e.currentTarget.dataset.index; //获取点击的下拉列表的下标
+		let index = e.currentTarget.dataset.index; //获取点击的下拉列表的下标
 		this.setData({
-			index1: Index,
+			index1: index,
 			show1: !this.data.show1
 		});
-		//console.log(Index)
-		if (Index == 0) {
+		if (index == 0) {
 			this.onLoad()
 		} else {
 			db.collection('ActivityInfo').where({
 				_openid: app.globalData.openid,
-				'status' :db.command.not(db.command.eq('0'))
+				'status': db.command.not(db.command.eq('0'))
 			}).field({
 				_id: true,
 				actName: true,
-				serviceEstamp: true,
-				serviceStamp: true,
+				serviceEndStamp: true,
+				serviceStartStamp: true,
 				status: true,
 				tag: true,
 				teamName: true,
 				_openid: true
 			}).limit(20)
-			.orderBy('serviceStamp', 'desc')
-			.get()
-			.then(res => {
-				this.setData({
-					actionList: res.data
+				.orderBy('serviceStartStamp', 'desc')
+				.get()
+				.then(res => {
+					this.setData({
+						actionList: res.data
+					})
+					this.setTime(res.data)
+				}).catch(err => {
+					console.log(err);
 				})
-				this.setTime(res.data)
-			}).catch(err => {
-				console.log(err);
-			})
 		}
 	},
 	// 点击下拉列表
 	optiontypeTap(e) {
 		var that = this
-		let Index = e.currentTarget.dataset.index; //获取点击的下拉列表的下标
+		let index = e.currentTarget.dataset.index; //获取点击的下拉列表的下标
 		this.setData({
-			index2: Index,
+			index2: index,
 			show2: !this.data.show2
 		});
-		if (Index == 0) {
+		if (index == 0) {
 			this.onLoad()
 		} else {
 			const collection = db.collection('ActivityInfo');
 			collection.where({
-				'tag': that.data.selecttypeData[Index],
-				'status' :db.command.nor(db.command.eq('0'),db.command.eq('-1')) 
+				'tag': that.data.selectType[index],
+				'status': db.command.nor(db.command.eq('0'), db.command.eq('-1'))
 			}).field({
 				_id: true,
 				actName: true,
-				serviceEstamp: true,
-				serviceStamp: true,
+				serviceEndStamp: true,
+				serviceStartStamp: true,
 				status: true,
 				tag: true,
 				teamName: true,
 				_openid: true
 			})
-			.limit(20)
-			.orderBy('serviceStamp', 'desc')
-			.get()
-			.then(res => {
-				//console.log(res.data);
-				this.setData({
-					actionList: res.data
+				.limit(20)
+				.orderBy('serviceStartStamp', 'desc')
+				.get()
+				.then(res => {
+					//console.log(res.data);
+					this.setData({
+						actionList: res.data
+					})
+					this.setTime(res.data)
+				}).catch(err => {
+					console.log(err);
 				})
-				this.setTime(res.data)
-			}).catch(err => {
-				console.log(err);
-			})
 		}
 
 	},
 	// 点击下拉列表
 	optionstatusTap(e) {
-		let Index = e.currentTarget.dataset.index; //获取点击的下拉列表的下标
-		//e.log(Index)
+		let index = e.currentTarget.dataset.index; //获取点击的下拉列表的下标
 		this.setData({
-			index3: Index,
+			index3: index,
 			show3: !this.data.show3
 		});
-		if (Index == 1) {
+		if (index == 1) {
 
 			const collection = db.collection('ActivityInfo');
 			collection.where({
@@ -138,51 +136,51 @@ Page({
 			}).field({
 				_id: true,
 				actName: true,
-				serviceEstamp: true,
-				serviceStamp: true,
+				serviceEndStamp: true,
+				serviceStartStamp: true,
 				status: true,
 				tag: true,
 				teamName: true,
 				_openid: true
 			})
-			.limit(20)
-			.orderBy('serviceStamp', 'desc')
-			.get()
-			.then(res => {
-				//console.log(res.data);
-				this.setData({
-					actionList: res.data
+				.limit(20)
+				.orderBy('serviceStartStamp', 'desc')
+				.get()
+				.then(res => {
+					//console.log(res.data);
+					this.setData({
+						actionList: res.data
+					})
+					this.setTime(res.data)
+				}).catch(err => {
+					console.log(err);
 				})
-				this.setTime(res.data)
-			}).catch(err => {
-				console.log(err);
-			})
-		} else if (Index == 2) {
+		} else if (index == 2) {
 			const collection = db.collection('ActivityInfo');
 			collection.where({
 				'status': '2' //已结束
 			}).field({
 				_id: true,
 				actName: true,
-				serviceEstamp: true,
-				serviceStamp: true,
+				serviceEndStamp: true,
+				serviceStarttamp: true,
 				status: true,
 				tag: true,
 				teamName: true,
 				_openid: true
 			})
-			.limit(20)
-			.orderBy('serviceStamp', 'desc')
-			.get()
-			.then(res => {
-				//console.log(res.data);
-				this.setData({
-					actionList: res.data
+				.limit(20)
+				.orderBy('serviceStartStamp', 'desc')
+				.get()
+				.then(res => {
+					//console.log(res.data);
+					this.setData({
+						actionList: res.data
+					})
+					this.setTime(res.data)
+				}).catch(err => {
+					console.log(err);
 				})
-				this.setTime(res.data)
-			}).catch(err => {
-				console.log(err);
-			})
 		} else {
 			this.onLoad()
 		}
@@ -195,10 +193,10 @@ Page({
 			title: '志愿服务',
 		})
 		const currentDate = new Date();
-		const timestamp = currentDate.getTime();
+		const timeStamp = currentDate.getTime();
 		this.setData({
-			timestamp: timestamp,
-			currentDate: currentDate
+			timeStamp,
+			currentDate
 		})
 		this.getStatus()
 	},
@@ -209,13 +207,13 @@ Page({
 		const collection = db.collection('ActivityInfo');
 		collection.where({
 			//获取非待审核或拒绝发布的活动
-			'status' :db.command.nor(db.command.eq('0'),db.command.eq('-1'))
+			'status': db.command.nor(db.command.eq('0'), db.command.eq('-1'))
 
 		}).field({
 			_id: true,
 			actName: true,
-			serviceEstamp: true,
-			serviceStamp: true,
+			serviceEndStamp: true,
+			serviceStartStamp: true,
 			status: true,
 			tag: true,
 			teamName: true,
@@ -223,21 +221,21 @@ Page({
 		})
 
 			.limit(20)
-			.orderBy('serviceStamp', 'desc')
+			.orderBy('serviceStartStamp', 'desc')
 			.get()
 			.then(res => {
 				var actions = res.data;
 				var k = 0;
 				for (var l in actions) {
-					var tmptimestamp = actions[l].serviceEstamp;
-					if (actions[l].status != '2' && tmptimestamp <= that.data.timestamp) {
+					var tmpTimeStamp = actions[l].serviceEndStamp;
+					if (actions[l].status != '2' && tmpTimeStamp <= that.data.timeStamp) {
 						actions[l].status = '2';
 						toUpdateArr[k++] = actions[l]._id;
 					}
 				}
 				that.setData({
 					actionList: actions,
-					toUpdateArr: toUpdateArr
+					toUpdateArr
 				});
 				this.setTime(res.data)
 				return Promise.resolve(); // 返回一个 resolved 状态的 Promise 对象
@@ -271,20 +269,16 @@ Page({
 	},
 	setTime(result) {
 		var res = result
-		console.log(res)
 		var dataArr = []
 		var t
 		for (var l in res) {
-			t = new Date(res[l].serviceStamp)
+			t = new Date(res[l].serviceStartStamp)
 			dataArr.push(`${t.getFullYear()}-${app.Z(t.getMonth() + 1)}-${app.Z(t.getDate())}`)
-			//console.log(formattedDate)
 		}
 		this.setData({
 			data_Arr: dataArr
 		})
 		wx.stopPullDownRefresh()
-
-			.catch(console.error)
 	},
 	/**
 	 * 生命周期函数--监听页面隐藏
@@ -324,7 +318,7 @@ Page({
 	toDetail(e) {
 		//console.log(e.currentTarget.dataset.id)
 		wx.navigateTo({
-			url: '/pages/detail/detail?id=' + e.currentTarget.dataset.id,
+			url: '/pages/activityDetail/activityDetail?id=' + e.currentTarget.dataset.id,
 		})
 	},
 	addstatus(e) {

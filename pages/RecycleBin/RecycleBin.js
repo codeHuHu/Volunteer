@@ -34,8 +34,8 @@ Page({
 		}).field({
 			_id: true,
 			actName: true,
-			serviceEstamp: true,
-			serviceStamp: true,
+			serviceEndStamp: true,
+			serviceStartStamp: true,
 			status: true,
 			tag: true,
 			teamName: true,
@@ -60,26 +60,22 @@ Page({
 		
 	setTime(result) {
 		var res = result
-		console.log(res)
 		var dataArr = []
 		var t
 		for (var l in res) {
 			t = new Date(res[l].serviceStamp)
 			dataArr.push(`${t.getFullYear()}-${app.Z(t.getMonth() + 1)}-${app.Z(t.getDate())}`)
-			//console.log(formattedDate)
 		}
 		this.setData({
 			data_Arr: dataArr
 		})
 		wx.stopPullDownRefresh()
-
-			.catch(console.error)
 	},
 
 	toDetail(e) {
 		//console.log(e.currentTarget.dataset.id)
 		wx.navigateTo({
-			url: '/pages/detail/detail?id=' + e.currentTarget.dataset.id,
+			url: '/pages/activityDetail/activityDetail?id=' + e.currentTarget.dataset.id,
 		})
 	},
 	/**

@@ -6,47 +6,44 @@ Page({
 	 * 页面的初始数据
 	 */
 	data: {
-		teammembers:[],
-		phone:[],
-		leader:[]
+		teamMembers: [],
+		phone: [],
+		leader: []
 	},
 
 	/**
 	 * 生命周期函数--监听页面加载
 	 */
 	onLoad(options) {
-		var that =this
-		console.log(options.id)
-		
+		var that = this
 		db.collection('TeamInfo').doc(options.id).get({
-			success(res)
-			{
+			success(res) {
 				console.log(res)
 				that.setData({
-					leader:res.data.teamLeader,
-					teammembers:res.data.teamMembers,
+					leader: res.data.teamLeader,
+					teamMembers: res.data.teamMembers,
 				})
-						
-					that.setData(
-						{
-							leaderPhone : that.data.leader.map(item => {
-								item.Phone = that.maskPhoneNumber(item.Phone);
-								return item;
-							}),
-							memberPhone :that.data.teammembers.map(item => {
-								item.Phone = that.maskPhoneNumber(item.Phone);
-								return item;})
 
-						}
-					)
+				that.setData(
+					{
+						leaderPhone: that.data.leader.map(item => {
+							item.phone = that.maskPhoneNumber(item.phone);
+							return item;
+						}),
+						memberPhone: that.data.teamMembers.map(item => {
+							item.phone = that.maskPhoneNumber(item.phone);
+							return item;
+						})
 
-		},
-		fail(err)
-		{
-			console.log('失败')
-		}
-	
-	})
+					}
+				)
+
+			},
+			fail(err) {
+				console.log('失败')
+			}
+
+		})
 
 	},
 
