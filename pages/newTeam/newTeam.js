@@ -29,7 +29,7 @@ Page({
 	 */
 	onLoad(options) {
 		this.setData({
-			leaderName: app.globalData.name,
+			leaderName: app.globalData.Name,
 			leaderId: app.globalData.Id,
 			leaderPhone: app.globalData.phone,
 		})

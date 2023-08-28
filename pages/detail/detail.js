@@ -38,24 +38,24 @@ Page({
 				//开启监听(传入该页面的id)
 				that.watcher(options.id);
 				//如果在此小队里(看以后能不能改进一下)
-				if (t.teamName) {
-					db.collection('TeamInfo')
-						.where({
-							teamName: t.teamName
-						})
-						.get()
-						.then(Response => {
-							var teamMembers = Response.data[0]['teamMembers']
-							for (var i in teamMembers) {
-								if (teamMembers[i].openid == app.globalData.openid) {
-									that.setData({
-										ifInTeam: 1
-									})
-									break
-								}
-							}
-						})
-				}
+				// if (t.teamName) {
+				// 	db.collection('TeamInfo')
+				// 		.where({
+				// 			teamName: t.teamName
+				// 		})
+				// 		.get()
+				// 		.then(Response => {
+				// 			var teamMembers = Response.data[0]['teamMembers']
+				// 			for (var i in teamMembers) {
+				// 				if (teamMembers[i].openid == app.globalData.openid) {
+				// 					that.setData({
+				// 						ifInTeam: 1
+				// 					})
+				// 					break
+				// 				}
+				// 			}
+				// 		})
+				// }
 
 			}
 		})
@@ -130,7 +130,7 @@ Page({
 	adjustStatus(res) {
 		//检测活动的报名成功状态
 		this.setData({
-			ifFull: (res.inJoin == res.inNum && res.outJoin == res.outNum) ? 1 : 0
+			ifFull: (res.outJoin == res.outNum) ? 1 : 0
 		})
 		if (res.joinMembers) {
 			var flag = 0
@@ -159,19 +159,11 @@ Page({
 				that.setData({
 					actions: res.data,
 				})
-				var ifInTeam = that.data.ifInTeam
-				//在队里
-				if (ifInTeam) {
-					if (that.data.actions.inJoin >= that.data.actions.inNum) {
-						that.setShow("error", "人数已满");
-						return
-					}
-				} else {
-					if (that.data.actions.outJoin >= that.data.actions.outNum) {
-						that.setShow("error", "人数已满");
-						return
-					}
+				if (that.data.actions.outJoin >= that.data.actions.outNum) {
+					that.setShow("error", "人数已满");
+					return
 				}
+				
 				//如果没满人,就去新增人数
 				wx.cloud.callFunction({
 						name: 'updateJoinActivity',
@@ -179,8 +171,7 @@ Page({
 							collectionName: 'ActivityInfo',
 							docName: that.data.id,
 							//操作变量
-							inJoinAdd: ifInTeam ? 1 : 0,
-							outJoinAdd: ifInTeam ? 0 : 1,
+							outJoinAdd: 1,
 						}
 					})
 					.then(res => {
@@ -220,11 +211,11 @@ Page({
 					}
 				}
 				//加入两个错误判断
-				if (res.data.inNum < 0 || res.data.outNum < 0) {
+				if (res.data.outNum < 0) {
 					this.setShow("error", "系统异常");
 					return
 				}
-				if (res.data.inNum < res.data.inJoin || res.data.outNum < res.data.outJoin) {
+				if (res.data.outNum < res.data.outJoin) {
 					this.setShow("error", "系统异常");
 					return
 				}
@@ -236,9 +227,7 @@ Page({
 							collectionName: 'ActivityInfo',
 							docName: that.data.id,
 							//操作变量
-							//根据上面i和j的差来决定要减少多少
-							inJoinAdd: ifInTeam ? -1 : 0,
-							outJoinAdd: ifInTeam ? 0 : -1,
+							outJoinAdd: -1,
 							newJoinMembers: result
 						}
 					})
@@ -291,35 +280,24 @@ Page({
 			//报名窗口
 			//先判断是否满人
 			//在队里
-			if (this.data.ifInTeam) {
-				if (this.data.actions.inJoin >= this.data.actions.inNum) {
-					this.setShow("error", "人数已满");
-					return
-				}
-			} else {
-				if (this.data.actions.outJoin >= this.data.actions.outNum) {
-					this.setShow("error", "人数已满");
-					return
-				}
+			
+		
+			if (this.data.actions.outJoin >= this.data.actions.outNum) {
+				this.setShow("error", "人数已满");
+				return
 			}
+			
 		} else if (tmp == 'toPintuan') {
 			wx.showLoading()			
 			//拼团
 			//先判断是否满人
 			//在队里
-			if (this.data.ifInTeam) {
-				if (this.data.actions.inJoin >= this.data.actions.inNum) {
-					this.setShow("error", "人数已满");
-					wx.hideLoading()
-					return
-				}
-			} else {
-				if (this.data.actions.outJoin >= this.data.actions.outNum) {
-					this.setShow("error", "人数已满");
-					wx.hideLoading()
-					return
-				}
+			if (this.data.actions.outJoin >= this.data.actions.outNum) {
+				this.setShow("error", "人数已满");
+				wx.hideLoading()
+				return
 			}
+			
 			this.setData({
 				ifJoin: 1
 			})

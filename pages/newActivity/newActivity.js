@@ -21,7 +21,6 @@ Page({
 		showLightButton: [], // 控制按钮显示高光
 		actName: '',
 		teamName: '',
-		inNum: 0,
 		outNum: 0,
 		Address: '',
 		intro: '',
@@ -298,17 +297,17 @@ Page({
 							status: this.data.myPos == 1 ? '0' : '1',// 如果pos为1，活动状态为0：待审核，否则为1：进行中
 							address: this.data.Address,
 							//number
-							inJoin: 0,
 							outJoin: 0,
+							outNum: this.data.outNum,
+
 							serviceStamp: this.data.starttimestamp,
 							serviceEstamp: this.data.endtimestamp,
 							deadtimestamp: this.data.deadtimestamp,
+
 							ispintuan: Number(this.data.ispintuan),
-							inNum: this.data.inNum,
-							outNum: this.data.outNum,
-							teamName: this.data.index == 0 ? "" : this.data.picker[this.data.index],
+							//teamName: this.data.index == 0 ? "" : this.data.picker[this.data.index],
 							tag: this.data.tagList[this.data.tagIndex],
-							//else	
+
 							qr_code: this.data.cloud_imgList
 						},
 						success(res) {
@@ -419,27 +418,15 @@ Page({
 			this.setShow("error", "请重启本小程序");
 			return 0
 		}
-		if (this.data.actName.length == 0 || this.data.intro.length == 0 || this.data.Address.length == 0) {
-			this.setShow("error", "名称/地点/简介错误");
+		if (this.data.actName.length == 0 || this.data.Address.length == 0) {
+			this.setShow("error", "名称/地点错误");
 			return 0
-		}
-		if (this.data.index != 0) {
-			if (!this.data.inNum) {
-				if (this.data.inNum != 0) {
-					this.setShow("error", "队内招募错误");
-					return 0
-				}
-			}
 		}
 		if (!this.data.outNum) {
 			if (this.data.outNum != 0) {
 				this.setShow("error", "公开招募错误");
 				return 0
 			}
-		}
-		if (!this.data.index) {
-			this.setShow("error", "未选定队伍");
-			return 0
 		}
 		if (!this.data.tagIndex) {
 			if (this.data.tagIndex != 0) {

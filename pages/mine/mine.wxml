@@ -75,7 +75,7 @@
 				<text class="text-grey">我的队伍</text>
 			</view>
 		</view>
-		<view bindtap="toNewActivity" class="cu-item arrow" wx:if="{{myPos>0}}">
+		<view bindtap="toNewActivity" class="cu-item arrow">
 			<view class="content">
 				<text class="cuIcon-activity lg text-gray"></text>
 				<text class="text-grey">发布活动</text>
