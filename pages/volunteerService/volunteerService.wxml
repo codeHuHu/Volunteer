@@ -1,29 +1,29 @@
 <view class="top-bar fixed" style="margin:0rpx 5rpx -20rpx 5rpx;">
 	<view class='select_box'>
 		<view class='select' catchtap='selectallTap'>
-			<text class='select_text'>{{selectallData[index1]}}</text>
+			<text class='select_text'>{{selectAll[index1]}}</text>
 			<text class='select_img {{show1&&"select_img_rotate"}} iconfont icon-icon-test65'></text>
 		</view>
-		<view class='option_box' style='height:{{show1?(selectallData.length>5?300:selectallData.length*60):0}}rpx;'>
-			<text class='option' style='{{index1==selectallData.length-1&&"border:0;"}}' wx:for='{{selectallData}}' wx:key='this' data-index='{{index}}' catchtap='optionallTap'>{{item}}</text>
+		<view class='option_box' style='height:{{show1?(selectAll.length>5?300:selectAll.length*60):0}}rpx;'>
+			<text class='option' style='{{index1==selectAll.length-1&&"border:0;"}}' wx:for='{{selectAll}}' wx:key='this' data-index='{{index}}' catchtap='optionallTap'>{{item}}</text>
 		</view>
 	</view>
 	<view class="select_box">
 		<view class='select' catchtap='selecttypeTap'>
-			<text class='select_text'>{{selecttypeData[index2]}}</text>
+			<text class='select_text'>{{selectType[index2]}}</text>
 			<text class='select_img {{show2&&"select_img_rotate"}} iconfont icon-icon-test65'></text>
 		</view>
-		<view class='option_box' style='height:{{show2?(selectData.length>5?300:selecttypeData.length*60):0}}rpx;'>
-			<text class='option' style='{{index2==selecttypeData.length-1&&"border:0;"}}' wx:for='{{selecttypeData}}' wx:key='this' data-index='{{index}}' catchtap='optiontypeTap'>{{item}}</text>
+		<view class='option_box' style='height:{{show2?(selectData.length>5?300:selectType.length*60):0}}rpx;'>
+			<text class='option' style='{{index2==selectType.length-1&&"border:0;"}}' wx:for='{{selectType}}' wx:key='this' data-index='{{index}}' catchtap='optiontypeTap'>{{item}}</text>
 		</view>
 	</view>
 	<view class="select_box">
 		<view class='select' catchtap='selectstatusTap'>
-			<text class='select_text'>{{selectstatusData[index3]}}</text>
+			<text class='select_text'>{{selectStatus[index3]}}</text>
 			<text class='select_img {{show3&&"select_img_rotate"}} iconfont icon-icon-test65'></text>
 		</view>
-		<view class='option_box' style='height:{{show3?(selectstatusData.length>5?300:selectstatusData.length*60):0}}rpx;'>
-			<text class='option' style='{{index3==selectstatuseData.length-1&&"border:0;"}}' wx:for='{{selectstatusData}}' wx:key='this' data-index='{{index}}' catchtap='optionstatusTap'>{{item}}</text>
+		<view class='option_box' style='height:{{show3?(selectStatus.length>5?300:selectStatus.length*60):0}}rpx;'>
+			<text class='option' style='{{index3==selectstatuseData.length-1&&"border:0;"}}' wx:for='{{selectStatus}}' wx:key='this' data-index='{{index}}' catchtap='optionstatusTap'>{{item}}</text>
 		</view>
 	</view>
 </view>

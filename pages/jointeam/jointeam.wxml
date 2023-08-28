@@ -19,7 +19,7 @@
 		<text class="team-name text-bold">{{item.teamName}}</text>
 		<view class="teamInfo margin-top-xs text-sm">
 			<text class="teamer bg-oc-yellow-3">队长 </text>
-			<text class="margin-xs text-grey">{{item.teamLeader[0].Name}}</text>
+			<text class="margin-xs text-grey">{{item.teamLeader[0].name}}</text>
 			<text class="team-people margin-left-xl bg-oc-yellow-3">人数</text>
 			<text class="team-people margin-left-xs text-grey">{{item.member}}</text>
 

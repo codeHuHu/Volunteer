@@ -8,7 +8,7 @@ Page({
 	 */
 	data: {
 		openid: null,
-		islogin: false,
+		isLogin: false,
 		actions: ''
 	},
 
@@ -19,15 +19,15 @@ Page({
 		console.log('app.globalData', app.globalData)
 		this.setData({
 			openid: app.globalData.openid,
-			myPos : app.globalData.pos
+			myPos: app.globalData.position
 		})
-			islogin: app.globalData.islogin
-		
+		isLogin: app.globalData.isLogin
+
 		// var value = wx.getStorageSync('user_status');
 		// if (value) {
 		// 	if (value[0] == app.globalData.openid && value[1] == true) {
 		// 		this.setData({
-		// 			islogin: true
+		// 			isLogin: true
 		// 		})
 		// 	}
 		// } else {
@@ -46,13 +46,13 @@ Page({
 					that.setData({
 						actions: res.data[0],
 					})
-					app.globalData.islogin = that.data.actions.islogin
-					wx.setStorageSync('user_status', [res.data[0]._openid, app.globalData.islogin])
+					app.globalData.isLogin = that.data.actions.isLogin
+					wx.setStorageSync('user_status', [res.data[0]._openid, app.globalData.isLogin])
 					return true;
 				},
 				fail(err) {
 					that.setData({
-						islogin: false
+						isLogin: false
 					})
 					return false;
 				}
@@ -72,7 +72,7 @@ Page({
 		console.log('app.globalData', app.globalData)
 		this.setData({
 			openid: app.globalData.openid,
-			islogin: app.globalData.islogin
+			isLogin: app.globalData.isLogin
 		})
 		this.getDetail()
 	},
@@ -116,7 +116,7 @@ Page({
 		})
 	},
 	toNewActivity() {
-		if (!this.data.islogin) {
+		if (!this.data.isLogin) {
 			this.setShow("error", "未注册");
 			return 0
 		}
@@ -125,7 +125,7 @@ Page({
 		})
 	},
 	toNewTeam() {
-		if (!this.data.islogin) {
+		if (!this.data.isLogin) {
 			this.setShow("error", "未注册");
 			return 0
 		}
@@ -133,17 +133,17 @@ Page({
 			url: '/pages/newTeam/newTeam',
 		})
 	},
-	toPersonalSetting() {
-		if (!this.data.islogin) {
+	toSetting() {
+		if (!this.data.isLogin) {
 			this.setShow("error", "未注册");
 			return 0
 		}
 		wx.navigateTo({
-			url: '/pages/personalSetting/personalSetting',
+			url: '/pages/setting/setting',
 		})
 	},
 	toMyActivity() {
-		if (!this.data.islogin) {
+		if (!this.data.isLogin) {
 			this.setShow("error", "未注册");
 			return 0
 		}
@@ -152,7 +152,7 @@ Page({
 		})
 	},
 	toMyJoin() {
-		if (!this.data.islogin) {
+		if (!this.data.isLogin) {
 			this.setShow("error", "未注册");
 			return 0
 		}
@@ -162,20 +162,19 @@ Page({
 	},
 
 	toCommentActivity() {
-		if (!this.data.islogin) {
+		if (!this.data.isLogin) {
 			this.setShow("error", "未注册");
 			return 0
 		}
 
 		wx.navigateTo({
-			url: '/pages/CommentActivity/CommentActivity',
+			url: '/pages/commentActivity/commentActivity',
 		})
 	},
-	toCheckActivity()
-	{
-			wx.navigateTo({
-				url: '/pages/checkActivity/checkActivity',
-			})
+	toCheckActivity() {
+		wx.navigateTo({
+			url: '/pages/checkActivity/checkActivity',
+		})
 	}
 	, setShow(status, message, time = 500, fun = false) {
 		if (loading) {

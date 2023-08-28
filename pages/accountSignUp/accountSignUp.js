@@ -13,11 +13,11 @@ Page({
 		picker: ['居民身份证', '香港居民身份证', '澳门居民身份证', '台湾身份证'],
 
 		team: ['广州大学城志愿者协会', '阳光义工团'],
-		UserName: '',
-		UserIdnumber: '',
-		UserPhone: '',
+		userName: '',
+		userIdNumber: '',
+		userPhone: '',
 		UserAliPay: '',
-		ischeck: false,
+		isCheck: false,
 		List: [],
 
 	},
@@ -94,51 +94,51 @@ Page({
 	teamChange(e) {
 		console.log(e);
 		this.setData({
-			teamid: e.detail.value
+			teamId: e.detail.value
 		})
 	},
 
 	getName(event) {
 		console.log(event.detail.value);
 		this.setData({
-			UserName: event.detail.value
+			userName: event.detail.value
 		})
 	},
 	getIdnumber(e) {
 		console.log(e.detail.value);
 		this.setData({
-			UserIdnumber: e.detail.value
+			userIdNumber: e.detail.value
 		})
 	},
 	getAliPay(e) {
 		console.log(e.detail.value);
 		this.setData({
-			UserAliPay: e.detail.value
+			userAliPay: e.detail.value
 		})
 	},
 	getPhone(e) {
 
 		console.log(e.detail.value);
 		this.setData({
-			UserPhone: e.detail.value
+			userPhone: e.detail.value
 		})
 	},
 	getSchool(e)
 	{
 		this.setData({
-			School:e.detail.value
+			school:e.detail.value
 		})
 	},
 	getCrade(e)
 	{
 		this.setData({
-			Grade:e.detail.value
+			grade:e.detail.value
 		})
 	},
 	getClass(e)
 	{
 		this.setData({
-			Class:e.detail.value
+			class:e.detail.value
 		})
 	},
 	register() {
@@ -149,25 +149,25 @@ Page({
 		var that = this;
 		db.collection('UserInfo').add({
 			data: {
-				username: that.data.UserName,
-				idtype: that.data.picker[that.data.index],
-				idnumber: that.data.UserIdnumber,
+				userName: that.data.userName,
+				idType: that.data.picker[that.data.index],
+				idNumber: that.data.userIdNumber,
 				//team: that.data.team[that.data.teamid],
 				residence: that.data.region,
-				phone: that.data.UserPhone,
-				aliPay: this.data.UserAliPay,
-				school:this.data.School,
-				grade:this.data.Grade,
-				class:this.data.Class,
-				islogin: true
+				phone: that.data.userPhone,
+				aliPay: this.data.userAliPay,
+				school:this.data.school,
+				grade:this.data.grade,
+				class:this.data.class,
+				isLogin: true
 			},
 			success(res) {
 				console.log('注册成功')
-				app.globalData.Name = that.data.UserName;
-				app.globalData.phone = that.data.UserPhone;
-				app.globalData.Id = that.data.UserIdnumber;
-				app.globalData.islogin = true;
-				wx.setStorageSync('user_status', [app.globalData.openid, app.globalData.islogin]);
+				app.globalData.name = that.data.userName;
+				app.globalData.phone = that.data.userPhone;
+				app.globalData.id = that.data.userIdNumber;
+				app.globalData.isLogin = true;
+				wx.setStorageSync('user_status', [app.globalData.openid, app.globalData.isLogin]);
 				wx.navigateBack()
 				wx.showToast({
 					title: '注册成功',
@@ -176,7 +176,7 @@ Page({
 		})
 	},
 	check() {
-		if (this.data.UserName == '') {
+		if (this.data.userName == '') {
 			this.setShow("error", "姓名为空");
 			return 0
 		}
@@ -186,15 +186,15 @@ Page({
 				return 0
 			}
 		}
-		if (this.data.UserIdnumber == '') {
+		if (this.data.userIdNumber == '') {
 			this.setShow("error", "证件号不能为空");
 			return 0
 		}
-		if (this.data.UserPhone == '') {
+		if (this.data.uerPhone == '') {
 			this.setShow("error", "请输入手机号");
 			return 0
 		}
-		if (this.data.UserAliPay == '') {
+		if (this.data.userAliPay == '') {
 			this.setShow("error", "请输入支付宝账号");
 			return 0
 		}
@@ -206,7 +206,7 @@ Page({
 	checkchange() {
 		console.log(111)
 		this.setData({
-			ischeck: !this.data.ischeck
+			isCheck: !this.data.isCheck
 		})
 	},
 
@@ -243,11 +243,4 @@ Page({
 			loading = false;
 		}
 	},
-	//删除数据库
-	delete() {
-		db.collection('UserInfo').where({
-			_openid: app.globalData.openid
-		}).remove()
-	}
-
 })

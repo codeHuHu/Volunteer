@@ -2,7 +2,7 @@
 	<view class="cu-form-group flex">
 		<view class="flex-sub title justify-center flex">真实姓名</view>
 		<view class="flex-treble">
-			<input placeholder="请输入名字" bindinput="getName" model:value="{{UserName}}"></input>
+			<input placeholder="请输入名字" bindinput="getName" model:value="{{userName}}"></input>
 		</view>
 	</view>
 	<view class="cu-form-group flex">
@@ -19,7 +19,7 @@
 	<view class="cu-form-group flex">
 		<view class="flex-sub title justify-center flex">证件号码</view>
 		<view class="flex-treble">
-			<input placeholder="请输入证件号码" bindinput="getIdnumber" model:value="{{UserIdnumber}}"></input>
+			<input placeholder="请输入证件号码" bindinput="getIdnumber" model:value="{{userIdNumber}}"></input>
 		</view>
 
 	</view>
@@ -46,7 +46,7 @@
 	<view class="cu-form-group flex ">
 		<view class="flex-sub title justify-center flex">手机号码</view>
 		<view class="flex-treble">
-			<input placeholder="请输入手机号码" bindinput="getPhone" model:value="{{UserPhone}}"></input>
+			<input placeholder="请输入手机号码" bindinput="getPhone" model:value="{{userPhone}}"></input>
 		</view>
 
 	</view>
@@ -56,24 +56,24 @@
 			支付宝
 		</view>
 		<view class="flex-treble">
-			<input placeholder="请输入支付宝账号" bindinput="getAliPay" model:value="{{UserAliPay}}"></input>
+			<input placeholder="请输入支付宝账号" bindinput="getAliPay" model:value="{{userAliPay}}"></input>
 		</view>
 
 	</view>
 	<view class="cu-form-group flex ">
 		<view class="flex-sub title justify-center flex">所在学校</view>
 		<view class="flex-treble">
-			<input placeholder="选填（下同）" bindinput="getSchool" model:value="{{School}}"></input>
+			<input placeholder="选填（下同）" bindinput="getSchool" model:value="{{school}}"></input>
 		</view>
 	</view>
 	<view class="cu-form-group flex">
 	<view class="flex">
 				<view class="title ">年级:</view>
-				<input class="title " bindinput="getGrade" placeholder="{{Grade}}"></input>
+				<input class="title " bindinput="getGrade" placeholder="{{grade}}"></input>
 	</view>
 			<view class="flex">
 				<view class="title ">班级:</view>
-				<input class="title " bindinput="getClass" placeholder="{{Class}}"></input>
+				<input class="title " bindinput="getClass" placeholder="{{class}}"></input>
 			</view>
 		</view>
 	<!-- <view class="cu-form-group ">
@@ -85,7 +85,7 @@
 	<view class="margin-top">
 	<text class="text-xs text-grey " style="letter-spacing:2rpx">注：支付宝账号仅用来对部分活动发放补贴</text></view>
 	<view class="margin-top">
-	<checkbox class="round margin-right " checked="{{ischeck}}" bindtap="checkchange" ></checkbox>
+	<checkbox class="round margin-right " checked="{{isCheck}}" bindtap="checkchange" ></checkbox>
 		<text class="text-xs text-grey ">注册表示同意并已阅读</text>
 		<text class="text-xs" style="color: rgb(248, 179, 28);">《协议》</text></view>
 

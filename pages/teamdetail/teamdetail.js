@@ -6,8 +6,8 @@ Page({
 	 * 页面的初始数据
 	 */
 	data: {
-		ifJoined: 0,
-		ifLeader: 0,
+		isJoin: 0,
+		isLeader: 0,
 		id: '',
 
 	},
@@ -35,12 +35,12 @@ Page({
 			if (cur[i].openid == app.globalData.openid) {
 				//已在队伍当中了
 				this.setData({
-					ifJoined: 1
+					isJoin: 1
 				})
 				//是否为队长
 				if (this.data.teamDetail._openid == app.globalData.openid) {
 					this.setData({
-						ifLeader: 1
+						isLeader: 1
 					})
 				}
 			}
@@ -87,7 +87,7 @@ Page({
 
 	},
 	join() {
-		if (this.data.ifLeader) {
+		if (this.data.isLeader) {
 			//已经加入了
 			wx.showToast({
 				title: '你已是队长',
@@ -95,7 +95,7 @@ Page({
 			})
 			return
 		}
-		if (this.data.ifJoined) {
+		if (this.data.isJoin) {
 			//已经加入了
 			wx.showToast({
 				title: '你已加入该队伍',
@@ -106,22 +106,22 @@ Page({
 
 		//云函数添加memberUndetermined到数据库
 		wx.cloud.callFunction({
-				name: 'updateJoinTeam',
-				data: {
-					collectionName: 'TeamInfo',
-					docName: this.data.id,
-					myId: app.globalData.Id,
-					myName: app.globalData.Name,
-					myPhone: app.globalData.phone,
-					//操作变量
-					Add: 1,
-					//newTeamMembers:result
-				}
-			})
+			name: 'updateJoinTeam',
+			data: {
+				collectionName: 'TeamInfo',
+				docName: this.data.id,
+				myId: app.globalData.id,
+				myName: app.globalData.name,
+				myPhone: app.globalData.phone,
+				//操作变量
+				Add: 1,
+				//newTeamMembers:result
+			}
+		})
 			.then(res => {
 				//更改按钮状态
 				this.setData({
-					ifJoined: 1
+					isJoin: 1
 				})
 				wx.showToast({
 					title: '申请成功',
@@ -133,7 +133,7 @@ Page({
 	},
 	members() {
 		wx.navigateTo({
-			url: '/pages/teammenbers/teammenbers?id=' + this.data.id,
+			url: '/pages/teamMembers/teamMembers?id=' + this.data.id,
 		})
 	}
 })

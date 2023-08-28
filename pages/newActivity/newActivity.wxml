@@ -29,7 +29,7 @@
 			</view>
 			<view style="display: flex;align-items: center; ">
 				<view class="title outteam">联系电话:</view>
-				<input class="tel" bindinput="getPhone" placeholder="{{Phone}}" disabled="1" />
+				<input class="tel" bindinput="getPhone" placeholder="{{phone}}" disabled="1" />
 			</view>
 		</view>
 		<!-- <view class="cu-form-group">
@@ -40,9 +40,9 @@
 				</view>
 			</picker>
 		</view> -->
-		<view wx:if="{{ispintuan}}" class="cu-form-group flex justify-between">
+		<view wx:if="{{isPintuan}}" class="cu-form-group flex justify-between">
 			<view class="flex">
-				<view class="title outteam">{{ispintuan==1?'成团':'报名'}}人数:</view>
+				<view class="title outteam">{{isPintuan==1?'成团':'报名'}}人数:</view>
 				<input class="title inteam" maxlength="3" bindinput="getoutNum" placeholder="{{outNum}}"></input>
 			</view>
 		</view>
@@ -62,7 +62,7 @@
 			</view>
 		</view>
 		<view class="cu-form-group">
-			<view class="title inteam">截止{{ispintuan==1?'拼团':'报名'}}时间:</view>
+			<view class="title inteam">截止{{isPintuan==1?'拼团':'报名'}}时间:</view>
 			<view class="new_date">
 				<picker class="time_pickers text-xs" mode="date" value="{{beginDate}}" start="{{currentDate}}" end="{{beginDate}}" bindchange="binddeadChange">{{deadDate}}
 				</picker>

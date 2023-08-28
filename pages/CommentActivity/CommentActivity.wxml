@@ -49,7 +49,7 @@
 	<view class="cu-form-group" style="	flex-wrap: wrap;">
 		<view class="title">队员评价</view>
 		<view class="showname">
-			<view wx:for="{{checkbox}}" wx:key="id" wx:for-item="item">
+			<view wx:for="{{checkBox}}" wx:key="id" wx:for-item="item">
 			<button  bindtap="showNGModal" data-target="BottomModal" data-btnid="{{item.id}}">
 				{{item.name}}
 			</button>
@@ -67,7 +67,7 @@
       <view class="action text-green" bindtap="hideModal">确定</view>
     </view>
     <view class="grid col-3 padding-sm">
-			<view wx:for="{{checkbox}}" class="padding-xs" wx:key="index">
+			<view wx:for="{{checkBox}}" class="padding-xs" wx:key="index">
         <button class="cu-btn lg block {{item.isCome?'btn-green':'line-green'}}" bindtap="ChooseIsCome" data-value="{{item.id}}"> {{item.name}}
         </button>
       </view>
@@ -82,7 +82,7 @@
       <view class="action text-green" bindtap="hideModal">确定</view>
     </view>
     <view class="grid col-3 padding-sm">
-			<view wx:for="{{checkbox}}" class="padding-xs" wx:key="index">
+			<view wx:for="{{checkBox}}" class="padding-xs" wx:key="index">
 
         <button wx:if="{{item.isCome}}" class="cu-btn lg block {{item.checked?'btn-green':'line-green'}}" bindtap="ChooseCheckbox" data-value="{{item.id}}"> {{item.name}}
         </button>

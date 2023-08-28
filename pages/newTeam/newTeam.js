@@ -8,12 +8,8 @@ Page({
 	 * 页面的初始数据
 	 */
 	data: {
-		adminAccount: '',
-		adminPassword: '',
-		ifAdmin: false,
 		picker: ['类型1', '类型2', '类型3', '类型4'],
 		teamName: '',
-		teamCategory: '',
 		leaderName: '',
 		leaderId: '',
 		leaderPhone: '',
@@ -21,7 +17,7 @@ Page({
 		region: ['广东省', '广州市', '番禺区'],
 		teamIntro: '',
 		reason: '',
-		ischeck: false,
+		isCheck: false,
 	},
 
 	/**
@@ -29,8 +25,8 @@ Page({
 	 */
 	onLoad(options) {
 		this.setData({
-			leaderName: app.globalData.Name,
-			leaderId: app.globalData.Id,
+			leaderName: app.globalData.name,
+			leaderId: app.globalData.id,
 			leaderPhone: app.globalData.phone,
 		})
 	},
@@ -120,7 +116,7 @@ Page({
 	},
 	checkchange() {
 		this.setData({
-			ischeck: !this.data.ischeck
+			isCheck: !this.data.isCheck
 		})
 	},
 	teamRegister() {
@@ -138,9 +134,9 @@ Page({
 				teamName: that.data.teamName,
 				teamLeader: [{
 					openid: app.globalData.openid,
-					Name: that.data.leaderName,
-					Id: that.data.leaderId,
-					Phone: that.data.leaderPhone
+					name: that.data.leaderName,
+					id: that.data.leaderId,
+					phone: that.data.leaderPhone
 				}],
 				mail: that.data.mail,
 				region: that.data.region[0] + that.data.region[1] + that.data.region[2],
@@ -149,9 +145,9 @@ Page({
 				member: 1,
 				teamMembers: [{
 					openid: app.globalData.openid,
-					Name: that.data.leaderName,
-					Id: that.data.leaderId,
-					Phone: that.data.leaderPhone
+					name: that.data.leaderName,
+					id: that.data.leaderId,
+					phone: that.data.leaderPhone
 				}],
 				volunteerTime: 0
 			},
@@ -174,7 +170,7 @@ Page({
 			this.setShow("error", "名称/介绍/邮箱错误");
 			return 0
 		}
-		if (!this.data.ischeck) {
+		if (!this.data.isCheck) {
 			this.setShow("error", "未同意协议");
 			return 0
 		}

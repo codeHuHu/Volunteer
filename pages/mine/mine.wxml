@@ -1,10 +1,10 @@
 <scroll-view class="scrollPage">
-	<block wx:if="{{islogin}}">
+	<block wx:if="{{isLogin}}">
 		<view class="bg-img margin-lr" style="min-height: 35vh;">
 			<view class="bg-white radius-lg">
 				<view class="flex padding-sm justify-between">
 					<view class="padding-xs text-xxl text-black">
-						<view>{{actions.username}}<text class="text-gray text-df"> 志愿者</text></view>
+						<view>{{actions.userName}}<text class="text-gray text-df"> 志愿者</text></view>
 						<view class="text-gray text-df padding-top-sm">{{actions.team}}</view>
 					</view>
 					<view class="">
@@ -94,7 +94,7 @@
 			</view>
 		</view>
 		<view class="cu-item arrow">
-			<view bindtap="toPersonalSetting" class="content">
+			<view bindtap="toSetting" class="content">
 				<text class="cuIcon-settings lg text-gray"></text>
 				<text class="text-grey">个人设置</text>
 			</view>

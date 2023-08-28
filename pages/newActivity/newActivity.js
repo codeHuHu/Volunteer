@@ -22,13 +22,13 @@ Page({
 		actName: '',
 		teamName: '',
 		outNum: 0,
-		Address: '',
+		address: '',
 		intro: '',
 		temp_imgList: [],
 		//三个时间戳
-		starttimestamp: '',
-		endtimestamp: '',
-		deadtimestamp: ''
+		startTimeStamp: 0,
+		endTimeStamp: 0,
+		deadTimeStamp: 0
 	},
 
 	/**
@@ -38,9 +38,9 @@ Page({
 		// const currentDate = new Date().toLocaleDateString('en-GB', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/\//g, '-');
 		//const currentDate = new Date()
 		this.setData({
-			holder: app.globalData.Name,
-			Phone: app.globalData.phone,
-			myPos: app.globalData.pos
+			holder: app.globalData.name,
+			phone: app.globalData.phone,
+			myPos: app.globalData.position
 		})
 		const currentDate = new Date().toISOString().slice(0, 10);
 		const currentTime = new Date().toLocaleTimeString('en-US', {
@@ -58,8 +58,6 @@ Page({
 			deadTime: currentTime,
 			picker: teamPicker
 		});
-
-		db.collection('TeamInfo')
 	},
 
 	/**
@@ -130,23 +128,23 @@ Page({
 		let start = new Date(combinedStartStr).getTime();
 		let end = new Date(combinedEndStr).getTime();
 		let dead = e.detail.value + ' ' + this.data.deadTime;
-		let deadstamp = new Date(dead).getTime()
+		let deadStamp = new Date(dead).getTime()
 
 		this.setData({
 			beginDate: e.detail.value,
 			deadDate: e.detail.value,
-			starttimestamp: start,
-			endtimestamp: end,
-			deadtimestamp: deadstamp
+			startTimeStamp: start,
+			endTimeStamp: end,
+			deadTimeStamp: deadStamp
 		})
 	},
 	binddeadChange: function (e) {
 		let dead = e.detail.value + ' ' + this.data.deadTime;
-		let deadstamp = new Date(dead).getTime()
+		let deadStamp = new Date(dead).getTime()
 
 		this.setData({
 			deadDate: e.detail.value,
-			deadtimestamp: deadstamp
+			deadTimestamp: deadStamp
 		})
 	},
 
@@ -157,13 +155,13 @@ Page({
 		let end = new Date(combinedEndStr).getTime();
 		this.checkTime(start, end)
 		let dead = this.data.deadDate + ' ' + e.detail.value;
-		let deadstamp = new Date(dead).getTime()
+		let deadStamp = new Date(dead).getTime()
 		this.setData({
 			startTime: e.detail.value,
 			deadTime: e.detail.value,
-			starttimestamp: start,
-			endtimestamp: end,
-			deadtimestamp: deadstamp
+			startTimeStamp: start,
+			endTimeStamp: end,
+			deadTimeStamp: deadStamp
 		})
 	},
 	bindETimeChange: function (e) {
@@ -173,20 +171,20 @@ Page({
 		let end = new Date(combinedEndStr).getTime();
 		this.checkTime(start, end);
 		let dead = this.data.deadDate + ' ' + this.data.deadTime;
-		let deadstamp = new Date(dead).getTime()
+		let deadStamp = new Date(dead).getTime()
 		this.setData({
 			endTime: e.detail.value,
-			endtimestamp: end,
-			starttimestamp: start,
-			deadtimestamp: deadstamp
+			endTimeStamp: end,
+			startTimeStamp: start,
+			deadTimeStamp: deadStamp
 		})
 	},
 	binddeadTimeChange: function (e) {
 		let dead = this.data.deadDate + ' ' + e.detail.value;
-		let deadstamp = new Date(dead).getTime()
+		let deadStamp = new Date(dead).getTime()
 		this.setData({
 			deadTime: e.detail.value,
-			deadtimestamp: deadstamp
+			deadtimestamp: deadStamp
 		})
 	},
 
@@ -212,9 +210,6 @@ Page({
 			mytagList: mytagList
 		})
 		tagList.splice(index, 1); // 从数组中删除该索引对应的元素
-		console.log(this.data.tagList);
-		console.log(this.data.mytagList);
-
 		this.setData({
 			tagList: tagList,
 			showCloseButton: false,
@@ -226,14 +221,12 @@ Page({
 		this.setData({
 			index: e.detail.value
 		})
-		console.log(this.data.picker[this.data.index])
 	},
 	getactName(e) {
 		console.log(e.detail.value)
 		this.setData({
-			ActName: e.detail.value
+			actName: e.detail.value
 		})
-		console.log(this.data.ActName)
 	},
 	getholder(e) {
 		console.log(e.detail.value)
@@ -243,7 +236,7 @@ Page({
 	},
 	getPhone(e) {
 		this.setData({
-			Phone: e.detail.value
+			phone: e.detail.value
 		})
 	},
 	getinNum(e) {
@@ -258,7 +251,7 @@ Page({
 	},
 	getAddress(e) {
 		this.setData({
-			Address: e.detail.value
+			address: e.detail.value
 		})
 	},
 	getintro(e) {
@@ -292,19 +285,19 @@ Page({
 							//string
 							actName: this.data.actName,
 							holder: this.data.holder,
-							phone: this.data.Phone,
+							phone: this.data.phone,
 							intro: this.data.intro,
 							status: this.data.myPos == 1 ? '0' : '1',// 如果pos为1，活动状态为0：待审核，否则为1：进行中
-							address: this.data.Address,
+							address: this.data.address,
 							//number
 							outJoin: 0,
 							outNum: this.data.outNum,
 
-							serviceStamp: this.data.starttimestamp,
-							serviceEstamp: this.data.endtimestamp,
-							deadtimestamp: this.data.deadtimestamp,
+							serviceStartStamp: this.data.startTimeStamp,
+							serviceEndStamp: this.data.endTimeStamp,
+							deadTimeStamp: this.data.deadTimeStamp,
 
-							ispintuan: Number(this.data.ispintuan),
+							isPintuan: Number(this.data.isPintuan),
 							//teamName: this.data.index == 0 ? "" : this.data.picker[this.data.index],
 							tag: this.data.tagList[this.data.tagIndex],
 
@@ -331,13 +324,11 @@ Page({
 
 	},
 	isPintuan(e) {
-		console.log(e.detail.value)
 		this.setData({
-			ispintuan: e.detail.value
+			isPintuan: e.detail.value
 		})
 	},
 	ChooseImage() {
-
 		wx.chooseMedia({
 			count: 4, //默认9
 			mediaType: ['image'],
@@ -410,15 +401,15 @@ Page({
 		})
 	},
 	check() {
-		if (!this.data.ispintuan) {
+		if (!this.data.isPintuan) {
 			this.setShow("error", "请勾选是否拼团");
 			return 0
 		}
-		if (!this.data.holder || !this.data.Phone) {
+		if (!this.data.holder || !this.data.phone) {
 			this.setShow("error", "请重启本小程序");
 			return 0
 		}
-		if (this.data.actName.length == 0 || this.data.Address.length == 0) {
+		if (this.data.actName.length == 0 || this.data.address.length == 0) {
 			this.setShow("error", "名称/地点错误");
 			return 0
 		}
@@ -434,11 +425,11 @@ Page({
 				return 0
 			}
 		}
-		if (this.data.starttimestamp < this.data.deadtimestamp) {
+		if (this.data.startTimeStamp < this.data.deadTimeStamp) {
 			this.setShow("error", "截止时间有误");
 			return 0
 		}
-		if (this.data.endtimestamp < this.data.starttimestamp) {
+		if (this.data.endTimeStamp < this.data.startTimeStamp) {
 			this.setShow("error", "开始和结束时间有误");
 			return 0
 		}

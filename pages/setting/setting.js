@@ -19,7 +19,7 @@ Page({
 		console.log('abcde')
 		this.setData({
 			openid: app.globalData.openid,
-			name: app.globalData.Name,
+			name: app.globalData.name,
 			phone: app.globalData.phone,
 			aliPay: app.globalData.aliPay,
 			school: app.globalData.school,
@@ -122,7 +122,7 @@ Page({
 			_openid: this.data.openid
 		}).update({
 			data: {
-				username: this.data.name,
+				userName: this.data.name,
 				school: this.data.school,
 				grade: this.data.grade,
 				class: this.data.class,

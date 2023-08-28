@@ -68,14 +68,14 @@ Page({
 	},
 
 	toregister() {
-		if (this.Byhistory()) {
+		if (this.byhistory()) {
 			wx.showToast({
 				title: '你已注册成为志愿者',
 				icon: 'none'
 			})
-		} else if (this.ByBase()) { }
+		} else if (this.byBase()) { }
 	},
-	Byhistory() {
+	byhistory() {
 		var value = wx.getStorageSync('user_status')
 		if (value) {
 			try {
@@ -90,7 +90,7 @@ Page({
 			return false
 		}
 	},
-	ByBase() {
+	byBase() {
 		wx.cloud.database().collection('UserInfo')
 			.where({
 				_openid: app.globalData.openid
@@ -143,11 +143,11 @@ Page({
 		})
 	},
 	toNewActivity() {
-		if (this.Byhistory()) {
+		if (this.byhistory()) {
 			wx.navigateTo({
 				url: '/pages/newActivity/newActivity',
 			})
-		} else if (this.ByBase()) {
+		} else if (this.byBase()) {
 
 		}
 	},
@@ -157,18 +157,18 @@ Page({
 		})
 	},
 	toJoinTeam() {
-		if (this.Byhistory()) {
+		if (this.byhistory()) {
 			wx.navigateTo({
-				url: '/pages/jointeam/jointeam',
+				url: '/pages/joinTeam/joinTeam',
 			})
-		} else if (this.ByBase()) {
+		} else if (this.byBase()) {
 
 		}
 	},
 
 	toDetail(e) {
 		wx.navigateTo({
-			url: '/pages/detail/detail?id=' + e.currentTarget.dataset.id,
+			url: '/pages/activityDetail/activityDetail?id=' + e.currentTarget.dataset.id,
 		})
 	},
 	searchIcon(e) {

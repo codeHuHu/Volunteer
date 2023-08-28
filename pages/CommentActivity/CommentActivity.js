@@ -12,13 +12,13 @@ Page({
 		index1: '',
 		index: null,
 		modalName: null,
-		tempID: null,
+		tempId: null,
 		tempValue: null,
 		arrayName: '',
 		signInList: [], //签到表
 		imgList: [], //活动图片
 		people: [], //活动人员
-		checkbox: [{
+		checkBox: [{
 			id: '',
 			name: '',
 			checked: true,
@@ -102,7 +102,7 @@ Page({
 			}).then(() => {
 				console.log(that.data.result)
 				var result = that.data.result
-				var NameList = []
+				var nameList = []
 				var members = result[0].joinMembers
 				that.setData({
 					id: result[0]._id
@@ -110,16 +110,16 @@ Page({
 				db.collection('UserInfo').where({
 					_openid: db.command.in(members)
 				}).field({
-					username: true
+					userName: true
 				}).get().then(res => {
 					console.log(res.data)
 					var tmp = res.data
 
 					for (var l in tmp) {
-						NameList.push(tmp[l].username)
+						nameList.push(tmp[l].userName)
 					}
 					that.setData({
-						NameList: NameList,
+						nameList,
 						count: tmp.length,
 
 					})
@@ -129,7 +129,7 @@ Page({
 					for (var l = 0; l < that.data.count; l++) {
 						const item = {
 							id: l,
-							name: that.data.NameList[l],
+							name: that.data.nameList[l],
 							checked: true,
 							isCome: true,
 							feedback: ''
@@ -261,12 +261,12 @@ Page({
 			}
 		}
 		this.setData({
-			checkbox: items
+			checkBox: items
 		})
-		console.log(this.data.checkbox);
+		console.log(this.data.checkBox);
 	},
 	ChooseCheckbox(e) {
-		let items = this.data.checkbox;
+		let items = this.data.checkBox;
 		let values = e.currentTarget.dataset.value;
 		for (let i = 0, lenI = items.length; i < lenI; ++i) {
 			if (items[i].id === values) {
@@ -275,20 +275,20 @@ Page({
 			}
 		}
 		this.setData({
-			checkbox: items
+			checkBox: items
 		})
 	},
 	//出现未定义警告时，重新编译即可
 	handleInput: function (e) {
-		const btnId = this.data.tempID;
-		const checkbox = this.data.checkbox.map(item => {
+		const btnId = this.data.tempId;
+		const checkBox = this.data.checkBox.map(item => {
 			if (item.id === btnId) {
 				item.feedback = e.detail.value;
 			}
 			return item;
 		});
 		this.setData({
-			checkbox: checkbox
+			checkBox
 		});
 	},
 	commitfb() {

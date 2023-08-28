@@ -100,7 +100,7 @@
 		</view>
 	</view> -->
   <view class="content">
-    <checkbox class="round margin-right" checked="{{ischeck}}" bindtap="checkchange"></checkbox>
+    <checkbox class="round margin-right" checked="{{isCheck}}" bindtap="checkchange"></checkbox>
     <text class="">注册表示同意协议</text>
   </view>
   <view class="padding-xl">

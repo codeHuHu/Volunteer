@@ -4,7 +4,7 @@
 		<view class="padding-left-xl">
 			<view class="cu-tag bg-green light sm round going-on" wx:if="{{actions.status=='1'}}">服务进行中</view>
 			<view class="cu-tag bg-green light sm round going-on" wx:elif="{{actions.status=='2'}}" style="background-color: gray; color: aliceblue;">服务已结束</view>
-			<view class="cu-tag bg-{{ifFull?'blue':'red'}} light xxl round going-on text-bold" wx:if="{{isPintuan=='1'}}">拼团{{ifEnd?(ifFull?'成功':'失败'):(ifFull?'成功':'中')}}</view>
+			<view class="cu-tag bg-{{isFull?'blue':'red'}} light xxl round going-on text-bold" wx:if="{{isPintuan=='1'}}">拼团{{isEnd?(isFull?'成功':'失败'):(isFull?'成功':'中')}}</view>
 		</view>
 	</view>
 </view>
@@ -75,11 +75,11 @@
 	3. 当未截止时,如果是报名,则保持原状态,仍可以进行再次取消与报名操作
 	3. 当未截止时,如果是拼团,且如果满人了,则表示 拼团成功 ,再次点击按钮弹出群二维码；若未满人时保持原状态
 	-->
-		<view wx:else bindtap="showModal" data-target="{{actions.length!=0?(ifEnd||(isPintuan&&ifFull) ?(isPintuan?(ifFull?'toGroup':'拼团失败无操作'):'报名已截止无操作'):(ifJoin?'toUnJoin':(isPintuan?'toPintuan':'toJoin'))):'None'}}">
-			<button wx:if="{{ifEnd||(isPintuan&&ifFull)}}" class="signUp cu-avatar round xl bg-{{ifFull?'purple':'grey'}} animation-{{animation}}" bindtap="toggle" data-class="scale-up" role="button" aria-disabled="false">
-				<text class="avatar-text">{{isPintuan?(ifFull?'群二维码':'拼团失败'):'报名截止'}}</text>
+		<view wx:else bindtap="showModal" data-target="{{actions.length!=0?(isEnd||(isPintuan&&isFull) ?(isPintuan?(isFull?'toGroup':'拼团失败无操作'):'报名已截止无操作'):(isJoin?'toUnJoin':(isPintuan?'toPintuan':'toJoin'))):'None'}}">
+			<button wx:if="{{isEnd||(isPintuan&&isFull)}}" class="signUp cu-avatar round xl bg-{{isFull?'purple':'grey'}} animation-{{animation}}" bindtap="toggle" data-class="scale-up" role="button" aria-disabled="false">
+				<text class="avatar-text">{{isPintuan?(isFull?'群二维码':'拼团失败'):'报名截止'}}</text>
 			</button>
-			<button wx:elif="{{!ifJoin}}" class="signUp cu-avatar round xl bg-green animation-{{animation}}" bindtap="toggle" data-class="scale-up" role="button" aria-disabled="false">
+			<button wx:elif="{{!isJoin}}" class="signUp cu-avatar round xl bg-green animation-{{animation}}" bindtap="toggle" data-class="scale-up" role="button" aria-disabled="false">
 				<text class="avatar-text ">点击{{isPintuan?'拼团':'报名'}}</text>
 			</button>
 			<button wx:else class="signUp cu-avatar round xl bg-red animation-{{animation}}" bindtap="toggle" data-class="scale-up" role="button" aria-disabled="false">
