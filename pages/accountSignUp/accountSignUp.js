@@ -11,7 +11,7 @@ Page({
 
 		region: ['广东省', '广州市', '番禺区'],
 		picker: ['居民身份证', '香港居民身份证', '澳门居民身份证', '台湾身份证'],
-
+		grade:['小学','中学','本科','研究生','博士','已毕业'],
 		team: ['广州大学城志愿者协会', '阳光义工团'],
 		userName: '',
 		userIdNumber: '',
@@ -19,7 +19,8 @@ Page({
 		UserAliPay: '',
 		isCheck: false,
 		List: [],
-
+		school:'',
+		selectedYear: '请选择年份'
 	},
 
 	/**
@@ -77,6 +78,16 @@ Page({
 	onShareAppMessage() {
 
 	},
+
+	YearChange: function(e) {
+    const value = e.detail.value;
+    const year = value.substring(0, 4);
+    this.setData({
+			value:value,
+      selectedYear: year
+		});
+		console.log(this.data.selectedYear)
+  },
 	RegionChange: function (e) {
 		this.setData({
 			region: e.detail.value
@@ -84,12 +95,19 @@ Page({
 		})
 		console.log(this.data.region)
 	},
+	GradeChange(e)
+	{
+		console.log(e.detail.value)
+		this.setData({
+			Gindex:e.detail.value
+		})
+	},
 	PickerChange(e) {
 		console.log(e);
 		this.setData({
 			index: e.detail.value
 		})
-		console.log()
+		console.log(e.detail.value)
 	},
 	teamChange(e) {
 		console.log(e);
@@ -117,7 +135,6 @@ Page({
 		})
 	},
 	getPhone(e) {
-
 		console.log(e.detail.value);
 		this.setData({
 			userPhone: e.detail.value
@@ -127,6 +144,12 @@ Page({
 	{
 		this.setData({
 			school:e.detail.value
+		})
+	},
+	getCollege(e)
+	{
+		this.setData({
+			college:e.detail.value
 		})
 	},
 	getCrade(e)
@@ -153,13 +176,14 @@ Page({
 				idType: that.data.picker[that.data.index],
 				idNumber: that.data.userIdNumber,
 				//team: that.data.team[that.data.teamid],
-				residence: that.data.region,
 				phone: that.data.userPhone,
-				aliPay: this.data.userAliPay,
-				school:this.data.school,
-				grade:this.data.grade,
-				class:this.data.class,
-				isLogin: true
+				aliPay: that.data.userAliPay,
+				school:that.data.school,
+				college:that.data.college,
+				grade:that.data.grade[that.data.Gindex],
+				year:that.data.selectedYear,
+				isLogin: true,
+				position:0
 			},
 			success(res) {
 				console.log('注册成功')
@@ -176,10 +200,26 @@ Page({
 		})
 	},
 	check() {
+
+		if(!this.data.Gindex)
+		{
+			if (this.data.Gindex != 0) {
+				this.setShow("error", "请选择年级");
+				return 0
+			}
+		}
+		if(!this.data.value)
+		{
+			if (this.data.value != 0) {
+				this.setShow("error", "请选择学年");
+				return 0
+			}
+		}
 		if (this.data.userName == '') {
 			this.setShow("error", "姓名为空");
 			return 0
 		}
+	
 		if (!this.data.index) {
 			if (this.data.index != 0) {
 				this.setShow("error", "请选择证件类型");
@@ -194,12 +234,13 @@ Page({
 			this.setShow("error", "请输入手机号");
 			return 0
 		}
-		if (this.data.userAliPay == '') {
-			this.setShow("error", "请输入支付宝账号");
+		if (this.data.school == '') {
+			this.setShow("error", "请输入学校/单位");
 			return 0
 		}
+
 		if (!this.data.isCheck) {
-			this.setShow("error", "请同意协议");
+			this.setShow("error", "请仔细阅读并同意协议");
 			return 0
 		}
 	},

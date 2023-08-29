@@ -8,8 +8,11 @@ Page({
 	 */
 	data: {
 		showModal: null,
-
-		loading: false
+		grade:['小学','中学','本科','研究生','博士','已毕业'],
+		loading: false,
+		selectedYear:'请选择年份',
+		isCollege:'',
+    college:''
 	},
 
 	/**
@@ -23,11 +26,30 @@ Page({
 			phone: app.globalData.phone,
 			aliPay: app.globalData.aliPay,
 			school: app.globalData.school,
-			grade: app.globalData.grade,
-			class: app.globalData.class,
+			mygrade: app.globalData.grade,
+			college:app.globalData.college,
+			selectedYear:app.globalData.year,
 			team: app.globalData.team[0]
 		})
 	},
+	GradeChange(e)
+	{
+		console.log(e.detail.value)
+		this.setData({
+			Gindex:e.detail.value,
+		})
+
+	},
+	
+	YearChange: function(e) {
+    const value = e.detail.value;
+    const year = value.substring(0, 4);
+    this.setData({
+			value:value,
+      selectedYear: year
+		});
+		console.log(this.data.selectedYear)
+  },
 	tohome() {
 		wx.navigateTo({
 			url: '/pages/newTeam/newTeam',
@@ -67,9 +89,9 @@ Page({
 			grade: e.detail.value // 更新昵称数据
 		});
 	},
-	handleClassInput: function (e) {
+	handleCollegeInput: function (e) {
 		this.setData({
-			class: e.detail.value // 更新昵称数据
+			college: e.detail.value // 更新昵称数据
 		});
 	},
 	handlePhoneInput: function (e) {
@@ -113,7 +135,8 @@ Page({
 	 * 生命周期函数--监听页面卸载
 	 */
 	onUnload() {
-		
+		console.log('ghijk')
+		var that =this
 		wx.showLoading({
 			title: '(数据上传中...)',
 			mask: true
@@ -124,13 +147,22 @@ Page({
 			data: {
 				userName: this.data.name,
 				school: this.data.school,
-				grade: this.data.grade,
-				class: this.data.class,
+				grade: this.data.grade[this.data.Gindex],
+				college: this.data.college,
 				phone: this.data.phone,
 				aliPay: this.data.aliPay,
+				year:this.data.selectedYear
 			},
 			success: function (res) {
 				wx.hideLoading();
+				app.globalData.name=that.data.name,
+				app.globalData.school=that.data.school,
+				app.globalData.grade=that.data.grade[that.data.Gindex],
+				app.globalData.college=that.data.college,
+        app.globalData.year=that.data.selectedYear,
+				app.globalData.phone=that.data.phone,
+				app.globalData.aliPay=that.data.aliPay
+				
 				// 在此处执行其他操作
 			},
 			fail: function (error) {

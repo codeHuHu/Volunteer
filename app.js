@@ -34,14 +34,16 @@ App({
 
 								if (res.result.data.length) {
 									console.log('用户注册信息获取到了,正在配置globalData')
-									that.globalData.name = res.result.data[0].username;
+									that.globalData.name = res.result.data[0].userName;
 									that.globalData.phone = res.result.data[0].phone;
 									that.globalData.position = res.result.data[0].position;
 									that.globalData.Id = res.result.data[0].idnumber;
 									that.globalData.aliPay = res.result.data[0].aliPay;
 									that.globalData.school = res.result.data[0].school;
 									that.globalData.grade = res.result.data[0].grade;
-									that.globalData.class = res.result.data[0].class;
+									that.globalData.college = res.result.data[0].college;
+									that.globalData.year = res.result.data[0].year;
+		
 									that.globalData.islogin = res.result.data[0].islogin;
 									try {
 										wx.setStorageSync('user_status', [that.globalData.openid, that.globalData.islogin]);
@@ -81,7 +83,9 @@ App({
 							that.globalData.aliPay = res.result.data[0].aliPay;
 							that.globalData.school = res.result.data[0].school;
 							that.globalData.grade = res.result.data[0].grade;
-							that.globalData.class = res.result.data[0].class;
+							that.globalData.college = res.result.data[0].college;
+							that.globalData.year = res.result.data[0].year;
+
 							that.globalData.isLogin = res.result.data[0].isLogin;
 							try {
 								wx.setStorageSync('user_status', [that.globalData.openid, that.globalData.isLogin]);
@@ -134,7 +138,8 @@ App({
 		aliPay:'',
 		school:'',
 		grade:'',
-		class:'',
-		pos: 0,	//pos为0表示普通志愿者，1表示队长，2表示管理员
+		year:'',
+		college:'',
+		position: 0,	//pos为0表示普通志愿者，1表示队长，2表示管理员
 	}
 });

@@ -16,7 +16,7 @@
     "pages/newActivity/newActivity",
 		"pages/newTeam/newTeam",
 		
-		"pages/commentActivity/commentActivity",
+		"pages/CommentActivity/CommentActivity",
     "pages/checkActivity/checkActivity",
     "pages/recycleBin/recycleBin"
 	],

@@ -59,8 +59,8 @@ page{
 	display: grid;
 	align-items: center;
 	justify-content: center;
-	width: 100rpx;
-	height: 100rpx;
+	width: 120rpx;
+	height: 120rpx;
 	border-radius: 50%;
 	background-color: rgb(101, 146, 231);
 	margin-bottom: 10rpx;
@@ -103,7 +103,7 @@ page{
 	display: inline;
 	max-width: 100rpx;
 	max-height: 100rpx;
-	font-size: 30px;
+	font-size: 35px;
 	color: white;
 }
 

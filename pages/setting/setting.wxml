@@ -13,54 +13,73 @@
 	<view class="modal-mask" wx:if="{{showModal == 'nameModal' }}" bindtap="closeModal" >
   <view class="modal"  catchtap>
 		<view class="modal-title">修改名字</view>
-    <view><input class="input-field" bindinput="handleNameInput" placeholder="请输入新的昵称" value="{{}}" /></view>
+    <view><input class="input-field" focus="true"  bindinput="handleNameInput" placeholder="请输入新的昵称" value="{{}}" /></view>
     <button bindtap="handleSave" class="button">保存</button>
   </view>
 </view>
 
-	<view class="cu-item arrow ">
+	<view class="cu-item">
+		<view class="content cu-form-group flex" >
+		<view>
+		<text class="iconfont icon-duiwu margin-right-xs"></text>
+			<text class="text-grey margin-right">年级</text></view>
+			<view class="flex-treble">
+			<picker bindchange="GradeChange" value="{{Gindex}}" range="{{grade}}">
+				<view class="picker ">
+					{{Gindex?grade[Gindex]:mygrade}}
+				</view>
+			</picker>
+		</view>
+		</view>
+	</view>
+	<!-- <view class="modal-mask" wx:if="{{ showModal == 'gradeModal' }}" bindtap="closeModal" >
+  <view class="modal"  catchtap>
+		<view class="modal-title">修改年级</view>
+    <view><input class="input-field" focus="true" bindinput="handleGradeInput" placeholder="请输入年级" value="{{}}" /></view>
+    <button bindtap="handleSave" class="button">保存</button>
+  </view>
+</view> -->
+<view class="cu-item">
+		<view class="content cu-form-group flex" >
+		<view>
+		<text class="iconfont icon-duiwu margin-right-xs"></text>
+			<text class="text-grey margin-right">学年</text></view>
+			<view class="flex-treble">
+				<picker mode="date" start="1900-01-01" end="2099-01-01" fields="year"  bindchange="YearChange" value="{{selectedYear}}" >
+				<view class="picker">
+					{{selectedYear}}
+				</view>
+		</picker>
+		</view>
+		</view>
+	</view>
+<view class="cu-item arrow ">
 		<view class="content cu-form-group " bindtap="openModal" data-target="schoolModal">
 		<view>
 			<text class="iconfont icon-xuexiaomingcheng margin-right-xs"></text>
-			<text class="text-grey margin-right">学校</text></view>
+			<text class="text-grey margin-right">学校/单位</text></view>
 			<view><text>{{school?school:'未填写'}}</text></view>
 		</view>
 	</view>
 	<view class="modal-mask" wx:if="{{showModal == 'schoolModal' }}" bindtap="closeModal" >
   <view class="modal"  catchtap>
 		<view class="modal-title">修改学校</view>
-    <view><input class="input-field" bindinput="handleSchoolInput" placeholder="请输入学校名称" value="{{}}" /></view>
+    <view><input class="input-field" focus="true"  bindinput="handleSchoolInput" placeholder="请输入" value="{{}}" /></view>
     <button bindtap="handleSave" class="button">保存</button>
   </view>
 </view>
 	<view class="cu-item arrow ">
-		<view class="content cu-form-group " bindtap="openModal" data-target="gradeModal">
-		<view>
-		<text class="iconfont icon-duiwu margin-right-xs"></text>
-			<text class="text-grey margin-right">年级</text></view>
-			<view><text>{{grade?grade:'未填写'}}</text></view>
-		</view>
-	</view>
-	<view class="modal-mask" wx:if="{{ showModal == 'gradeModal' }}" bindtap="closeModal" >
-  <view class="modal"  catchtap>
-		<view class="modal-title">修改年级</view>
-    <view><input class="input-field" bindinput="handleGradeInput" placeholder="请输入年级" value="{{}}" /></view>
-    <button bindtap="handleSave" class="button">保存</button>
-  </view>
-</view>
-
-	<view class="cu-item arrow ">
-		<view class="content cu-form-group " bindtap="openModal" data-target="classModal">
+		<view class="content cu-form-group " bindtap="openModal" data-target="collegeModal">
 		<view >
 		<text class="cuIcon-friend margin-right-xs"></text>
-			<text class="text-grey margin-right">班级</text></view>
-			<view><text>{{class?class:'未填写'}}</text></view>
+			<text class="text-grey margin-right">学院</text></view>
+			<view><text>{{college?college:'未填写'}}</text></view>
 		</view>
 	</view>
-	<view class="modal-mask" wx:if="{{ showModal == 'classModal' }}" bindtap="closeModal" >
+	<view class="modal-mask" wx:if="{{ showModal == 'collegeModal' }}" bindtap="closeModal" >
   <view class="modal"  catchtap>
-		<view class="modal-title">修改班级</view>
-    <view><input class="input-field" bindinput="handleClassInput" placeholder="请输入班级" value="{{}}" /></view>
+		<view class="modal-title">修改学院</view>
+    <view><input class="input-field" focus="true"         bindinput="handleCollegeInput" placeholder="请输入学院" value="{{}}" /></view>
     <button bindtap="handleSave" class="button">保存</button>
   </view>
 </view>
@@ -76,7 +95,7 @@
 	<view class="modal-mask" wx:if="{{ showModal == 'phoneModal' }}" bindtap="closeModal" >
   <view class="modal"  catchtap>
 		<view class="modal-title">修改电话</view>
-    <view><input class="input-field" bindinput="handlePhoneInput" placeholder="请输入电话" value="{{}}" /></view>
+    <view><input class="input-field" focus="true"  bindinput="handlePhoneInput" placeholder="请输入电话" value="{{}}" /></view>
     <button bindtap="handleSave" class="button">保存</button>
   </view>
 </view>
@@ -97,14 +116,14 @@
   </view>
 </view>
 
-	<view class="cu-item  ">
+	<!-- <view class="cu-item  ">
 		<navigator class="content cu-form-group " url="/pages/about/log/log" hover-class="none">
 			<view >
 		<text class="cuIcon-friendaddfill margin-right-xs"></text>
 			<text class="text-grey margin-right">队伍</text></view>
 			<view><text>{{team}}</text></view>
 		</navigator>
-	</view>
+	</view> -->
 	
 </view>
 
@@ -115,12 +134,12 @@
 		</navigator>
 		
 	</view>	
-	<view class="cu-item arrow ">
+	<!-- <view class="cu-item arrow ">
 		<navigator class="content cu-form-group " url="/pages/about/log/log" hover-class="none">
 			<text class="text-grey margin-right">关于我们</text>
 		</navigator>
 
-	</view>	
+	</view>	 -->
 	<view class="cu-item arrow ">
 		<navigator class="content cu-form-group " url="/pages/about/log/log" hover-class="none">
 			<text class="text-grey margin-right">联系我们</text>
