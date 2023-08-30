@@ -50,10 +50,11 @@
 		<view class="cu-form-group">
 			<view class="title inteam">服务时间：</view>
 			<view class="new_date">
-				<picker class="time_pickers text-xs" mode="date" value="{{beginDate}}" start="{{currentDate}}" end="" bindchange="bindStartChange">{{beginDate}}
+				<picker class="time_pickers text-sm" mode="date" value="{{beginDate}}" start="{{currentDate}}" end="" bindchange="bindStartChange">{{beginDate}}
 				</picker>
-				<view class="service_time" style="display: flex;">
-					<picker class="time_pickers text-xs" mode="time" value="{{startTime}}" start="00:00" end="24:00" bindchange="bindSTimeChange">{{startTime}}
+
+				<view class="service_time flex" >
+					<picker class="time_pickers text-xs " mode="time" value="{{startTime}}" start="00:00" end="24:00" bindchange="bindSTimeChange">{{startTime}}
 					</picker>
 					<picker class="time_pickers text-xs" mode="time" value="{{endTime}}" start="00:00" end="24:00" bindchange="bindETimeChange">{{endTime}}
 					</picker>
@@ -64,9 +65,9 @@
 		<view class="cu-form-group">
 			<view class="title inteam">截止{{isPintuan==1?'拼团':'报名'}}时间:</view>
 			<view class="new_date">
-				<picker class="time_pickers text-xs" mode="date" value="{{beginDate}}" start="{{currentDate}}" end="{{beginDate}}" bindchange="binddeadChange">{{deadDate}}
+				<picker class="time_pickers text-sm" mode="date" value="{{beginDate}}" start="{{currentDate}}" end="{{beginDate}}" bindchange="binddeadChange">{{deadDate}}
 				</picker>
-				<picker class="time_pickers text-xs" mode="time" value="{{deadTime}}" start="00:00" end="24:00" bindchange="binddeadTimeChange">{{deadTime}}
+				<picker class="time_pickers text-sm" mode="time" value="{{deadTime}}" start="00:00" end="24:00" bindchange="binddeadTimeChange">{{deadTime}}
 				</picker>
 			</view>
 		</view>
@@ -85,18 +86,37 @@
 
 		<view class="cu-bar bg-white margin-top-sm">
 			<view class="action">
-				请上传群二维码
+				群二维码
 			</view>
 		</view>
 		<view class="cu-form-group">
 			<view class="grid col-4 grid-square flex-sub">
-				<view class="bg-img" wx:for="{{temp_imgList}}" wx:key="item" bindtap="ViewImage" data-url="{{temp_imgList[index]}}">
+				<view class="bg-img" wx:for="{{temp_imgList}}" wx:key="item" catchtap="ViewImage" data-which="1" data-url="{{temp_imgList[index]}}">
 					<image src='{{temp_imgList[index]}}' mode='aspectFill'></image>
-					<view class="cu-tag bg-red" catchtap="DelImg" data-index="{{index}}">
+					<view class="cu-tag bg-red" catchtap="DelImg" data-index="{{index}}" data-which="1">
 						<text class="cuIcon-close"></text>
 					</view>
 				</view>
-				<view class="solids" bindtap="ChooseImage" wx:if="{{temp_imgList.length<1}}">
+				<view class="solids" catchtap="ChooseImage" wx:if="{{temp_imgList.length<1}}">
+					<text class="cuIcon-cameraadd"></text>
+				</view>
+			</view>
+		</view>
+
+		<view class="cu-bar bg-white margin-top-sm">
+			<view class="action">
+				i志愿报名码(无则不填)
+			</view>
+		</view>
+		<view class="cu-form-group">
+			<view class="grid col-4 grid-square flex-sub">
+				<view class="bg-img" wx:for="{{temp_imgList2}}" wx:key="item" bindtap="ViewImage" data-url="{{temp_imgList2[index]}}">
+					<image src='{{temp_imgList2[index]}}' mode='aspectFill'></image>
+					<view class="cu-tag bg-red" catchtap="DelImg2" data-index="{{index}}">
+						<text class="cuIcon-close"></text>
+					</view>
+				</view>
+				<view class="solids" catchtap="ChooseImage2" wx:if="{{temp_imgList2.length<1}}">
 					<text class="cuIcon-cameraadd"></text>
 				</view>
 			</view>

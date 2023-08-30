@@ -1,6 +1,6 @@
 <view class="cu-list menu card-menu shadow-lg radius">
 	<view class="cu-form-group flex">
-		<view class="flex-sub title justify-center flex">年级</view>
+		<view class="flex-sub title justify-center flex">学历</view>
 		<view class="flex-treble">
 			<picker bindchange="GradeChange" value="{{Gindex}}" range="{{grade}}">
 				<view class="picker ">

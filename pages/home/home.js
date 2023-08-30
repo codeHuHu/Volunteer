@@ -1,6 +1,7 @@
 // pages/home/home.js
 const app = getApp()
 const db = wx.cloud.database()
+let loading = false
 Page({
 
 	data: {
@@ -12,6 +13,7 @@ Page({
 		wx.setNavigationBarTitle({
 			title: '首页',
 		})
+
 		//查找活动
 		this.getData()
 	},
@@ -44,14 +46,13 @@ Page({
 	 */
 	onShow: function () {
 		wx.hideHomeButton()
-	
+
 	},
 
 	/**
 	 * 生命周期函数--监听页面隐藏
 	 */
-	onHide() {
-	},
+	onHide() {},
 
 	/**
 	 * 生命周期函数--监听页面卸载
@@ -73,7 +74,7 @@ Page({
 				title: '你已注册成为志愿者',
 				icon: 'none'
 			})
-		} else if (this.byBase()) { }
+		} else if (this.byBase()) {}
 	},
 	byhistory() {
 		var value = wx.getStorageSync('user_status')
@@ -98,8 +99,8 @@ Page({
 			.get({
 				success(res) {
 					if (res.data.length) {
-						app.globalData.islogin = true
-						wx.setStorageSync('user_status', [res.data[0]._openid, app.globalData.islogin])
+						app.globalData.isLogin = true
+						wx.setStorageSync('user_status', [res.data[0]._openid, app.globalData.isLogin])
 						wx.showToast({
 							title: '你已注册成为志愿者',
 							icon: 'none'
@@ -143,6 +144,10 @@ Page({
 		})
 	},
 	toNewActivity() {
+		if (!app.globalData.isLogin) {
+			this.setShow("error", "未注册");
+			return 0
+		}
 		if (this.byhistory()) {
 			wx.navigateTo({
 				url: '/pages/newActivity/newActivity',
@@ -165,12 +170,11 @@ Page({
 
 		}
 	},
- toZhiYuan()
- {
-wx.navigateTo({
-	url: '/pages/volunteerService/volunteerService',
-})
- },
+	toZhiYuan() {
+		wx.navigateTo({
+			url: '/pages/volunteerService/volunteerService',
+		})
+	},
 	toDetail(e) {
 		wx.navigateTo({
 			url: '/pages/activityDetail/activityDetail?id=' + e.currentTarget.dataset.id,
@@ -190,13 +194,13 @@ wx.navigateTo({
 				mask: true
 			})
 			wx.cloud.callFunction({
-				name: 'searchTeam',
-				data: {
-					collection: 'ActivityInfo',
-					keyword: this.data.keyword,
-					name: 'actName'
-				}
-			})
+					name: 'searchTeam',
+					data: {
+						collection: 'ActivityInfo',
+						keyword: this.data.keyword,
+						name: 'actName'
+					}
+				})
 				.then(res => {
 					that.setData({
 						actions: res.result
@@ -208,5 +212,31 @@ wx.navigateTo({
 			this.getData();
 		}
 
-	}
+	},
+	setShow(status, message, time = 500, fun = false) {
+		if (loading) {
+			return
+		}
+		loading = true;
+		try {
+			this.setData({
+				status,
+				message,
+				time,
+				show: true,
+			})
+			setTimeout(() => {
+				this.setData({
+					show: false,
+				})
+				loading = false;
+				// 触发回调函数
+				if (fun) {
+					this.end()
+				}
+			}, time)
+		} catch {
+			loading = false;
+		}
+	},
 })

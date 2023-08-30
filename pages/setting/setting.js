@@ -22,7 +22,7 @@ Page({
 	 */
 	onLoad(options) {
 		console.log('abcde')
-		console.log(app.globalData.name)
+		console.log(app.globalData)
 		console.log(app.globalData.year)
 		console.log(app.globalData.grade)
 

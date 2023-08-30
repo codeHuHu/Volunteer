@@ -22,7 +22,7 @@
 		<view class="content cu-form-group flex" >
 		<view>
 		<text class="iconfont icon-duiwu margin-right-xs"></text>
-			<text class="text-grey margin-right">年级</text></view>
+			<text class="text-grey margin-right">学历</text></view>
 			<view class="flex-treble">
 			<picker bindchange="GradeChange" value="{{mygrade}}" range="{{grade}}">
 				<view class="picker">

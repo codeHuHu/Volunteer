@@ -12,9 +12,9 @@ Page({
 		beginDate: '',
 		deadDate: '',
 		endDate: '',
-		startTime: '00:00',
-		endTime: '00:00',
-		deadTime: '00:00',
+		startTime: '',
+		endTime: '',
+		deadTime: '',
 		tagList: ['党建引领', '乡村振兴', '新时代文明实践（文化/文艺/体育）', '科普科教', '社区/城中村治理', '环境保护', '弱势群体帮扶', '志愿驿站值班', '其他'],
 		picker: [''],
 		inputValue: '', // 清空输入框的值
@@ -24,7 +24,8 @@ Page({
 		outNum: 0,
 		address: '',
 		intro: '',
-		temp_imgList: [],
+		temp_imgList: [],//群二维码
+		temp_imgList2: [],//i志愿报名码
 		//三个时间戳
 		startTimeStamp: 0,
 		endTimeStamp: 0,
@@ -47,8 +48,9 @@ Page({
 			hour12: false,
 			hour: '2-digit',
 			minute: '2-digit'
-		}).slice(0, 8);
+		}).slice(0, 5);
 		var teamPicker = ['不勾选队伍'].concat(app.globalData.team)
+		console.log(currentDate,currentTime)
 		this.setData({
 			currentDate: currentDate,
 			beginDate: currentDate,
@@ -116,7 +118,7 @@ Page({
 			});
 			setTimeout(() => {
 				wx.hideToast()
-			}, 2000); // 延迟 2000 毫秒后执行
+			}, 1000); // 延迟 2000 毫秒后执行
 
 			return; // 结束函数执行，以免继续执行下方的 setData
 		}
@@ -269,58 +271,58 @@ Page({
 
 		//创建异步上传任务数组
 		let uploadTask = []
+		//群二维码
 		for (let i in this.data.temp_imgList) {
 			uploadTask.push(this.uploadFile(this.data.temp_imgList[i]))
 		}
+		//i志愿报名码
+		for (let i in this.data.temp_imgList2) {
+			uploadTask.push(this.uploadFile(this.data.temp_imgList2[i]))
+		}
 		Promise.all(uploadTask)
 			.then(result => {
-				//等待完所有异步上传任务完成后
-				this.setData({
-					cloud_imgList: result
-				}),
-					//用逗号,表示setData完了之后再上传数据库
-					//若不用,则异步执行,则还没setData就执行上传数据库,导致cloud_imgList无值
-					db.collection('ActivityInfo').add({
-						data: {
-							//string
-							actName: this.data.actName,
-							holder: this.data.holder,
-							phone: this.data.phone,
-							intro: this.data.intro,
-							status: this.data.myPos == 1 ? '0' : '1',// 如果pos为1，活动状态为0：待审核，否则为1：进行中
-							address: this.data.address,
-							//number
-							outJoin: 0,
-							outNum: this.data.outNum,
+				db.collection('ActivityInfo').add({
+					data: {
+						//string
+						actName: this.data.actName,
+						holder: this.data.holder,
+						phone: this.data.phone,
+						intro: this.data.intro,
+						status: this.data.myPos == 1 ? '0' : '1',// 如果pos为1，活动状态为0：待审核，否则为1：进行中
+						address: this.data.address,
+						//number
+						outJoin: 0,
+						outNum: this.data.outNum,
 
-							serviceStartStamp: this.data.startTimeStamp,
-							serviceEndStamp: this.data.endTimeStamp,
-							deadTimeStamp: this.data.deadTimeStamp,
+						serviceStartStamp: this.data.startTimeStamp,
+						serviceEndStamp: this.data.endTimeStamp,
+						deadTimeStamp: this.data.deadTimeStamp,
 
-							isPintuan: Number(this.data.isPintuan),
-							//teamName: this.data.index == 0 ? "" : this.data.picker[this.data.index],
-							tag: this.data.tagList[this.data.tagIndex],
+						isPintuan: Number(this.data.isPintuan),
+						//teamName: this.data.index == 0 ? "" : this.data.picker[this.data.index],
+						tag: this.data.tagList[this.data.tagIndex],
 
-							qr_code: this.data.cloud_imgList
-						},
-						success(res) {
-							if (that.data.myPos == 1) {
-								wx.showToast({
-									icon: 'loading',
-									title: '请尽快联系管理员审核并发布',
-								})
-							}
-							else {
-								this.setShow("success", "发布成功");
-							}
-
+						qr_code: result
+					},
+					success(res) {
+						if (that.data.myPos == 1) {
+							wx.showToast({
+								icon: 'loading',
+								title: '请尽快联系管理员审核并发布',
+							})
 						}
-					});
+						else {
+							this.setShow("success", "发布成功");
+						}
+
+					}
+
+				});
 			})
 		setTimeout(() => {
 			wx.navigateBack(),
 				wx.hideToast()
-		}, 1000); // 延迟 2000 毫秒后执行
+		}, 2000); // 延迟 2000 毫秒后执行
 
 	},
 	isPintuan(e) {
@@ -356,9 +358,38 @@ Page({
 			}
 		});
 	},
+	ChooseImage2() {
+		wx.chooseMedia({
+			count: 4, //默认9
+			mediaType: ['image'],
+			sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
+			sourceType: ['album', 'camera'], //从相册选择
+			success: (res) => {
+				console.log(res)
+				if (this.data.temp_imgList2.length != 0) {
+					var t = []
+					for (var i in res.tempFiles) {
+						t.push(res.tempFiles[i].tempFilePath)
+					}
+					this.setData({
+						temp_imgList2: this.data.temp_imgList2.concat(t)
+					})
+				} else {
+					var t = []
+					for (var i in res.tempFiles) {
+						t.push(res.tempFiles[i].tempFilePath)
+					}
+					this.setData({
+						temp_imgList2: t
+					})
+				}
+			}
+		});
+	},
 	ViewImage(e) {
+		let a = e.currentTarget.dataset.which=="1"?this.data.temp_imgList:this.data.temp_imgList2
 		wx.previewImage({
-			urls: this.data.temp_imgList,
+			urls: a,
 			current: e.currentTarget.dataset.url
 		});
 	},
@@ -373,6 +404,22 @@ Page({
 					this.data.temp_imgList.splice(e.currentTarget.dataset.index, 1);
 					this.setData({
 						temp_imgList: this.data.temp_imgList
+					})
+				}
+			}
+		})
+	},
+	DelImg2(e) {
+		wx.showModal({
+			title: '提示',
+			content: '确定要删除图片吗？',
+			cancelText: '取消',
+			confirmText: '确定',
+			success: res => {
+				if (res.confirm) {
+					this.data.temp_imgList2.splice(e.currentTarget.dataset.index, 1);
+					this.setData({
+						temp_imgList2: this.data.temp_imgList2
 					})
 				}
 			}

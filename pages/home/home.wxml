@@ -61,7 +61,7 @@
 
 <!-- <view class="new-join " style="justify-content: center;"> -->
 	<!-- <text class="newest text-xl" >参与拼团</text> -->
-	<view class="padding flex flex-column radius-lg" bind:tap="toZhiYuan">
+	<view class="padding flex flex-column radius-lg" bindtap="toZhiYuan">
 	<button class="newest text-xl cu-btn bg-red lg" style="margin-top:10rpx;margin-bottom:-40rpx;">参与拼团活动</button>
 	</view>
 	<!-- <button class="joinvolunteer" bindtap="toregister">成为志愿者</button> -->
@@ -88,3 +88,9 @@
 		</view>
 	</view>
 </block>
+<!-- 轻提示 -->
+<view class="toast-fixed-center" hidden="{{!show}}" style="z-index: 99;">
+	<view class="radius-lg padding animation-slide-top text-lg {{status == 'success' ? 'bg-green light':'bg-red light'}}">
+		<text class="cuIcon-info"></text> {{message}}
+	</view>
+</view>

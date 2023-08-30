@@ -19,9 +19,10 @@ Page({
 		console.log('app.globalData', app.globalData)
 		this.setData({
 			openid: app.globalData.openid,
-			myPos: app.globalData.position
+			myPos: app.globalData.position,
+			//isLogin: app.globalData.isLogin
 		})
-		isLogin: app.globalData.isLogin
+
 
 		// var value = wx.getStorageSync('user_status');
 		// if (value) {
@@ -39,8 +40,8 @@ Page({
 	getDetail() {
 		var that = this
 		wx.cloud.database().collection('UserInfo').where({
-			_openid: app.globalData.openid
-		})
+				_openid: app.globalData.openid
+			})
 			.get({
 				success(res) {
 					that.setData({
@@ -80,8 +81,7 @@ Page({
 	/**
 	 * 生命周期函数--监听页面隐藏
 	 */
-	onHide() {
-	},
+	onHide() {},
 
 	/**
 	 * 生命周期函数--监听页面卸载
@@ -175,31 +175,6 @@ Page({
 		wx.navigateTo({
 			url: '/pages/checkActivity/checkActivity',
 		})
-	}
-	, setShow(status, message, time = 500, fun = false) {
-		if (loading) {
-			return
-		}
-		loading = true;
-		try {
-			this.setData({
-				status,
-				message,
-				time,
-				show: true,
-			})
-			setTimeout(() => {
-				this.setData({
-					show: false,
-				})
-				loading = false;
-				// 触发回调函数
-				if (fun) {
-					this.end()
-				}
-			}, time)
-		} catch {
-			loading = false;
-		}
 	},
+	
 })
