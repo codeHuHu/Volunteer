@@ -24,9 +24,9 @@
 		<text class="iconfont icon-duiwu margin-right-xs"></text>
 			<text class="text-grey margin-right">年级</text></view>
 			<view class="flex-treble">
-			<picker bindchange="GradeChange" value="{{Gindex}}" range="{{grade}}">
-				<view class="picker ">
-					{{Gindex?grade[Gindex]:mygrade}}
+			<picker bindchange="GradeChange" value="{{mygrade}}" range="{{grade}}">
+				<view class="picker">
+					{{mygrade}}
 				</view>
 			</picker>
 		</view>
@@ -127,20 +127,24 @@
 	
 </view>
 
-<view class="cu-list menu card-menu margin-top-xl margin-bottom-xl shadow-lg radius">
-	<view class="cu-item arrow "bindtap="" >
+<view class="cu-list menu card-menu margin-top-xl margin-bottom-xl shadow-lg radius" >
+	<view class="cu-item arrow "bindtap="showTextBox" >
 		<navigator class="content cu-form-group " url="../home/home" >
 			<text class="text-grey margin-right">我有建议</text>
 		</navigator>
-		
 	</view>	
+	<view class="floating-textbox" wx:if="{{isTextBoxVisible}}">
+    <textarea class="textbox-content" type="text" placeholder="请输入建议/意见"></textarea>
+		<button class="close-button" bindtap="hideTextBox">×</button>
+		<button class="flex cu-btn bg-grey lg" style="bottom:80rpx" bindtap="hideTextBox">提交</button>
+  </view>
 	<!-- <view class="cu-item arrow ">
 		<navigator class="content cu-form-group " url="/pages/about/log/log" hover-class="none">
 			<text class="text-grey margin-right">关于我们</text>
 		</navigator>
 
 	</view>	 -->
-	<view class="cu-item arrow ">
+	<view class="cu-item arrow " bind:tap="showQRcode">
 		<navigator class="content cu-form-group " url="/pages/about/log/log" hover-class="none">
 			<text class="text-grey margin-right">联系我们</text>
 		</navigator>

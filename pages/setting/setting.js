@@ -7,12 +7,14 @@ Page({
 	 * 页面的初始数据
 	 */
 	data: {
+		isTextBoxVisible: false,
 		showModal: null,
 		grade:['小学','中学','本科','研究生','博士','已毕业'],
 		loading: false,
 		selectedYear:'请选择年份',
 		isCollege:'',
-    college:''
+		college:'',
+		mygrade:''
 	},
 
 	/**
@@ -20,6 +22,10 @@ Page({
 	 */
 	onLoad(options) {
 		console.log('abcde')
+		console.log(app.globalData.name)
+		console.log(app.globalData.year)
+		console.log(app.globalData.grade)
+
 		this.setData({
 			openid: app.globalData.openid,
 			name: app.globalData.name,
@@ -37,6 +43,7 @@ Page({
 		console.log(e.detail.value)
 		this.setData({
 			Gindex:e.detail.value,
+			mygrade:this.data.grade[e.detail.value]
 		})
 
 	},
@@ -84,11 +91,6 @@ Page({
 			school: e.detail.value // 更新昵称数据
 		});
 	},
-	handleGradeInput: function (e) {
-		this.setData({
-			grade: e.detail.value // 更新昵称数据
-		});
-	},
 	handleCollegeInput: function (e) {
 		this.setData({
 			college: e.detail.value // 更新昵称数据
@@ -113,6 +115,17 @@ Page({
 		this.closeModal(); // 保存后关闭模态框
 		// wx.navigateBack(); // 返回上一页
 	},
+	showTextBox:function()
+	{
+		this.setData({
+      isTextBoxVisible: !this.data.isTextBoxVisible, // 显示文本框
+    });
+	},
+	hideTextBox: function() {
+    this.setData({
+      isTextBoxVisible: !this.data.isTextBoxVisible, // 隐藏文本框
+    });
+  },
 	onReady() {
 
 	},
@@ -147,7 +160,7 @@ Page({
 			data: {
 				userName: this.data.name,
 				school: this.data.school,
-				grade: this.data.grade[this.data.Gindex],
+				grade: this.data.mygrade,
 				college: this.data.college,
 				phone: this.data.phone,
 				aliPay: this.data.aliPay,
@@ -157,7 +170,7 @@ Page({
 				wx.hideLoading();
 				app.globalData.name=that.data.name,
 				app.globalData.school=that.data.school,
-				app.globalData.grade=that.data.grade[that.data.Gindex],
+				app.globalData.grade=that.data.mygrade,
 				app.globalData.college=that.data.college,
         app.globalData.year=that.data.selectedYear,
 				app.globalData.phone=that.data.phone,
@@ -170,7 +183,13 @@ Page({
 			}
 		})
 	},
-
+	showQRcode:function()
+	{
+		wx.previewImage({
+			urls: ['/images/1-up1.png'],
+			current:'/images/1-up1.png',
+		})
+	},
 	/**
 	 * 页面相关事件处理函数--监听用户下拉动作
 	 */

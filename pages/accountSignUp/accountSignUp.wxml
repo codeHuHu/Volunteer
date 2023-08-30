@@ -87,7 +87,7 @@
 			<input placeholder="请输入学校名称" bindinput="getSchool" model:value="{{school}}"></input>
 		</view>
 	</view>
-</block>
+</block>	
 
 	<view wx:if="{{Gindex !=5 && school}}" class="cu-form-group flex ">
 		<view class="flex-sub title justify-center flex">学院</view>

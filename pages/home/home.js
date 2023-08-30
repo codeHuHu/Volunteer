@@ -165,7 +165,12 @@ Page({
 
 		}
 	},
-
+ toZhiYuan()
+ {
+wx.navigateTo({
+	url: '/pages/volunteerService/volunteerService',
+})
+ },
 	toDetail(e) {
 		wx.navigateTo({
 			url: '/pages/activityDetail/activityDetail?id=' + e.currentTarget.dataset.id,

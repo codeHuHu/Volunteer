@@ -71,7 +71,7 @@ App({
 						openid: tmp
 					},
 					success(res) {
-
+						
 						console.log('openid不为空,获取当前用户的信息', res)
 
 						if (res.result.data.length) {
