@@ -2,10 +2,10 @@
 <view class="cu-list menu card-menu new_activity">
 	<form class="new_activity">
 		<view class="cu-form-group">
-			<view class="inline_name">是否发起拼团：</view>
+			<view class="inline_name">请选择类型：</view>
 			<radio-group bindchange="isPintuan">
-				<radio value="1" />是
-				<radio value="0" class="margin-left" />否
+				<radio value="1" />拼团
+				<radio value="0" class="margin-left" />报名
 			</radio-group>
 		</view>
 		<view class=" cu-form-group" style="display:grid">
@@ -53,7 +53,7 @@
 				<picker class="time_pickers text-sm" mode="date" value="{{beginDate}}" start="{{currentDate}}" end="" bindchange="bindStartChange">{{beginDate}}
 				</picker>
 
-				<view class="service_time flex" >
+				<view class="service_time flex">
 					<picker class="time_pickers text-xs " mode="time" value="{{startTime}}" start="00:00" end="24:00" bindchange="bindSTimeChange">{{startTime}}
 					</picker>
 					<picker class="time_pickers text-xs" mode="time" value="{{endTime}}" start="00:00" end="24:00" bindchange="bindETimeChange">{{endTime}}
@@ -102,33 +102,58 @@
 				</view>
 			</view>
 		</view>
-
-		<view class="cu-bar bg-white margin-top-sm">
-			<view class="action">
-				i志愿报名码(无则不填)
+		<view wx:if="{{isPintuan != 1}}">
+			<view class="cu-bar bg-white margin-top-sm">
+				<view class="action">
+					i志愿报名码
+				</view>
 			</view>
-		</view>
-		<view class="cu-form-group">
-			<view class="grid col-4 grid-square flex-sub">
-				<view class="bg-img" wx:for="{{temp_imgList2}}" wx:key="item" bindtap="ViewImage" data-url="{{temp_imgList2[index]}}">
-					<image src='{{temp_imgList2[index]}}' mode='aspectFill'></image>
-					<view class="cu-tag bg-red" catchtap="DelImg2" data-index="{{index}}">
-						<text class="cuIcon-close"></text>
+			<view class="cu-form-group">
+				<view class="grid col-4 grid-square flex-sub">
+					<view class="bg-img" wx:for="{{temp_imgList2}}" wx:key="item" bindtap="ViewImage" data-url="{{temp_imgList2[index]}}">
+						<image src='{{temp_imgList2[index]}}' mode='aspectFill'></image>
+						<view class="cu-tag bg-red" catchtap="DelImg2" data-index="{{index}}">
+							<text class="cuIcon-close"></text>
+						</view>
+					</view>
+					<view class="solids" catchtap="ChooseImage2" wx:if="{{temp_imgList2.length<1}}">
+						<text class="cuIcon-cameraadd"></text>
 					</view>
 				</view>
-				<view class="solids" catchtap="ChooseImage2" wx:if="{{temp_imgList2.length<1}}">
-					<text class="cuIcon-cameraadd"></text>
-				</view>
 			</view>
 		</view>
 
 
-		<button class="new_button" bindtap="sendNew">发布</button>
+
+		<button class="new_button" bindtap="showModal" data-target="teamName">下一步</button>
 	</form>
 </view>
 <!-- 轻提示 -->
 <view class="toast-fixed-center" hidden="{{!show}}" style="z-index: 99;">
 	<view class="radius-lg padding animation-slide-top text-lg {{status == 'success' ? 'bg-green light':'bg-red light'}}">
 		<text class="cuIcon-info"></text> {{message}}
+	</view>
+</view>
+
+<!-- 小分队名字 -->
+<view class="cu-modal {{modalName=='teamName'?'show':''}}">
+	<view class="cu-dialog">
+		<view class="cu-bar bg-white justify-end">
+			<view class="content">给小队取个好听的名字</view>
+			<view class="action" bindtap="hideModal">
+				<text class="cuIcon-close text-red"></text>
+			</view>
+		</view>
+		<view class="padding-xl  justify-center flex">
+			<view class="">
+				<input class="input-field" focus="true" bindinput="getTeamName" placeholder="请输入队伍名字" value="{{teamName}}"/>
+			</view>
+		</view>
+		<view class="cu-bar bg-white justify-end">
+			<view class="action" bindtap="hideModal">
+				<button class="cu-btn line-green text-green">算了</button>
+				<button class="cu-btn bg-green margin-left" bindtap="sendNew">确定并发布</button>
+			</view>
+		</view>
 	</view>
 </view>

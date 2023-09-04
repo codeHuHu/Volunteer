@@ -1,36 +1,38 @@
-.margin-left{
-  margin-left: 70rpx;
+.margin-left {
+	margin-left: 70rpx;
 }
 
 /* 样式文件 */
 
 .modal-title {
-  font-size: 16px;
+	font-size: 16px;
 
-  margin-bottom: 10px;
-  text-align: center;
+	margin-bottom: 10px;
+	text-align: center;
 }
+
 .modal-mask {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: rgba(0, 0, 0, 0.5);
- 	z-index: 9999; /* 调整层级，确保模态框显示在最上层 */
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: rgba(0, 0, 0, 0.5);
+	z-index: 9999;
+	/* 调整层级，确保模态框显示在最上层 */
 }
 
 .modal {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: #fff;
-  padding: 10px;
-  border-radius: 10px;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	background-color: #fff;
+	padding: 10px;
+	border-radius: 10px;
 	text-align: center;
 	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 
@@ -38,17 +40,18 @@
 
 .input-field {
 	background-color: rgb(248, 244, 244);
-  width: 100%;
- 
-  margin-bottom: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+	width: 100%;
+
+	margin-bottom: 10px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
 }
+
 button {
 	display: flex;
-  background-color: #007AFF;
-  color: #fff;
-  padding: 8px 16px;
+	background-color: #007AFF;
+	color: #fff;
+	padding: 8px 16px;
 	border-radius: 4px;
 	font-size: 30rpx;
 	height: 50rpx;
@@ -58,48 +61,54 @@ button {
 }
 
 .container {
-  position: relative;
+	position: relative;
 }
-	textarea{
-		width: 100%;
-		height: 100%;
-	}
 
-	button
-	{
-		z-index: 999;
-	}
+textarea {
+	width: 100%;
+	height: 100%;
+}
+
+button {
+	z-index: 999;
+}
+
 .floating-textbox {
 	width: 600rpx;
 	height: 700rpx;
 	position: fixed;
-  top: 50px; /* 调整文本框距离顶部的位置 */
-  left: 40px; /* 调整文本框距离左侧的位置 */
-  background-color: white;
-  padding: 10px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+	top: 50px;
+	/* 调整文本框距离顶部的位置 */
+	left: 40px;
+	/* 调整文本框距离左侧的位置 */
+	background-color: white;
+	padding: 10px;
+	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 }
 
 .textbox-content {
-  font-family: Arial, sans-serif;
-  font-size: 14px;
-  line-height: 1.5;
-  padding: 10px;
-  text-align: justify; /* 设置对齐方式为两端对齐 */
-  color: #333; /* 设置文字颜色为深灰色 */
-  background-color: #f8f8f8; /* 设置背景色为浅灰色 */
+	font-family: Arial, sans-serif;
+	font-size: 14px;
+	line-height: 1.5;
+	padding: 10px;
+	text-align: justify;
+	/* 设置对齐方式为两端对齐 */
+	color: #333;
+	/* 设置文字颜色为深灰色 */
+	background-color: #f8f8f8;
+	/* 设置背景色为浅灰色 */
 }
 
 .close-button {
-  position: absolute;
-  top: 5px;
-  right: 0px;
-  width: 20px;
-  height: 20px;
-  font-size: 30px;
-  line-height: 1;
-  background-color: transparent;
-  border: none;
-  color: rgb(211, 102, 102);
-  cursor: pointer;
+	position: absolute;
+	top: 5px;
+	right: 0px;
+	width: 20px;
+	height: 20px;
+	font-size: 30px;
+	line-height: 1;
+	background-color: transparent;
+	border: none;
+	color: rgb(211, 102, 102);
+	cursor: pointer;
 }

@@ -61,9 +61,9 @@
 
 <!-- <view class="new-join " style="justify-content: center;"> -->
 	<!-- <text class="newest text-xl" >参与拼团</text> -->
-	<view class="padding flex flex-column radius-lg" bindtap="toZhiYuan">
+	<!-- <view class="padding flex flex-column radius-lg" bindtap="toZhiYuan">
 	<button class="newest text-xl cu-btn bg-red lg" style="margin-top:10rpx;margin-bottom:-40rpx;">参与拼团活动</button>
-	</view>
+	</view> -->
 	<!-- <button class="joinvolunteer" bindtap="toregister">成为志愿者</button> -->
 <!-- </view> -->
 

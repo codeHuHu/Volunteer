@@ -23,6 +23,10 @@
 		<text class="">负责人</text>
 		<text class="text-df ">{{actions.holder}} {{actions.phone}}</text>
 	</view>
+	<view wx:if="{{actions.teamName}}" class="padding flex  justify-between">
+		<text class="">队伍名称</text>
+		<text class="text-df ">{{actions.teamName}}</text>
+	</view>
 </view>
 
 <view>
@@ -68,13 +72,6 @@
 				<text class="avatar-text ">服务结束</text>
 			</button>
 		</view>
-		<!-- 
-	分为以下情况
-	1. 当已经截止了,如果是报名则直接表示 报名截止 ,此后禁止操作
-	2. 当已经截止了,如果是拼团则判断是否满人,来表示 拼团的成功与失败 ,当成功时再次点击按钮弹出群二维码；反之禁止操作
-	3. 当未截止时,如果是报名,则保持原状态,仍可以进行再次取消与报名操作
-	3. 当未截止时,如果是拼团,且如果满人了,则表示 拼团成功 ,再次点击按钮弹出群二维码；若未满人时保持原状态
-	-->
 		<view wx:else bindtap="showModal" data-target="{{actions.length!=0?(isEnd||(isPintuan&&isFull) ?(isPintuan?(isFull?'toGroup':'拼团失败无操作'):'报名已截止无操作'):(isJoin?'toUnJoin':(isPintuan?'toPintuan':'toJoin'))):'None'}}">
 			<button wx:if="{{isEnd||(isPintuan&&isFull)}}" class="signUp cu-avatar round xl bg-{{isFull?'purple':'grey'}} animation-{{animation}}" bindtap="toggle" data-class="scale-up" role="button" aria-disabled="false">
 				<text class="avatar-text">{{isPintuan?(isFull?'群二维码':'拼团失败'):'报名截止'}}</text>

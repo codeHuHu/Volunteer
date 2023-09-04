@@ -24,8 +24,8 @@ Page({
 		outNum: 0,
 		address: '',
 		intro: '',
-		temp_imgList: [],//群二维码
-		temp_imgList2: [],//i志愿报名码
+		temp_imgList: [], //群二维码
+		temp_imgList2: [], //i志愿报名码
 		//三个时间戳
 		startTimeStamp: 0,
 		endTimeStamp: 0,
@@ -50,7 +50,7 @@ Page({
 			minute: '2-digit'
 		}).slice(0, 5);
 		var teamPicker = ['不勾选队伍'].concat(app.globalData.team)
-		console.log(currentDate,currentTime)
+		console.log(currentDate, currentTime)
 		this.setData({
 			currentDate: currentDate,
 			beginDate: currentDate,
@@ -109,6 +109,24 @@ Page({
 	 */
 	onShareAppMessage() {
 
+	},
+	test(){
+		console.log('test')
+	},
+	showModal(e) {
+		var tmp = e.currentTarget.dataset.target
+		if (tmp == 'teamName') {
+			console.log('teamName')
+		} 
+		this.setData({
+			modalName: tmp
+		})
+	},
+	hideModal(e) {
+		var a = e.currentTarget.dataset.target
+		this.setData({
+			modalName: null
+		})
 	},
 	checkTime(start, end) {
 		if (end < start) {
@@ -262,6 +280,11 @@ Page({
 			intro: e.detail.value
 		})
 	},
+	getTeamName(e){
+		this.setData({
+			teamName: e.detail.value
+		})
+	},
 	sendNew(e) {
 		//检测是否输入完整
 		if (this.check() == 0) {
@@ -270,54 +293,62 @@ Page({
 		console.log('执行提交中')
 
 		//创建异步上传任务数组
-		let uploadTask = []
+		let uploadTask = [
+			[],
+			[]
+		]
 		//群二维码
 		for (let i in this.data.temp_imgList) {
-			uploadTask.push(this.uploadFile(this.data.temp_imgList[i]))
+			uploadTask[0].push(this.uploadFile(this.data.temp_imgList[i]))
 		}
 		//i志愿报名码
 		for (let i in this.data.temp_imgList2) {
-			uploadTask.push(this.uploadFile(this.data.temp_imgList2[i]))
+			uploadTask[1].push(this.uploadFile(this.data.temp_imgList2[i]))
 		}
-		Promise.all(uploadTask)
+		Promise.all(uploadTask[0])
 			.then(result => {
-				db.collection('ActivityInfo').add({
-					data: {
-						//string
-						actName: this.data.actName,
-						holder: this.data.holder,
-						phone: this.data.phone,
-						intro: this.data.intro,
-						status: this.data.myPos == 1 ? '0' : '1',// 如果pos为1，活动状态为0：待审核，否则为1：进行中
-						address: this.data.address,
-						//number
-						outJoin: 0,
-						outNum: this.data.outNum,
+				const qr_code = result
+				Promise.all(uploadTask[1])
+					.then(result => {
+						const iZhiYuan = result
+						db.collection('ActivityInfo').add({
+							data: {
+								//string
+								actName: this.data.actName,
+								holder: this.data.holder,
+								phone: this.data.phone,
+								intro: this.data.intro,
+								status: this.data.myPos == 1 ? '0' : '1', // 如果pos为1，活动状态为0：待审核，否则为1：进行中
+								address: this.data.address,
+								//number
+								outJoin: 0,
+								outNum: this.data.outNum,
 
-						serviceStartStamp: this.data.startTimeStamp,
-						serviceEndStamp: this.data.endTimeStamp,
-						deadTimeStamp: this.data.deadTimeStamp,
+								serviceStartStamp: this.data.startTimeStamp,
+								serviceEndStamp: this.data.endTimeStamp,
+								deadTimeStamp: this.data.deadTimeStamp,
+								
+								isPintuan: Number(this.data.isPintuan),
+								tag: this.data.tagList[this.data.tagIndex],
 
-						isPintuan: Number(this.data.isPintuan),
-						//teamName: this.data.index == 0 ? "" : this.data.picker[this.data.index],
-						tag: this.data.tagList[this.data.tagIndex],
+								teamName:this.data.teamName,
+								qr_code,
+								iZhiYuan
+							},
+							success(res) {
+								if (that.data.myPos == 1) {
+									wx.showToast({
+										icon: 'loading',
+										title: '请尽快联系管理员审核并发布',
+									})
+								} else {
+									this.setShow("success", "发布成功");
+								}
 
-						qr_code: result
-					},
-					success(res) {
-						if (that.data.myPos == 1) {
-							wx.showToast({
-								icon: 'loading',
-								title: '请尽快联系管理员审核并发布',
-							})
-						}
-						else {
-							this.setShow("success", "发布成功");
-						}
+							}
 
-					}
-
-				});
+						});
+					})
 			})
 		setTimeout(() => {
 			wx.navigateBack(),
@@ -387,7 +418,7 @@ Page({
 		});
 	},
 	ViewImage(e) {
-		let a = e.currentTarget.dataset.which=="1"?this.data.temp_imgList:this.data.temp_imgList2
+		let a = e.currentTarget.dataset.which == "1" ? this.data.temp_imgList : this.data.temp_imgList2
 		wx.previewImage({
 			urls: a,
 			current: e.currentTarget.dataset.url
