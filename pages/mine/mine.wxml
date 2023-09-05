@@ -56,7 +56,7 @@
 			</view>
 		</view>
 	</block>
-	
+
 	<view class="cu-list menu card-menu margin-bottom-xl shadow-lg radius">
 		<view class="cu-item arrow" bindtap="toMyActivity">
 			<view class="content">
@@ -76,13 +76,13 @@
 				<text class="text-grey">我的队伍</text>
 			</view>
 		</view> -->
-		<view bindtap="toNewActivity" class="cu-item arrow">
+		<view class="cu-item arrow" bindtap="showModal" data-target="isAccess">
 			<view class="content">
 				<text class="cuIcon-activity lg text-gray"></text>
 				<text class="text-grey">发布活动</text>
 			</view>
 		</view>
-		<view bindtap="toCommentActivity" class="cu-item arrow"  wx:if="{{myPos>0}}">
+		<view bindtap="toCommentActivity" class="cu-item arrow" wx:if="{{myPos>0}}">
 			<view class="content">
 				<text class="cuIcon-activity lg text-gray"></text>
 				<text class="text-grey">活动评价</text>
@@ -106,7 +106,7 @@
 				<text class="text-grey">创建队伍</text>
 			</view>
 		</view> -->
-		<view bindtap="toCheckActivity" class="cu-item arrow"  wx:if="{{myPos>0}}" style="background-color: rgb(163, 219, 163);">
+		<view bindtap="toCheckActivity" class="cu-item arrow" wx:if="{{myPos>0}}" style="background-color: rgb(163, 219, 163);">
 			<view class="content">
 				<text class="cuIcon-activity lg text-white"></text>
 				<text class="text-white">审核</text>
@@ -119,5 +119,22 @@
 <view class="toast-fixed-center" hidden="{{!show}}" style="z-index: 99;">
 	<view class="radius-lg padding animation-slide-top text-lg {{status == 'success' ? 'bg-green light':'bg-red light'}}">
 		<text class="cuIcon-info"></text> {{message}}
+	</view>
+</view>
+<view class="cu-modal {{modalName=='isAccess'?'show':''}}">
+	<view class="cu-dialog">
+		<view class="cu-bar bg-white justify-end">
+			<view class="content text-red">温馨提示</view>
+			<view class="action" bindtap="hideModal">
+				<text class="cuIcon-close text-red"></text>
+			</view>
+		</view>
+		<view class="padding-xl text-left justify-center flex">
+			请确认已有i志愿服务的发布活动权限
+		</view>
+		<view class="cu-bar bg-white" catchtap="hideModal">
+			<view class="action margin-0 flex-sub solid-left">未有</view>
+			<view class="action margin-0 flex-sub solid-left text-green" bindtap="toNewActivity">已有</view>
+		</view>
 	</view>
 </view>
