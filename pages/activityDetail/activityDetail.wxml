@@ -32,7 +32,7 @@
 <view>
 	<view class="margin-sm radius-lg bg-white static">
 		<!-- 分享按钮 -->
-		<button open-type="share" class="share cu-avatar round xl">
+		<button wx:if="{{!checkMode}}" open-type="share" class="share cu-avatar round xl">
 			<text class="iconfont icon-icon-test20 text-green"></text>
 		</button>
 		<view class="solid-bottom text-lg text-bold padding text-black">{{isPintuan?'拼团':'报名'}}要求</view>
@@ -61,11 +61,7 @@
 		<text class="">服务地点</text>
 		<text class="text-df">{{actions.address}}</text>
 	</view>
-	<view>
-
-		<!-- <button open-type="share-timeline" class="tmp cu-avatar round xl">
-		<text class="iconfont icon-icon-test20 text-green"></text>
-	</button> -->
+	<view wx:if="{{!checkMode}}">
 		<!-- 报名以及取消按钮 -->
 		<view wx:if="{{actions.status=='2'}}">
 			<button class="signUp cu-avatar round xl bg-yellow animation-{{animation}}" bindtap="toggle" data-class="scale-up" role="button" aria-disabled="false">
@@ -86,14 +82,54 @@
 	</view>
 </view>
 
-<view class="margin-sm radius-lg bg-white">
-	<view class="solid-bottom text-lg text-bold padding text-black">服务简介</view>
-	<view class="padding flex  justify-between">
-		<text class="text-df">{{actions.intro}}
-		</text>
+<!-- 服务简介 -->
+<view class="static margin-sm radius-lg bg-white">
+
+	<view class=" radius-lg bg-white">
+		<view class="solid-bottom text-lg text-bold padding text-black">服务简介</view>
+		<view class="padding flex  justify-between">
+			<text class="text-df">{{actions.intro}}
+			</text>
+		</view>
 	</view>
 </view>
 
+<!-- 审核的群二维码和i志愿图片 -->
+<view wx:if="{{checkMode}}" class="static margin-sm radius-lg bg-white">
+	<!-- 群二维码 -->
+	<view wx:if="{{actions.qr_code.length}}">
+		<view class="cu-bar bg-white margin-top-sm">
+			<view class="solid-bottom text-lg text-bold padding text-black">
+				群二维码
+			</view>
+		</view>
+		<view class="cu-form-group">
+			<view class="grid col-4 grid-square flex-sub">
+				<view class="bg-img" wx:for="{{actions.qr_code}}" wx:key="index" catchtap="previewImage" data-index="{{index}}" data-url="0">
+					<image src='{{actions.qr_code[index]}}' mode='aspectFill'></image>
+				</view>
+			</view>
+		</view>
+
+	</view>
+	<!-- i志愿报名码 -->
+	<view wx:if="{{actions.iZhiYuan.length}}">
+		<view class="cu-bar bg-white ">
+			<view class="solid-bottom text-lg text-bold padding text-black">
+				i志愿报名码
+			</view>
+		</view>
+		<view class="cu-form-group">
+			<view class="grid col-4 grid-square flex-sub">
+				<view class="bg-img" wx:for="{{actions.iZhiYuan}}" wx:key="index" bindtap="previewImage" data-index="{{index}}" data-url="1">
+					<image src='{{actions.iZhiYuan[index]}}' mode='aspectFill'></image>
+
+				</view>
+			</view>
+		</view>
+	</view>
+
+</view>
 
 <!-- 报名窗口 -->
 <view class="cu-modal {{modalName=='toJoin'?'show':''}}">
@@ -101,7 +137,7 @@
 		<swiper style="height: 500rpx;">
 			<swiper-item wx:for="{{actions.qr_code}}" wx:key="index" class="bg-img" style="height: 360rpx;" show-menu-by-longpress="true">
 				<view class="cu-bar justify-center text-white">
-					<image class="margin-top" src="{{item}}" bindtap="previewImage" data-index="{{index}}" mode="aspectFit" />
+					<image class="margin-top" src="{{item}}" bindtap="previewImage" data-index="{{index}}" data-url="0" mode="aspectFit" />
 				</view>
 				<view class="cu-tag cancleButton bg-white round button" catchtap="hideModal">
 					<text class="cuIcon-close text-xl text-bold text-black"></text>
@@ -147,7 +183,7 @@
 		<swiper style="height: 500rpx;">
 			<swiper-item wx:for="{{actions.qr_code}}" wx:key="index" class="bg-img" style="height: 360rpx;" show-menu-by-longpress="true">
 				<view class="cu-bar justify-center text-white">
-					<image class="margin-top" src="{{item}}" bindtap="previewImage" data-index="{{index}}" mode="aspectFit" />
+					<image class="margin-top" src="{{item}}" bindtap="previewImage" data-index="{{index}}" data-url="0" mode="aspectFit" />
 				</view>
 				<view class="cu-tag cancleButton bg-white round button" catchtap="hideModal">
 					<text class="cuIcon-close text-xl text-bold text-black"></text>
@@ -167,6 +203,7 @@
 			<view wx:else class="action margin-0 flex-sub solid-left text-green" bindtap="hideModal" data-target="join">我已扫码完成</view>
 		</view>
 	</view>
+
 </view>
 <!-- 轻提示 -->
 <view class="toast-fixed-center" hidden="{{!show}}" style="z-index: 99;">

@@ -4,6 +4,7 @@ const db = wx.cloud.database()
 
 Page({
 	data: {
+		checkMode:0,
 		hours: '',
 		minutes: '',
 		deadTime: '',
@@ -16,7 +17,12 @@ Page({
 		this.data.isLogin = app.globalData.isLogin
 		this.data.id = options.id
 		var that = this
-
+		//判断是否为审核页面
+		if(options.check){
+			this.setData({
+				checkMode : 1
+			})
+		}
 		//判断是否为从转发进来的
 		if (options.actions) {
 			console.log('从转发进来的')
@@ -320,8 +326,14 @@ Page({
 		}, 1000)
 	},
 	previewImage(e) {
+		var tmp = []
+		if(e.currentTarget.dataset.url=="0"){
+			tmp =  this.data.actions.qr_code
+		}else if(e.currentTarget.dataset.url=="1"){
+			tmp =  this.data.actions.iZhiYuan
+		}
 		wx.previewImage({
-			urls: this.data.actions.qr_code ? this.data.actions.qr_code : ['/images/青协头像.png'],
+			urls: tmp,
 			current: e.currentTarget.dataset.index
 		})
 	},

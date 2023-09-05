@@ -318,7 +318,7 @@ Page({
 								holder: this.data.holder,
 								phone: this.data.phone,
 								intro: this.data.intro,
-								status: this.data.myPos == 1 ? '0' : '1', // 如果pos为1，活动状态为0：待审核，否则为1：进行中
+								status: this.data.myPos >= 1 ? '1' : '0', // 如果pos为1，活动状态为0：待审核，否则为1：进行中
 								address: this.data.address,
 								//number
 								outJoin: 0,

@@ -101,7 +101,7 @@ Page({
 	toDetail(e) {
 		//console.log(e.currentTarget.dataset.id)
 		wx.navigateTo({
-			url: '/pages/detail/detail?id=' + e.currentTarget.dataset.id,
+			url: '/pages/activityDetail/activityDetail?id=' + e.currentTarget.dataset.id+'&check=1',
 		})
 	},
 
