@@ -1,0 +1,120 @@
+/* pages/volunteerWelfare/volunteerWelfare.wxss */
+.post-container{
+  margin: 30rpx 20rpx 0rpx;
+  height: 100%;
+}
+
+.photos-container{
+  height: 310rpx;
+  white-space: nowrap;
+}
+
+.image_item{
+  display: inline-block;
+  /* display: inline-block; */
+  position: relative;
+
+}
+
+.icon_remove{
+  color: brown;
+  position: absolute;
+  float: right;
+  font-size:50rpx;
+  right:15rpx;
+  
+}
+
+.addphotos{
+  width: 300rpx;
+  height: 300rpx;
+  background-color:whitesmoke;
+  margin-bottom: 5rpx;
+  margin-right: 10rpx;
+  border-radius: 30rpx;
+  
+}
+
+
+.input-container{
+  display: flex;
+  flex-direction: column;
+  padding-top: 10rpx;
+}
+.text-xl{
+  background-color:white;
+  margin: 5rpx 5rpx;
+  height: 400rpx;
+}
+
+.text-bold{
+  width: 710rpx;
+  height: 80rpx;
+  font-weight: bolder;
+  color: black;
+  align-content: center;
+  border-bottom: whitesmoke solid 5rpx;
+}
+
+.post-type-container{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  height: 35rpx;
+  margin-bottom: 15rpx;
+}
+.post-type-container text{
+  font-size: 25rpx;
+  color:grey;
+}
+
+.post-type-wrap{
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: center;
+  font-size: 25rpx;
+  background-color: green;
+  color: white;
+}
+
+.tags{
+  border-top: whitesmoke solid 20rpx;
+  padding-top: 10rpx;
+}
+
+.tags-item{
+  display: flex;
+  height: 100rpx; 
+}
+
+.tags-item text{
+  display: flex;
+  text-align: center;
+  align-items: center;
+  margin-right: 25rpx;
+  
+}
+
+.tags-item .iconfont{
+  font-size: 50rpx;
+}
+
+.nav{
+  /* display: inline-flex;
+  align-items: center; */
+  margin: auto auto;
+}
+
+.content{
+  margin-top: 70rpx;
+  bottom: 0;
+}
+
+.btn{
+  width: 400rpx;
+  border-radius: 50rpx;
+  background-color:rgb(44, 184, 118);
+  display: flex;
+  justify-content: center;
+}

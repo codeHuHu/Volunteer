@@ -15,7 +15,9 @@
 		"pages/commentActivity/commentActivity",
 		"pages/checkActivity/checkActivity",
 		"pages/recycleBin/recycleBin",
-		"pages/myJoin/myJoin"
+		"pages/myJoin/myJoin",
+		"pages/volunteerWelfare/volunteerWelfare",
+		"pages/welfareIndex/welfareIndex"
 	],
 	"usingComponents": {
 		"cu-custom": "colorui/components/cu-custom/cu-custom"
@@ -30,7 +32,8 @@
 	},
 	"lazyCodeLoading": "requiredComponents",
 	"tabBar": {
-		"list": [{
+		"list": [
+			{
 				"pagePath": "pages/home/home",
 				"text": "首页",
 				"iconPath": "images/tabbar/home.png",
