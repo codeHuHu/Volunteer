@@ -15,8 +15,7 @@
 		"pages/commentActivity/commentActivity",
 		"pages/checkActivity/checkActivity",
 		"pages/recycleBin/recycleBin",
-		"pages/myJoin/myJoin",
-		"pages/myLine/myLine"
+		"pages/myJoin/myJoin"
 	],
 	"usingComponents": {
 		"cu-custom": "colorui/components/cu-custom/cu-custom"
