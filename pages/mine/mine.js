@@ -176,5 +176,37 @@ Page({
 			url: '/pages/checkActivity/checkActivity',
 		})
 	},
-	
+	/**
+	 * 轻提示展示
+	 * @param {*} status 
+	 * @param {*} message 
+	 * @param {*} time 
+	 * @param {*} fun 
+	 */
+	setShow(status, message, time = 2000, fun = false) {
+		if (loading) {
+			return
+		}
+		loading = true;
+		try {
+			this.setData({
+				status,
+				message,
+				time,
+				show: true,
+			})
+			setTimeout(() => {
+				this.setData({
+					show: false,
+				})
+				loading = false;
+				// 触发回调函数
+				if (fun) {
+					this.end()
+				}
+			}, time)
+		} catch {
+			loading = false;
+		}
+	}
 })
