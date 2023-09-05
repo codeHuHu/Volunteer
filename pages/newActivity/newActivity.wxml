@@ -146,7 +146,7 @@
 		</view>
 		<view class="padding-xl  justify-center flex">
 			<view class="">
-				<input class="input-field" focus="true" bindinput="getTeamName" placeholder="请输入队伍名字" value="{{teamName}}"/>
+				<input class="input-field" bindinput="getTeamName" placeholder="请输入队伍名字" value="{{teamName}}"/>
 			</view>
 		</view>
 		<view class="cu-bar bg-white justify-end">
