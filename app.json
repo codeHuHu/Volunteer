@@ -9,13 +9,14 @@
 		"pages/teamMembers/teamMembers",
 		"pages/mine/mine",
 		"pages/setting/setting",
-		"pages/myJoin/myJoin",
 		"pages/myActivity/myActivity",
 		"pages/newActivity/newActivity",
 		"pages/newTeam/newTeam",
 		"pages/commentActivity/commentActivity",
 		"pages/checkActivity/checkActivity",
-		"pages/recycleBin/recycleBin"
+		"pages/recycleBin/recycleBin",
+		"pages/myJoin/myJoin",
+		"pages/myLine/myLine"
 	],
 	"usingComponents": {
 		"cu-custom": "colorui/components/cu-custom/cu-custom"
