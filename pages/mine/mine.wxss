@@ -46,3 +46,116 @@ z-index: 998;
 .bottom-icon{
 	font-size: 50rpx;
 }
+
+#clickableView {
+  margin-top: 20rpx;
+  text-align: center;
+}
+
+#clickableView text {
+  font-size: 16rpx;
+  color: #3399ff;
+  cursor: pointer;
+}
+
+.tipText {
+  text-align: center;
+  margin-top: 20rpx;
+  font-size: 14rpx;
+	color: #999;
+	
+}
+
+/* 模态框样式 */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 选项样式 */
+.option {
+  padding: 10px;
+  background-color: #fff;
+  border-radius: 4px;
+  margin-top: 20px;
+  cursor: pointer;
+}
+
+/* 图片和提示信息框样式 */
+.image-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.image-container {
+	background-color: rgba(88, 218, 120, 0.5); /* 背景色为半透明的灰色 */
+  padding: 2px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.image-modal image {
+  width: 200px;
+	height: 200px;
+	/* box-shadow: 0 4px 12px rgba(68, 66, 66, 0.2); */
+}
+
+.image-modal text {
+  margin-top: 10px;
+}
+
+.box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(255, 255, 255); /* 内容框背景色为白色 */
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(255, 0, 0, 0.2); /* 使用阴影效果增加立体感 */
+}
+
+/* 图片样式 */
+.box image {
+  width: 200px;
+	height: 200px;
+
+}
+
+/* 文本样式 */
+.box text {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #333;
+  text-align: center;
+}
+
+.close-button {
+	
+	position: absolute;
+	top:-2px;
+	right:8px;
+	width: 20px;
+	height: 20px;
+	font-size: 26px;
+	line-height: 1;
+	background-color: transparent;
+	border: none;
+	color: rgb(211, 102, 102);
+	cursor: pointer;
+	z-index: 99999;
+}

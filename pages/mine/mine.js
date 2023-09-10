@@ -9,7 +9,10 @@ Page({
 	data: {
 		openid: null,
 		isLogin: false,
-		actions: ''
+		actions: '',
+		showModal: true, // 是否显示模态框
+    showImageModal: false, // 是否显示图片和提示信息框
+    imageSrc: '/images/tabbar/weixin.jpg', // 图片链接，请替换为实际的图片链接
 	},
 
 	/**
@@ -162,6 +165,7 @@ Page({
 	},
 
 	toCommentActivity() {
+	
 		if (!this.data.isLogin) {
 			this.setShow("error", "未注册");
 			return 0
@@ -176,6 +180,19 @@ Page({
 			url: '/pages/checkActivity/checkActivity',
 		})
 	},
+
+	handleNotHaveOption() {
+    this.setData({
+      modalName: null, // 隐藏模态框
+      showImageModal: true, // 显示图片和提示信息框
+    });
+	},
+	hideImgmodal() {
+    this.setData({
+       // 隐藏模态框
+      showImageModal: false, // 显示图片和提示信息框
+    });
+  },
 	/**
 	 * 轻提示展示
 	 * @param {*} status 

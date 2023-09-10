@@ -132,9 +132,20 @@
 		<view class="padding-xl text-left justify-center flex">
 			请确认已有i志愿服务的发布活动权限
 		</view>
-		<view class="cu-bar bg-white" catchtap="hideModal">
-			<view class="action margin-0 flex-sub solid-left">未有</view>
-			<view class="action margin-0 flex-sub solid-left text-green" bindtap="toNewActivity">已有</view>
+		<view class="cu-bar bg-white" catchtap="hideModal" >
+  <view class="action margin-0 flex-sub solid-left" bindtap="handleNotHaveOption">
+    <text>未有</text>
+  </view>
+  <view class="action margin-0 flex-sub solid-left text-green" bindtap="toNewActivity" >已有</view>
+</view>
+</view>
+</view>
+<view class="image-modal" wx:if="{{showImageModal}}">
+		<button class="close-button" bindtap="hideImgmodal">×</button>
+		<view class="image-container" bindtap="hideImgModal">
+		<view class="box">
+		<image src="{{imageSrc}}"  mode="aspectFit" bind:tap="hideImgmodal"></image>
+		<text>请联系客服建立i志愿链接</text>
 		</view>
-	</view>
+		</view>
 </view>
