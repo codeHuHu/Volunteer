@@ -34,32 +34,32 @@ Page({
 	 * 生命周期函数--监听页面加载
 	 */
 	onLoad: function () {
-		var tmpPicker = []
-		var that = this
-		db.collection('ActivityInfo').where({
-			_openid: app.globalData.openid
-		}).field({
-			_id: true,
-			actName: true,
-			joinMembers: true,
-			_openid: true
-		})
-			.get()
-			.then(res => {
-				that.setData({
-					actionList: res.data
-				})
-				for (var i in that.data.actionList) {
-					tmpPicker.push(that.data.actionList[i].actName)
-				}
-				console.log(tmpPicker)
-				that.setData({
-					picker: tmpPicker
-				})
+		// var tmpPicker = []
+		// var that = this
+		// db.collection('ActivityInfo').where({
+		// 	_openid: app.globalData.openid
+		// }).field({
+		// 	_id: true,
+		// 	actName: true,
+		// 	joinMembers: true,
+		// 	_openid: true
+		// })
+		// 	.get()
+		// 	.then(res => {
+		// 		that.setData({
+		// 			actionList: res.data
+		// 		})
+		// 		for (var i in that.data.actionList) {
+		// 			tmpPicker.push(that.data.actionList[i].actName)
+		// 		}
+		// 		console.log(tmpPicker)
+		// 		that.setData({
+		// 			picker: tmpPicker
+		// 		})
 
-			}).catch(err => {
-				console.log(err);
-			})
+		// 	}).catch(err => {
+		// 		console.log(err);
+		// 	})
 
 	},
 
@@ -67,85 +67,78 @@ Page({
 	 * 生命周期函数--监听页面初次渲染完成
 	 */
 	onReady() {
-
+		console.log('onReady')
 	},
 
 	/**
 	 * 生命周期函数--监听页面显示
 	 */
 	onShow() {
-
+		if (this.data.activityId && this.data.activityId != this.data.id) {
+			this.data.id = this.data.activityId
+			console.log('有与之前不相等的ActivityId了,可以开始获取数据库')
+			//从PikerChange复制下来的
+			db.collection('ActivityInfo')
+				.doc(this.data.activityId)
+				.get()
+				.then(res => {
+					console.log(res.data)
+					this.setData({
+						result: res.data,
+					})
+				}).then(() => {
+					var result = this.data.result
+					var nameList = []
+					var members = result.joinMembers
+					this.setData({
+						id: result._id
+					})
+					db.collection('UserInfo').where({
+						_openid: db.command.in(members)
+					}).field({
+						userName: true
+					}).get().then(res => {
+						console.log(res.data)
+						var tmp = res.data
+						for (var l in tmp) {
+							nameList.push(tmp[l].userName)
+						}
+						this.setData({
+							nameList,
+							count: tmp.length,
+						})
+					}).then(res => {
+						console.log(this.data.count)
+						const newArray = []
+						for (var l = 0; l < this.data.count; l++) {
+							const item = {
+								id: l,
+								name: this.data.nameList[l],
+								checked: true,
+								isCome: true,
+								feedback: ''
+							}
+							newArray.push(item)
+						}
+						console.log(newArray)
+						this.setData({
+							checkBox: newArray
+						})
+					})
+				})
+		}
+		console.log('onShow')
 	},
-
 	/**
 	 * 生命周期函数--监听页面隐藏
 	 */
 	onHide() {
-
+		console.log('onHide')
 	},
 	PickerChange(e) {
-		var that = this
-		this.setData({
-			index1: e.detail.value
+		wx.navigateTo({
+			url: '/pages/myActivity/myActivity?mode=comment',
 		})
-		console.log(this.data.picker[this.data.index1])
-		db.collection('ActivityInfo')
-			.where({
-				actName: that.data.picker[that.data.index1]
-			})
-			.get()
-			.then(res => {
-				console.log(res.data)
-				that.setData({
-					result: res.data,
-				})
-			}).then(() => {
-				console.log(that.data.result)
-				var result = that.data.result
-				var nameList = []
-				var members = result[0].joinMembers
-				that.setData({
-					id: result[0]._id
-				})
-				db.collection('UserInfo').where({
-					_openid: db.command.in(members)
-				}).field({
-					userName: true
-				}).get().then(res => {
-					console.log(res.data)
-					var tmp = res.data
-
-					for (var l in tmp) {
-						nameList.push(tmp[l].userName)
-					}
-					that.setData({
-						nameList,
-						count: tmp.length,
-
-					})
-				}).then(res => {
-					console.log(that.data.count)
-					const newArray = []
-					for (var l = 0; l < that.data.count; l++) {
-						const item = {
-							id: l,
-							name: that.data.nameList[l],
-							checked: true,
-							isCome: true,
-							feedback: ''
-						}
-						newArray.push(item)
-
-					}
-					console.log(newArray)
-					that.setData({
-						checkbox: newArray
-					})
-				})
-
-
-
-			})
 	},
 	/**
 	 * 页面相关事件处理函数--监听用户下拉动作
@@ -228,7 +221,6 @@ Page({
 						})
 					}
 				}
-
 			}
 		})
 	},
@@ -239,7 +231,7 @@ Page({
 	},
 	showNGModal(e) {
 		this.data.tempID = e.currentTarget.dataset.btnid;
-		const value = this.data.checkbox.find(item => item.id === this.data.tempID).notGoodReason;
+		const value = this.data.checkBox.find(item => item.id === this.data.tempID).notGoodReason;
 		this.setData({
 			tempValue: value
 		})
@@ -251,7 +243,7 @@ Page({
 		})
 	},
 	ChooseIsCome(e) {
-		let items = this.data.checkbox;
+		let items = this.data.checkBox;
 		let values = e.currentTarget.dataset.value;
 		for (let i = 0, lenI = items.length; i < lenI; ++i) {
 			if (items[i].id === values) {
@@ -293,9 +285,10 @@ Page({
 	},
 	commitfb() {
 		console.log('执行提交中')
-		//console.log(this.data.checkbox)
-
-		let uploadTask = [[], []]
+		let uploadTask = [
+			[],
+			[]
+		]
 		//签到表
 		for (let i in this.data.signInList) {
 			uploadTask[0].push(this.uploadFile(this.data.signInList[i]))
@@ -313,23 +306,23 @@ Page({
 					.then(result => {
 						let imgList = result
 						db.collection('ActivityInfo')
-						.doc(this.data.id)
-						.update({
-							data: {
-								feedback: {
-									signInList,
-									membersInfo:this.data.checkbox,
-									imgList,
+							.doc(this.data.id)
+							.update({
+								data: {
+									feedback: {
+										signInList,
+										membersInfo: this.data.checkBox,
+										imgList,
+									}
+								},
+								success: function (res) {
+									console.log('更新成功', res);
+									// 在此处执行其他操作
+								},
+								fail: function (error) {
+									console.error('更新失败', error);
 								}
-							},
-							success: function (res) {
-								console.log('更新成功', res);
-								// 在此处执行其他操作
-							},
-							fail: function (error) {
-								console.error('更新失败', error);
-							}
-						})
+							})
 					})
 			})
 	},

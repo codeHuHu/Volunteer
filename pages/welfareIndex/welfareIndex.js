@@ -1,6 +1,3 @@
-var index = require("../../data/index-list.js")
-var util = require("../../utils/util.js")
-var comobj = require("../../obj/comobj.js")
 //index.js
 //获取应用实例
 var app = getApp()

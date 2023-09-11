@@ -14,8 +14,10 @@ Page({
 	 * 生命周期函数--监听页面加载
 	 */
 	onLoad(options) {
+		this.data.mode = options.mode
 		db.collection('ActivityInfo').where({
-			_openid: app.globalData.openid
+			_openid: app.globalData.openid,
+			status: options.mode == 'comment' ? '2' : db.command.in(['0', '1', '2'])
 		}).field({
 			_id: true,
 			actName: true,
@@ -34,7 +36,9 @@ Page({
 			console.log(err);
 		})
 	},
-
+	onShow(){
+		console.log('myAct onShow')
+	},
 	setTime(result) {
 		var res = result
 		console.log(res)
@@ -54,6 +58,16 @@ Page({
 		wx.stopPullDownRefresh()
 	},
 	toDetail(e) {
+		if(this.data.mode=='comment'){
+			//获取上一个页面的操作权限
+			let pages = getCurrentPages()
+			let prevPage = pages[pages.length - 2]
+			prevPage.setData({
+				activityId:e.currentTarget.dataset.id
+			})
+			wx.navigateBack({})
+			return
+		}
 		wx.navigateTo({
 			url: '/pages/activityDetail/activityDetail?id=' + e.currentTarget.dataset.id,
 		})
