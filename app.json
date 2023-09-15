@@ -12,12 +12,14 @@
 		"pages/myActivity/myActivity",
 		"pages/newActivity/newActivity",
 		"pages/newTeam/newTeam",
-		"pages/CommentActivity/CommentActivity",
+		"pages/commentActivity/commentActivity",
 		"pages/checkActivity/checkActivity",
 		"pages/recycleBin/recycleBin",
 		"pages/myJoin/myJoin",
 		"pages/volunteerWelfare/volunteerWelfare",
-		"pages/welfareIndex/welfareIndex"
+		"pages/welfareIndex/welfareIndex",
+		"pages/testPage/testPage"
+
 	],
 	"usingComponents": {
 		"cu-custom": "colorui/components/cu-custom/cu-custom"
@@ -32,8 +34,7 @@
 	},
 	"lazyCodeLoading": "requiredComponents",
 	"tabBar": {
-		"list": [
-			{
+		"list": [{
 				"pagePath": "pages/home/home",
 				"text": "首页",
 				"iconPath": "images/tabbar/home.png",

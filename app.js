@@ -1,6 +1,9 @@
 // app.js
 App({
 	onLaunch: function () {
+		wx.showLoading({
+			title: '',
+		})
 		var that = this
 		if (!wx.cloud) {
 			console.error('请使用 2.2.3 或以上的基础库以使用云能力');
@@ -102,23 +105,26 @@ App({
 					}
 				})
 			}
+			setTimeout(()=>{
+				wx.hideLoading()
+			},1000)
 			//只查自己的队伍
-			if (that.globalData.openid) {
-				console.log('正在查询队伍')
-				wx.cloud.database().collection('TeamInfo')
-					.where({
-						_openid: that.globalData.openid
-					})
-					.get({
-						success(res) {
-							var teams = []
-							for (var l in res.data) {
-								teams[l] = res.data[l].teamName
-							}
-							that.globalData.team = teams
-						}
-					})
-			}
+			// if (that.globalData.openid) {
+			// 	console.log('正在查询队伍')
+			// 	wx.cloud.database().collection('TeamInfo')
+			// 		.where({
+			// 			_openid: that.globalData.openid
+			// 		})
+			// 		.get({
+			// 			success(res) {
+			// 				var teams = []
+			// 				for (var l in res.data) {
+			// 					teams[l] = res.data[l].teamName
+			// 				}
+			// 				that.globalData.team = teams
+			// 			}
+			// 		})
+			// }
 		}
 	},
 	onshow: function () {
@@ -128,12 +134,9 @@ App({
 		return ("0000000000000000" + num).substr(-length);
 	},
 	globalData: {
-		userinfo: null,
 		openid: null,
 		name: '',
-		avatar: null,
 		isLogin: false,
-		team: [],
 		phone: 0,
 		aliPay:'',
 		school:'',

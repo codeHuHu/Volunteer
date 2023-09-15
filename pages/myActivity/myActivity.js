@@ -15,28 +15,52 @@ Page({
 	 */
 	onLoad(options) {
 		this.data.mode = options.mode
-		db.collection('ActivityInfo').where({
-			_openid: app.globalData.openid,
-			status: options.mode == 'comment' ? '2' : db.command.in(['0', '1', '2'])
-		}).field({
-			_id: true,
-			actName: true,
-			serviceEndStamp: true,
-			serviceStartStamp: true,
-			status: true,
-			tag: true,
-			teamName: true,
-			_openid: true
-		}).orderBy('serviceStartStamp', 'desc').get().then(res => {
-			this.setData({
-				actionList: res.data
+		if (options.mode == 'comment') {
+			db.collection('ActivityInfo').where({
+				_openid: app.globalData.openid,
+				status: '2',
+				isFeedback: db.command.neq(1)
+			}).field({
+				_id: true,
+				actName: true,
+				serviceEndStamp: true,
+				serviceStartStamp: true,
+				status: true,
+				tag: true,
+				teamName: true,
+				_openid: true
+			}).orderBy('serviceStartStamp', 'desc').get().then(res => {
+				this.setData({
+					actionList: res.data
+				})
+				this.setTime(res.data)
+			}).catch(err => {
+				console.log(err);
 			})
-			this.setTime(res.data)
-		}).catch(err => {
-			console.log(err);
-		})
+		} else {
+			db.collection('ActivityInfo').where({
+				_openid: app.globalData.openid,
+			}).field({
+				_id: true,
+				actName: true,
+				serviceEndStamp: true,
+				serviceStartStamp: true,
+				status: true,
+				tag: true,
+				teamName: true,
+				_openid: true
+			}).orderBy('serviceStartStamp', 'desc').get().then(res => {
+				this.setData({
+					actionList: res.data
+				})
+				this.setTime(res.data)
+			}).catch(err => {
+				console.log(err);
+			})
+		}
+
 	},
-	onShow(){
+	onShow() {
 		console.log('myAct onShow')
 	},
 	setTime(result) {
@@ -58,12 +82,12 @@ Page({
 		wx.stopPullDownRefresh()
 	},
 	toDetail(e) {
-		if(this.data.mode=='comment'){
+		if (this.data.mode == 'comment') {
 			//获取上一个页面的操作权限
 			let pages = getCurrentPages()
 			let prevPage = pages[pages.length - 2]
 			prevPage.setData({
-				activityId:e.currentTarget.dataset.id
+				activityId: e.currentTarget.dataset.id
 			})
 			wx.navigateBack({})
 			return

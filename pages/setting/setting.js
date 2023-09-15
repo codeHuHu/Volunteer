@@ -9,12 +9,12 @@ Page({
 	data: {
 		isTextBoxVisible: false,
 		showModal: null,
-		grade:['小学','中学','本科','研究生','博士','已毕业'],
+		grade: ['小学', '中学', '本科', '研究生', '博士', '已毕业'],
 		loading: false,
-		selectedYear:'请选择年份',
-		isCollege:'',
-		college:'',
-		mygrade:''
+		selectedYear: '请选择年份',
+		isCollege: '未填写',
+		college: '未填写',
+		mygrade: '未填写'
 	},
 
 	/**
@@ -28,35 +28,33 @@ Page({
 
 		this.setData({
 			openid: app.globalData.openid,
-			name: app.globalData.name,
-			phone: app.globalData.phone,
-			aliPay: app.globalData.aliPay,
-			school: app.globalData.school,
-			mygrade: app.globalData.grade,
-			college:app.globalData.college,
-			selectedYear:app.globalData.year,
-			team: app.globalData.team[0]
+			name: app.globalData.name ? app.globalData.name : '未填写',
+			phone: app.globalData.phone ? app.globalData.phone : '未填写',
+			aliPay: app.globalData.aliPay ? app.globalData.aliPay : '未填写',
+			school: app.globalData.school ? app.globalData.school : '未填写',
+			mygrade: app.globalData.grade ? app.globalData.grade : '未填写',
+			college: app.globalData.college ? app.globalData.college : '未填写',
+			selectedYear: app.globalData.year ? app.globalData.year : '未填写',
 		})
 	},
-	GradeChange(e)
-	{
+	GradeChange(e) {
 		console.log(e.detail.value)
 		this.setData({
-			Gindex:e.detail.value,
-			mygrade:this.data.grade[e.detail.value]
+			Gindex: e.detail.value,
+			mygrade: this.data.grade[e.detail.value]
 		})
 
 	},
-	
-	YearChange: function(e) {
-    const value = e.detail.value;
-    const year = value.substring(0, 4);
-    this.setData({
-			value:value,
-      selectedYear: year
+
+	YearChange: function (e) {
+		const value = e.detail.value;
+		const year = value.substring(0, 4);
+		this.setData({
+			value: value,
+			selectedYear: year
 		});
 		console.log(this.data.selectedYear)
-  },
+	},
 	tohome() {
 		wx.navigateTo({
 			url: '/pages/newTeam/newTeam',
@@ -115,17 +113,16 @@ Page({
 		this.closeModal(); // 保存后关闭模态框
 		// wx.navigateBack(); // 返回上一页
 	},
-	showTextBox:function()
-	{
+	showTextBox: function () {
 		this.setData({
-      isTextBoxVisible: !this.data.isTextBoxVisible, // 显示文本框
-    });
+			isTextBoxVisible: !this.data.isTextBoxVisible, // 显示文本框
+		});
 	},
-	hideTextBox: function() {
-    this.setData({
-      isTextBoxVisible: !this.data.isTextBoxVisible, // 隐藏文本框
-    });
-  },
+	hideTextBox: function () {
+		this.setData({
+			isTextBoxVisible: !this.data.isTextBoxVisible, // 隐藏文本框
+		});
+	},
 	onReady() {
 
 	},
@@ -136,7 +133,6 @@ Page({
 	onShow() {
 
 	},
-
 	/**
 	 * 生命周期函数--监听页面隐藏
 	 */
@@ -148,8 +144,8 @@ Page({
 	 * 生命周期函数--监听页面卸载
 	 */
 	onUnload() {
-		console.log('ghijk')
-		var that =this
+
+		var that = this
 		wx.showLoading({
 			title: '(数据上传中...)',
 			mask: true
@@ -164,18 +160,18 @@ Page({
 				college: this.data.college,
 				phone: this.data.phone,
 				aliPay: this.data.aliPay,
-				year:this.data.selectedYear
+				year: this.data.selectedYear
 			},
 			success: function (res) {
 				wx.hideLoading();
-				app.globalData.name=that.data.name,
-				app.globalData.school=that.data.school,
-				app.globalData.grade=that.data.mygrade,
-				app.globalData.college=that.data.college,
-        app.globalData.year=that.data.selectedYear,
-				app.globalData.phone=that.data.phone,
-				app.globalData.aliPay=that.data.aliPay
-				
+				app.globalData.name = that.data.name,
+					app.globalData.school = that.data.school,
+					app.globalData.grade = that.data.mygrade,
+					app.globalData.college = that.data.college,
+					app.globalData.year = that.data.selectedYear,
+					app.globalData.phone = that.data.phone,
+					app.globalData.aliPay = that.data.aliPay
+
 				// 在此处执行其他操作
 			},
 			fail: function (error) {
@@ -183,11 +179,10 @@ Page({
 			}
 		})
 	},
-	showQRcode:function()
-	{
+	showQRcode: function () {
 		wx.previewImage({
 			urls: ['/images/1-up1.png'],
-			current:'/images/1-up1.png',
+			current: '/images/1-up1.png',
 		})
 	},
 	/**

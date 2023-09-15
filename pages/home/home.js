@@ -180,6 +180,11 @@ Page({
 			url: '/pages/activityDetail/activityDetail?id=' + e.currentTarget.dataset.id,
 		})
 	},
+	toTestPage(){
+		wx.navigateTo({
+			url: '/pages/testPage/testPage',
+		})
+	},
 	searchIcon(e) {
 		this.setData({
 			keyword: e.detail.value

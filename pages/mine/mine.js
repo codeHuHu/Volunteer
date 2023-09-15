@@ -76,7 +76,8 @@ Page({
 		console.log('app.globalData', app.globalData)
 		this.setData({
 			openid: app.globalData.openid,
-			isLogin: app.globalData.isLogin
+			isLogin: app.globalData.isLogin,
+			myPos: app.globalData.position,
 		})
 		this.getDetail()
 	},

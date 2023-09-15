@@ -1,10 +1,17 @@
+const XLSX = require('./excel') //引入
 const app = getApp()
 let loading = false;
 const db = wx.cloud.database()
 
 Page({
 	data: {
-		checkMode:0,
+		header: [{
+			name: '姓名',
+			come: '实到',
+			performance: '表现',
+			feedback: '评价'
+		}],
+		checkMode: 0,
 		hours: '',
 		minutes: '',
 		deadTime: '',
@@ -14,13 +21,16 @@ Page({
 	},
 	onLoad: function (options) {
 		console.log('app.globalData:', app.globalData)
+		//记录是否登录
 		this.data.isLogin = app.globalData.isLogin
+		//传入活动id
 		this.data.id = options.id
 		var that = this
+
 		//判断是否为审核页面
-		if(options.check){
+		if (options.check) {
 			this.setData({
-				checkMode : 1
+				checkMode: 1
 			})
 		}
 		//判断是否为从转发进来的
@@ -46,29 +56,8 @@ Page({
 			}
 		})
 	},
-
-	onReady() {
-
-	},
-
-	onShow() {
-
-	},
-
-	onHide() {
-
-	},
-
-	onUnload() {
-
-	},
-
 	onPullDownRefresh() {
 		wx.stopPullDownRefresh()
-	},
-
-	onReachBottom() {
-
 	},
 	watcher(id) {
 		console.log('开启监听')
@@ -104,6 +93,8 @@ Page({
 		const thours = Math.floor(t / (1000 * 60 * 60));
 		const tminutes = Math.floor((t % (1000 * 60 * 60)) / (1000 * 60));
 		this.setData({
+			//记录用户是否有导出特权(负责人人或管理员)
+			isAdmin: (app.globalData.openid == res._openid) || (Number(app.globalData.position) >= 1),
 			actions: res,
 			deadTime: formattedDate + ' ' + formattedTime,
 			serviceTime: serviceDate + ' ' + serviceStartTime + '-' + serviceEndTime,
@@ -313,6 +304,7 @@ Page({
 			modalName: null
 		})
 	},
+	//动画
 	toggle(e) {
 		var anmiaton = e.currentTarget.dataset.class;
 		var that = this;
@@ -326,11 +318,16 @@ Page({
 		}, 1000)
 	},
 	previewImage(e) {
+		console.log('previeww')
 		var tmp = []
-		if(e.currentTarget.dataset.url=="0"){
-			tmp =  this.data.actions.qr_code
-		}else if(e.currentTarget.dataset.url=="1"){
-			tmp =  this.data.actions.iZhiYuan
+		if (e.currentTarget.dataset.url == "0") {
+			tmp = this.data.actions.qr_code
+		} else if (e.currentTarget.dataset.url == "1") {
+			tmp = this.data.actions.iZhiYuan
+		} else if (e.currentTarget.dataset.url == "2") {
+			tmp = this.data.actions.feedback.signInList
+		} else if (e.currentTarget.dataset.url == "3") {
+			tmp = this.data.actions.feedback.imgList
 		}
 		wx.previewImage({
 			urls: tmp,
@@ -354,13 +351,7 @@ Page({
 			query: 'id=' + this.data.id + '&actions=' + encodeURIComponent(JSON.stringify(this.data.actions))
 		}
 	},
-	/**
-	 * 轻提示展示
-	 * @param {*} status 
-	 * @param {*} message 
-	 * @param {*} time 
-	 * @param {*} fun 
-	 */
+	//轻提示展示 
 	setShow(status, message, time = 2000, fun = false) {
 		if (loading) {
 			return
@@ -387,4 +378,137 @@ Page({
 			loading = false;
 		}
 	},
+	//导出Excel
+	myShowToast(){
+		wx.showModal({
+			title: '温馨提示',
+			content: '打开后请发送电脑端或保存到手机本地查看',
+			complete: (res) => {
+				if (res.cancel) {
+					return
+				}
+				if (res.confirm) {
+					this.exportExcel()
+				}
+			}
+		})
+	},
+	exportExcel() {
+		
+		const D = this.data
+		const DA = D.actions
+
+		let sheet = []
+		// 表头
+		sheet.push(
+			['活动名称', DA.actName],
+			['活动类型', DA.isPintuan ? '拼团' : '报名'],
+			['活动标签', DA.tag],
+			['活动状态', '已结束'],
+			['活动组织', DA.teamName],
+			['组织负责人', DA.holder],
+			['服务时间', D.serviceTime],
+			['服务时长', D.hours + '小时' + D.minutes + '分钟'],
+			['服务地点', DA.address],
+			['服务简介', DA.intro],
+			['参加活动人数', `${DA.outJoin}人`],
+			['截止时间', D.deadTime],
+			[],
+			[],
+			['用户名称', '学历', '学年', '学校/单位', '学院', '电话', '支付宝', '参加状态', '评级', '详细评价']
+		)
+		DA.feedback.membersInfo.forEach(item => {
+			let rowcontent = []
+			rowcontent.push(item.info.userName)
+			rowcontent.push(item.info.grade)
+			rowcontent.push(item.info.year)
+			rowcontent.push(item.info.school)
+			rowcontent.push(item.info.college)
+			rowcontent.push(item.info.phone)
+			rowcontent.push(item.info.aliPay)
+			rowcontent.push(item.isCome ? '实到' : '未到')
+			rowcontent.push(item.excellent ? '优秀' : '及格')
+			rowcontent.push(item.feedback)
+			sheet.push(rowcontent)
+		})
+		// XLSX插件使用
+		//自定义列宽
+		const colWidth = [
+			{ wch: 15 },
+			{ wch: 25 },
+			{ wch: 10 },
+			{ wch: 15 },
+			{ wch: 20 },
+			{ wch: 15 },
+			{ wch: 15 },
+			{ wch: 10 },
+			{ wch: 10 },
+			{ wch: 35 },
+		]
+		const rowWidth = [
+			// {/* visibility */
+			// 	hidden: false, // if true, the row is hidden
+			// 	/* row height is specified in one of the following ways: */
+			// 	hpt: 20,  // height in points
+			// },
+			// {
+			// 	hpt: 10,
+			// }
+		]
+		var ws = XLSX.utils.aoa_to_sheet(sheet);
+		console.log('ws', ws)
+		var wb = XLSX.utils.book_new();
+		console.log('wb', wb)
+		ws['!cols'] = colWidth
+		ws['!rows'] = rowWidth
+		//增加sheet
+		XLSX.utils.book_append_sheet(wb, ws, "sheet名字");
+		var fileData = XLSX.write(wb, {
+			bookType: "xlsx",
+			type: 'base64'
+		});
+		// 保存的本地地址
+		console.log(wx.env.USER_DATA_PATH)
+		let filePath = `${wx.env.USER_DATA_PATH}/${DA.actName}.xlsx`
+		// 写文件
+		const fs = wx.getFileSystemManager()
+		fs.writeFile({
+			filePath: filePath,
+			data: fileData,
+			encoding: 'base64',
+			success(res) {
+				const sysInfo = wx.getSystemInfoSync()
+				if (sysInfo.platform.toLowerCase().indexOf('windows') >= 0) {
+					wx.saveFileToDisk({
+						filePath: filePath,
+						success(res) {
+							console.log(res)
+						},
+						fail(res) {
+							console.error(res)
+							util.tips("导出失败")
+						}
+					})
+				} else {
+					wx.openDocument({
+						filePath: filePath,
+						showMenu: true,
+						success: function (res) {
+							console.log('打开文档成功')
+						},
+						fail: console.error
+					})
+				}
+			},
+			fail(res) {
+				console.error(res)
+				if (res.errMsg.indexOf('locked')) {
+					wx.showModal({
+						title: '提示',
+						content: '文档已打开，请先关闭',
+					})
+				}
+			}
+		})
+	}
 })

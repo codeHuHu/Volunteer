@@ -26,7 +26,7 @@
 					<text class="text-grey margin-right">学历</text>
 				</view>
 				<view class="flex-treble">
-					<picker bindchange="GradeChange" value="{{mygrade}}" range="{{grade}}">
+					<picker bindchange="GradeChange" value="{{mygrade?mygrade:'请选择'}}" range="{{grade}}">
 						<view class="picker">
 							{{mygrade}}
 						</view>
@@ -81,7 +81,13 @@
 				<view><text>{{college?college:'未填写'}}</text></view>
 			</view>
 		</view>
-		
+		<view class="modal-mask" wx:if="{{showModal == 'collegeModal' }}" bindtap="closeModal">
+			<view class="modal" catchtap>
+				<view class="modal-title">修改学院</view>
+				<view><input class="input-field" focus="true" bindinput="handleCollegeInput" placeholder="请输入" value="{{}}" /></view>
+				<button bindtap="handleSave" class="button">保存</button>
+			</view>
+		</view>
 
 		<view class="cu-item arrow ">
 			<view class="content cu-form-group " bindtap="openModal" data-target="phoneModal">

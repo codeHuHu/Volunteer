@@ -37,7 +37,7 @@
 		</view>
 	</view>
 
-	<view class="item" bind:tap="toGift">
+	<view class="item"  bindtap="toTestPage">
 		<view class="greencircle">
 			<view class="bar-icon">
 				<text class="cuIcon-present lg "></text>

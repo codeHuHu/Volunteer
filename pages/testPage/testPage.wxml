@@ -1,0 +1,46 @@
+
+<button class="bg-red" bindtap="exportExcel">导出excel</button>
+
+<button wx:if="{{isHavaExcel}}" class="bg-blue margin-top-xxl" bindtap="downloadExcel">查看文件</button>
+
+<!-- <view class="cu-waterfall bg-white padding-bottom-xl">
+	<view class="flex-sub">
+    <view class="flow">
+      <view class="cu-card case no-card" wx:for="{{rightData}}" wx:key="item">
+        <view class="cu-item shadow">
+          <view class="image ">
+            <image src="{{item.image}}" mode="widthFix"></image>
+            <text class="flex justify-center">10铜币</text>
+          </view>
+          
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="flex-sub">
+    <view class="flow">
+      <view class="cu-card case no-card" wx:for="{{rightData}}" wx:key="item">
+        <view class="cu-item shadow">
+          <view class="image">
+            <image src="{{item.image}}" mode="widthFix"></image>
+            <text class="flex justify-center">10铜币</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+	<view class="flex-sub">
+    <view class="flow">
+      <view class="cu-card case no-card" wx:for="{{rightData}}" wx:key="item">
+        <view class="cu-item shadow">
+          <view class="image">
+            <image src="{{item.image}}" mode="widthFix"></image>
+            <text class="flex justify-center">10铜币</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view> -->
+

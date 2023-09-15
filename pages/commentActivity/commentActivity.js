@@ -21,7 +21,7 @@ Page({
 		checkBox: [{
 			id: '',
 			name: '',
-			checked: true,
+			excellent: true,
 			isCome: true,
 			feedback: ''
 		}],
@@ -96,25 +96,26 @@ Page({
 					db.collection('UserInfo').where({
 						_openid: db.command.in(members)
 					}).field({
-						userName: true
+						_openid: true,
+						userName: true,
+						idNumber: true,
+						phone: true,
+						college: true,
+						grade: true,
+						aliPay: true,
+						year: true,
+						school: true,
 					}).get().then(res => {
-						console.log(res.data)
 						var tmp = res.data
 						for (var l in tmp) {
-							nameList.push(tmp[l].userName)
+							nameList.push(tmp[l])
 						}
-						this.setData({
-							nameList,
-							count: tmp.length,
-						})
-					}).then(res => {
-						console.log(this.data.count)
 						const newArray = []
-						for (var l = 0; l < this.data.count; l++) {
+						for (var l = 0; l < tmp.length; l++) {
 							const item = {
 								id: l,
-								name: this.data.nameList[l],
-								checked: true,
+								info: tmp[l],
+								excellent: true,
 								isCome: true,
 								feedback: ''
 							}
@@ -124,6 +125,8 @@ Page({
 						this.setData({
 							checkBox: newArray
 						})
+					}).then(res => {
+
 					})
 				})
 		}
@@ -230,45 +233,12 @@ Page({
 		})
 	},
 	showNGModal(e) {
-		this.data.tempID = e.currentTarget.dataset.btnid;
-		const value = this.data.checkBox.find(item => item.id === this.data.tempID).notGoodReason;
+		this.data.tempId = e.currentTarget.dataset.id
+		const value = this.data.checkBox.find(item => item.id === e.currentTarget.dataset.id).feedback;
 		this.setData({
 			tempValue: value
 		})
 		this.showModal(e);
-	},
-	hideModal(e) {
-		this.setData({
-			modalName: null
-		})
-	},
-	ChooseIsCome(e) {
-		let items = this.data.checkBox;
-		let values = e.currentTarget.dataset.value;
-		for (let i = 0, lenI = items.length; i < lenI; ++i) {
-			if (items[i].id === values) {
-				items[i].isCome = !items[i].isCome;
-				items[i].checked = !items[i].checked;
-				break
-			}
-		}
-		this.setData({
-			checkBox: items
-		})
-		console.log(this.data.checkBox);
-	},
-	ChooseCheckbox(e) {
-		let items = this.data.checkBox;
-		let values = e.currentTarget.dataset.value;
-		for (let i = 0, lenI = items.length; i < lenI; ++i) {
-			if (items[i].id === values) {
-				items[i].checked = !items[i].checked;
-				break
-			}
-		}
-		this.setData({
-			checkBox: items
-		})
 	},
 	//出现未定义警告时，重新编译即可
 	handleInput: function (e) {
@@ -282,6 +252,39 @@ Page({
 		this.setData({
 			checkBox
 		});
+	},
+	hideModal(e) {
+		this.setData({
+			modalName: null
+		})
+	},
+	ChooseIsCome(e) {
+		let items = this.data.checkBox;
+		let values = e.currentTarget.dataset.value;
+		for (let i = 0, lenI = items.length; i < lenI; ++i) {
+			if (items[i].id === values) {
+				items[i].isCome = !items[i].isCome;
+				items[i].excellent = items[i].isCome;
+				break
+			}
+		}
+		this.setData({
+			checkBox: items
+		})
+		console.log(this.data.checkBox);
+	},
+	ChooseCheckbox(e) {
+		let items = this.data.checkBox;
+		let values = e.currentTarget.dataset.value;
+		for (let i = 0, lenI = items.length; i < lenI; ++i) {
+			if (items[i].id === values) {
+				items[i].excellent = !items[i].excellent;
+				break
+			}
+		}
+		this.setData({
+			checkBox: items
+		})
 	},
 	commitfb() {
 		console.log('执行提交中')
@@ -309,6 +312,7 @@ Page({
 							.doc(this.data.id)
 							.update({
 								data: {
+									isFeedback: 1,
 									feedback: {
 										signInList,
 										membersInfo: this.data.checkBox,
@@ -316,7 +320,9 @@ Page({
 									}
 								},
 								success: function (res) {
+
 									console.log('更新成功', res);
+									wx.navigateBack()
 									// 在此处执行其他操作
 								},
 								fail: function (error) {
