@@ -95,7 +95,7 @@
 </view>
 
 <!-- 审核的群二维码和i志愿图片 -->
-<view wx:if="{{checkMode||actions.isFeedback}}" class="static margin-sm radius-xl bg-white">
+<view wx:if="{{checkMode||(actions.isFeedback&&isAdmin)}}" class="static margin-sm radius-xl bg-white">
 	<!-- 群二维码 -->
 	<view wx:if="{{actions.qr_code.length}}">
 		<view class="cu-bar bg-white margin-top-sm">
@@ -162,7 +162,7 @@
 	</block>
 </view>
 
-<view wx:if="{{actions.feedback.membersInfo.length}}" class="static margin-sm radius-xl bg-white">
+<view wx:if="{{checkMode||(actions.isFeedback&&isAdmin&&actions.feedback.membersInfo.length)}}" class="static margin-sm radius-xl bg-white">
 	<view class="cu-bar bg-white margin-top-sm">
 		<view class="text-lg text-bold padding text-black">
 			志愿者信息

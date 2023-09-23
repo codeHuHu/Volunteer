@@ -59,10 +59,18 @@ Page({
 	onPullDownRefresh() {
 		wx.stopPullDownRefresh()
 	},
+	onUnload() {
+		try {
+			this.watcher.close()
+			console.log('关闭数据监听')
+		} catch (error) {
+			console.log('关闭监听失败', error)
+		}
+	},
 	watcher(id) {
 		console.log('开启监听')
 		var that = this
-		db.collection('ActivityInfo')
+		this.watcher = db.collection('ActivityInfo')
 			.doc(id)
 			.watch({
 				onChange: function (snapShot) {
@@ -379,7 +387,7 @@ Page({
 		}
 	},
 	//导出Excel
-	myShowToast(){
+	myShowToast() {
 		wx.showModal({
 			title: '温馨提示',
 			content: '打开后请发送电脑端或保存到手机本地查看',
@@ -394,7 +402,7 @@ Page({
 		})
 	},
 	exportExcel() {
-		
+
 		const D = this.data
 		const DA = D.actions
 

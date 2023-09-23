@@ -4591,7 +4591,7 @@ image {
   max-width: 100%;
   display: inline-block;
   position: relative;
-  z-index: 0;
+  z-index: -5;
 }
 
 image.loading::before {
