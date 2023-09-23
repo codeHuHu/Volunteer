@@ -166,7 +166,6 @@ Page({
 	},
 
 	toCommentActivity() {
-	
 		if (!this.data.isLogin) {
 			this.setShow("error", "未注册");
 			return 0
@@ -188,12 +187,22 @@ Page({
       showImageModal: true, // 显示图片和提示信息框
     });
 	},
+
+		longTap: function (e) {
+			wx.previewImage({
+				urls: [e.currentTarget.dataset.url],
+				current: ''
+			})
+			// this.setData({
+			// 	showImageModal:false	//显示图片和提示信息框
+			// })
+	},
 	hideImgmodal() {
     this.setData({
        // 隐藏模态框
       showImageModal: false, // 显示图片和提示信息框
-    });
-  },
+		})
+	},
 	/**
 	 * 轻提示展示
 	 * @param {*} status 

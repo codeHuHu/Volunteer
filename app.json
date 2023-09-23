@@ -18,8 +18,8 @@
 		"pages/myJoin/myJoin",
 		"pages/volunteerWelfare/volunteerWelfare",
 		"pages/welfareIndex/welfareIndex",
-		"pages/testPage/testPage"
-
+		"pages/testPage/testPage",
+		"pages/icon_status/icon_status"
 	],
 	"usingComponents": {
 		"cu-custom": "colorui/components/cu-custom/cu-custom"
@@ -34,17 +34,18 @@
 	},
 	"lazyCodeLoading": "requiredComponents",
 	"tabBar": {
-		"list": [{
+		"list": [
+			{
 				"pagePath": "pages/home/home",
 				"text": "首页",
-				"iconPath": "images/tabbar/home.png",
-				"selectedIconPath": "images/tabbar/home_activate.png"
+				"iconPath": "images/tabbar/home1.png",
+				"selectedIconPath": "images/tabbar/home1_activate.png"
 			},
 			{
 				"pagePath": "pages/volunteerService/volunteerService",
 				"text": "志愿服务",
-				"iconPath": "images/tabbar/jvshou.png",
-				"selectedIconPath": "images/tabbar/jvshou_activate.png"
+				"iconPath": "images/tabbar/activity.png",
+				"selectedIconPath": "images/tabbar/activity_activate.png"
 			},
 			{
 				"pagePath": "pages/mine/mine",

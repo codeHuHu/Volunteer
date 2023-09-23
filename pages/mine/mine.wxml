@@ -114,6 +114,10 @@
 		</view>
 	</view>
 
+	<view style="margin-top:100rpx; display: flex; justify-content: center; align-items: center; height: 120rpx;" >
+	<image mode="aspectFill"  style=" width: 80%; opacity: .8;" src="/images/banner.png" />
+</view>
+
 </scroll-view>
 <!-- 轻提示 -->
 <view class="toast-fixed-center" hidden="{{!show}}" style="z-index: 99;">
@@ -144,7 +148,7 @@
 	<button class="close-button" bindtap="hideImgmodal">×</button>
 	<view class="image-container" bindtap="hideImgModal">
 		<view class="box">
-			<image src="{{imageSrc}}" mode="aspectFit" bind:tap="hideImgmodal"></image>
+			<image src="{{imageSrc}}" mode="aspectFit" bindlongpress="longTap" data-url="{{imageSrc}}"></image>
 			<text>请联系客服建立i志愿链接</text>
 		</view>
 	</view>

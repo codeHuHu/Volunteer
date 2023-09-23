@@ -24,3 +24,11 @@
 	margin-bottom: -20rpx;
 
 }
+
+.myicon {
+	position: absolute;
+	width: 30px;
+	height: 30px;
+	right: 20rpx;
+	top:5rpx;
+}

@@ -14,8 +14,7 @@ page {
 	width: 80%;
 	margin: 30rpx auto;
 	position: relative;
-	background: linear-gradient(to bottom, #E9E4F0, #D3CCE3);
-
+background-color: rgb(17, 58, 241);
 }
 
 .select {
@@ -27,6 +26,8 @@ page {
 	display: flex;
 	align-items: center;
 	padding: 0 20rpx;
+	background: linear-gradient(to bottom, #ffffff, #c7eeb5);
+
 }
 
 .select_text {
@@ -148,4 +149,12 @@ page {
 
 .bottom-icon {
 	font-size: 50rpx;
+}
+
+.icon {
+	position: absolute;
+	width: 30px;
+	height: 30px;
+	right: 10rpx;
+	top:5rpx;
 }

@@ -8,7 +8,9 @@
 </view>
 
 <block wx:for="{{actionList}}" wx:key="index">
-	<view class="cu-card article {{isCard?'no-card':''}} margin" bindtap="toDetail" data-id="{{item._id}}">
+	<view style="position: relative;" class="cu-card article {{isCard?'no-card':''}} margin" bindtap="toDetail" data-id="{{item._id}}">
+		<view wx:if="{{item.status == 1}}"><image class="myicon" src="/images/tabbar/sun.png"></image> </view>
+	<view wx:elif="{{item.status == 2}}"><image class="myicon" src="/images/tabbar/water_moon.png"></image> </view>
 		<view class="cu-item shadow">
 			<view class="title">
 				<view class="text-cut">{{item.actName}}</view>
@@ -27,4 +29,10 @@
 			</view>
 		</view>
 	</view>
+
 </block>
+
+<view wx:if="{{actionList.length<4}}">
+		<view style="display: flex; justify-content: center; align-items: center;" >
+	<image mode="aspectFill"  style=" top:280rpx;width: 80%; opacity: .8;" src="/images/banner.png" />
+</view></view>

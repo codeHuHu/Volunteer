@@ -66,9 +66,10 @@
 	</view> -->
 	<!-- <button class="joinvolunteer" bindtap="toregister">成为志愿者</button> -->
 <!-- </view> -->
-
+<view wx:if="{{actions.length}}">
 <block wx:for="{{actions}}" wx:key="index">
 	<view class="cu-card article {{isCard?'no-card':''}} margin">
+		<view><image class="icon" src="/images/tabbar/sun.png"></image> </view>
 		<view class="cu-item shadow">
 			<view class="title">
 				<view class="text-cut">{{item.actName}}</view>
@@ -88,6 +89,10 @@
 		</view>
 	</view>
 </block>
+</view>
+<view wx:else style="display: flex; justify-content: center; align-items: center;" >
+	<image mode="aspectFill"  style=" top:40rpx;width: 80%; opacity: .8;" src="/images/banner.png" />
+</view>
 <!-- 轻提示 -->
 <view class="toast-fixed-center" hidden="{{!show}}" style="z-index: 99;">
 	<view class="radius-lg padding animation-slide-top text-lg {{status == 'success' ? 'bg-green light':'bg-red light'}}">
