@@ -128,7 +128,7 @@
 				</view>
 			</view>
 			<view class="not-good-reason">
-				<textarea class="not-good-reason-textarea" placeholder="请输入评价内容" bindinput="handleInput" value="{{tempValue}}" auto-focus></textarea>
+				<textarea class="not-good-reason-textarea" placeholder="请输入评价内容" bindinput="handleInput" value="{{tempValue}}"></textarea>
 			</view>
 			<button class="cu-btn round sm margin-bottom bg-black" bindtap="hideModal">保存并退出</button>
 		</view>

@@ -12,10 +12,10 @@ Page({
 			feedback: '评价'
 		}],
 		checkMode: 0,
-		hours: '',
-		minutes: '',
-		deadTime: '',
-		serviceTime: '',
+		hours: 'xxxxxxxx',
+		minutes: 'xxxxxxx',
+		deadTime: 'xxxxxxx',
+		serviceTime: 'xxxxxxx',
 		actions: []
 
 	},
@@ -340,7 +340,7 @@ Page({
 		return {
 			title: this.data.actions.actName,
 			//imageUrl: this.data.actions.images[0],
-			path: 'pages/detail/detail?id=' + this.data.id + '&actions=' + encodeURIComponent(JSON.stringify(this.data.actions))
+			path: 'pages/activityDetail/activityDetail?id=' + this.data.id + '&actions=' + encodeURIComponent(JSON.stringify(this.data.actions))
 		}
 	},
 	//转发朋友圈

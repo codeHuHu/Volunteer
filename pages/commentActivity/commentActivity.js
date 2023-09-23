@@ -93,41 +93,68 @@ Page({
 					this.setData({
 						id: result._id
 					})
-					db.collection('UserInfo').where({
-						_openid: db.command.in(members)
-					}).field({
-						_openid: true,
-						userName: true,
-						idNumber: true,
-						phone: true,
-						college: true,
-						grade: true,
-						aliPay: true,
-						year: true,
-						school: true,
-					}).get().then(res => {
-						var tmp = res.data
-						for (var l in tmp) {
-							nameList.push(tmp[l])
-						}
-						const newArray = []
-						for (var l = 0; l < tmp.length; l++) {
-							const item = {
-								id: l,
-								info: tmp[l],
-								excellent: true,
-								isCome: true,
-								feedback: ''
+					//如果是已经评价过的内容
+					if (result.isFeedback == 1) {
+						var newArray = []
+						const Infos = result.feedback.membersInfo
+						for (var i in Infos) {
+							var item = {
+								id: Infos[i].id,
+								info: Infos[i].info,
+								excellent: Infos[i].excellent,
+								isCome: Infos[i].isCome,
+								feedback: Infos[i].feedback
 							}
+							console.log(item)
 							newArray.push(item)
 						}
 						console.log(newArray)
 						this.setData({
-							checkBox: newArray
+							imgList: result.feedback.imgList,
+							checkBox: newArray,
+							signInList: result.feedback.signInList
 						})
-					}).then(res => {
+					}
+					else {
+						this.setData({
+							imgList: [],
+							signInList: []
+						})
+						db.collection('UserInfo').where({
+							_openid: db.command.in(members)
+						}).field({
+							_openid: true,
+							userName: true,
+							idNumber: true,
+							phone: true,
+							college: true,
+							grade: true,
+							aliPay: true,
+							year: true,
+							school: true,
+						}).get().then(res => {
+							var tmp = res.data
+							for (var l in tmp) {
+								nameList.push(tmp[l])
+							}
+							const newArray = []
+							for (var l = 0; l < tmp.length; l++) {
+								const item = {
+									id: l,
+									info: tmp[l],
+									excellent: true,
+									isCome: true,
+									feedback: ''
+								}
+								newArray.push(item)
+							}
+							console.log(newArray)
+							this.setData({
+								checkBox: newArray
+							})
+						})
+					}
 
-					})
 				})
 		}
 		console.log('onShow')
@@ -292,43 +319,63 @@ Page({
 			[],
 			[]
 		]
+		let reserved = [[], []]
 		//签到表
 		for (let i in this.data.signInList) {
-			uploadTask[0].push(this.uploadFile(this.data.signInList[i]))
+			if (this.data.signInList[i].includes('tmp')) {
+				uploadTask[0].push(this.uploadFile(this.data.signInList[i]))
+			}
+			else {
+				reserved[0].push(this.data.signInList[i])
+			}
+
 		}
 		//活动图片
 		for (let i in this.data.imgList) {
-			uploadTask[1].push(this.uploadFile(this.data.imgList[i]))
+			if (this.data.imgList[i].includes('tmp')) {
+				uploadTask[1].push(this.uploadFile(this.data.imgList[i]))
+			}
+			else {
+				reserved[1].push(this.data.imgList[i])
+			}
 		}
+		console.log(uploadTask)
+		console.log(reserved)
 		//等待签到表上传
+		wx.showLoading({
+			title: '上传中',
+		})
 		Promise.all(uploadTask[0])
 			.then(result => {
-				let signInList = result
+				let signInList = reserved[0].concat(result)
 				//等待活动图片上传
 				Promise.all(uploadTask[1])
 					.then(result => {
-						let imgList = result
-						db.collection('ActivityInfo')
-							.doc(this.data.id)
-							.update({
-								data: {
+						let imgList = reserved[1].concat(result)
+
+						wx.cloud.callFunction({
+							name: 'commentActivity',
+							data: {
+								collectionName: 'ActivityInfo',
+								docName: this.data.id,
+								//操作变量
+								commentForm: {
 									isFeedback: 1,
 									feedback: {
 										signInList,
-										membersInfo: this.data.checkBox,
+										membersInfo: this.data.checkBox ? this.data.checkBox : null,
 										imgList,
 									}
-								},
-								success: function (res) {
-
-									console.log('更新成功', res);
-									wx.navigateBack()
-									// 在此处执行其他操作
-								},
-								fail: function (error) {
-									console.error('更新失败', error);
 								}
-							})
+							}
+						}).then(res => {
+							wx.hideLoading()
+							console.log('更新成功', res);
+							wx.navigateBack()
+							// 在此处执行其他操作
+						})
+
+
 					})
 			})
 	},

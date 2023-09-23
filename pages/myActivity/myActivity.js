@@ -15,12 +15,17 @@ Page({
 	 */
 	onLoad(options) {
 		this.data.mode = options.mode
-		if (options.mode == 'comment') {
-			db.collection('ActivityInfo').where({
-				_openid: app.globalData.openid,
+		var filter = {
+			_openid: app.globalData.openid,
+			status: '2',
+		}
+		if (Number(app.globalData.position) >= 1) {
+			filter = {
 				status: '2',
-				isFeedback: db.command.neq(1)
-			}).field({
+			}
+		}
+		if (options.mode == 'comment') {
+			db.collection('ActivityInfo').where(filter).field({
 				_id: true,
 				actName: true,
 				serviceEndStamp: true,
