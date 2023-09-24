@@ -7,6 +7,9 @@ Page({
 	data: {
 		actions: [],
 		keyword: '',
+		showModal: true, // 是否显示模态框
+    showImageModal: false, // 是否显示图片和提示信息框
+    imageSrc: '/images/banner.png', // 图片链接，请替换为实际的图片链接
 	},
 
 	onLoad: function () {
@@ -243,5 +246,34 @@ Page({
 		} catch {
 			loading = false;
 		}
+	},
+	showModal(e) {
+		this.setData({
+			modalName: e.currentTarget.dataset.target
+		})
+	},
+	hideModal(e) {
+		this.setData({
+			modalName: null
+		})
+	},
+	handleNotHaveOption() {
+    this.setData({
+      modalName: null, // 隐藏模态框
+      showImageModal: true, // 显示图片和提示信息框
+    });
+	},
+
+		longTap: function (e) {
+			wx.previewImage({
+				urls: [e.currentTarget.dataset.url],
+				current: ''
+			})
+	},
+	hideImgmodal() {
+    this.setData({
+       // 隐藏模态框
+      showImageModal: false, // 显示图片和提示信息框
+		})
 	},
 })

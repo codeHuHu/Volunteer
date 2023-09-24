@@ -1,5 +1,14 @@
 /* pages/home/home.wxss */
 
+.mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.3); /* 半透明黑色背景 */
+  z-index: 9999; /* 设置遮罩层的层级，确保其位于最顶层 */
+}
 page{
 	min-height: 100%;
 }
@@ -219,4 +228,78 @@ z-index: 998;
 	height: 30px;
 	right: 10rpx;
 	top:5rpx;
+}
+
+.image-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+	flex-direction: column;
+	border-radius: 10px;
+	z-index: 10000;
+}
+.image-container {
+	background-color: rgba(99, 133, 206, 0.5); /* 背景色为半透明的灰色 */
+  padding: 2px;
+	border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.image-modal image {
+  width: 200px;
+	height: 200px;
+	/* box-shadow: 0 4px 12px rgba(68, 66, 66, 0.2); */
+}
+
+.image-modal text {
+  margin-top: 10px;
+}
+
+.box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(255, 255, 255); /* 内容框背景色为白色 */
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(98, 146, 201, 0.2); /* 使用阴影效果增加立体感 */
+  
+}
+
+/* 图片样式 */
+.box image {
+  width: 200px;
+	height: 200px;
+
+}
+
+/* 文本样式 */
+.box text {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #333;
+  text-align: center;
+}
+
+.close-button {
+	
+	position: absolute;
+	top:-2px;
+	right:8px;
+	width: 20px;
+	height: 20px;
+	font-size: 26px;
+	line-height: 1;
+	background-color: transparent;
+	border: none;
+	color: rgb(211, 102, 102);
+	cursor: pointer;
+	z-index: 99999;
 }

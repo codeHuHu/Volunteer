@@ -1,4 +1,14 @@
 /* pages/mine/mine.wxss */
+.mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5); /* 半透明黑色背景 */
+  z-index: 9999; /* 设置遮罩层的层级，确保其位于最顶层 */
+}
+
 .button{
 	position: absolute;
 	top:300rpx;
@@ -97,12 +107,15 @@ z-index: 998;
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
+	flex-direction: column;
+	background-color: rgb(255, 255, 255);
+	border-radius: 10px;
+	z-index: 10000;
 }
 .image-container {
-	background-color: rgba(88, 218, 120, 0.5); /* 背景色为半透明的灰色 */
+	background-color: rgba(35, 218, 80, 0.5); /* 背景色为半透明的灰色 */
   padding: 2px;
-
+	border-radius: 10px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -126,7 +139,7 @@ z-index: 998;
   background-color: rgb(255, 255, 255); /* 内容框背景色为白色 */
   padding: 10px;
   border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(255, 0, 0, 0.2); /* 使用阴影效果增加立体感 */
+  box-shadow: 0 4px 12px rgba(201, 98, 98, 0.2); /* 使用阴影效果增加立体感 */
 }
 
 /* 图片样式 */
