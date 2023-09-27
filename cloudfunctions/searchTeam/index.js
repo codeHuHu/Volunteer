@@ -16,7 +16,7 @@ exports.main = async (event, context) => {
     //const regExp = new RegExp(keyword, 'i'); // 不区分大小写
 		const query = {};
 		query[name] = db.RegExp({ regexp: keyword });
-
+		query['status'] = db.command.not(db.command.eq('0'))
     // 执行查询
     const result = await collection.where(query).get();
 

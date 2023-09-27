@@ -3,7 +3,7 @@
 
 
 <view class="up">
-	<image mode="aspectFill" src="/images/2-up.png" />
+	<image mode="aspectFill" src="cloud://volunteer-2ge0hjpsa1879e88.766f-volunteer-2ge0hjpsa1879e88-1314668114/2-up.png" />
 </view>
 
 
@@ -40,7 +40,7 @@
 		</view>
 	</view>
 
-	<view class="item"  bindtap="toTestPage">
+	<view class="item"  bindtap="toGift">
 		<view class="greencircle">
 			<view class="bar-icon">
 				<text class="cuIcon-present lg "></text>
@@ -70,8 +70,8 @@
 	<!-- <button class="joinvolunteer" bindtap="toregister">成为志愿者</button> -->
 <!-- </view> -->
 <view wx:if="{{actions.length}}">
-<block wx:for="{{actions}}" wx:key="index">
-	<view class="cu-card article {{isCard?'no-card':''}} margin">
+<block wx:for="{{actions}}" wx:key="index" >
+	<view class="cu-card article {{isCard?'no-card':''}} margin" style="position: relative;">
 		<view><image class="icon" src="/images/tabbar/sun.png"></image> </view>
 		<view class="cu-item shadow">
 			<view class="title">
@@ -94,7 +94,7 @@
 </block>
 </view>
 <view wx:else style="display: flex; justify-content: center; align-items: center;" >
-	<image mode="aspectFill"  style=" top:40rpx;width: 80%; opacity: .8;" src="/images/banner.png" />
+	<image mode="aspectFill"  style=" top:40rpx;width: 80%; opacity: .8;" src="cloud://volunteer-2ge0hjpsa1879e88.766f-volunteer-2ge0hjpsa1879e88-1314668114/banner.png" />
 </view>
 <!-- 轻提示 -->
 <view class="toast-fixed-center" hidden="{{!show}}" style="z-index: 99;">

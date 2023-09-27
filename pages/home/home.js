@@ -9,7 +9,7 @@ Page({
 		keyword: '',
 		showModal: true, // 是否显示模态框
     showImageModal: false, // 是否显示图片和提示信息框
-    imageSrc: '/images/banner.png', // 图片链接，请替换为实际的图片链接
+    imageSrc: 'cloud://volunteer-2ge0hjpsa1879e88.766f-volunteer-2ge0hjpsa1879e88-1314668114/banner.png', // 图片链接，请替换为实际的图片链接
 	},
 
 	onLoad: function () {

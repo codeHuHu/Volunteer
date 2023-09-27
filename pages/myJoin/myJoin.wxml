@@ -34,5 +34,5 @@
 
 <view wx:if="{{actionList.length<4}}">
 		<view style="display: flex; justify-content: center; align-items: center;" >
-	<image mode="aspectFill"  style=" top:280rpx;width: 80%; opacity: .8;" src="/images/banner.png" />
+	<image mode="aspectFill"  style="position: fixed; top:450rpx;width: 80%; opacity: .8;" src="cloud://volunteer-2ge0hjpsa1879e88.766f-volunteer-2ge0hjpsa1879e88-1314668114/banner.png" />
 </view></view>

@@ -58,7 +58,7 @@ Page({
 		} else {
 			db.collection('ActivityInfo').where({
 				_openid: app.globalData.openid,
-				'status': db.command.not(db.command.eq('0'))
+				status: db.command.not(db.command.eq('0'))
 			}).field({
 				_id: true,
 				actName: true,

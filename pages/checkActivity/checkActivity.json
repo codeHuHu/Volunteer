@@ -1,6 +1,6 @@
 {
 	"navigationBarTitleText": "审核发布",
 	"usingComponents": {
-		"binPage":"/pages/recycleBin/recycleBin"
+		
 	}
 }

@@ -314,6 +314,13 @@ Page({
 		})
 	},
 	commitfb() {
+		if(!this.data.id){
+			wx.showToast({
+				title: '请选择活动',
+				icon:'error'
+			})
+			return
+		}
 		console.log('执行提交中')
 		let uploadTask = [
 			[],

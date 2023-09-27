@@ -7,7 +7,7 @@ Page({
 	data: {
 		header: [{
 			name: '姓名',
-			come: '实到',
+			come: '出勤',
 			performance: '表现',
 			feedback: '评价'
 		}],
