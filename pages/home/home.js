@@ -9,7 +9,7 @@ Page({
 		keyword: '',
 		showModal: true, // 是否显示模态框
     showImageModal: false, // 是否显示图片和提示信息框
-    imageSrc: 'cloud://volunteer-2ge0hjpsa1879e88.766f-volunteer-2ge0hjpsa1879e88-1314668114/banner.png', // 图片链接，请替换为实际的图片链接
+    imageSrc: 'cloud://volunteer-4gaukcmqce212f11.766f-volunteer-4gaukcmqce212f11-1321274883/kefu.jpg', // 图片链接，请替换为实际的图片链接
 	},
 
 	onLoad: function () {
@@ -104,9 +104,8 @@ Page({
 					if (res.data.length) {
 						app.globalData.isLogin = true
 						wx.setStorageSync('user_status', [res.data[0]._openid, app.globalData.isLogin])
-						wx.showToast({
-							title: '你已注册成为志愿者',
-							icon: 'none'
+						wx.navigateTo({
+							url: '/pages/newActivity/newActivity',
 						})
 					} else {
 						wx.navigateTo({
@@ -148,7 +147,7 @@ Page({
 	},
 	toNewActivity() {
 		if (!app.globalData.isLogin) {
-			this.setShow("error", "未注册");
+			this.setShow("error", "请先前往个人中心注册");
 			return 0
 		}
 		if (this.byhistory()) {
@@ -221,7 +220,7 @@ Page({
 		}
 
 	},
-	setShow(status, message, time = 500, fun = false) {
+	setShow(status, message, time = 1500, fun = false) {
 		if (loading) {
 			return
 		}

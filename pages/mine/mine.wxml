@@ -12,7 +12,7 @@
 					<view class="">
 						<view class="cu-avatar xl round">
 							<view class="cu-avatar lg">
-								<image class="cu-avatar round lg" src="cloud://volunteer-2ge0hjpsa1879e88.766f-volunteer-2ge0hjpsa1879e88-1314668114/QR_CODE/青协头像.png" mode="widthFix" style="max-height: 360rpx;"></image>
+								<image class="cu-avatar round lg" src="cloud://volunteer-4gaukcmqce212f11.766f-volunteer-4gaukcmqce212f11-1321274883/青协头像.png" mode="widthFix" style="max-height: 360rpx;"></image>
 							</view>
 						</view>
 					</view>
@@ -50,7 +50,7 @@
 
 		<view class="bg-img margin-lr" style="min-height: 35vh;">
 			<view class="bg-img">
-				<image class="" src="cloud://volunteer-2ge0hjpsa1879e88.766f-volunteer-2ge0hjpsa1879e88-1314668114/1-up1.png" mode="aspectFill" style="width: 100%;">
+				<image class="" src="cloud://volunteer-4gaukcmqce212f11.766f-volunteer-4gaukcmqce212f11-1321274883/1-up1.png" mode="aspectFill" style="width: 100%;">
 					<view class="margin-left cu-tag round bg-green margin-top-xs button" style="width: 20%; font-weight: bold;" bindtap="toregister">
 						注册
 					</view>
@@ -103,7 +103,7 @@
 			</view>
 		</view>
 		<view style=" margin-top:100rpx; display: flex; justify-content: center; align-items: center; height: 120rpx;">
-		<image mode="aspectFill" style="z-index: -1; width: 80%; opacity: .8;" src="cloud://volunteer-2ge0hjpsa1879e88.766f-volunteer-2ge0hjpsa1879e88-1314668114/banner.png" />
+		<image mode="aspectFill" style="z-index: -1; width: 80%; opacity: .8;" src="cloud://volunteer-4gaukcmqce212f11.766f-volunteer-4gaukcmqce212f11-1321274883/banner.png" />
 	</view>
 	</view>
 </scroll-view>
@@ -136,7 +136,7 @@
 	<button class="close-button" bindtap="hideImgmodal">×</button>
 	<view class="image-container" >
 		<view class="box">
-			<image src="{{imageSrc}}" mode="aspectFit" bindlongpress="longTap" data-url="{{imageSrc}}"></image>
+			<image src="{{imageSrc}}" mode="aspectFit" bindtap="longTap" data-url="{{imageSrc}}"></image>
 			<text>请联系客服建立i志愿链接</text>
 		</view>
 	</view>

@@ -3,7 +3,7 @@
 
 
 <view class="up">
-	<image mode="aspectFill" src="cloud://volunteer-2ge0hjpsa1879e88.766f-volunteer-2ge0hjpsa1879e88-1314668114/2-up.png" />
+	<image mode="aspectFill" src="cloud://volunteer-4gaukcmqce212f11.766f-volunteer-4gaukcmqce212f11-1321274883/2-up.png" />
 </view>
 
 
@@ -94,11 +94,11 @@
 </block>
 </view>
 <view wx:else style="display: flex; justify-content: center; align-items: center;" >
-	<image mode="aspectFill"  style=" top:40rpx;width: 80%; opacity: .8;" src="cloud://volunteer-2ge0hjpsa1879e88.766f-volunteer-2ge0hjpsa1879e88-1314668114/banner.png" />
+	<image mode="aspectFill"  style=" top:40rpx;width: 80%; opacity: .8;" src="cloud://volunteer-4gaukcmqce212f11.766f-volunteer-4gaukcmqce212f11-1321274883/banner.png" />
 </view>
 <!-- 轻提示 -->
 <view class="toast-fixed-center" hidden="{{!show}}" style="z-index: 99;">
-	<view class="radius-lg padding animation-slide-top text-lg {{status == 'success' ? 'bg-green light':'bg-red light'}}">
+	<view class="radius-lg padding-xs animation-slide-top  {{status == 'success' ? 'bg-green light':'bg-red light'}}" style="width:auto ">
 		<text class="cuIcon-info"></text> {{message}}
 	</view>
 </view>
@@ -126,7 +126,7 @@
 	<button class="close-button" bindtap="hideImgmodal">×</button>
 	<view class="image-container" bindtap="hideImgModal">
 		<view class="box">
-			<image src="{{imageSrc}}" mode="aspectFit" bindlongpress="longTap" data-url="{{imageSrc}}"></image>
+			<image src="{{imageSrc}}" mode="aspectFit" bindtap="longTap" data-url="{{imageSrc}}"></image>
 			<text>请联系客服建立i志愿链接</text>
 		</view>
 	</view>

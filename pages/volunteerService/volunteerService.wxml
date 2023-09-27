@@ -34,12 +34,15 @@
  height:{{show?(selectData.length>5?300:selectData.length*60):0}}rpx;-----给改变下拉框高度，实现下拉框的显示隐藏，每个下拉选项的高度为60，下拉框的最大高度这里设置的是300，所以这里写成当数据长度大于5时，下拉框高度为300，反之下拉框高度为数据长度乘以60
  index==selectData.length-1&&"border:0;"-----取消下拉选项的最后一个的下边框 -->
 <view wx:if = "{{!actionList.length}}" class="margin-tb-sm padding-top-lg padding-bottom-xl " style="position: relative;">
-  <view class="flex justify-center text-xsl" style="position:absolute; left: 260rpx; top:10rpx">
-    <view class="cuIcon-searchlist text-gray icon"></view>
+  <view class="flex justify-center text-xsl" style="position:absolute; left: 380rpx; top:90rpx">
+    <view class="cuIcon-searchlist text-gray  icon"></view>
   </view>
   <view class="flex justify-center padding-top-sm" >
-    <view class="text-gray text">暂无数据</view>
+    <view class="text-gray text-bold">暂无数据</view>
   </view>
+	<view style="display: flex; justify-content: center; align-items: center;" >
+	<image mode="aspectFill"  style=" top:330rpx;width: 80%; opacity: .7;" src="cloud://volunteer-4gaukcmqce212f11.766f-volunteer-4gaukcmqce212f11-1321274883/banner.png" />
+</view>
 </view>
 
 <block wx:for="{{actionList}}" wx:key="index">

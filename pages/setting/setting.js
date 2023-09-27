@@ -181,8 +181,8 @@ Page({
 	},
 	showQRcode: function () {
 		wx.previewImage({
-			urls: ['/images/1-up1.png'],
-			current: '/images/1-up1.png',
+			urls: ['cloud://volunteer-4gaukcmqce212f11.766f-volunteer-4gaukcmqce212f11-1321274883/kefu.jpg'],
+			current: '',
 		})
 	},
 	/**
