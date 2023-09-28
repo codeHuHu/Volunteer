@@ -114,7 +114,7 @@
 		<view class="padding-xl text-left justify-center flex">
 			请确认已有i志愿服务的发布活动权限
 		</view>
-		<view class="cu-bar bg-white" catchtap="hideModal">
+		<view class="cu-bar bg-white">
 			<view class="action flex-sub solid-left" bindtap="handleNotHaveOption">
 				<text>未有</text>
 			</view>

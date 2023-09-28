@@ -1,3 +1,5 @@
+const { noneParamsEaseFuncs } = require("XrFrame/xrFrameSystem")
+
 // pages/home/home.js
 const app = getApp()
 const db = wx.cloud.database()
@@ -150,7 +152,11 @@ Page({
 			this.setShow("error", "请先前往个人中心注册");
 			return 0
 		}
+		
 		if (this.byhistory()) {
+			this.setData({
+				modalName:null
+			});
 			wx.navigateTo({
 				url: '/pages/newActivity/newActivity',
 			})

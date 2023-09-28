@@ -109,7 +109,8 @@ Page({
 			hours: thours,
 			minutes: tminutes,
 			isEnd: res.deadTimeStamp - new Date().getTime() <= 0 ? 1 : 0,
-			isPintuan: res.isPintuan
+			isPintuan: res.isPintuan,
+			checkMode: Number(res.status) <= 0 ? 1 : 0
 		})
 	},
 	adjustStatus(res) {

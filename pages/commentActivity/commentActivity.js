@@ -4,9 +4,6 @@ const app = getApp()
 
 Page({
 
-	/**
-	 * 页面的初始数据
-	 */
 	data: {
 		picker: '',
 		index1: '',
@@ -29,50 +26,10 @@ Page({
 		count: 0,
 		id: ''
 	},
-
-	/**
-	 * 生命周期函数--监听页面加载
-	 */
 	onLoad: function () {
-		// var tmpPicker = []
-		// var that = this
-		// db.collection('ActivityInfo').where({
-		// 	_openid: app.globalData.openid
-		// }).field({
-		// 	_id: true,
-		// 	actName: true,
-		// 	joinMembers: true,
-		// 	_openid: true
-		// })
-		// 	.get()
-		// 	.then(res => {
-		// 		that.setData({
-		// 			actionList: res.data
-		// 		})
-		// 		for (var i in that.data.actionList) {
-		// 			tmpPicker.push(that.data.actionList[i].actName)
-		// 		}
-		// 		console.log(tmpPicker)
-		// 		that.setData({
-		// 			picker: tmpPicker
-		// 		})
-
-		// 	}).catch(err => {
-		// 		console.log(err);
-		// 	})
-
 	},
-
-	/**
-	 * 生命周期函数--监听页面初次渲染完成
-	 */
 	onReady() {
-		console.log('onReady')
 	},
-
-	/**
-	 * 生命周期函数--监听页面显示
-	 */
 	onShow() {
 		if (this.data.activityId && this.data.activityId != this.data.id) {
 			this.data.id = this.data.activityId
@@ -120,6 +77,7 @@ Page({
 							imgList: [],
 							signInList: []
 						})
+						//db.command.in(members)
 						db.collection('UserInfo').where({
 							_openid: db.command.in(members)
 						}).field({
@@ -159,9 +117,6 @@ Page({
 		}
 		console.log('onShow')
 	},
-	/**
-	 * 生命周期函数--监听页面隐藏
-	 */
 	onHide() {
 		console.log('onHide')
 	},
@@ -170,23 +125,12 @@ Page({
 			url: '/pages/myActivity/myActivity?mode=comment',
 		})
 	},
-	/**
-	 * 页面相关事件处理函数--监听用户下拉动作
-	 */
 	onPullDownRefresh() {
 
 	},
-
-	/**
-	 * 页面上拉触底事件的处理函数
-	 */
 	onReachBottom() {
 
 	},
-
-	/**
-	 * 用户点击右上角分享
-	 */
 	onShareAppMessage() {
 
 	},
@@ -314,10 +258,10 @@ Page({
 		})
 	},
 	commitfb() {
-		if(!this.data.id){
+		if (!this.data.id) {
 			wx.showToast({
 				title: '请选择活动',
-				icon:'error'
+				icon: 'error'
 			})
 			return
 		}
