@@ -1,4 +1,4 @@
-const { noneParamsEaseFuncs } = require("XrFrame/xrFrameSystem")
+// const { noneParamsEaseFuncs } = require("XrFrame/xrFrameSystem")
 
 // pages/home/home.js
 const app = getApp()
