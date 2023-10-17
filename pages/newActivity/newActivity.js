@@ -3,20 +3,14 @@ const db = wx.cloud.database()
 let loading = false;
 const app = getApp()
 Page({
-
-	/**
-	 * 页面的初始数据
-	 */
 	data: {
-		currentDate: '',
-		beginDate: '',
-		deadDate: '',
-		endDate: '',
-		startTime: '',
-		endTime: '',
-		deadTime: '',
-		tagList: ['党建引领', '乡村振兴', '新时代文明实践（文化/文艺/体育）', '科普科教', '社区/城中村治理', '环境保护', '弱势群体帮扶', '志愿驿站值班', '其他'],
-		picker: [''],
+		serviceTimeSpan: [],//服务时间段
+		beginDate: '',//服务阶段开始日期(用于添加服务时间段)
+		startTime: '',//服务阶段开始时刻(用于添加服务时间段)
+		endTime: '',//服务阶段结束时刻(用于添加服务时间段)
+		deadDate: '',//截止日期
+		deadTime: '',//截止时刻
+
 		inputValue: '', // 清空输入框的值
 		showLightButton: [], // 控制按钮显示高光
 		actName: '',
@@ -26,18 +20,19 @@ Page({
 		intro: '',
 		temp_imgList: [], //群二维码
 		temp_imgList2: [], //i志愿报名码
-		//三个时间戳
-		startTimeStamp: 0,
-		endTimeStamp: 0,
-		deadTimeStamp: 0
+		tagList: ['党建引领', '乡村振兴', '新时代文明实践（文化/文艺/体育）', '科普科教', '社区/城中村治理', '环境保护', '弱势群体帮扶', '志愿驿站值班', '其他'],
+		picker: [
+			'方案策划',
+			'现场执行',
+			'美工设计',
+			'新媒体宣传',
+			'文案撰写',
+			'主持人',
+			'小队长',
+			'其他（可自由编辑)'
+		],
 	},
-
-	/**
-	 * 生命周期函数--监听页面加载
-	 */
 	onLoad: function () {
-		// const currentDate = new Date().toLocaleDateString('en-GB', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/\//g, '-');
-		//const currentDate = new Date()
 		this.setData({
 			holder: app.globalData.name,
 			phone: app.globalData.phone,
@@ -49,81 +44,19 @@ Page({
 			hour: '2-digit',
 			minute: '2-digit'
 		}).slice(0, 5);
-		var teamPicker = ['不勾选队伍'].concat(app.globalData.team)
 		console.log(currentDate, currentTime)
 		this.setData({
-			currentDate: currentDate,
-			beginDate: currentDate,
-			startTime: currentTime,
-			endTime: currentTime,
-			deadDate: currentDate,
-			deadTime: currentTime,
-			picker: teamPicker
+			beginDate: currentDate,//服务开始日期
+			startTime: currentTime,//服务阶段开始时刻
+			endTime: "23:59",//服务阶段结束时刻
+			deadDate: currentDate,//截止日期
+			deadTime: currentTime,//截止时刻
 		});
 	},
-
-	/**
-	 * 生命周期函数--监听页面初次渲染完成
-	 */
 	onReady() {
-
+		this.handleTotalNum()
 	},
-
-	/**
-	 * 生命周期函数--监听页面显示
-	 */
-	onShow() {
-
-	},
-
-	/**
-	 * 生命周期函数--监听页面隐藏
-	 */
-	onHide() {
-
-	},
-
-	/**
-	 * 生命周期函数--监听页面卸载
-	 */
-	onUnload() {
-
-	},
-
-	/**
-	 * 页面相关事件处理函数--监听用户下拉动作
-	 */
-	onPullDownRefresh() {
-
-	},
-
-	/**
-	 * 页面上拉触底事件的处理函数
-	 */
-	onReachBottom() {
-
-	},
-
-	/**
-	 * 用户点击右上角分享
-	 */
-	onShareAppMessage() {
-
-	},
-	test(){
-		console.log('test')
-	},
-	showModal(e) {
-		var tmp = e.currentTarget.dataset.target
-		if (tmp == 'teamName') {
-			console.log('teamName')
-		} 
-		this.setData({
-			modalName: tmp
-		})
-	},
-	hideModal(e) {
-		var a = e.currentTarget.dataset.target
+	hideModal() {
 		this.setData({
 			modalName: null
 		})
@@ -141,73 +74,40 @@ Page({
 			return; // 结束函数执行，以免继续执行下方的 setData
 		}
 	},
-
+	//添加时间段的日期选择时
 	bindStartChange: function (e) {
-		let combinedStartStr = e.detail.value + ' ' + this.data.startTime;
-		let combinedEndStr = e.detail.value + ' ' + this.data.endTime;
-		let start = new Date(combinedStartStr).getTime();
-		let end = new Date(combinedEndStr).getTime();
-		let dead = e.detail.value + ' ' + this.data.deadTime;
-		let deadStamp = new Date(dead).getTime()
-
 		this.setData({
 			beginDate: e.detail.value,
 			deadDate: e.detail.value,
-			startTimeStamp: start,
-			endTimeStamp: end,
-			deadTimeStamp: deadStamp
 		})
 	},
-	binddeadChange: function (e) {
-		let dead = e.detail.value + ' ' + this.data.deadTime;
-		let deadStamp = new Date(dead).getTime()
-
-		this.setData({
-			deadDate: e.detail.value,
-			deadTimestamp: deadStamp
-		})
-	},
-
+	//添加时间段的开始时间
 	bindSTimeChange: function (e) {
-		let combinedStartStr = this.data.beginDate + ' ' + e.detail.value;
-		let combinedEndStr = this.data.beginDate + ' ' + this.data.endTime;
-		let start = new Date(combinedStartStr).getTime();
-		let end = new Date(combinedEndStr).getTime();
-		this.checkTime(start, end)
-		let dead = this.data.deadDate + ' ' + e.detail.value;
-		let deadStamp = new Date(dead).getTime()
 		this.setData({
 			startTime: e.detail.value,
 			deadTime: e.detail.value,
-			startTimeStamp: start,
-			endTimeStamp: end,
-			deadTimeStamp: deadStamp
 		})
 	},
 	bindETimeChange: function (e) {
 		let combinedStartStr = this.data.beginDate + ' ' + this.data.startTime;
 		let combinedEndStr = this.data.beginDate + ' ' + e.detail.value;
-		let start = new Date(combinedStartStr).getTime();
-		let end = new Date(combinedEndStr).getTime();
-		this.checkTime(start, end);
-		let dead = this.data.deadDate + ' ' + this.data.deadTime;
-		let deadStamp = new Date(dead).getTime()
+		this.checkTime(new Date(combinedStartStr).getTime(), new Date(combinedEndStr).getTime());
 		this.setData({
 			endTime: e.detail.value,
-			endTimeStamp: end,
-			startTimeStamp: start,
-			deadTimeStamp: deadStamp
 		})
 	},
-	binddeadTimeChange: function (e) {
-		let dead = this.data.deadDate + ' ' + e.detail.value;
-		let deadStamp = new Date(dead).getTime()
+	//填写截止日期的时刻
+	bindDeadTimeChange: function (e) {
 		this.setData({
 			deadTime: e.detail.value,
-			deadtimestamp: deadStamp
 		})
 	},
-
+	//填写截止日期的日期
+	bindDeadDateChange: function (e) {
+		this.setData({
+			deadDate: e.detail.value,
+		})
+	},
 	handlemyTagClick(e) {
 		const index = e.currentTarget.dataset.index;
 		var lb = [];
@@ -219,8 +119,6 @@ Page({
 
 		console.log(e.currentTarget.dataset.index)
 	},
-
-
 	handleHiddenClick(e) {
 		const index = e.currentTarget.dataset.index; // 获取点击的标签索引
 		const tagList = this.data.tagList;
@@ -235,12 +133,6 @@ Page({
 			showCloseButton: false,
 		});
 
-	},
-
-	PickerChange(e) {
-		this.setData({
-			index: e.detail.value
-		})
 	},
 	getactName(e) {
 		console.log(e.detail.value)
@@ -280,9 +172,15 @@ Page({
 			intro: e.detail.value
 		})
 	},
-	getTeamName(e){
+	getTeamName(e) {
 		this.setData({
 			teamName: e.detail.value
+		})
+	},
+	getElsePositon(e) {
+		console.log(e.detail.value)
+		this.setData({
+			elsePosition: e.detail.value
 		})
 	},
 	sendNew(e) {
@@ -311,30 +209,35 @@ Page({
 				Promise.all(uploadTask[1])
 					.then(result => {
 						const iZhiYuan = result
+						const stamps = this.generateStamp()
+						let data = {
+							//string
+							actName: this.data.actName,
+							holder: this.data.holder,
+							phone: this.data.phone,
+							intro: this.data.intro,
+							status: this.data.myPos >= 1 ? '1' : '0', // 如果pos为1，活动状态为0：待审核，否则为1：进行中
+							address: this.data.address,
+							//number
+							outJoin: 0,
+							outNum: this.data.outNum,
+
+							serviceTimeSpan: this.data.serviceTimeSpan,
+
+							serviceStartStamp: stamps[0],//服务开始时间戳
+							serviceEndStamp: stamps[1],//服务结束时间戳
+							deadTimeStamp: stamps[2],//截止报名时间戳
+
+							isPintuan: Number(this.data.isPintuan),
+							tag: this.data.tagList[this.data.tagIndex],
+
+							teamName: this.data.teamName,
+							qr_code,
+							iZhiYuan
+						}
+						console.log(data)
 						db.collection('ActivityInfo').add({
-							data: {
-								//string
-								actName: this.data.actName,
-								holder: this.data.holder,
-								phone: this.data.phone,
-								intro: this.data.intro,
-								status: this.data.myPos >= 1 ? '1' : '0', // 如果pos为1，活动状态为0：待审核，否则为1：进行中
-								address: this.data.address,
-								//number
-								outJoin: 0,
-								outNum: this.data.outNum,
-
-								serviceStartStamp: this.data.startTimeStamp,
-								serviceEndStamp: this.data.endTimeStamp,
-								deadTimeStamp: this.data.deadTimeStamp,
-								
-								isPintuan: Number(this.data.isPintuan),
-								tag: this.data.tagList[this.data.tagIndex],
-
-								teamName:this.data.teamName,
-								qr_code,
-								iZhiYuan
-							},
+							data: data,
 							success(res) {
 								if (that.data.myPos == 1) {
 									wx.showToast({
@@ -503,15 +406,6 @@ Page({
 				return 0
 			}
 		}
-		if (this.data.startTimeStamp < this.data.deadTimeStamp) {
-			this.setShow("error", "截止时间有误");
-			return 0
-		}
-		if (this.data.endTimeStamp < this.data.startTimeStamp) {
-			this.setShow("error", "开始和结束时间有误");
-			return 0
-		}
-		//return 1
 	},
 	/**
 	 * 轻提示展示
@@ -546,4 +440,196 @@ Page({
 			loading = false;
 		}
 	},
+	showModal(e) {
+		var tmp = e.currentTarget.dataset.target
+		if (tmp == 'teamName') {
+			console.log('teamName')
+		}
+		if (tmp == 'addPosition') {
+			this.setData({
+				serviceSpanIndex_active: e.currentTarget.dataset.servicespanindex
+			})
+		}
+		this.setData({
+			modalName: tmp
+		})
+	},
+	// 点击列表,收缩与展示
+	click(event) {
+		const index = event.currentTarget.dataset.index;
+		const {
+			serviceTimeSpan
+		} = this.data;
+		if (serviceTimeSpan[index].checked == true) {
+			serviceTimeSpan[index].checked = false
+		} else {
+			serviceTimeSpan[index].checked = true
+		}
+		this.setData({
+			serviceTimeSpan
+		});
+	},
+	//生成用于提交数据库表单的时间戳
+	generateStamp() {
+		let tempList = this.data.serviceTimeSpan
+		let serviceStartStamp = 0
+		let serviceEndStamp = 0
+		let deadTimeStamp = new Date(this.data.deadDate + ' ' + this.data.deadTime).getTime()
+		for (let i in tempList) {
+			//服务开始时间戳
+			let dateTime = tempList[i].date + ' ' + tempList[i].time.split('-')[0]
+			let stamp = new Date(dateTime).getTime()
+			if (i == 0 || stamp < serviceStartStamp) {
+				serviceStartStamp = stamp
+			}
+			//服务结束时间戳
+			dateTime = tempList[i].date + ' ' + tempList[i].time.split('-')[1]
+			stamp = new Date(dateTime).getTime()
+			if (i == 0 || stamp > serviceEndStamp) {
+				serviceEndStamp = stamp
+			}
+		}
+		return [serviceStartStamp, serviceEndStamp, deadTimeStamp]
+	},
+	//改变选择岗位索引
+	positionPickerChange(e) {
+		console.log(e.detail.value)
+		this.setData({
+			positionPickerIndex: e.detail.value
+		})
+	},
+	//添加服务时间段
+	addServiceSpan() {
+		let tempSpan = {
+			date: this.data.beginDate,
+			time: this.data.startTime + "-" + this.data.endTime,
+			positions: [],
+			checked: false
+		}
+		let tempList = this.data.serviceTimeSpan
+		tempList.push(tempSpan)
+		this.setData({
+			endTime: "23:59",
+			serviceTimeSpan: tempList
+		})
+		this.handleTotalNum();
+		this.hideModal()
+	},
+	//删除时间段
+	deleteServiceSpan(e) {
+		const that = this
+		wx.showModal({
+			title: '提示',
+			content: '是否要删除此时间段',
+			success(res) {
+				if (res.confirm) {
+					let tempList = that.data.serviceTimeSpan
+					tempList.splice(e.currentTarget.dataset.index, 1)
+					that.setData({
+						serviceTimeSpan: tempList
+					})
+					setTimeout(() => {
+						that.handleTotalNum();
+					}, 200);
+				} else if (res.cancel) {
+					console.log('用户点击取消')
+				}
+			}
+		})
+	},
+	//添加岗位
+	addPosition() {
+		let span = this.data.serviceSpanIndex_active
+		let picker = this.data.positionPickerIndex
+		if (span >= 0 && picker >= 0) {
+			let tempPos = {
+				//判断是已有的岗位还是自定义岗位
+				name: picker == this.data.picker.length - 1 ? this.data.elsePosition : this.data.picker[picker],
+				number: 1,
+				joined: 0
+			}
+			let tempList = this.data.serviceTimeSpan
+			tempList[span]['positions'].push(tempPos)
+			tempList[span]['checked'] = true
+			this.setData({
+				serviceTimeSpan: tempList
+			})
+		}
+		this.handleTotalNum();
+		this.hideModal()
+	},
+	//删除岗位
+	deletePosition(e) {
+		const that = this
+		wx.showModal({
+			title: '提示',
+			content: '是否要删除此岗位',
+			success(res) {
+				if (res.confirm) {
+					let span = e.currentTarget.dataset.sindex
+					let position = e.currentTarget.dataset.pindex
+					if (span >= 0 && position >= 0) {
+						let tempList = that.data.serviceTimeSpan
+						tempList[span]['positions'].splice(position, 1)
+						that.setData({
+							serviceTimeSpan: tempList
+						})
+					}
+					setTimeout(() => {
+						that.handleTotalNum();
+					}, 200);
+
+				} else if (res.cancel) {
+					console.log('用户点击取消')
+				}
+			}
+		})
+
+
+	},
+	//岗位人数变动
+	changePosNum(e) {
+		let span = e.currentTarget.dataset.sindex
+		let position = e.currentTarget.dataset.pindex
+		let op = e.currentTarget.dataset.op
+		if (span < 0 || position < 0) {
+			console.log('未知错误');
+			return
+		}
+		if (op == 'increase') {
+			let tempList = this.data.serviceTimeSpan
+			tempList[span]['positions'][position]['number'] += 1
+			this.setData({
+				serviceTimeSpan: tempList
+			})
+		} else if (op == 'decrease') {
+			let tempList = this.data.serviceTimeSpan
+			tempList[span]['positions'][position]['number'] -= 1
+			//归零操作
+			if (tempList[span]['positions'][position]['number'] < 0) {
+				tempList[span]['positions'][position]['number'] = 0
+			}
+			this.setData({
+				serviceTimeSpan: tempList
+			})
+		} else {
+
+		}
+
+		this.handleTotalNum();
+
+	},
+	//处理总人数
+	handleTotalNum() {
+		let tempList = this.data.serviceTimeSpan
+		let total = 0;
+		for (let i in tempList) {
+			for (let j in tempList[i]['positions']) {
+				total += tempList[i].positions[j].number
+			}
+		}
+		this.setData({
+			outNum: total
+		})
+	}
 })

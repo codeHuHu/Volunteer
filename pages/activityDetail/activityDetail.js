@@ -74,9 +74,11 @@ Page({
 			.doc(id)
 			.watch({
 				onChange: function (snapShot) {
+					//console.log(snapShot)
 					that.adjustStatus(snapShot.docs[0])
 					that.setData({
-						actions: snapShot.docs[0]
+						actions: snapShot.docs[0],
+						serviceTimeSpan:snapShot.docs[0].serviceTimeSpan
 					})
 				},
 				onError: function (err) {
@@ -110,7 +112,8 @@ Page({
 			minutes: tminutes,
 			isEnd: res.deadTimeStamp - new Date().getTime() <= 0 ? 1 : 0,
 			isPintuan: res.isPintuan,
-			checkMode: Number(res.status) <= 0 ? 1 : 0
+			checkMode: Number(res.status) <= 0 ? 1 : 0,
+			serviceTimeSpan:res.serviceTimeSpan
 		})
 	},
 	adjustStatus(res) {
@@ -519,5 +522,20 @@ Page({
 				}
 			}
 		})
-	}
+	},
+	// 点击列表,收缩与展示
+	click(event) {
+		const index = event.currentTarget.dataset.index;
+		const {
+			serviceTimeSpan
+		} = this.data.actions;
+		if (serviceTimeSpan[index].checked == true) {
+			serviceTimeSpan[index].checked = false
+		} else {
+			serviceTimeSpan[index].checked = true
+		}
+		this.setData({
+			serviceTimeSpan
+		});
+	},
 })

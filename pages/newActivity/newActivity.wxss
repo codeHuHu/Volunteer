@@ -1,5 +1,12 @@
+.cu-form-group picker::after {
+	content: "";
+  }
+
+.cu-list .menu .card-menu .new_activit{
+	background-color: rgb(16, 49, 38);
+}
 .new_activity {
-	margin: 10rpx 30rpx;
+	margin: 2rpx 2rpx;
 	height: 100%;
 	background-color: #fff;
 }
@@ -17,7 +24,7 @@
 .newName {
 	display: inline-flex;
 	width: 400rpx;
-	border: solid 1rpx #ddd;
+	border-bottom: solid 1rpx #d48d8d;
 }
 
 .new_date {
@@ -73,8 +80,8 @@
 
 .tel {
 	display: inline-flex;
-	width: 330rpx;
-	border: solid 1rpx #ddd;
+	width: 300rpx;
+	border-bottom: solid 1rpx #ddd;
 }
 
 

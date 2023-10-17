@@ -28,7 +28,6 @@
 		<text class="text-df ">{{actions.teamName}}</text>
 	</view>
 </view>
-
 <view>
 	<view class="margin-sm radius-lg bg-white static">
 		<!-- 分享按钮 -->
@@ -43,6 +42,37 @@
 		<view class="padding flex  justify-between">
 			<text class="">{{isPintuan==1?'拼团':'报名'}}人数</text>
 			<text class="text-df"> {{actions.outJoin}}/{{actions.outNum}}</text>
+		</view>
+	</view>
+	<view class="margin-sm radius-lg bg-white static">
+		<view class="solid-bottom text-lg text-bold padding text-black">服务时间段</view>
+		<!-- 服务时间段列表 -->
+		<view class="cu-list menu" wx:for="{{serviceTimeSpan}}" wx:key="item" wx:for-index="index">
+			<view class="cu-item">
+				<!-- 时间段 -->
+				<view class="content">
+					<view class="text-lg text-bold">{{item['time']}}</view>
+					<view class="text-sm text-gray">{{item['date']}} </view>
+				</view>
+				<!-- 折叠箭头 -->
+				<view class="action margin-left-lg text-grey" bindtap="click" data-index="{{index}}">
+					<text class="cuIcon-{{item['checked'] ? 'unfold' : 'right'}}">{{item['checked'] ? '收回' : '展开'}}</text>
+				</view>
+			</view>
+			<!-- 岗位内容 -->
+			<view wx:if="{{item.positions.length}}" class="cu-item {{item['checked'] ? '' : 'piano-hidden-content'}}" wx:for="{{item.positions}}" wx:for-index="pindex" wx:for-item="child" wx:key="item">
+				<view class="content flex justify-around">
+					<!-- 岗位名称 -->
+					<view class="flex-treble flex justify-center text-sm text-black ">
+						<text>{{ child['name'] }}</text>
+					</view>
+					<!-- 步进器 -->
+					
+					<view class="flex-twice flex-treble flex justify-center align-center text-lg">
+						<text class="text-df"> {{child.joined}}/{{child.number}}</text>
+					</view>
+				</view>
+			</view>
 		</view>
 	</view>
 </view>
@@ -213,7 +243,7 @@
 			</swiper-item>
 			<swiper-item wx:if="{{!actions.qr_code}}" wx:key="index" class="bg-img" style="height: 360rpx;" show-menu-by-longpress="true">
 				<view class="cu-bar justify-center text-white">
-					<image class="margin-top" src="cloud://volunteer-2ge0hjpsa1879e88.766f-volunteer-2ge0hjpsa1879e88-1314668114/QR_CODE/青协头像.png" bindtap="previewImage" data-index="{{index}}" mode="aspectFit" />
+					<image class="margin-top" src="" bindtap="previewImage" data-index="{{index}}" mode="aspectFit" />
 				</view>
 				<view class="cu-tag cancleButton bg-white round button" catchtap="hideModal">
 					<text class="cuIcon-close text-xl text-bold text-black"></text>
@@ -259,7 +289,7 @@
 			</swiper-item>
 			<swiper-item wx:if="{{!actions.qr_code}}" wx:key="index" class="bg-img" style="height: 360rpx;" show-menu-by-longpress="true">
 				<view class="cu-bar justify-center text-white">
-					<image class="margin-top" src="cloud://volunteer-2ge0hjpsa1879e88.766f-volunteer-2ge0hjpsa1879e88-1314668114/QR_CODE/青协头像.png" bindtap="previewImage" data-index="{{index}}" mode="aspectFit" />
+					<image class="margin-top" src="" bindtap="previewImage" data-index="{{index}}" mode="aspectFit" />
 				</view>
 				<view class="cu-tag cancleButton bg-white round button" catchtap="hideModal">
 					<text class="cuIcon-close text-xl text-bold text-black"></text>

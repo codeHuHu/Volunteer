@@ -1,4 +1,3 @@
-<!--pages/newActivity/newActivity.wxml-->
 <view class="cu-list menu card-menu new_activity">
 	<form class="new_activity">
 		<view class="cu-form-group">
@@ -22,7 +21,7 @@
 			<view class="title inteam">活动名称:</view>
 			<input class="newName" placeholder="请输入名称" bindinput="getactName" model:value="{{actName}}" />
 		</view>
-		<view class="cu-form-group" style="justify-content: center;">
+		<view class="cu-form-group" style="justify-content: between;">
 			<view style="display: flex;align-items: center; ">
 				<view class="title inteam">负责人:</view>
 				<input bindinput="getholder" placeholder="{{holder}}" disabled="1" model:value="" />
@@ -32,44 +31,73 @@
 				<input class="tel" bindinput="getPhone" placeholder="{{phone}}" disabled="1" />
 			</view>
 		</view>
-		<!-- <view class="cu-form-group">
-			<view class="title">服务组织:</view>
-			<picker bindchange="PickerChange" value="{{index}}" range="{{picker}}">
-				<view class="picker ">
-					{{index?picker[index]:'请选择组织单位'}}
-				</view>
-			</picker>
-		</view> -->
 		<view wx:if="{{isPintuan}}" class="cu-form-group flex justify-between">
 			<view class="flex">
 				<view class="title outteam">{{isPintuan==1?'成团':'报名'}}人数:</view>
-				<input class="title inteam" maxlength="3" bindinput="getoutNum" placeholder="{{outNum}}"></input>
+				<input class="title inteam" maxlength="3" bindinput="getoutNum" value="{{outNum}}">{{outNum}}</input>
 			</view>
 		</view>
-
-		<view class="cu-form-group">
-			<view class="title inteam">服务时间：</view>
-			<view class="new_date">
-				<picker class="time_pickers text-sm" mode="date" value="{{beginDate}}" start="{{currentDate}}" end="" bindchange="bindStartChange">{{beginDate}}
-				</picker>
-
-				<view class="service_time flex">
-					<picker class="time_pickers text-xs " mode="time" value="{{startTime}}" start="00:00" end="24:00" bindchange="bindSTimeChange">{{startTime}}
-					</picker>
-					<picker class="time_pickers text-xs" mode="time" value="{{endTime}}" start="00:00" end="24:00" bindchange="bindETimeChange">{{endTime}}
-					</picker>
+		<view class="cu-bar bg-white">
+			<view class="action flex justify-between">
+				<view>
+					<text class="cuIcon-titles text-blue"></text>
+					<text class="text-bold">服务时间段</text>
 				</view>
-
+				<!-- 点击显示模态框 -->
+				<text class="padding-left-xl cuIcon-roundaddfill lg text-cyan" catchtap="showModal" data-target="addServiceTime"></text>
 			</view>
 		</view>
-		<view class="cu-form-group">
-			<view class="title inteam">截止{{isPintuan==1?'拼团':'报名'}}时间:</view>
-			<view class="new_date">
-				<picker class="time_pickers text-sm" mode="date" value="{{beginDate}}" start="{{currentDate}}" end="{{beginDate}}" bindchange="binddeadChange">{{deadDate}}
-				</picker>
-				<picker class="time_pickers text-sm" mode="time" value="{{deadTime}}" start="00:00" end="24:00" bindchange="binddeadTimeChange">{{deadTime}}
-				</picker>
+
+		<!-- 服务时间段列表 -->
+		<view class="cu-list menu" wx:for="{{serviceTimeSpan}}" wx:key="item" wx:for-index="index">
+			<view class="cu-item">
+				<!-- 时间段 -->
+				<view class="content">
+					<view class="text-lg text-bold">{{item['time']}}</view>
+					<view class="text-sm text-gray">{{item['date']}} </view>
+				</view>
+				<!-- 添加岗位按钮 -->
+				<view class="content padding-left-lg">
+					<view class="cuIcon-friendaddfill text-green" catchtap="showModal" data-serviceSpanIndex="{{index}}" data-target="addPosition">添加岗位</view>
+				</view>
+				<!-- 删除该时间段 -->
+				<view class="cuIcon-deletefill text-red" bindtap="deleteServiceSpan" data-index="{{index}}"></view>
+				<!-- 折叠箭头 -->
+				<view class="action margin-left-lg text-grey" bindtap="click" data-index="{{index}}">
+					<text class="cuIcon-{{item['checked'] ? 'unfold' : 'right'}}">{{item['checked'] ? '收回' : '展开'}}</text>
+				</view>
 			</view>
+			<!-- 岗位内容 -->
+			<view wx:if="{{item.positions.length}}" class="cu-item {{item['checked'] ? '' : 'piano-hidden-content'}}" wx:for="{{item.positions}}" wx:for-index="pindex" wx:for-item="child" wx:key="item">
+				<view class="content flex justify-around">
+					<!-- 岗位名称 -->
+					<view class="flex-treble flex justify-center text-sm text-black ">
+						<text>{{ child['name'] }}</text>
+					</view>
+					<!-- 步进器 -->
+					<view class="flex-twice flex-treble flex justify-center align-center text-lg">
+						<view class="cu-tag round bg-green light xl cuIcon-move" bindtap="changePosNum" data-op="decrease" data-sindex="{{index}}" data-pindex="{{pindex}}"></view>
+						<view class=" margin-lr text-black">{{child['number']}}</view>
+						<view class="cu-tag round bg-red light xl cuIcon-add" bindtap="changePosNum" data-op="increase" data-sindex="{{index}}" data-pindex="{{pindex}}"></view>
+					</view>
+					<!-- 删除该岗位 -->
+					<view class="flex-sub cuIcon-deletefill xl text-blue" bindtap="deletePosition" data-sindex="{{index}}" data-pindex="{{pindex}}"></view>
+				</view>
+			</view>
+		</view>
+
+		<view class="cu-form-group">
+			<view class="title">截止日期:</view>
+			<picker mode="date" value="{{beginDate}}" start="2023-09-01" end="2024-09-01" bindchange="bindDeadDateChange">
+				<view class="picker">
+					{{deadDate}}
+				</view>
+			</picker>
+			<picker class="margin-right" mode="time" value="{{time}}" start="00:01" end="23:59" bindchange="bindDeadTimeChange">
+				<view style="content: 'sa';" class="picker">
+					{{deadTime}}
+				</view>
+			</picker>
 		</view>
 
 		<view class="cu-form-group">
@@ -146,7 +174,7 @@
 		</view>
 		<view class="padding-xl  justify-center flex">
 			<view class="">
-				<input class="input-field" bindinput="getTeamName" placeholder="请输入队伍名字" value="{{teamName}}"/>
+				<input class="input-field" bindinput="getTeamName" placeholder="请输入队伍名字" value="{{teamName}}" />
 			</view>
 		</view>
 		<view class="cu-bar bg-white justify-end">
@@ -154,6 +182,78 @@
 				<button class="cu-btn line-green text-green">算了</button>
 				<button class="cu-btn bg-green margin-left" bindtap="sendNew">确定并发布</button>
 			</view>
+		</view>
+	</view>
+</view>
+
+<!-- 添加时间段模态框 -->
+<view class="cu-modal {{modalName=='addServiceTime'?'show':''}}">
+	<view class="cu-dialog">
+		<!-- 标题 -->
+		<view class="cu-bar bg-white justify-end">
+			<view class="content">添加时间段</view>
+			<view class="action" bindtap="hideModal">
+				<text class="cuIcon-close text-red"></text>
+			</view>
+		</view>
+		<view class="cu-form-group">
+			<view class="title">日期选择</view>
+			<picker mode="date" value="{{date}}" start="2015-09-01" end="2024-09-01" bindchange="bindStartChange">
+				<view class="picker">
+					{{beginDate}}
+				</view>
+			</picker>
+		</view>
+		<view class="cu-form-group">
+			<view class="title">开始时间</view>
+			<picker mode="time" value="{{time}}" start="00:01" end="23:59" bindchange="bindSTimeChange">
+				<view class="picker">
+					{{startTime}}
+				</view>
+			</picker>
+		</view>
+		<view class="cu-form-group">
+			<view class="title">结束时间</view>
+			<picker mode="time" value="{{time}}" start="{{startTime}}" end="23:59" bindchange="bindETimeChange">
+				<view class="picker">
+					{{endTime}}
+				</view>
+			</picker>
+		</view>
+		<!-- 选择框 -->
+		<view class="cu-bar bg-white">
+			<view class="action margin-0 flex-sub text-green solid-left" catchtap="hideModal">取消</view>
+			<view class="action margin-0 flex-sub  solid-left" bindtap="addServiceSpan">确定</view>
+		</view>
+	</view>
+</view>
+
+<!-- 添加岗位模态框 -->
+<view class="cu-modal {{modalName=='addPosition'?'show':''}}">
+	<view class="cu-dialog">
+		<!-- 标题 -->
+		<view class="cu-bar bg-white justify-end">
+			<view class="content">添加岗位</view>
+			<view class="action" bindtap="hideModal">
+				<text class="cuIcon-close text-red"></text>
+			</view>
+		</view>
+		<view class="cu-form-group ">
+			<view class="title">岗位</view>
+			<picker bindchange="positionPickerChange" value="{{positionPickerIndex}}" range="{{picker}}">
+				<view class="picker">
+					{{positionPickerIndex?picker[positionPickerIndex]:'请选择'}}
+				</view>
+			</picker>
+		</view>
+		<view wx:if="{{positionPickerIndex==picker.length-1}}" class="cu-form-group">
+			<view class="title">自定义岗位</view>
+			<input bindinput="getElsePositon" placeholder="起个岗位名称">{{elsePosition}}</input>
+		</view>
+		<!-- 选择框 -->
+		<view class="cu-bar bg-white">
+			<view class="action margin-0 flex-sub text-green solid-left" bindtap="hideModal">取消</view>
+			<view class="action margin-0 flex-sub  solid-left" bindtap="addPosition">确定</view>
 		</view>
 	</view>
 </view>
