@@ -67,9 +67,11 @@
 						<text>{{ child['name'] }}</text>
 					</view>
 					<!-- 步进器 -->
-					
 					<view class="flex-twice flex-treble flex justify-center align-center text-lg">
 						<text class="text-df"> {{child.joined}}/{{child.number}}</text>
+					</view>
+					<view wx:if="{{!isJoin}}" class="flex-sub flex-treble flex justify-center align-center text-lg">
+						<text class="cuIcon-friendaddfill xl text-green" bindtap="showModal" data-target="toPintuan">+</text>
 					</view>
 				</view>
 			</view>
@@ -98,14 +100,14 @@
 				<text class="avatar-text ">服务结束</text>
 			</button>
 		</view>
-		<view wx:else bindtap="showModal" data-target="{{actions.length!=0?(isEnd||(isPintuan&&isFull) ?(isPintuan?(isFull?'toGroup':'拼团失败无操作'):'报名已截止无操作'):(isJoin?'toUnJoin':(isPintuan?'toPintuan':'toJoin'))):'None'}}">
+		<view wx:else bindtap="showModal" data-target="{{actions.length!=0?(isEnd||(isPintuan&&isFull) ?(isPintuan?(isFull?'toGroup':'拼团失败无操作'):'报名已截止无操作'):(isJoin?'toCancel':(isPintuan?'toPintuan':'toJoin'))):'None'}}">
 			<button wx:if="{{isEnd||(isPintuan&&isFull)}}" class="signUp cu-avatar round xl bg-{{isFull?'purple':'grey'}} animation-{{animation}}" bindtap="toggle" data-class="scale-up" role="button" aria-disabled="false">
 				<text class="avatar-text">{{isPintuan?(isFull?'群二维码':'拼团失败'):'报名截止'}}</text>
 			</button>
-			<button wx:elif="{{!isJoin}}" class="signUp cu-avatar round xl bg-green animation-{{animation}}" bindtap="toggle" data-class="scale-up" role="button" aria-disabled="false">
+			<!-- <button wx:elif="{{!isJoin}}" class="signUp cu-avatar round xl bg-green animation-{{animation}}" bindtap="toggle" data-class="scale-up" role="button" aria-disabled="false">
 				<text class="avatar-text ">点击{{isPintuan?'拼团':'报名'}}</text>
-			</button>
-			<button wx:else class="signUp cu-avatar round xl bg-red animation-{{animation}}" bindtap="toggle" data-class="scale-up" role="button" aria-disabled="false">
+			</button> -->
+			<button wx:elif = "{{isJoin}}" class="signUp cu-avatar round xl bg-red animation-{{animation}}" bindtap="toggle" data-class="scale-up" role="button" aria-disabled="false">
 				<text class="avatar-text ">取消{{isPintuan?'拼团':'报名'}}</text>
 			</button>
 		</view>
@@ -256,7 +258,7 @@
 	</view>
 </view>
 <!-- 取消窗口 -->
-<view class="cu-modal {{modalName=='toUnJoin'?'show':''}}">
+<view class="cu-modal {{modalName=='toCancel'?'show':''}}">
 	<view class="cu-dialog">
 		<view class="cu-bar bg-white justify-end">
 			<view class="content">温馨提示</view>
@@ -307,5 +309,63 @@
 <view class="toast-fixed-center" hidden="{{!show}}" style="z-index: 99;">
 	<view class="radius-lg padding animation-slide-top text-lg {{status == 'success' ? 'bg-green light':'bg-red light'}}">
 		<text class="cuIcon-info"></text> {{message}}
+	</view>
+</view>
+
+<!-- 拼团modal -->
+<!-- <view class="cu-modal {{modalName=='toPintuan'?'show':''}}">
+	<view class="cu-dialog">
+		<view class="cu-form-group">
+			<view class="title">多列选择</view>
+			<picker mode="multiSelector" bindchange="MultiChange" bindcolumnchange="MultiColumnChange" value="{{multiIndex}}" range="{{multiArray}}">
+				<view class="picker">
+					{{multiArray[0][multiIndex[0]]}}，{{multiArray[1][multiIndex[1]]}}，{{multiArray[2][multiIndex[2]]}}
+				</view>
+			</picker>
+		</view>
+		<view class="cu-bar bg-white justify-end">
+			<view class="action">
+				<button class="cu-btn line-green text-green" bindtap="hideModal">算了</button>
+				<button class="cu-btn bg-green margin-left" bindtap="hideModal" data-target="join">我确定</button>
+			</view>
+		</view>
+	</view>
+</view> -->
+
+<!-- 添加时间段模态框 -->
+<view class="cu-modal {{modalName=='toPintuan'?'show':''}}">
+	<view class="cu-dialog">
+		<!-- 标题 -->
+		<view class="cu-bar bg-white justify-end">
+			<view class="content">请完善您的信息</view>
+			<view class="action" bindtap="hideModal">
+				<text class="cuIcon-close text-red"></text>
+			</view>
+		</view>
+		<view class="cu-form-group">
+			<view class="title">服务日期</view>
+			<text>2023/2/15</text>
+		</view>
+		<view class="cu-form-group">
+			<view class="title">服务时间</view>
+			<text>13:00-16:00</text>
+		</view>
+		<view class="cu-form-group">
+			<view class="title">服务岗位</view>
+			<text>现场执行</text>
+		</view>
+		<view class="cu-form-group">
+			<view class="title">联系电话</view>
+			<text>18319093951</text>
+		</view>
+		<view wx:for="{{actions.memo}}" wx:for-item="item" wx:for-index="index" class="cu-form-group">
+			<view class="title inteam">{{item}}</view>
+			<input class="newName" placeholder="请完善" bindinput="getactName"></input>
+		</view>
+		<!-- 选择框 -->
+		<view class="cu-bar bg-white">
+			<view class="action margin-0 flex-sub text-green solid-left" bindtap="hideModal">取消</view>
+			<view class="action margin-0 flex-sub  solid-left" bindtap="hideModal" data-target="join">确定</view>
+		</view>
 	</view>
 </view>

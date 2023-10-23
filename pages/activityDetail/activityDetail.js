@@ -166,7 +166,7 @@ Page({
 					.then(res => {
 						//更改按钮状态
 						that.setData({
-							ifJoin: 1
+							isJoin: 1
 						})
 						//将该活动id加入到userInfo
 						db.collection('UserInfo').where({
@@ -222,7 +222,7 @@ Page({
 					.then(res => {
 						//更改按钮状态
 						that.setData({
-							ifJoin: 0
+							isJoin: 0
 						})
 						//在userInfo中删除此活动id
 						db.collection('UserInfo').where({
@@ -273,19 +273,19 @@ Page({
 			}
 
 		} else if (tmp == 'toPintuan') {
-			wx.showLoading()
-			//拼团
-			//先判断是否满人
-			if (this.data.actions.outJoin >= this.data.actions.outNum) {
-				this.setShow("error", "人数已满");
-				wx.hideLoading()
-				return
-			}
-			this.setData({
-				isJoin: 1
-			})
-			this.Join()
-			return
+			// wx.showLoading()
+			// //拼团
+			// //先判断是否满人
+			// if (this.data.actions.outJoin >= this.data.actions.outNum) {
+			// 	this.setShow("error", "人数已满");
+			// 	wx.hideLoading()
+			// 	return
+			// }
+			// this.setData({
+			// 	isJoin: 1
+			// })
+			// this.Join()
+			// return
 		} else if (tmp == 'toGroup') {
 			if (!this.data.isJoin) {
 				this.setShow("error", "你尚未参与此活动");
