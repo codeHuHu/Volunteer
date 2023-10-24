@@ -90,7 +90,13 @@
 				</view>
 			</view>
 		</view>
-
+		<view class="cu-form-group">
+			<view class="inline_name">是否为补贴活动：</view>
+			<radio-group bindchange="isSubsidy">
+				<radio value="1" />是
+				<radio value="0" class="margin-left" />否
+			</radio-group>
+		</view>
 		<view class="cu-form-group">
 			<view class="title">截止日期:</view>
 			<picker mode="date" value="{{beginDate}}" start="2023-09-01" end="2024-09-01" bindchange="bindDeadDateChange">

@@ -275,7 +275,7 @@ Page({
 			}
 		} else if (tmp == 'toPintuan') {
 			this.setData({
-				joinBox: [e.currentTarget.dataset.position, e.currentTarget.dataset.timespan],
+				joinBox: [e.currentTarget.dataset.timespan, e.currentTarget.dataset.position],
 			})
 			// wx.showLoading()
 			// //拼团

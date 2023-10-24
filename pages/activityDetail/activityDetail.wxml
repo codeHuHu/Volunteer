@@ -362,6 +362,11 @@
 			<view class="title">联系电话</view>
 			<text>{{phone}}</text>
 		</view>
+		<view wx:if="{{actions.isSubsidy}}" class="cu-form-group">
+			<view class="title inteam ">银行卡号</view>
+			<input class="newName" placeholder="请完善" bindinput="getBankcard"></input>
+		</view>
+
 		<view wx:for="{{actions.memo}}" wx:for-item="item" wx:for-index="index" class="cu-form-group">
 			<view class="title inteam">{{item}}</view>
 			<input class="newName" placeholder="请完善" bindinput="getactName"></input>

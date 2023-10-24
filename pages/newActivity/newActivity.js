@@ -134,6 +134,11 @@ Page({
 		});
 
 	},
+	isSubsidy(e) {
+		this.setData({
+			isSubsidy: e.detail.value
+		})
+	},
 	getactName(e) {
 		console.log(e.detail.value)
 		this.setData({
@@ -218,11 +223,12 @@ Page({
 						const iZhiYuan = result
 						const stamps = this.generateStamp()
 						let data = {
-							//string
-							actName: this.data.actName,
+							//holder
 							holder: this.data.holder,
 							phone: this.data.phone,
 							holderDetail: this.data.holderDetail,
+							//act
+							actName: this.data.actName,
 							intro: this.data.intro,
 							status: this.data.myPos >= 1 ? '1' : '0', // 如果pos为1，活动状态为0：待审核，否则为1：进行中
 							address: this.data.address,
@@ -241,13 +247,12 @@ Page({
 							teamName: this.data.teamName,
 							qr_code,
 							iZhiYuan,
-
+							isSubsidy: Number(this.data.isSubsidy),
 							isPintuan: 1,
 						}
-						console.log(data)
 						db.collection('ActivityInfo').add({
 							data: data,
-							success(res) {
+							success() {
 								wx.hideLoading()
 								if (that.data.myPos == 1) {
 									wx.showToast({
