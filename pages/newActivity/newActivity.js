@@ -183,13 +183,20 @@ Page({
 			elsePosition: e.detail.value
 		})
 	},
+	getHolderDetail(e) {
+		this.setData({
+			holderDetail: e.detail.value
+		})
+	},
 	sendNew(e) {
 		//检测是否输入完整
 		if (this.check() == 0) {
 			return
 		}
 		console.log('执行提交中')
-
+		wx.showLoading({
+			title: '',
+		})
 		//创建异步上传任务数组
 		let uploadTask = [
 			[],
@@ -215,6 +222,7 @@ Page({
 							actName: this.data.actName,
 							holder: this.data.holder,
 							phone: this.data.phone,
+							holderDetail: this.data.holderDetail,
 							intro: this.data.intro,
 							status: this.data.myPos >= 1 ? '1' : '0', // 如果pos为1，活动状态为0：待审核，否则为1：进行中
 							address: this.data.address,
@@ -228,17 +236,19 @@ Page({
 							serviceEndStamp: stamps[1],//服务结束时间戳
 							deadTimeStamp: stamps[2],//截止报名时间戳
 
-							isPintuan: Number(this.data.isPintuan),
 							tag: this.data.tagList[this.data.tagIndex],
 
 							teamName: this.data.teamName,
 							qr_code,
-							iZhiYuan
+							iZhiYuan,
+
+							isPintuan: 1,
 						}
 						console.log(data)
 						db.collection('ActivityInfo').add({
 							data: data,
 							success(res) {
+								wx.hideLoading()
 								if (that.data.myPos == 1) {
 									wx.showToast({
 										icon: 'loading',
@@ -247,9 +257,7 @@ Page({
 								} else {
 									this.setShow("success", "发布成功");
 								}
-
 							}
-
 						});
 					})
 			})
@@ -257,12 +265,6 @@ Page({
 			wx.navigateBack(),
 				wx.hideToast()
 		}, 2000); // 延迟 2000 毫秒后执行
-
-	},
-	isPintuan(e) {
-		this.setData({
-			isPintuan: e.detail.value
-		})
 	},
 	ChooseImage() {
 		wx.chooseMedia({
@@ -382,10 +384,6 @@ Page({
 		})
 	},
 	check() {
-		if (!this.data.isPintuan) {
-			this.setShow("error", "请勾选是否拼团");
-			return 0
-		}
 		if (!this.data.holder || !this.data.phone) {
 			this.setShow("error", "请重启本小程序");
 			return 0
@@ -407,13 +405,6 @@ Page({
 			}
 		}
 	},
-	/**
-	 * 轻提示展示
-	 * @param {*} status 
-	 * @param {*} message 
-	 * @param {*} time 
-	 * @param {*} fun 
-	 */
 	setShow(status, message, time = 1000, fun = false) {
 		if (loading) {
 			return
@@ -492,9 +483,7 @@ Page({
 		return [serviceStartStamp, serviceEndStamp, deadTimeStamp]
 	},
 	//改变选择岗位索引
-	
 	positionPickerChange(e) {
-		console.log(e.detail.value)
 		this.setData({
 			positionPickerIndex: e.detail.value
 		})
@@ -585,8 +574,6 @@ Page({
 				}
 			}
 		})
-
-
 	},
 	//岗位人数变动
 	changePosNum(e) {
@@ -614,7 +601,7 @@ Page({
 				serviceTimeSpan: tempList
 			})
 		} else {
-
+			console.log("操作错误")
 		}
 
 		this.handleTotalNum();

@@ -22,11 +22,13 @@ Page({
 	onLoad: function (options) {
 		console.log('app.globalData:', app.globalData)
 		//记录是否登录
-		this.data.isLogin = app.globalData.isLogin
-		//传入活动id
-		this.data.id = options.id
+		this.setData({
+			isLogin: app.globalData.isLogin,
+			phone: app.globalData.phone,
+			//传入活动id
+			id: options.id,
+		})
 		var that = this
-
 		//判断是否为审核页面
 		if (options.check) {
 			this.setData({
@@ -78,7 +80,7 @@ Page({
 					that.adjustStatus(snapShot.docs[0])
 					that.setData({
 						actions: snapShot.docs[0],
-						serviceTimeSpan:snapShot.docs[0].serviceTimeSpan
+						serviceTimeSpan: snapShot.docs[0].serviceTimeSpan
 					})
 				},
 				onError: function (err) {
@@ -113,7 +115,7 @@ Page({
 			isEnd: res.deadTimeStamp - new Date().getTime() <= 0 ? 1 : 0,
 			isPintuan: res.isPintuan,
 			checkMode: Number(res.status) <= 0 ? 1 : 0,
-			serviceTimeSpan:res.serviceTimeSpan
+			serviceTimeSpan: res.serviceTimeSpan
 		})
 	},
 	adjustStatus(res) {
@@ -271,8 +273,10 @@ Page({
 				this.setShow("error", "人数已满");
 				return
 			}
-
 		} else if (tmp == 'toPintuan') {
+			this.setData({
+				joinBox: [e.currentTarget.dataset.position, e.currentTarget.dataset.timespan],
+			})
 			// wx.showLoading()
 			// //拼团
 			// //先判断是否满人

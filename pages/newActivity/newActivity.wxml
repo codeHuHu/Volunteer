@@ -1,12 +1,12 @@
 <view class="cu-list menu card-menu new_activity">
 	<form class="new_activity">
-		<view class="cu-form-group">
+		<!-- <view class="cu-form-group">
 			<view class="inline_name">请选择类型：</view>
 			<radio-group bindchange="isPintuan">
 				<radio value="1" />拼团
 				<radio value="0" class="margin-left" />报名
 			</radio-group>
-		</view>
+		</view> -->
 		<view class=" cu-form-group" style="display:grid">
 			<view class="inline_name" style="width:40%">添加标签：</view>
 			<view class="new_inline ">
@@ -31,9 +31,13 @@
 				<input class="tel" bindinput="getPhone" placeholder="{{phone}}" disabled="1" />
 			</view>
 		</view>
-		<view wx:if="{{isPintuan}}" class="cu-form-group flex justify-between">
+		<view class="cu-form-group">
+			<view class="title inteam">负责人介绍:</view>
+			<input class="newName" placeholder="选填" bindinput="getHolderDetail" model:value="{{holderDetail}}" />
+		</view>
+		<view class="cu-form-group flex justify-between">
 			<view class="flex">
-				<view class="title outteam">{{isPintuan==1?'成团':'报名'}}人数:</view>
+				<view class="title outteam">报名人数:</view>
 				<input class="title inteam" maxlength="3" bindinput="getoutNum" value="{{outNum}}">{{outNum}}</input>
 			</view>
 		</view>

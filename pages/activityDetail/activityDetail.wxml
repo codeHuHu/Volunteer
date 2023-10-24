@@ -23,6 +23,10 @@
 		<text class="">负责人</text>
 		<text class="text-df ">{{actions.holder}} {{actions.phone}}</text>
 	</view>
+	<view wx:if="{{actions.holderDetail}}" class="padding flex  justify-between">
+		<text class="">负责人介绍</text>
+		<text class="text-df ">{{actions.holderDetail}}</text>
+	</view>
 	<view wx:if="{{actions.teamName}}" class="padding flex  justify-between">
 		<text class="">队伍名称</text>
 		<text class="text-df ">{{actions.teamName}}</text>
@@ -71,7 +75,7 @@
 						<text class="text-df"> {{child.joined}}/{{child.number}}</text>
 					</view>
 					<view wx:if="{{!isJoin}}" class="flex-sub flex-treble flex justify-center align-center text-lg">
-						<text class="cuIcon-friendaddfill xl text-green" bindtap="showModal" data-target="toPintuan">+</text>
+						<text class="cuIcon-friendaddfill xl text-green" bindtap="showModal" data-target="toPintuan" data-timespan="{{index}}" data-position="{{pindex}}">+</text>
 					</view>
 				</view>
 			</view>
@@ -107,7 +111,7 @@
 			<!-- <button wx:elif="{{!isJoin}}" class="signUp cu-avatar round xl bg-green animation-{{animation}}" bindtap="toggle" data-class="scale-up" role="button" aria-disabled="false">
 				<text class="avatar-text ">点击{{isPintuan?'拼团':'报名'}}</text>
 			</button> -->
-			<button wx:elif = "{{isJoin}}" class="signUp cu-avatar round xl bg-red animation-{{animation}}" bindtap="toggle" data-class="scale-up" role="button" aria-disabled="false">
+			<button wx:elif="{{isJoin}}" class="signUp cu-avatar round xl bg-red animation-{{animation}}" bindtap="toggle" data-class="scale-up" role="button" aria-disabled="false">
 				<text class="avatar-text ">取消{{isPintuan?'拼团':'报名'}}</text>
 			</button>
 		</view>
@@ -344,19 +348,19 @@
 		</view>
 		<view class="cu-form-group">
 			<view class="title">服务日期</view>
-			<text>2023/2/15</text>
+			<text>{{serviceTimeSpan[joinBox[0]]['date']}}</text>
 		</view>
 		<view class="cu-form-group">
 			<view class="title">服务时间</view>
-			<text>13:00-16:00</text>
+			<text>{{serviceTimeSpan[joinBox[0]]['time']}}</text>
 		</view>
 		<view class="cu-form-group">
 			<view class="title">服务岗位</view>
-			<text>现场执行</text>
+			<text>{{serviceTimeSpan[joinBox[0]]['positions'][joinBox[1]]['name']}}</text>
 		</view>
 		<view class="cu-form-group">
 			<view class="title">联系电话</view>
-			<text>18319093951</text>
+			<text>{{phone}}</text>
 		</view>
 		<view wx:for="{{actions.memo}}" wx:for-item="item" wx:for-index="index" class="cu-form-group">
 			<view class="title inteam">{{item}}</view>
