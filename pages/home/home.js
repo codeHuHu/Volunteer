@@ -281,4 +281,11 @@ Page({
       showImageModal: false, // 显示图片和提示信息框
 		})
 	},
+
+	toaboutUs()
+	{
+		wx.navigateTo({
+			url: '/pages/aboutUs/aboutUs',
+		})
+	}
 })

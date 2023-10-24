@@ -19,7 +19,9 @@
 		"pages/volunteerWelfare/volunteerWelfare",
 		"pages/welfareIndex/welfareIndex",
 		"pages/testPage/testPage",
-		"pages/icon_status/icon_status"
+		"pages/icon_status/icon_status",
+		"pages/testKeFu/testKeFu",
+		"pages/aboutUs/aboutUs"
 	],
 	"usingComponents": {
 		"cu-custom": "colorui/components/cu-custom/cu-custom"

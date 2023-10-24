@@ -172,3 +172,9 @@ z-index: 998;
 	cursor: pointer;
 	z-index: 99999;
 }
+
+.bottom-bar{
+	display:flex;
+	flex-direction: row;
+	z-index: 10000;
+}

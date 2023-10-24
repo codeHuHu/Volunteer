@@ -2,6 +2,11 @@ page {
 	background: #f3f7f7;
 }
 
+.up image {
+	width: 894rpx;
+	height: 127rpx;
+	border-radius: 5%;
+}
 .top-bar {
 	height: 60px;
 	display: flex;

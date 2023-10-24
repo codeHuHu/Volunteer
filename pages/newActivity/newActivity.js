@@ -492,6 +492,7 @@ Page({
 		return [serviceStartStamp, serviceEndStamp, deadTimeStamp]
 	},
 	//改变选择岗位索引
+	
 	positionPickerChange(e) {
 		console.log(e.detail.value)
 		this.setData({

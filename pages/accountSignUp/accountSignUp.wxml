@@ -97,7 +97,7 @@
 	</view>
 </view>
 
-	<view class="cu-list menu card-menu  shadow-lg radius">
+<!-- <view class="cu-list menu card-menu  shadow-lg radius">
 	<view class="cu-form-group flex ">
 		<view class="flex-sub title justify-center flex">
 			支付宝
@@ -107,7 +107,7 @@
 		</view>
 
 	</view>
-</view>
+</view> -->
 	<!-- <view class="cu-form-group flex">
 	<view class="flex">
 				<view class="title ">年级:</view>
@@ -124,8 +124,8 @@
 		<button class="cu-btn round bg-green " style="width:auto">获取</button>
 	</view> -->
 <view class="cu-list menu card-menu shadow-lg radius"> 
-	<view class="">
-	<text class="text-xs text-grey " style="letter-spacing:2rpx">注：支付宝账号仅用来对部分活动发放补贴</text></view>
+	<!-- <view class=""> -->
+	<!-- <text class="text-xs text-grey " style="letter-spacing:2rpx">注：支付宝账号仅用来对部分活动发放补贴</text></view> -->
 	<view class="margin-top">
 	<checkbox class="round margin-right " checked="{{isCheck}}" bindtap="checkchange" ></checkbox>
 		<text class="text-xs text-grey ">注册表示同意并已阅读</text>

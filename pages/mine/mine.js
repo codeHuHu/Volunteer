@@ -242,5 +242,10 @@ Page({
 			loading = false;
 		}
 	},
-	
+	toaboutUs()
+	{
+		wx.navigateTo({
+			url: '/pages/aboutUs/aboutUs',
+		})
+	}
 })
