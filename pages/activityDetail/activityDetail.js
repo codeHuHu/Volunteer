@@ -5,19 +5,13 @@ const db = wx.cloud.database()
 
 Page({
 	data: {
-		header: [{
-			name: '姓名',
-			come: '出勤',
-			performance: '表现',
-			feedback: '评价'
-		}],
 		checkMode: 0,
-		hours: 'xxxxxxxx',
-		minutes: 'xxxxxxx',
-		deadTime: 'xxxxxxx',
-		serviceTime: 'xxxxxxx',
-		actions: []
-
+		constant: {
+			hours: 'xxxxxxxx',
+			minutes: 'xxxxxxx',
+			deadTime: 'xxxxxxx',
+			serviceTime: 'xxxxxxx',
+		},
 	},
 	onLoad: function (options) {
 		console.log('app.globalData:', app.globalData)
@@ -104,18 +98,31 @@ Page({
 		t = res.serviceEndStamp - res.serviceStartStamp
 		const thours = Math.floor(t / (1000 * 60 * 60));
 		const tminutes = Math.floor((t % (1000 * 60 * 60)) / (1000 * 60));
-		this.setData({
-			//记录用户是否有导出特权(负责人人或管理员)
-			isAdmin: (app.globalData.openid == res._openid) || (Number(app.globalData.position) >= 1),
-			actions: res,
-			deadTime: formattedDate + ' ' + formattedTime,
-			serviceTime: serviceDate + ' ' + serviceStartTime + '-' + serviceEndTime,
+
+		//在这里加个非时间的功能,计算boxer
+		let boxer = []
+		for (var i in res.serviceTimeSpan) {
+			boxer.push(0)
+		}
+		let constant = {
 			hours: thours,
 			minutes: tminutes,
+			deadTime: formattedDate + ' ' + formattedTime,
+			serviceTime: serviceDate + ' ' + serviceStartTime + '-' + serviceEndTime,
+
+			checkMode: Number(res.status) <= 0 ? 1 : 0,
+		}
+		this.setData({
+			constant,
+			//记录用户是否有导出特权(负责人或管理员)
+			isAdmin: (app.globalData.openid == res._openid) || (Number(app.globalData.position) >= 1),
 			isEnd: res.deadTimeStamp - new Date().getTime() <= 0 ? 1 : 0,
 			isPintuan: res.isPintuan,
-			checkMode: Number(res.status) <= 0 ? 1 : 0,
-			serviceTimeSpan: res.serviceTimeSpan
+
+			actions: res,
+			serviceTimeSpan: res.serviceTimeSpan,
+			boxer
+
 		})
 	},
 	adjustStatus(res) {
@@ -127,10 +134,15 @@ Page({
 			var flag = 0
 			// 如果名单里有该志愿者,改变报名按钮状态
 			for (var i in res.joinMembers) {
-				if (res.joinMembers[i] == app.globalData.openid) {
+				if (res.joinMembers[i].info.openid == app.globalData.openid) {
 					flag = 1
+					// 找出所报名的岗位逻辑位置
+					this.setData({
+						idx: res.joinMembers[i].posIdx,
+					})
 					break
 				}
+
 			}
 			this.setData({
 				isJoin: flag,
@@ -154,34 +166,51 @@ Page({
 					that.setShow("error", "人数已满");
 					return
 				}
-
+				let t = new Date()
 				//如果没满人,就去新增人数
 				wx.cloud.callFunction({
 					name: 'updateJoinActivity',
 					data: {
-						collectionName: 'ActivityInfo',
-						docName: that.data.id,
+						collectionName: 'ActivityInfo',//集合名字
+						docName: that.data.id,//活动id
 						//操作变量
-						outJoinAdd: 1,
+						outJoinAdd: 1,//加一人
+						idx: that.data.idx,//该岗位的逻辑位置
+						member: {
+							//个人身份信息
+							info: {
+								openid: app.globalData.openid, //openid
+								name: app.globalData.name, //名字
+								phone: app.globalData.phone, //电话
+								school: app.globalData.school, //学校
+								year: app.globalData.year, //学年
+								id: app.globalData.id, //身份证
+							},
+							//
+							bankCard: that.data.bankCard ? that.data.bankCard : '',
+							//岗位信息
+							joinTime: `${t.getFullYear()}-${app.Z(t.getMonth() + 1)}-${app.Z(t.getDate())} ${app.Z(t.getHours())}:${app.Z(t.getMinutes())}`,
+							posIdx: that.data.idx,
+							posName: that.data.serviceTimeSpan[that.data.idx[0]].positions[that.data.idx[1]].name,
+						}
 					}
-				})
-					.then(res => {
-						//更改按钮状态
-						that.setData({
-							isJoin: 1
-						})
-						//将该活动id加入到userInfo
-						db.collection('UserInfo').where({
-							_openid: app.globalData.openid,
-							//myActivity: db.command.not(db.command.elemMatch(db.command.eq(that.data.id)))
-						}).update({
-							data: {
-								myActivity: db.command.push(that.data.id)
-							}
-						})
-						wx.hideLoading()
-						that.setShow("success", `成功参与${this.data.actions.ispintuan ? '拼团' : '报名'}`);
+				}).then(res => {
+
+					//更改按钮状态
+					that.setData({
+						isJoin: 1
 					})
+					//将该活动id加入到userInfo
+					db.collection('UserInfo').where({
+						_openid: app.globalData.openid,
+					}).update({
+						data: {
+							myActivity: db.command.push(that.data.id)
+						}
+					})
+					wx.hideLoading()
+					that.setShow("success", `成功参与${this.data.actions.ispintuan ? '拼团' : '报名'}`);
+				})
 			})
 	},
 	unJoin() {
@@ -197,7 +226,7 @@ Page({
 				var tmpList = res.data.joinMembers
 				var result = []
 				for (var i in tmpList) {
-					if (tmpList[i] != app.globalData.openid) {
+					if (tmpList[i].info.openid != app.globalData.openid) {
 						result.push(tmpList[i])
 					}
 				}
@@ -218,7 +247,8 @@ Page({
 						docName: that.data.id,
 						//操作变量
 						outJoinAdd: -1,
-						newJoinMembers: result
+						newJoinMembers: result,
+						idx: that.data.idx,
 					}
 				})
 					.then(res => {
@@ -275,7 +305,7 @@ Page({
 			}
 		} else if (tmp == 'toPintuan') {
 			this.setData({
-				joinBox: [e.currentTarget.dataset.timespan, e.currentTarget.dataset.position],
+				idx: [e.currentTarget.dataset.timespan, e.currentTarget.dataset.position],
 			})
 			// wx.showLoading()
 			// //拼团
@@ -531,15 +561,20 @@ Page({
 	click(event) {
 		const index = event.currentTarget.dataset.index;
 		const {
-			serviceTimeSpan
-		} = this.data.actions;
-		if (serviceTimeSpan[index].checked == true) {
-			serviceTimeSpan[index].checked = false
+			boxer
+		} = this.data;
+		if (boxer[index] == 1) {
+			boxer[index] = 0
 		} else {
-			serviceTimeSpan[index].checked = true
+			boxer[index] = 1
 		}
 		this.setData({
-			serviceTimeSpan
+			boxer
 		});
 	},
+	getBankcard(e) {
+		this.setData({
+			bankCard: e.detail.value
+		})
+	}
 })

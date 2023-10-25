@@ -69,11 +69,11 @@
 				<view class="cuIcon-deletefill text-red" bindtap="deleteServiceSpan" data-index="{{index}}"></view>
 				<!-- 折叠箭头 -->
 				<view class="action margin-left-lg text-grey" bindtap="click" data-index="{{index}}">
-					<text class="cuIcon-{{item['checked'] ? 'unfold' : 'right'}}">{{item['checked'] ? '收回' : '展开'}}</text>
+					<text class="cuIcon-{{boxer[index] ? 'unfold' : 'right'}}">{{boxer[index] ? '收回' : '展开'}}</text>
 				</view>
 			</view>
 			<!-- 岗位内容 -->
-			<view wx:if="{{item.positions.length}}" class="cu-item {{item['checked'] ? '' : 'piano-hidden-content'}}" wx:for="{{item.positions}}" wx:for-index="pindex" wx:for-item="child" wx:key="item">
+			<view wx:if="{{item.positions.length}}" class="cu-item {{boxer[index] ? '' : 'piano-hidden-content'}}" wx:for="{{item.positions}}" wx:for-index="pindex" wx:for-item="child" wx:key="item">
 				<view class="content flex justify-around">
 					<!-- 岗位名称 -->
 					<view class="flex-treble flex justify-center text-sm text-black ">

@@ -5,6 +5,7 @@ const app = getApp()
 Page({
 	data: {
 		serviceTimeSpan: [],//服务时间段
+		boxer: [],
 		beginDate: '',//服务阶段开始日期(用于添加服务时间段)
 		startTime: '',//服务阶段开始时刻(用于添加服务时间段)
 		endTime: '',//服务阶段结束时刻(用于添加服务时间段)
@@ -218,9 +219,11 @@ Page({
 		Promise.all(uploadTask[0])
 			.then(result => {
 				const qr_code = result
+				console.log(qr_code)
 				Promise.all(uploadTask[1])
 					.then(result => {
 						const iZhiYuan = result
+						console.log(iZhiYuan)
 						const stamps = this.generateStamp()
 						let data = {
 							//holder
@@ -253,7 +256,7 @@ Page({
 						db.collection('ActivityInfo').add({
 							data: data,
 							success() {
-								wx.hideLoading()
+								console.log("添加活动成功")
 								if (that.data.myPos == 1) {
 									wx.showToast({
 										icon: 'loading',
@@ -269,6 +272,7 @@ Page({
 		setTimeout(() => {
 			wx.navigateBack(),
 				wx.hideToast()
+			wx.hideLoading()
 		}, 2000); // 延迟 2000 毫秒后执行
 	},
 	ChooseImage() {
@@ -454,15 +458,15 @@ Page({
 	click(event) {
 		const index = event.currentTarget.dataset.index;
 		const {
-			serviceTimeSpan
+			boxer
 		} = this.data;
-		if (serviceTimeSpan[index].checked == true) {
-			serviceTimeSpan[index].checked = false
+		if (boxer[index] == 1) {
+			boxer[index] = 0
 		} else {
-			serviceTimeSpan[index].checked = true
+			boxer[index] = 1
 		}
 		this.setData({
-			serviceTimeSpan
+			boxer
 		});
 	},
 	//生成用于提交数据库表单的时间戳
@@ -499,13 +503,15 @@ Page({
 			date: this.data.beginDate,
 			time: this.data.startTime + "-" + this.data.endTime,
 			positions: [],
-			checked: false
 		}
 		let tempList = this.data.serviceTimeSpan
+		let boxer = this.data.boxer
 		tempList.push(tempSpan)
+		boxer.push(1)
 		this.setData({
 			endTime: "23:59",
-			serviceTimeSpan: tempList
+			serviceTimeSpan: tempList,
+			boxer
 		})
 		this.handleTotalNum();
 		this.hideModal()
@@ -520,8 +526,12 @@ Page({
 				if (res.confirm) {
 					let tempList = that.data.serviceTimeSpan
 					tempList.splice(e.currentTarget.dataset.index, 1)
+					let boxer = that.data.boxer
+					boxer.splice(e.currentTarget.dataset.index, 1)
+
 					that.setData({
-						serviceTimeSpan: tempList
+						serviceTimeSpan: tempList,
+						boxer
 					})
 					setTimeout(() => {
 						that.handleTotalNum();
@@ -545,9 +555,12 @@ Page({
 			}
 			let tempList = this.data.serviceTimeSpan
 			tempList[span]['positions'].push(tempPos)
-			tempList[span]['checked'] = true
+			let boxer = this.data.boxer
+			boxer[span] = 1
+			
 			this.setData({
-				serviceTimeSpan: tempList
+				serviceTimeSpan: tempList,
+				boxer
 			})
 		}
 		this.handleTotalNum();
@@ -567,7 +580,7 @@ Page({
 						let tempList = that.data.serviceTimeSpan
 						tempList[span]['positions'].splice(position, 1)
 						that.setData({
-							serviceTimeSpan: tempList
+							serviceTimeSpan: tempList,
 						})
 					}
 					setTimeout(() => {
@@ -606,7 +619,7 @@ Page({
 				serviceTimeSpan: tempList
 			})
 		} else {
-			console.log("操作错误")
+			console.log("操作数错误")
 		}
 
 		this.handleTotalNum();
