@@ -2,49 +2,27 @@
 const app = getApp()
 let loading = false;
 Page({
-
-	/**
-	 * 页面的初始数据
-	 */
 	data: {
 		openid: null,
 		isLogin: false,
 		actions: '',
 		showModal: true, // 是否显示模态框
-    showImageModal: false, // 是否显示图片和提示信息框
-    imageSrc: 'cloud://volunteer-4gaukcmqce212f11.766f-volunteer-4gaukcmqce212f11-1321274883/kefu.jpg', // 图片链接，请替换为实际的图片链接
+		showImageModal: false, // 是否显示图片和提示信息框
+		imageSrc: 'cloud://volunteer-4gaukcmqce212f11.766f-volunteer-4gaukcmqce212f11-1321274883/kefu.jpg', // 图片链接，请替换为实际的图片链接
 	},
-
-	/**
-	 * 生命周期函数--监听页面加载
-	 */
 	onLoad: function (event) {
 		console.log('app.globalData', app.globalData)
 		this.setData({
 			openid: app.globalData.openid,
 			myPos: app.globalData.position,
-			//isLogin: app.globalData.isLogin
+			isLogin: app.globalData.isLogin
 		})
-
-
-		// var value = wx.getStorageSync('user_status');
-		// if (value) {
-		// 	if (value[0] == app.globalData.openid && value[1] == true) {
-		// 		this.setData({
-		// 			isLogin: true
-		// 		})
-		// 	}
-		// } else {
-		// 	//去数据库看看有没有
-		// 	this.getDetail()
-		// }
-
 	},
 	getDetail() {
 		var that = this
 		wx.cloud.database().collection('UserInfo').where({
-				_openid: app.globalData.openid
-			})
+			_openid: app.globalData.openid
+		})
 			.get({
 				success(res) {
 					that.setData({
@@ -73,46 +51,12 @@ Page({
 	 * 生命周期函数--监听页面显示
 	 */
 	onShow() {
-		console.log('app.globalData', app.globalData)
 		this.setData({
 			openid: app.globalData.openid,
 			isLogin: app.globalData.isLogin,
 			myPos: app.globalData.position,
 		})
 		this.getDetail()
-	},
-
-	/**
-	 * 生命周期函数--监听页面隐藏
-	 */
-	onHide() {},
-
-	/**
-	 * 生命周期函数--监听页面卸载
-	 */
-	onUnload() {
-
-	},
-
-	/**
-	 * 页面相关事件处理函数--监听用户下拉动作
-	 */
-	onPullDownRefresh() {
-
-	},
-
-	/**
-	 * 页面上拉触底事件的处理函数
-	 */
-	onReachBottom() {
-
-	},
-
-	/**
-	 * 用户点击右上角分享
-	 */
-	onShareAppMessage() {
-
 	},
 	toregister() {
 		wx.navigateTo({
@@ -191,31 +135,23 @@ Page({
 		})
 	},
 	handleNotHaveOption() {
-    this.setData({
-      modalName: null, // 隐藏模态框
-      showImageModal: true, // 显示图片和提示信息框
-    });
+		this.setData({
+			modalName: null, // 隐藏模态框
+			showImageModal: true, // 显示图片和提示信息框
+		});
 	},
-
-		longTap: function (e) {
-			wx.previewImage({
-				urls: [e.currentTarget.dataset.url],
-				current: ''
-			})
-	},
-	hideImgmodal() {
-    this.setData({
-       // 隐藏模态框
-      showImageModal: false, // 显示图片和提示信息框
+	longTap: function (e) {
+		wx.previewImage({
+			urls: [e.currentTarget.dataset.url],
+			current: ''
 		})
 	},
-	/**
-	 * 轻提示展示
-	 * @param {*} status 
-	 * @param {*} message 
-	 * @param {*} time 
-	 * @param {*} fun 
-	 */
+	hideImgmodal() {
+		this.setData({
+			// 隐藏模态框
+			showImageModal: false, // 显示图片和提示信息框
+		})
+	},
 	setShow(status, message, time = 2000, fun = false) {
 		if (loading) {
 			return
@@ -242,8 +178,7 @@ Page({
 			loading = false;
 		}
 	},
-	toaboutUs()
-	{
+	toaboutUs() {
 		wx.navigateTo({
 			url: '/pages/aboutUs/aboutUs',
 		})

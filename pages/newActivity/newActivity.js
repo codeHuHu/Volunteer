@@ -456,6 +456,7 @@ Page({
 				showPosDescIdx: [e.currentTarget.dataset.sindex,e.currentTarget.dataset.pindex]
 			})
 		}
+
 		this.setData({
 			modalName: tmp
 		})
@@ -481,14 +482,15 @@ Page({
 		let serviceStartStamp = 0
 		let serviceEndStamp = 0
 		let deadTimeStamp = new Date(this.data.deadDate + ' ' + this.data.deadTime).getTime()
+		//接下来通过 服务时间段 筛选出 整个 服务的服务时间
 		for (let i in tempList) {
-			//服务开始时间戳
+			//筛选出服务开始时间戳
 			let dateTime = tempList[i].date + ' ' + tempList[i].time.split('-')[0]
 			let stamp = new Date(dateTime).getTime()
 			if (i == 0 || stamp < serviceStartStamp) {
 				serviceStartStamp = stamp
 			}
-			//服务结束时间戳
+			//筛选出服务结束时间戳
 			dateTime = tempList[i].date + ' ' + tempList[i].time.split('-')[1]
 			stamp = new Date(dateTime).getTime()
 			if (i == 0 || stamp > serviceEndStamp) {
@@ -562,6 +564,7 @@ Page({
 			}
 			let tempList = this.data.serviceTimeSpan
 			tempList[span]['positions'].push(tempPos)
+			//添加岗位后,自动展开列表
 			let boxer = this.data.boxer
 			boxer[span] = 1
 
@@ -590,6 +593,7 @@ Page({
 							serviceTimeSpan: tempList,
 						})
 					}
+					//要延迟处理总人数才行,不然会有bug
 					setTimeout(() => {
 						that.handleTotalNum();
 					}, 200);

@@ -46,7 +46,7 @@ App({
 									that.globalData.grade = res.result.data[0].grade;
 									that.globalData.college = res.result.data[0].college;
 									that.globalData.year = res.result.data[0].year;
-		
+
 									that.globalData.islogin = res.result.data[0].islogin;
 									try {
 										wx.setStorageSync('user_status', [that.globalData.openid, that.globalData.islogin]);
@@ -74,7 +74,7 @@ App({
 						openid: tmp
 					},
 					success(res) {
-						
+
 						console.log('openid不为空,获取当前用户的信息', res)
 
 						if (res.result.data.length) {
@@ -105,26 +105,9 @@ App({
 					}
 				})
 			}
-			setTimeout(()=>{
+			setTimeout(() => {
 				wx.hideLoading()
-			},1000)
-			//只查自己的队伍
-			// if (that.globalData.openid) {
-			// 	console.log('正在查询队伍')
-			// 	wx.cloud.database().collection('TeamInfo')
-			// 		.where({
-			// 			_openid: that.globalData.openid
-			// 		})
-			// 		.get({
-			// 			success(res) {
-			// 				var teams = []
-			// 				for (var l in res.data) {
-			// 					teams[l] = res.data[l].teamName
-			// 				}
-			// 				that.globalData.team = teams
-			// 			}
-			// 		})
-			// }
+			}, 1000)
 		}
 	},
 	onshow: function () {
@@ -138,11 +121,11 @@ App({
 		name: '',
 		isLogin: false,
 		phone: 0,
-		aliPay:'',
-		school:'',
-		grade:'',
-		year:'',
-		college:'',
+		aliPay: '',
+		school: '',
+		grade: '',
+		year: '',
+		college: '',
 		position: 0,	//pos为0表示普通志愿者，1表示队长，2表示管理员
 	}
 });

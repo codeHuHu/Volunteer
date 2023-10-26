@@ -4,7 +4,7 @@
 		<view class="padding-left-xl">
 			<view class="cu-tag bg-green light sm round going-on" wx:if="{{actions.status=='1'}}">服务进行中</view>
 			<view class="cu-tag bg-green light sm round going-on" wx:elif="{{actions.status=='2'}}" style="background-color: gray; color: aliceblue;">服务已结束</view>
-			<view class="cu-tag bg-{{isFull?'blue':'red'}} light xxl round going-on text-bold" wx:if="{{isPintuan=='1'}}">拼团{{isEnd?(isFull?'成功':'失败'):(isFull?'成功':'中')}}</view>
+			<view class="cu-tag bg-{{isFull?'blue':'red'}} light xxl round going-on text-bold" wx:if="{{isPintuan=='1'}}">报名{{isDead?(isFull?'已满':'截止'):(isFull?'已满':'中')}}</view>
 		</view>
 	</view>
 </view>
@@ -38,13 +38,13 @@
 		<button wx:if="{{!checkMode}}" open-type="share" class="share cu-avatar round xl">
 			<text class="iconfont icon-icon-test20 text-green"></text>
 		</button>
-		<view class="solid-bottom text-lg text-bold padding text-black">{{isPintuan?'拼团':'报名'}}要求</view>
+		<view class="solid-bottom text-lg text-bold padding text-black">{{isPintuan?'报名':'报名'}}要求</view>
 		<view class="padding flex justify-between">
-			<text class="">{{isPintuan?'拼团':'报名'}}截止日期</text>
+			<text class="">{{isPintuan?'报名':'报名'}}截止日期</text>
 			<text class="text-df">{{constant.deadTime}}</text>
 		</view>
 		<view class="padding flex  justify-between">
-			<text class="">{{isPintuan==1?'拼团':'报名'}}人数</text>
+			<text class="">{{isPintuan==1?'报名':'报名'}}人数</text>
 			<text class="text-df"> {{actions.outJoin}}/{{actions.outNum}}</text>
 		</view>
 	</view>
@@ -57,16 +57,16 @@
 					<text class="avatar-text ">服务结束</text>
 				</button>
 			</view>
-			<view wx:else bindtap="showModal" data-target="{{actions.length!=0?(isEnd||(isPintuan&&isFull) ?(isPintuan?(isFull?'toGroup':'拼团失败无操作'):'报名已截止无操作'):(isJoin?'toCancel':(isPintuan?'toPintuan':'toJoin'))):'None'}}">
-				<button wx:if="{{isEnd||(isPintuan&&isFull)}}" class="signUp cu-avatar round xl bg-{{isFull?'purple':'grey'}} animation-{{animation}}" bindtap="toggle" data-class="scale-up" role="button" aria-disabled="false">
-					<text class="avatar-text">{{isPintuan?(isFull?'群二维码':'拼团失败'):'报名截止'}}</text>
+			<view wx:else bindtap="showModal" data-target="{{actions.length!=0?(isDead?(isPintuan?'toGroup':'报名已截止无操作'):(isJoin?'toGroup':(isPintuan?'toPintuan':'toJoin'))):'None'}}">
+				<button wx:if="{{isDead||isJoin}}" class="signUp cu-avatar round xl bg-{{isFull?'purple':'grey'}} animation-{{animation}}" bindtap="toggle" data-class="scale-up" role="button" aria-disabled="false">
+					<text class="avatar-text">{{isPintuan?(isJoin||isFull?'群二维码':'报名截止'):'报名截止'}}</text>
 				</button>
 				<!-- <button wx:elif="{{!isJoin}}" class="signUp cu-avatar round xl bg-green animation-{{animation}}" bindtap="toggle" data-class="scale-up" role="button" aria-disabled="false">
-				<text class="avatar-text ">点击{{isPintuan?'拼团':'报名'}}</text>
+				<text class="avatar-text ">点击{{isPintuan?'报名':'报名'}}</text>
 			</button> -->
-				<button wx:elif="{{isJoin}}" class="signUp cu-avatar round xl bg-red animation-{{animation}}" bindtap="toggle" data-class="scale-up" role="button" aria-disabled="false">
-					<text class="avatar-text ">取消{{isPintuan?'拼团':'报名'}}</text>
-				</button>
+				<!-- <button wx:elif="{{isJoin}}" class="signUp cu-avatar round xl bg-red animation-{{animation}}" bindtap="toggle" data-class="scale-up" role="button" aria-disabled="false">
+					<text class="avatar-text ">取消{{isPintuan?'报名':'报名'}}</text>
+				</button> -->
 			</view>
 		</view>
 		<!-- 服务时间段列表 -->
@@ -94,14 +94,16 @@
 					<view class="flex-twice flex-treble flex justify-center align-center text-lg">
 						<text class="text-df"> {{child.joined}}/{{child.number}}</text>
 					</view>
-					<view wx:if="{{!isJoin&&!isEnd}}" class="flex-sub flex-treble flex justify-center align-center text-lg">
-						<text class="cuIcon-friendaddfill xl text-green" bindtap="showModal" data-target="toPintuan" data-timespan="{{index}}" data-position="{{pindex}}">+</text>
+					<!-- 报名 -->
+					<view wx:if="{{!isDead&&!isJoin}}" bindtap="showModal" data-target="toPintuan" data-timespan="{{index}}" data-position="{{pindex}}" class="flex-sub flex-treble flex justify-center align-center text-lg">
+						<text class="cuIcon-friendaddfill xl text-green">+</text>
 					</view>
-					<view wx:elif="{{isJoin&&index==idx[0]&&pindex==idx[1]}}" class="flex-sub flex-treble flex justify-center align-center text-lg">
-						<text class="cuIcon-friendaddfill xl text-red">√</text>
+					<!-- 取消报名 -->
+					<view wx:elif="{{isJoin&&index==idx[0]&&pindex==idx[1]}}" bindtap="showModal" data-target="toCancel" data-timespan="{{index}}" data-position="{{pindex}}" class="flex-sub flex-treble flex justify-center align-center text-lg">
+						<text class="cuIcon-friendaddfill xl text-red">-</text>
 					</view>
-					<view wx:else="{{isJoin}}" class="flex-sub flex-treble flex justify-center align-center text-lg">
-
+					<!-- 占个位置而已 -->
+					<view wx:else class="flex-sub flex-treble flex justify-center align-center text-lg">
 					</view>
 				</view>
 
@@ -327,7 +329,7 @@
 			</swiper-item>
 		</swiper>
 		<view class="cu-bar bg-white">
-			<view wx:if="{{isPintuan}}" class="action margin-0 flex-sub solid-left text-green" bindtap="hideModal">已加入拼团群</view>
+			<view wx:if="{{isPintuan}}" class="action margin-0 flex-sub solid-left text-green" bindtap="hideModal">已加入报名群</view>
 			<view wx:else class="action margin-0 flex-sub solid-left text-green" bindtap="hideModal" data-target="join">我已扫码完成</view>
 		</view>
 	</view>
@@ -340,7 +342,7 @@
 	</view>
 </view>
 
-<!-- 拼团modal -->
+<!-- 报名modal -->
 <!-- <view class="cu-modal {{modalName=='toPintuan'?'show':''}}">
 	<view class="cu-dialog">
 		<view class="cu-form-group">
@@ -365,7 +367,7 @@
 	<view class="cu-dialog">
 		<!-- 标题 -->
 		<view class="cu-bar bg-white justify-end">
-			<view class="content">请完善您的信息</view>
+			<view class="content">请确认您的信息</view>
 			<view class="action" bindtap="hideModal">
 				<text class="cuIcon-close text-red"></text>
 			</view>
@@ -403,7 +405,7 @@
 	</view>
 </view>
 
-<!-- 添加时间段模态框 -->
+<!-- 报名人数详情 -->
 <view class="cu-modal {{modalName=='joinMembers'?'show':''}}">
 	<view class="cu-dialog">
 		<!-- 标题 -->
@@ -415,14 +417,14 @@
 		</view>
 		<view class="flex justify-around margin-bottom">
 			<!-- <view class="title">服务日期</view> -->
-			<text>姓名</text>
-			<text>岗位</text>
-			<text>报名时间</text>
+			<text class="text-sm">姓名</text>
+			<text class="text-sm">岗位</text>
+			<text class="text-sm basis-sm">时间段</text>
 		</view>
 		<view wx:for="{{actions.joinMembers}}" wx:for-index="mIdx" wx:for-item="mItm" class="flex justify-around margin-bottom-sm">
-			<text>{{mItm.info.name}}</text>
-			<text>{{mItm.posName}}</text>
-			<text>{{mItm.joinTime}}</text>
+			<text class="text-sm">{{mItm.info.name}}</text>
+			<text class="text-sm">{{mItm.posName}}</text>
+			<text class="text-sm">{{serviceTimeSpan[mItm.posIdx[0]].date+' '+serviceTimeSpan[mItm.posIdx[0]].time}}</text>
 		</view>
 	</view>
 </view>
@@ -438,7 +440,7 @@
 			</view>
 		</view>
 		<view class="flex justify-around margin-xl">
-			<text>{{serviceTimeSpan[showPosDescIdx[0]].positions[showPosDescIdx[1]].desc}}</text>
+			<text>{{serviceTimeSpan[showPosDescIdx[0]].positions[showPosDescIdx[1]].desc?serviceTimeSpan[showPosDescIdx[0]].positions[showPosDescIdx[1]].desc:'无'}}</text>
 		</view>
 	</view>
 </view>

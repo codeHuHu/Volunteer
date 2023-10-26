@@ -116,7 +116,7 @@ Page({
 			constant,
 			//记录用户是否有导出特权(负责人或管理员)
 			isAdmin: (app.globalData.openid == res._openid) || (Number(app.globalData.position) >= 1),
-			isEnd: res.deadTimeStamp - new Date().getTime() <= 0 ? 1 : 0,
+			isDead: res.deadTimeStamp - new Date().getTime() <= 0 ? 1 : 0,
 			isPintuan: res.isPintuan,
 
 			actions: res,
@@ -296,7 +296,10 @@ Page({
 			this.setShow("error", "您尚未注册");
 			return
 		}
-		
+		if(this.data.isDead && tmp == 'toCancel'){
+			this.setShow("error", "截止时间已到,不可操作")
+			return
+		}
 		if (tmp == 'toJoin') {
 			//报名窗口
 			//先判断是否满人
