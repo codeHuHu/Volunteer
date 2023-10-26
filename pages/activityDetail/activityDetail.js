@@ -296,6 +296,7 @@ Page({
 			this.setShow("error", "您尚未注册");
 			return
 		}
+		
 		if (tmp == 'toJoin') {
 			//报名窗口
 			//先判断是否满人
@@ -325,6 +326,10 @@ Page({
 				this.setShow("error", "你尚未参与此活动");
 				return
 			}
+		}else if(tmp == 'showPosDesc'){
+			this.setData({
+				showPosDescIdx: [e.currentTarget.dataset.sindex,e.currentTarget.dataset.pindex]
+			})
 		}
 		this.setData({
 			modalName: tmp

@@ -88,18 +88,19 @@
 					<!-- 岗位名称 -->
 					<view class="flex-treble flex justify-center text-sm text-black ">
 						<text>{{ child['name'] }}</text>
+						<text class="cuIcon-info text-blue margin-bottom" bindtap="showModal" data-target="showPosDesc" data-sindex="{{index}}" data-pindex="{{pindex}}"></text>
 					</view>
 					<!-- 步进器 -->
 					<view class="flex-twice flex-treble flex justify-center align-center text-lg">
 						<text class="text-df"> {{child.joined}}/{{child.number}}</text>
 					</view>
-					<view wx:if="{{!isJoin}}" class="flex-sub flex-treble flex justify-center align-center text-lg">
+					<view wx:if="{{!isJoin&&!isEnd}}" class="flex-sub flex-treble flex justify-center align-center text-lg">
 						<text class="cuIcon-friendaddfill xl text-green" bindtap="showModal" data-target="toPintuan" data-timespan="{{index}}" data-position="{{pindex}}">+</text>
 					</view>
-					<view wx:if="{{isJoin&&index==idx[0]&&pindex==idx[1]}}" class="flex-sub flex-treble flex justify-center align-center text-lg">
+					<view wx:elif="{{isJoin&&index==idx[0]&&pindex==idx[1]}}" class="flex-sub flex-treble flex justify-center align-center text-lg">
 						<text class="cuIcon-friendaddfill xl text-red">√</text>
 					</view>
-					<view wx:elif="{{isJoin}}" class="flex-sub flex-treble flex justify-center align-center text-lg">
+					<view wx:else="{{isJoin}}" class="flex-sub flex-treble flex justify-center align-center text-lg">
 
 					</view>
 				</view>
@@ -422,6 +423,22 @@
 			<text>{{mItm.info.name}}</text>
 			<text>{{mItm.posName}}</text>
 			<text>{{mItm.joinTime}}</text>
+		</view>
+	</view>
+</view>
+
+<!-- 岗位描述模态框 -->
+<view class="cu-modal {{modalName=='showPosDesc'?'show':''}}">
+	<view class="cu-dialog">
+		<!-- 标题 -->
+		<view class="cu-bar bg-white justify-end">
+			<view class="content">岗位描述</view>
+			<view class="action" bindtap="hideModal">
+				<text class="cuIcon-close text-red"></text>
+			</view>
+		</view>
+		<view class="flex justify-around margin-xl">
+			<text>{{serviceTimeSpan[showPosDescIdx[0]].positions[showPosDescIdx[1]].desc}}</text>
 		</view>
 	</view>
 </view>

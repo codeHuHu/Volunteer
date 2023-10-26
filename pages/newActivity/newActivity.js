@@ -141,13 +141,11 @@ Page({
 		})
 	},
 	getactName(e) {
-		console.log(e.detail.value)
 		this.setData({
 			actName: e.detail.value
 		})
 	},
 	getholder(e) {
-		console.log(e.detail.value)
 		this.setData({
 			holder: e.detail.value
 		})
@@ -173,7 +171,6 @@ Page({
 		})
 	},
 	getintro(e) {
-		console.log(e.detail.value)
 		this.setData({
 			intro: e.detail.value
 		})
@@ -184,7 +181,6 @@ Page({
 		})
 	},
 	getElsePositon(e) {
-		console.log(e.detail.value)
 		this.setData({
 			elsePosition: e.detail.value
 		})
@@ -192,6 +188,11 @@ Page({
 	getHolderDetail(e) {
 		this.setData({
 			holderDetail: e.detail.value
+		})
+	},
+	getPositonDescription(e) {
+		this.setData({
+			positonDescription: e.detail.value
 		})
 	},
 	sendNew(e) {
@@ -450,6 +451,11 @@ Page({
 				serviceSpanIndex_active: e.currentTarget.dataset.servicespanindex
 			})
 		}
+		if(tmp == 'showPosDesc'){
+			this.setData({
+				showPosDescIdx: [e.currentTarget.dataset.sindex,e.currentTarget.dataset.pindex]
+			})
+		}
 		this.setData({
 			modalName: tmp
 		})
@@ -551,13 +557,14 @@ Page({
 				//判断是已有的岗位还是自定义岗位
 				name: picker == this.data.picker.length - 1 ? this.data.elsePosition : this.data.picker[picker],
 				number: 1,
-				joined: 0
+				joined: 0,
+				desc: this.data.positonDescription
 			}
 			let tempList = this.data.serviceTimeSpan
 			tempList[span]['positions'].push(tempPos)
 			let boxer = this.data.boxer
 			boxer[span] = 1
-			
+
 			this.setData({
 				serviceTimeSpan: tempList,
 				boxer

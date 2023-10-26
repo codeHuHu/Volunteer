@@ -78,6 +78,7 @@
 					<!-- 岗位名称 -->
 					<view class="flex-treble flex justify-center text-sm text-black ">
 						<text>{{ child['name'] }}</text>
+						<text class="cuIcon-info text-blue margin-bottom" bindtap="showModal" data-target="showPosDesc" data-sindex="{{index}}" data-pindex="{{pindex}}"></text>
 					</view>
 					<!-- 步进器 -->
 					<view class="flex-twice flex-treble flex justify-center align-center text-lg">
@@ -86,7 +87,7 @@
 						<view class="cu-tag round bg-red light xl cuIcon-add" bindtap="changePosNum" data-op="increase" data-sindex="{{index}}" data-pindex="{{pindex}}"></view>
 					</view>
 					<!-- 删除该岗位 -->
-					<view class="flex-sub cuIcon-deletefill xl text-blue" bindtap="deletePosition" data-sindex="{{index}}" data-pindex="{{pindex}}"></view>
+					<view class="flex-sub cuIcon-deletefill xl text-blue margin" bindtap="deletePosition" data-sindex="{{index}}" data-pindex="{{pindex}}"></view>
 				</view>
 			</view>
 		</view>
@@ -261,10 +262,31 @@
 			<view class="title">自定义岗位</view>
 			<input bindinput="getElsePositon" placeholder="起个岗位名称">{{elsePosition}}</input>
 		</view>
+		<view wx:if="{{positionPickerIndex}}" class="cu-form-group">
+			<view class="title">岗位描述</view>
+			<input bindinput="getPositonDescription" placeholder="简短介绍下岗位的工作">{{positonDescription}}</input>
+		</view>
 		<!-- 选择框 -->
 		<view class="cu-bar bg-white">
 			<view class="action margin-0 flex-sub text-green solid-left" bindtap="hideModal">取消</view>
 			<view class="action margin-0 flex-sub  solid-left" bindtap="addPosition">确定</view>
+		</view>
+	</view>
+</view>
+
+
+<!-- 岗位描述模态框 -->
+<view class="cu-modal {{modalName=='showPosDesc'?'show':''}}">
+	<view class="cu-dialog">
+		<!-- 标题 -->
+		<view class="cu-bar bg-white justify-end">
+			<view class="content">岗位描述</view>
+			<view class="action" bindtap="hideModal">
+				<text class="cuIcon-close text-red"></text>
+			</view>
+		</view>
+		<view class="flex justify-around margin-xl">
+			<text>{{serviceTimeSpan[showPosDescIdx[0]].positions[showPosDescIdx[1]].desc}}</text>
 		</view>
 	</view>
 </view>
