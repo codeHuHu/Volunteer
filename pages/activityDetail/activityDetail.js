@@ -462,11 +462,11 @@ Page({
 			['活动组织', DA.teamName],
 			['组织负责人', DA.holder],
 			['服务时间', D.serviceTime],
-			['服务时长', D.hours + '小时' + D.minutes + '分钟'],
+			['服务时长', D.constant.hours + '小时' + D.constant.minutes + '分钟'],
 			['服务地点', DA.address],
 			['服务简介', DA.intro],
 			['参加活动人数', `${DA.outJoin}人`],
-			['截止时间', D.deadTime],
+			['截止时间', D.constant.deadTime],
 			[],
 			[],
 			['用户名称', '学历', '学年', '学校/单位', '学院', '电话', '支付宝', '参加状态', '评级', '详细评价']

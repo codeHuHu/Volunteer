@@ -46,7 +46,11 @@ Page({
 				}).then(() => {
 					var result = this.data.result
 					var nameList = []
-					var members = result.joinMembers
+					var members = []
+					result.joinMembers.forEach(item => {
+						members.push(item.info.openid)
+					})
+					console.log(members)
 					this.setData({
 						id: result._id
 					})
