@@ -95,7 +95,13 @@ Page({
 		t = new Date(res.serviceEndStamp);
 		const serviceEndTime = `${app.Z(t.getHours())}:${app.Z(t.getMinutes())}`;
 		//服务时长
-		t = res.serviceEndStamp - res.serviceStartStamp
+		t = 0;
+		for (var i in res.serviceTimeSpan) {
+			var splitTime = res.serviceTimeSpan[i].time.split('-')
+			var start = new Date(`${res.serviceTimeSpan[i].date} ${splitTime[0]}`).getTime()
+			var end = new Date(`${res.serviceTimeSpan[i].date} ${splitTime[1]}`).getTime()
+			t += end - start
+		}
 		const thours = Math.floor(t / (1000 * 60 * 60));
 		const tminutes = Math.floor((t % (1000 * 60 * 60)) / (1000 * 60));
 
@@ -197,9 +203,9 @@ Page({
 				}).then(res => {
 
 					//更改按钮状态
-					that.setData({
-						isJoin: 1
-					})
+					// that.setData({
+					// 	isJoin: 1
+					// })
 					//将该活动id加入到userInfo
 					db.collection('UserInfo').where({
 						_openid: app.globalData.openid,
@@ -253,9 +259,9 @@ Page({
 				})
 					.then(res => {
 						//更改按钮状态
-						that.setData({
-							isJoin: 0
-						})
+						// that.setData({
+						// 	isJoin: 0
+						// })
 						//在userInfo中删除此活动id
 						db.collection('UserInfo').where({
 							_openid: app.globalData.openid
@@ -352,9 +358,9 @@ Page({
 			this.Join()
 		} else if (a == 'unjoin') {
 			wx.showLoading()
-			this.setData({
-				isJoin: 0
-			})
+			// this.setData({
+			// 	isJoin: 0
+			// })
 			this.unJoin()
 		}
 		this.setData({
