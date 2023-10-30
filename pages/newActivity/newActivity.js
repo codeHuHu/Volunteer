@@ -21,7 +21,9 @@ Page({
 		intro: '',
 		temp_imgList: [], //群二维码
 		temp_imgList2: [], //i志愿报名码
+		temp_fileList:[],	//简介文件
 		tagList: ['党建引领', '乡村振兴', '新时代文明实践（文化/文艺/体育）', '科普科教', '社区/城中村治理', '环境保护', '弱势群体帮扶', '志愿驿站值班', '其他'],
+		icon:['excel','ppt','word','pdf'],
 		picker: [
 			'方案策划',
 			'现场执行',
@@ -170,6 +172,12 @@ Page({
 			address: e.detail.value
 		})
 	},
+	getType(e)
+	{
+		this.setData({
+			peopleType: e.detail.value
+		})
+	},
 	getintro(e) {
 		this.setData({
 			intro: e.detail.value
@@ -195,7 +203,7 @@ Page({
 			positonDescription: e.detail.value
 		})
 	},
-	sendNew(e) {
+	 async sendNew(e) {
 		//检测是否输入完整
 		if (this.check() == 0) {
 			return
@@ -207,24 +215,43 @@ Page({
 		//创建异步上传任务数组
 		let uploadTask = [
 			[],
+			[],
 			[]
 		]
 		//群二维码
 		for (let i in this.data.temp_imgList) {
-			uploadTask[0].push(this.uploadFile(this.data.temp_imgList[i]))
-		}
+			
+			uploadTask[0].push(this.uploadImage(this.data.temp_imgList[i]))
+		}	
+	
 		//i志愿报名码
 		for (let i in this.data.temp_imgList2) {
-			uploadTask[1].push(this.uploadFile(this.data.temp_imgList2[i]))
+			uploadTask[1].push(this.uploadImage(this.data.temp_imgList2[i]))
 		}
+
+			//获取简介文件的fileId
+			for (let i in this.data.temp_fileList) {
+				//upladTask[2]是promise对象数组
+				uploadTask[2].push(this.uploadFile(this.data.temp_fileList[i].tempFilePath));  // 直接将返回值推入 this.data.temp_fileList[i]
+			}
+
+			//	tmpArr=this.data.temp_fileList[i]
+			// 	uploadTask[2] = uploadTask[2] || [];  // 确保 uploadTask[2] 是一个数组
+			// uploadTask[2].push(tmpArr)
+			
+			console.log(uploadTask[2])
 		Promise.all(uploadTask[0])
-			.then(result => {
-				const qr_code = result
-				console.log(qr_code)
+			.then(result => {	
+				const qr_code = result	//result保存群二维码，赋值给qr_code
+				console.log(qr_code)	
 				Promise.all(uploadTask[1])
 					.then(result => {
 						const iZhiYuan = result
 						console.log(iZhiYuan)
+						Promise.all(uploadTask[2])
+						.then(result=>{
+						const FileID = result
+						console.log(FileID)
 						const stamps = this.generateStamp()
 						let data = {
 							//holder
@@ -233,6 +260,7 @@ Page({
 							holderDetail: this.data.holderDetail,
 							//act
 							actName: this.data.actName,
+							peoType:this.data.peopleType,
 							intro: this.data.intro,
 							status: this.data.myPos >= 1 ? '1' : '0', // 如果pos为1，活动状态为0：待审核，否则为1：进行中
 							address: this.data.address,
@@ -251,6 +279,8 @@ Page({
 							teamName: this.data.teamName,
 							qr_code,
 							iZhiYuan,
+							introFile:this.data.temp_fileList,	//简介文件
+							FileID,	//简介文件的FileID
 							isSubsidy: Number(this.data.isSubsidy),
 							isPintuan: 1,
 						}
@@ -267,8 +297,9 @@ Page({
 									this.setShow("success", "发布成功");
 								}
 							}
-						});
-					})
+						})
+						})
+				})
 			})
 		setTimeout(() => {
 			wx.navigateBack(),
@@ -287,6 +318,7 @@ Page({
 				if (this.data.temp_imgList.length != 0) {
 					var t = []
 					for (var i in res.tempFiles) {
+						//每张照片的临时路径push进temp_imgList
 						t.push(res.tempFiles[i].tempFilePath)
 					}
 					this.setData({
@@ -372,14 +404,15 @@ Page({
 		})
 	},
 	// 异步上传单个文件
-	uploadFile: function (filePath) {
+	uploadImage: function (filePath) {
 		//返回上传文件后的信息
 		return new Promise(function (callback) {
 			wx.cloud.uploadFile({
-				cloudPath: './QR_CODE/' + new Date().getTime(),
-				filePath: filePath,
+				cloudPath: './QR_CODE/' + new Date().getTime(),	//云路径
+				filePath: filePath,	//临时路径
 				success: res => {
 					console.log('上传图片成功')
+					//fileID即在云上的具体路径
 					callback(res.fileID)
 				},
 				fail: err => {
@@ -398,8 +431,9 @@ Page({
 			this.setShow("error", "请重启本小程序");
 			return 0
 		}
-		if (this.data.actName.length == 0 || this.data.address.length == 0) {
-			this.setShow("error", "名称/地点错误");
+		if(this.data.serviceTimeSpan.length==0)
+		{
+			this.setShow("error", "请添加活动时间段");
 			return 0
 		}
 		if (!this.data.outNum) {
@@ -507,12 +541,12 @@ Page({
 	},
 	//添加服务时间段
 	addServiceSpan() {
-		let tempSpan = {
+		let tempSpan = {	//tempSpan对象
 			date: this.data.beginDate,
 			time: this.data.startTime + "-" + this.data.endTime,
 			positions: [],
 		}
-		let tempList = this.data.serviceTimeSpan
+		let tempList = this.data.serviceTimeSpan	//数组[]里面有多个对象{}
 		let boxer = this.data.boxer
 		tempList.push(tempSpan)
 		boxer.push(1)
@@ -648,5 +682,124 @@ Page({
 		this.setData({
 			outNum: total
 		})
-	}
+	},
+
+	choosefile:function()
+	{
+		var that =this
+		wx.chooseMessageFile({
+			count: 1,//能选择文件的数量
+			type: 'file',//能选择文件的类型,我这里只允许上传文件.还有视频,图片,或者都可以
+			success(res) {
+				console.log(res)
+				//文件临时路径
+				const tempFilePaths = res.tempFiles[0].path
+				let fileSizeInBytes =res.tempFiles[0].size
+				let fileSizeInMB = fileSizeInBytes / (1024 * 1024);
+				let fileSizeDisplay;
+
+if (fileSizeInMB >= 1) {
+  fileSizeDisplay = fileSizeInMB.toFixed(2) + " MB";
+} else {
+  let fileSizeInKB = fileSizeInBytes / 1024;
+  fileSizeDisplay = fileSizeInKB.toFixed(2) + " KB";
+}
+
+					 var houzhui=tempFilePaths.match(/\.[^.]+?$/)[0]
+					 console.log(houzhui)
+					let t=
+				{
+					name:res.tempFiles[0].name,
+					tempFilePath:res.tempFiles[0].path,
+					size:fileSizeDisplay,
+					filetype:houzhui,
+				}
+				//that.data.temp_fileList是该活动所有简介文件的数组，所以可以concat
+				let fileList = that.data.temp_fileList.concat(t);
+				that.setData({
+					temp_fileList: fileList
+				});
+			
+				console.log(that.data.temp_fileList)
+			}
+		})
+	
+	},
+
+		uploadFile:function(filepath)
+		{
+			return new Promise(function(callback){
+				const houzhui = filepath.match(/\.[^.]+?$/)[0];
+				console.log(houzhui)
+				//存储在云存储的地址
+				const cloudpath = 'word/' + new Date().getTime() + houzhui;
+
+			wx.cloud.uploadFile({
+				cloudPath: cloudpath,
+				filePath: filepath,
+				success: res => {
+					console.log('文件上传成功')
+					console.log(res)
+					//存储fileID，之后用的到
+						callback(res.fileID)
+					},
+				fail: err => {
+					console.log('文件上传失败',res)
+					wx.showToast({
+						title: '上传失败',
+						icon:'error'
+					})
+				},
+			})
+		})
+},
+	openfile:function(){
+		var fileid = this.data.fileid;
+		var that = this;
+		wx.cloud.getTempFileURL({
+			fileList: [fileid],
+			//fileid不能在浏览器直接下载，要获取临时URL才可以
+			success: res => {
+				console.log(res.fileList)
+				that.setData({
+				//res.fileList[0].tempFileURL是https格式的路径，可以根据这个路径在浏览器上下载
+					imgSrc: res.fileList[0].tempFileURL
+				});
+				//根据https路径可以获得http格式的路径(指定文件下载后存储的路径 (本地路径)),根据这个路径可以预览
+				wx.downloadFile({
+					url: that.data.imgSrc,
+					success: (res) => {
+						console.log(res)
+						that.setData({
+							httpfile: res.tempFilePath
+						})
+						//预览文件
+						wx.openDocument({
+							filePath: that.data.httpfile,
+							success: res => {
+							},
+							fail: err => {
+								console.log(err);
+							}
+						})
+					},
+					fail: (err) => {
+						console.log('读取失败', err)
+					}
+				})
+			},
+			fail: err => {
+		console.log(err);
+			}
+		})
+		
+	},
+	DelFile(e) {
+			console.log(e.currentTarget.dataset.index)
+					this.data.temp_fileList.splice(e.currentTarget.dataset.index, 1);
+					this.setData({
+						temp_fileList: this.data.temp_fileList
+					})
+				}
+			
 })

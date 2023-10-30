@@ -95,6 +95,17 @@
 </view>
 <view wx:else style="display: flex; justify-content: center; align-items: center;" >
 	<image mode="aspectFill"  style=" top:40rpx;width: 80%; opacity: .8;" src="cloud://volunteer-4gaukcmqce212f11.766f-volunteer-4gaukcmqce212f11-1321274883/banner.png" />
+	<view class="text-center padding-tb bottom-bar" style="display: flex; justify-content: center; align-items: center; position: absolute; bottom:20rpx;width: 100%;"  >
+	<button open-type="contact"  style="height:100rpx; width:300rpx;" >
+		<text class='iconfont icon-lianxikefu text-grey text-xl'></text>
+	<view class="sm cu-btn round " style="top:-3rpx; color:#aca6a6;background-color: transparent;">联系客服</view>
+	</button>
+		<view style=" font-size:20rpx;color: #aca6a6; ">丨</view>
+		<button bind:tap="toaboutUs" style=" height:100rpx; width: 300rpx;">
+			<text class='iconfont icon-guanyu text-grey text-xl'></text>
+		<view class="sm cu-btn round" style="top:-3rpx; color:#aca6a6; background-color: transparent; ">
+		关于开发者</view></button>
+</view>
 </view>
 <!-- 轻提示 -->
 <view class="toast-fixed-center" hidden="{{!show}}" style="z-index: 99;">
@@ -133,7 +144,7 @@
 	</view>
 </view>
 
-<view class="text-center padding-tb bottom-bar" style="display: flex; justify-content: center; align-items: center; position: absolute; bottom:20rpx;width: 100%;"  >
+<!-- <view class="text-center padding-tb bottom-bar" style="display: flex; justify-content: center; align-items: center; position: absolute; bottom:20rpx;width: 100%;"  >
 	<button open-type="contact"  style="height:100rpx; width:300rpx;" >
 		<text class='iconfont icon-lianxikefu text-grey text-xl'></text>
 	<view class="sm cu-btn round " style="top:-3rpx; color:#aca6a6;background-color: transparent;">联系客服</view>
@@ -143,4 +154,4 @@
 			<text class='iconfont icon-guanyu text-grey text-xl'></text>
 		<view class="sm cu-btn round" style="top:-3rpx; color:#aca6a6; background-color: transparent; ">
 		关于开发者</view></button>
-</view>
+</view> -->

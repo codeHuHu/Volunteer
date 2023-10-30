@@ -78,10 +78,10 @@
 				<text class="text-grey">我的队伍</text>
 			</view>
 		</view> -->
-		<view class="cu-item arrow" bindtap="showModal" data-target="isAccess">
+		<view  wx:if="{{myPos>0}}" class="cu-item arrow" bindtap="showModal" data-target="isAccess" style=" background-color: rgb(163, 219, 163);">
 			<view class="content">
-				<text class="cuIcon-activity lg text-gray"></text>
-				<text class="text-grey">发布活动</text>
+				<text class="cuIcon-activity lg text-white"></text>
+				<text class="text-white">发布活动</text>
 			</view>
 		</view>
 		<view bindtap="toCommentActivity" class="cu-item arrow">
@@ -113,7 +113,7 @@
 		<text class="cuIcon-info"></text> {{message}}
 	</view>
 </view>
-<view class="cu-modal {{modalName=='isAccess'?'show':''}}">
+<view class="cu-modal {{(modalName=='isAccess' && isTip=='1' )?'show':''}}">
 	<view class="cu-dialog">
 		<view class="cu-bar bg-white justify-end">
 			<view class="content text-red">温馨提示</view>

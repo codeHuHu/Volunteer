@@ -9,6 +9,7 @@ Page({
 		showModal: true, // 是否显示模态框
 		showImageModal: false, // 是否显示图片和提示信息框
 		imageSrc: 'cloud://volunteer-4gaukcmqce212f11.766f-volunteer-4gaukcmqce212f11-1321274883/kefu.jpg', // 图片链接，请替换为实际的图片链接
+		isTip:'1'	//是否弹出提示链接
 	},
 	onLoad: function (event) {
 		console.log('app.globalData', app.globalData)
@@ -51,6 +52,7 @@ Page({
 	 * 生命周期函数--监听页面显示
 	 */
 	onShow() {
+		
 		this.setData({
 			openid: app.globalData.openid,
 			isLogin: app.globalData.isLogin,
@@ -64,11 +66,17 @@ Page({
 		})
 	},
 	toNewActivity() {
+
 		if (!this.data.isLogin) {
 			this.setShow("error", "未注册");
 			return 0
 		}
+		this.setData({
+			isTip:0
+		})
+		
 		wx.navigateTo({
+			
 			url: '/pages/newActivity/newActivity',
 		})
 	},
@@ -126,6 +134,7 @@ Page({
 	},
 	showModal(e) {
 		this.setData({
+			isTip:1,
 			modalName: e.currentTarget.dataset.target
 		})
 	},

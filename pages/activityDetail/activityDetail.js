@@ -70,7 +70,7 @@ Page({
 			.doc(id)
 			.watch({
 				onChange: function (snapShot) {
-					//console.log(snapShot)
+					console.log(snapShot)
 					that.adjustStatus(snapShot.docs[0])
 					that.setData({
 						actions: snapShot.docs[0],
@@ -584,5 +584,54 @@ Page({
 		this.setData({
 			bankCard: e.detail.value
 		})
+	},
+
+	openFile(e)
+	{
+		var idx =e.currentTarget.dataset.target;
+			var fileid = this.data.actions.FileID[idx];
+			var that = this;
+			wx.cloud.getTempFileURL({
+				fileList: [fileid],
+				//fileid不能在浏览器直接下载，要获取临时URL才可以
+				success: res => {
+					console.log(res.fileList)
+					that.setData({
+					//res.fileList[0].tempFileURL是https格式的路径，可以根据这个路径在浏览器上下载
+						imgSrc: res.fileList[0].tempFileURL
+					});
+					wx.showLoading({
+						title: '下载中...',
+						mask:true
+					})
+					//根据https路径可以获得http格式的路径(指定文件下载后存储的路径 (本地路径)),根据这个路径可以预览
+					wx.downloadFile({
+						url: that.data.imgSrc,
+						success: (res) => {
+							console.log(res)
+							that.setData({
+								httpfile: res.tempFilePath
+							})
+							wx.hideLoading()
+							//预览文件
+							wx.openDocument({
+								filePath: that.data.httpfile,
+								success: res => {
+								},
+								fail: err => {
+									console.log(err);
+								}
+							})
+						},
+						fail: (err) => {
+							console.log('读取失败', err)
+						}
+					})
+				},
+				fail: err => {
+			console.log(err);
+				}
+			})
+			
 	}
 })

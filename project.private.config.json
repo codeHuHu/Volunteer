@@ -60,6 +60,13 @@
 					"query": "",
 					"launchMode": "default",
 					"scene": null
+				},
+				{
+					"name": "",
+					"pathName": "pages/upLoadFile",
+					"query": "",
+					"launchMode": "default",
+					"scene": null
 				}
 			]
 		}
