@@ -198,7 +198,9 @@ Page({
 				app.globalData.year=that.data.selectedYear;
 				app.globalData.position=0
 				wx.setStorageSync('user_status', [app.globalData.openid, app.globalData.isLogin]);
-				wx.navigateBack()
+				wx.reLaunch({
+					url: '/pages/home/home',
+				})
 				wx.showToast({
 					title: '注册成功',
 				})

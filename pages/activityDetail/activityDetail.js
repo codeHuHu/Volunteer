@@ -294,6 +294,9 @@ Page({
 		}
 		if (!this.data.isLogin) {
 			this.setShow("error", "您尚未注册");
+			wx.navigateTo({
+				url: '/pages/accountSignUp/accountSignUp',
+			})
 			return
 		}
 		if(this.data.isDead && tmp == 'toCancel'){
