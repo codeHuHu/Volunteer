@@ -5,19 +5,17 @@ Page({
 	 * 页面的初始数据
 	 */
 	data: {
-		apple:[]
+	number:'17325977262'
 	},
 
 	/**
 	 * 生命周期函数--监听页面加载
 	 */
 	onLoad(options) {
-		var a = {
-			have: '1'
-		};
-		let b = {
-			no: '2'
-		};
+		var number =this.data.number.replace(/(\d{3})\d{4}(\d{4})/, '$1****$2')
+		this.setData({
+			number
+		})
 		
 		// this.data.apple.push(a); // 将对象 a 添加到数组中
 		// this.data.apple.push(b); // 将对象 b 添加到数组中

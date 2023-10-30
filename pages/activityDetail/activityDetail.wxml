@@ -161,7 +161,7 @@
 </view>
 <view wx:if="{{actions.introFile}}" class="static margin-sm radius-lg bg-white">
 
-<view class=" radius-lg bg-white">
+<view wx:if="{{checkMode == 1}}" class=" radius-lg bg-white">
 	<view class="solid-bottom text-lg text-bold padding text-black">活动方案文件</view>
 	<view class="flex padding-sm solid{{size?'s':''}}"wx:for="{{actions.introFile}}" wx:key="item" wx-index="index" bind:tap="openFile"  data-target="{{index}}">
 <view class="padding-lr-xs "> 
@@ -440,6 +440,7 @@
 			<text class="text-sm basis-sm">时间段</text>
 		</view>
 		<view wx:for="{{actions.joinMembers}}" wx:for-index="mIdx" wx:for-item="mItm" class="flex justify-around margin-bottom-sm">
+			<!-- <text class="text-sm">{{mItm.info.name[0]}}*{{mItm.info.name.length-1!=1? mItm.info.name[mItm.info.name.length-1]:''}}</text> -->
 			<text class="text-sm">{{mItm.info.name}}</text>
 			<text class="text-sm">{{mItm.posName}}</text>
 			<text class="text-sm">{{serviceTimeSpan[mItm.posIdx[0]].date+' '+serviceTimeSpan[mItm.posIdx[0]].time}}</text>

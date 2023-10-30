@@ -18,7 +18,9 @@ Page({
 		wx.setNavigationBarTitle({
 			title: '首页',
 		})
-
+		this.setData({
+			myPos: app.globalData.position,
+		})
 		//查找活动
 		this.getData()
 	},
@@ -106,8 +108,9 @@ Page({
 					if (res.data.length) {
 						app.globalData.isLogin = true
 						wx.setStorageSync('user_status', [res.data[0]._openid, app.globalData.isLogin])
-						wx.navigateTo({
-							url: '/pages/newActivity/newActivity',
+						wx.showToast({
+							title: '你已注册成为志愿者',
+							icon: 'none'
 						})
 					} else {
 						wx.navigateTo({

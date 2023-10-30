@@ -126,6 +126,6 @@ App({
 		grade: '',
 		year: '',
 		college: '',
-		position: 0,	//pos为0表示普通志愿者，1表示队长，2表示管理员
+		position: '',	//pos为0表示普通志愿者，1表示队长，2表示管理员
 	}
 });

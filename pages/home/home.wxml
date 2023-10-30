@@ -14,9 +14,7 @@
 	</view>
 </view>
 
-<view class="icon-bar">
-
-
+<view class="icon-bar" style="display:none" >
 
 	<view class="item" bindtap="toHonor">
 		<view class="greencircle">
@@ -29,7 +27,7 @@
 		</view>
 	</view>
 
-	<view class="item"  bindtap="showModal" data-target="isAccess">
+	<view class="item" wx:if="{{myPos>0}}"  bindtap="showModal" data-target="isAccess">
 		<view class="bluecircle">
 			<view class="bar-icon">
 				<text class="iconfont icon-jushou "></text>
@@ -62,13 +60,15 @@
 <!-- 分割线 -->
 <view class="home-header-line1"></view>
 
-<!-- <view class="new-join " style="justify-content: center;"> -->
-	<!-- <text class="newest text-xl" >参与拼团</text> -->
-	<!-- <view class="padding flex flex-column radius-lg" bindtap="toZhiYuan">
+<view class="new-join flex justify-between" >
+	<!-- <text class="newest text-xl" >参与拼团</text>
+	<view class="padding flex flex-column radius-lg" bindtap="toZhiYuan">
 	<button class="newest text-xl cu-btn bg-red lg" style="margin-top:10rpx;margin-bottom:-40rpx;">参与拼团活动</button>
 	</view> -->
-	<!-- <button class="joinvolunteer" bindtap="toregister">成为志愿者</button> -->
-<!-- </view> -->
+	<text class="text-bold text-black text-grey" >最新志愿活动</text>
+	<button class="joinvolunteer" bindtap="toregister">成为志愿者</button>
+</view>
+
 <view wx:if="{{actions.length}}">
 <block wx:for="{{actions}}" wx:key="index" >
 	<view class="cu-card article {{isCard?'no-card':''}} margin" style="position: relative;">

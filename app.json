@@ -22,7 +22,8 @@
 		"pages/icon_status/icon_status",
 		"pages/testKeFu/testKeFu",
 		"pages/aboutUs/aboutUs",
-		"pages/upLoadFile"
+		"pages/upLoadFile",
+		"pages/InformTest/InformTest"
 	],
 	"usingComponents": {
 		"cu-custom": "colorui/components/cu-custom/cu-custom"

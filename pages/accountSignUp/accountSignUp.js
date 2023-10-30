@@ -258,7 +258,12 @@ Page({
 			isCheck: !this.data.isCheck
 		})
 	},
-
+	toInformTest()
+	{
+wx.navigateTo({
+	url: '/pages/InformTest/InformTest',
+})
+	},
 		/**
 	 * 轻提示展示
 	 * @param {*} status 

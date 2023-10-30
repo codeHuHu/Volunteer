@@ -1,4 +1,3 @@
-
 <view class="mask" wx:if="{{showImageModal}}" bindtap="preventTap"></view>
 <scroll-view class="scrollPage">
 	<block wx:if="{{isLogin}}">
@@ -78,7 +77,7 @@
 				<text class="text-grey">我的队伍</text>
 			</view>
 		</view> -->
-		<view  wx:if="{{myPos>0}}" class="cu-item arrow" bindtap="showModal" data-target="isAccess" style=" background-color: rgb(163, 219, 163);">
+		<view wx:if="{{myPos>0}}" class="cu-item arrow" bindtap="showModal" data-target="isAccess" style=" background-color: rgb(163, 219, 163);">
 			<view class="content">
 				<text class="cuIcon-activity lg text-white"></text>
 				<text class="text-white">发布活动</text>
@@ -103,8 +102,8 @@
 			</view>
 		</view>
 		<view style=" margin-top:100rpx; display: flex; justify-content: center; align-items: center; height: 120rpx;">
-		<image mode="aspectFill" style="z-index: -1; width: 80%; opacity: .8;" src="cloud://volunteer-4gaukcmqce212f11.766f-volunteer-4gaukcmqce212f11-1321274883/banner.png" />
-	</view>
+			<image mode="aspectFill" style="z-index: -1; width: 80%; opacity: .8;" src="cloud://volunteer-4gaukcmqce212f11.766f-volunteer-4gaukcmqce212f11-1321274883/banner.png" />
+		</view>
 	</view>
 </scroll-view>
 <!-- 轻提示 -->
@@ -121,7 +120,7 @@
 				<text class="cuIcon-close text-red"></text>
 			</view>
 		</view>
-		<view class="padding text-left justify-center flex" >
+		<view class="padding text-left justify-center flex">
 			请确认已有 <text class="text-red"> i志愿服务 </text>的发布活动权限
 		</view>
 		<view class="cu-bar bg-white">
@@ -129,13 +128,14 @@
 				<text class="text-grey">未有</text>
 			</view>
 			<view class=" flex-sub solid-left text-green" bindtap="toNewActivity" style="min-height:100rpx; line-height: 100rpx; text-align: center;">
-			<text>已有</text></view>
+				<text>已有</text>
+			</view>
 		</view>
 	</view>
 </view>
 <view class="image-modal" wx:if="{{showImageModal}}">
 	<button class="close-button" bindtap="hideImgmodal">×</button>
-	<view class="image-container" >
+	<view class="image-container">
 		<view class="box">
 			<image src="{{imageSrc}}" mode="aspectFit" bindtap="longTap" data-url="{{imageSrc}}"></image>
 			<text>请联系客服建立i志愿链接</text>
@@ -143,14 +143,15 @@
 	</view>
 </view>
 
-<view class="text-center padding-tb bottom-bar" style="display: flex; justify-content: center; align-items: center; position: absolute; bottom:20rpx;width: 100%;"  >
-	<button open-type="contact"  style="height:100rpx; width:300rpx;" >
+<view class="text-center padding-tb bottom-bar" style="display: flex; justify-content: center; align-items: center; position: absolute; bottom:20rpx;width: 100%;">
+	<button open-type="contact" style="height:100rpx; width:300rpx;">
 		<text class='iconfont icon-lianxikefu text-grey text-xl'></text>
-	<view class="sm cu-btn round " style="top:-3rpx; color:#aca6a6;background-color: transparent;">联系客服</view>
+		<view class="sm cu-btn round " style="top:-3rpx; color:#aca6a6;background-color: transparent;">联系客服</view>
 	</button>
-		<view style=" font-size:20rpx;color: #aca6a6; ">丨</view>
-		<button bind:tap="toaboutUs" style=" height:100rpx; width: 300rpx;">
-			<text class='iconfont icon-guanyu text-grey text-xl'></text>
+	<view style=" font-size:20rpx;color: #aca6a6; ">丨</view>
+	<button bind:tap="toaboutUs" style=" height:100rpx; width: 300rpx;">
+		<text class='iconfont icon-guanyu text-grey text-xl'></text>
 		<view class="sm cu-btn round" style="top:-3rpx; color:#aca6a6; background-color: transparent; ">
-		关于开发者</view></button>
+			关于开发者</view>
+	</button>
 </view>

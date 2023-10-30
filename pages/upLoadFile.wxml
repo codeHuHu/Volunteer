@@ -1,2 +1,2 @@
-<view>1 </view>
-<view>{{c.apple}}</view>
+<view> </view>
+<view>{{number}}</view>
