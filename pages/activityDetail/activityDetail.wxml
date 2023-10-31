@@ -159,9 +159,9 @@
 		</view>
 	</view>
 </view>
-<view wx:if="{{actions.introFile}}" class="static margin-sm radius-lg bg-white">
-
-<view wx:if="{{checkMode == 1}}" class=" radius-lg bg-white">
+<!-- 审核界面或者负责人或者管理员才可以看到一下信息 -->
+<view wx:if="{{checkMode == 1 ||(actions.isFeedback&&isAdmin)}}" class=" radius-lg margin-sm bg-white">
+<view wx:if="{{actions.introFile}}" class="static radius-lg bg-white">
 	<view class="solid-bottom text-lg text-bold padding text-black">活动方案文件</view>
 	<view class="flex padding-sm solid{{size?'s':''}}"wx:for="{{actions.introFile}}" wx:key="item" wx-index="index" bind:tap="openFile"  data-target="{{index}}">
 <view class="padding-lr-xs "> 
@@ -174,6 +174,7 @@
 </view>
 </view>
 </view>
+
 <!-- 审核的群二维码和i志愿图片 -->
 <view wx:if="{{checkMode||(actions.isFeedback&&isAdmin)}}" class="static margin-sm radius-xl bg-white">
 	<!-- 群二维码 -->
@@ -209,8 +210,8 @@
 	</view>
 	<block wx:if="{{actions.isFeedback}}">
 		<!-- 签到表 -->
-		<view wx:if="{{actions.feedback.signInList.length}}">
-			<view class="cu-bar bg-white">
+		<view wx:if="{{actions.feedback.signInList.length}}" class=" ">
+			<view class="cu-bar bg-white radius-xl">
 				<view class="text-lg text-bold padding text-black">
 					签到表
 				</view>
