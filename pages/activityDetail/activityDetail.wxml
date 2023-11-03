@@ -62,7 +62,7 @@
 				</button>
 			</view>
 			<view wx:else bindtap="showModal" data-target="{{actions.length!=0?(isDead?(isPintuan?'toGroup':'报名已截止无操作'):(isJoin?'toGroup':(isPintuan?'toPintuan':'toJoin'))):'None'}}">
-				<button wx:if="{{isDead||isJoin}}" class="signUp cu-avatar round xl bg-{{isFull?'purple':'grey'}} animation-{{animation}}" bindtap="toggle" data-class="scale-up" role="button" aria-disabled="false">
+				<button wx:if="{{isDead||isJoin==1}}" class="signUp cu-avatar round xl bg-{{isFull?'purple':'grey'}} animation-{{animation}}" bindtap="toggle" data-class="scale-up" role="button" aria-disabled="false">
 					<text class="avatar-text">{{isPintuan?(isJoin||isFull?'群二维码':'报名截止'):'报名截止'}}</text>
 				</button>
 				<!-- <button wx:elif="{{!isJoin}}" class="signUp cu-avatar round xl bg-green animation-{{animation}}" bindtap="toggle" data-class="scale-up" role="button" aria-disabled="false">
@@ -99,11 +99,11 @@
 						<text class="text-df"> {{child.joined}}/{{child.number}}</text>
 					</view>
 					<!-- 报名 -->
-					<view wx:if="{{!isDead&&!isJoin}}" bindtap="showModal" data-target="toPintuan" data-timespan="{{index}}" data-position="{{pindex}}" class="flex-sub flex-treble flex justify-center align-center text-lg">
+					<view wx:if="{{!isDead&&isJoin == 0}}" bindtap="showModal" data-target="toPintuan" data-timespan="{{index}}" data-position="{{pindex}}" class="flex-sub flex-treble flex justify-center align-center text-lg">
 						<text class="cuIcon-friendaddfill xl text-green">+</text>
 					</view>
 					<!-- 取消报名 -->
-					<view wx:elif="{{isJoin&&index==idx[0]&&pindex==idx[1]}}" bindtap="showModal" data-target="toCancel" data-timespan="{{index}}" data-position="{{pindex}}" class="flex-sub flex-treble flex justify-center align-center text-lg">
+					<view wx:elif="{{isJoin == 1&&index==idx[0]&&pindex==idx[1]}}" bindtap="showModal" data-target="toCancel" data-timespan="{{index}}" data-position="{{pindex}}" class="flex-sub flex-treble flex justify-center align-center text-lg">
 						<text class="cuIcon-friendaddfill xl text-red">-</text>
 					</view>
 					<!-- 占个位置而已 -->
@@ -121,7 +121,7 @@
 		</view>
 		<view class="margin-right-xl" bindtap="showModal" data-target="joinMembers">
 			<view class="cu-avatar-group">
-				<view wx:for="{{actions.joinMembers}}" class="cu-avatar round sm" style="background-image:url(https://image.meiye.art/FiLUT-wb9DP0-dpxRQH19HJOOJOW?imageMogr2/thumbnail/450x/interlace/1);"></view>
+				<view wx:for="{{actions.joinMembers}}" wx:key="index" class="cu-avatar round sm" style="background-image:url(https://image.meiye.art/FiLUT-wb9DP0-dpxRQH19HJOOJOW?imageMogr2/thumbnail/450x/interlace/1);"></view>
 				<!-- <view class="cu-avatar round sm" style="background-image:url(https://image.meiye.art/FlqKg5bugFQD5Qzm_QhGM7ET4Mtx?imageMogr2/thumbnail/450x/interlace/1);"></view>
 				<view class="cu-avatar round sm" style="background-image:url(https://image.meiye.art/Fha6tqRTIwHtlLW3xuZBJj8ZXSX3?imageMogr2/thumbnail/450x/interlace/1);"></view>
 				<view class="cu-avatar round sm" style="background-image:url(https://image.meiye.art/FhHGe9NyO0uddb6D4203jevC_gzc?imageMogr2/thumbnail/450x/interlace/1);"></view> -->
@@ -143,9 +143,12 @@
 	</view>
 	<view class="padding flex  justify-between">
 		<text class="">服务地点</text>
-		<text class="text-df">{{actions.address}}</text>
+		<text class="text-df">{{actions.address.length>0?actions.address.length>0:"发布者未填写"}}</text>
 	</view>
-
+	<view wx:if="{{actions.isSubsidy}}" class="padding flex  justify-between">
+		<text class="text-red">服务补贴</text>
+		<text class="text-df text-red">{{actions.subsidyAmount}}元</text>
+	</view>
 </view>
 
 <!-- 服务简介 -->
@@ -159,6 +162,7 @@
 		</view>
 	</view>
 </view>
+
 <!-- 审核界面或者评价后负责人或管理员才可以看到以下信息 -->
 <view wx:if="{{actions.introFile.length}}">
 <view wx:if="{{checkMode ||(actions.isFeedback&&isAdmin)}}" class=" radius-lg margin-sm bg-white">
@@ -173,6 +177,7 @@
 </view>
 </view>
 </view>
+
 </view>
 
 <!-- 审核的群二维码和i志愿图片 -->
@@ -392,27 +397,28 @@
 			</view>
 		</view>
 		<view class="cu-form-group">
-			<view class="title">服务日期</view>
-			<text>{{serviceTimeSpan[idx[0]]['date']}}</text>
+			<view class="title">联系电话</view>
+			<text>{{myInfo.name}}</text>
 		</view>
 		<view class="cu-form-group">
-			<view class="title">服务时间</view>
-			<text>{{serviceTimeSpan[idx[0]]['time']}}</text>
+			<view class="title">联系电话</view>
+			<text>{{myInfo.phone}}</text>
+		</view>
+		<view class="cu-form-group">
+			<view class="title">服务时间段</view>
+			<text>{{serviceTimeSpan[idx[0]]['date']+' '+ serviceTimeSpan[idx[0]]['time']}}</text>
 		</view>
 		<view class="cu-form-group">
 			<view class="title">服务岗位</view>
 			<text>{{serviceTimeSpan[idx[0]]['positions'][idx[1]]['name']}}</text>
 		</view>
-		<view class="cu-form-group">
-			<view class="title">联系电话</view>
-			<text>{{phone}}</text>
-		</view>
+
 		<view wx:if="{{actions.isSubsidy}}" class="cu-form-group">
 			<view class="title inteam ">银行卡号</view>
-			<input class="newName" placeholder="请完善" bindinput="getBankcard">{{bankCard}}</input>
+			<input class="newName text-sm" placeholder="活动为补贴活动以便发放补贴" bindinput="getBankcard">{{bankCard}}</input>
 		</view>
 
-		<view wx:for="{{actions.memo}}" wx:for-item="item" wx:for-index="index" class="cu-form-group">
+		<view wx:for="{{actions.memo}}" wx:key="index" wx:for-item="item" wx:for-index="index" class="cu-form-group">
 			<view class="title inteam">{{item}}</view>
 			<input class="newName" placeholder="请完善" bindinput="getactName"></input>
 		</view>
@@ -440,7 +446,7 @@
 			<text class="text-sm">岗位</text>
 			<text class="text-sm basis-sm">时间段</text>
 		</view>
-		<view wx:for="{{actions.joinMembers}}" wx:for-index="mIdx" wx:for-item="mItm" class="flex justify-around margin-bottom-sm">
+		<view wx:for="{{actions.joinMembers}}" wx:key="index" wx:for-index="mIdx" wx:for-item="mItm" class="flex justify-around margin-bottom-sm">
 			<!-- <text class="text-sm">{{mItm.info.name[0]}}*{{mItm.info.name.length-1!=1? mItm.info.name[mItm.info.name.length-1]:''}}</text> -->
 			<text class="text-sm">{{mItm.info.name}}</text>
 			<text class="text-sm">{{mItm.posName}}</text>

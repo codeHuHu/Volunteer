@@ -17,13 +17,14 @@ Page({
 		actName: '',
 		teamName: '',
 		outNum: 0,
+		subsidyAmount: 0,
 		address: '',
 		intro: '',
 		temp_imgList: [], //群二维码
 		temp_imgList2: [], //i志愿报名码
-		temp_fileList:[],	//简介文件
+		temp_fileList: [],	//简介文件
 		tagList: ['党建引领', '乡村振兴', '新时代文明实践（文化/文艺/体育）', '科普科教', '社区/城中村治理', '环境保护', '弱势群体帮扶', '志愿驿站值班', '其他'],
-		icon:['excel','ppt','word','pdf'],
+		icon: ['excel', 'ppt', 'word', 'pdf'],
 		picker: [
 			'方案策划',
 			'现场执行',
@@ -167,13 +168,17 @@ Page({
 			outNum: Number(e.detail.value)
 		})
 	},
+	getSubsidyAmount(e) {
+		this.setData({
+			subsidyAmount: Number(e.detail.value)
+		})
+	},
 	getAddress(e) {
 		this.setData({
 			address: e.detail.value
 		})
 	},
-	getType(e)
-	{
+	getType(e) {
 		this.setData({
 			peopleType: e.detail.value
 		})
@@ -203,7 +208,7 @@ Page({
 			positonDescription: e.detail.value
 		})
 	},
-	 async sendNew(e) {
+	async sendNew(e) {
 		//检测是否输入完整
 		if (this.check() == 0) {
 			return
@@ -220,86 +225,79 @@ Page({
 		]
 		//群二维码
 		for (let i in this.data.temp_imgList) {
-			
 			uploadTask[0].push(this.uploadImage(this.data.temp_imgList[i]))
-		}	
-	
+		}
+
 		//i志愿报名码
 		for (let i in this.data.temp_imgList2) {
 			uploadTask[1].push(this.uploadImage(this.data.temp_imgList2[i]))
 		}
 
-			//获取简介文件的fileId
-			for (let i in this.data.temp_fileList) {
-				//upladTask[2]是promise对象数组
-				uploadTask[2].push(this.uploadFile(this.data.temp_fileList[i].tempFilePath));  // 直接将返回值推入 this.data.temp_fileList[i]
-			}
+		//获取简介文件的fileId
+		for (let i in this.data.temp_fileList) {
+			//upladTask[2]是promise对象数组
+			uploadTask[2].push(this.uploadFile(this.data.temp_fileList[i].tempFilePath));  // 直接将返回值推入 this.data.temp_fileList[i]
+		}
 
-			//	tmpArr=this.data.temp_fileList[i]
-			// 	uploadTask[2] = uploadTask[2] || [];  // 确保 uploadTask[2] 是一个数组
-			// uploadTask[2].push(tmpArr)
-			
-			console.log(uploadTask[2])
+
 		Promise.all(uploadTask[0])
-			.then(result => {	
+			.then(result => {
 				const qr_code = result	//result保存群二维码，赋值给qr_code
-				console.log(qr_code)	
 				Promise.all(uploadTask[1])
 					.then(result => {
 						const iZhiYuan = result
-						console.log(iZhiYuan)
 						Promise.all(uploadTask[2])
-						.then(result=>{
-						const FileID = result
-						console.log(FileID)
-						const stamps = this.generateStamp()
-						let data = {
-							//holder
-							holder: this.data.holder,
-							phone: this.data.phone,
-							holderDetail: this.data.holderDetail,
-							//act
-							actName: this.data.actName,
-							peoType:this.data.peopleType,
-							intro: this.data.intro,
-							status: this.data.myPos >= 1 ? '1' : '0', // 如果pos为1，活动状态为0：待审核，否则为1：进行中
-							address: this.data.address,
-							//number
-							outJoin: 0,
-							outNum: this.data.outNum,
+							.then(result => {
+								const FileID = result
+								const stamps = this.generateStamp()
+								let data = {
+									//holder
+									holder: this.data.holder,
+									phone: this.data.phone,
+									holderDetail: this.data.holderDetail,
+									//act
+									actName: this.data.actName,
+									peoType: this.data.peopleType,
+									intro: this.data.intro,
+									status: this.data.myPos >= 1 ? '1' : '0', // 如果pos为1，活动状态为0：待审核，否则为1：进行中
+									address: this.data.address,
+									//number
+									outJoin: 0,
+									outNum: this.data.outNum,
 
-							serviceTimeSpan: this.data.serviceTimeSpan,
+									serviceTimeSpan: this.data.serviceTimeSpan,
 
-							serviceStartStamp: stamps[0],//服务开始时间戳
-							serviceEndStamp: stamps[1],//服务结束时间戳
-							deadTimeStamp: stamps[2],//截止报名时间戳
+									serviceStartStamp: stamps[0],//服务开始时间戳
+									serviceEndStamp: stamps[1],//服务结束时间戳
+									deadTimeStamp: stamps[2],//截止报名时间戳
 
-							tag: this.data.tagList[this.data.tagIndex],
+									tag: this.data.tagList[this.data.tagIndex],
 
-							teamName: this.data.teamName,
-							qr_code,
-							iZhiYuan,
-							introFile:this.data.temp_fileList,	//简介文件
-							FileID,	//简介文件的FileID
-							isSubsidy: Number(this.data.isSubsidy),
-							isPintuan: 1,
-						}
-						db.collection('ActivityInfo').add({
-							data: data,
-							success() {
-								console.log("添加活动成功")
-								if (that.data.myPos == 1) {
-									wx.showToast({
-										icon: 'loading',
-										title: '请尽快联系管理员审核并发布',
-									})
-								} else {
-									this.setShow("success", "发布成功");
+									teamName: this.data.teamName,
+									qr_code,
+									iZhiYuan,
+									introFile: this.data.temp_fileList,	//简介文件
+									FileID,	//简介文件的FileID
+									isSubsidy: Number(this.data.isSubsidy),
+									subsidyAmount,
+									isPintuan: 1,
 								}
-							}
-						})
-						})
-				})
+								db.collection('ActivityInfo').add({
+									data: data,
+									success() {
+										console.log("添加活动成功")
+										if (that.data.myPos == 1) {
+											wx.showToast({
+												icon: 'loading',
+												title: '请尽快联系管理员审核并发布',
+											})
+										} else {
+											this.setShow("success", "发布成功");
+										}
+									}
+								})
+							})
+					})
 			})
 		setTimeout(() => {
 			wx.navigateBack(),
@@ -431,8 +429,7 @@ Page({
 			this.setShow("error", "请重启本小程序");
 			return 0
 		}
-		if(this.data.serviceTimeSpan.length==0)
-		{
+		if (this.data.serviceTimeSpan.length == 0) {
 			this.setShow("error", "请添加活动时间段");
 			return 0
 		}
@@ -485,9 +482,9 @@ Page({
 				serviceSpanIndex_active: e.currentTarget.dataset.servicespanindex
 			})
 		}
-		if(tmp == 'showPosDesc'){
+		if (tmp == 'showPosDesc') {
 			this.setData({
-				showPosDescIdx: [e.currentTarget.dataset.sindex,e.currentTarget.dataset.pindex]
+				showPosDescIdx: [e.currentTarget.dataset.sindex, e.currentTarget.dataset.pindex]
 			})
 		}
 
@@ -684,9 +681,8 @@ Page({
 		})
 	},
 
-	choosefile:function()
-	{
-		var that =this
+	choosefile: function () {
+		var that = this
 		wx.chooseMessageFile({
 			count: 1,//能选择文件的数量
 			type: 'file',//能选择文件的类型,我这里只允许上传文件.还有视频,图片,或者都可以
@@ -694,45 +690,44 @@ Page({
 				console.log(res)
 				//文件临时路径
 				const tempFilePaths = res.tempFiles[0].path
-				let fileSizeInBytes =res.tempFiles[0].size
+				let fileSizeInBytes = res.tempFiles[0].size
 				let fileSizeInMB = fileSizeInBytes / (1024 * 1024);
 				let fileSizeDisplay;
 
-if (fileSizeInMB >= 1) {
-  fileSizeDisplay = fileSizeInMB.toFixed(2) + " MB";
-} else {
-  let fileSizeInKB = fileSizeInBytes / 1024;
-  fileSizeDisplay = fileSizeInKB.toFixed(2) + " KB";
-}
+				if (fileSizeInMB >= 1) {
+					fileSizeDisplay = fileSizeInMB.toFixed(2) + " MB";
+				} else {
+					let fileSizeInKB = fileSizeInBytes / 1024;
+					fileSizeDisplay = fileSizeInKB.toFixed(2) + " KB";
+				}
 
-					 var houzhui=tempFilePaths.match(/\.[^.]+?$/)[0]
-					 console.log(houzhui)
-					let t=
+				var houzhui = tempFilePaths.match(/\.[^.]+?$/)[0]
+				console.log(houzhui)
+				let t =
 				{
-					name:res.tempFiles[0].name,
-					tempFilePath:res.tempFiles[0].path,
-					size:fileSizeDisplay,
-					filetype:houzhui,
+					name: res.tempFiles[0].name,
+					tempFilePath: res.tempFiles[0].path,
+					size: fileSizeDisplay,
+					filetype: houzhui,
 				}
 				//that.data.temp_fileList是该活动所有简介文件的数组，所以可以concat
 				let fileList = that.data.temp_fileList.concat(t);
 				that.setData({
 					temp_fileList: fileList
 				});
-			
+
 				console.log(that.data.temp_fileList)
 			}
 		})
-	
+
 	},
 
-		uploadFile:function(filepath)
-		{
-			return new Promise(function(callback){
-				const houzhui = filepath.match(/\.[^.]+?$/)[0];
-				console.log(houzhui)
-				//存储在云存储的地址
-				const cloudpath = 'word/' + new Date().getTime() + houzhui;
+	uploadFile: function (filepath) {
+		return new Promise(function (callback) {
+			const houzhui = filepath.match(/\.[^.]+?$/)[0];
+			console.log(houzhui)
+			//存储在云存储的地址
+			const cloudpath = 'word/' + new Date().getTime() + houzhui;
 
 			wx.cloud.uploadFile({
 				cloudPath: cloudpath,
@@ -741,19 +736,19 @@ if (fileSizeInMB >= 1) {
 					console.log('文件上传成功')
 					console.log(res)
 					//存储fileID，之后用的到
-						callback(res.fileID)
-					},
+					callback(res.fileID)
+				},
 				fail: err => {
-					console.log('文件上传失败',res)
+					console.log('文件上传失败', res)
 					wx.showToast({
 						title: '上传失败',
-						icon:'error'
+						icon: 'error'
 					})
 				},
 			})
 		})
-},
-	openfile:function(){
+	},
+	openfile: function () {
 		var fileid = this.data.fileid;
 		var that = this;
 		wx.cloud.getTempFileURL({
@@ -762,7 +757,7 @@ if (fileSizeInMB >= 1) {
 			success: res => {
 				console.log(res.fileList)
 				that.setData({
-				//res.fileList[0].tempFileURL是https格式的路径，可以根据这个路径在浏览器上下载
+					//res.fileList[0].tempFileURL是https格式的路径，可以根据这个路径在浏览器上下载
 					imgSrc: res.fileList[0].tempFileURL
 				});
 				//根据https路径可以获得http格式的路径(指定文件下载后存储的路径 (本地路径)),根据这个路径可以预览
@@ -789,17 +784,17 @@ if (fileSizeInMB >= 1) {
 				})
 			},
 			fail: err => {
-		console.log(err);
+				console.log(err);
 			}
 		})
-		
+
 	},
 	DelFile(e) {
-			console.log(e.currentTarget.dataset.index)
-					this.data.temp_fileList.splice(e.currentTarget.dataset.index, 1);
-					this.setData({
-						temp_fileList: this.data.temp_fileList
-					})
-				}
-			
+		console.log(e.currentTarget.dataset.index)
+		this.data.temp_fileList.splice(e.currentTarget.dataset.index, 1);
+		this.setData({
+			temp_fileList: this.data.temp_fileList
+		})
+	}
+
 })

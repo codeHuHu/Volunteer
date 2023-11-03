@@ -18,7 +18,7 @@ Page({
 		//记录是否登录
 		this.setData({
 			isLogin: app.globalData.isLogin,
-			phone: app.globalData.phone,
+			myInfo: app.globalData,
 			//传入活动id
 			id: options.id,
 		})
@@ -57,14 +57,17 @@ Page({
 	},
 	onUnload() {
 		try {
-			this.watcher.close()
-			console.log('关闭数据监听')
+			if (this.watcher) {
+				this.watcher.close();
+				console.log('关闭数据监听')
+			}
+
 		} catch (error) {
 			console.log('关闭监听失败', error)
 		}
 	},
 	watcher(id) {
-		console.log('开启监听')
+
 		var that = this
 		this.watcher = db.collection('ActivityInfo')
 			.doc(id)
@@ -110,6 +113,11 @@ Page({
 		for (var i in res.serviceTimeSpan) {
 			boxer.push(0)
 		}
+
+		this.setData({
+			boxer
+		})
+
 		let constant = {
 			hours: thours,
 			minutes: tminutes,
@@ -124,11 +132,8 @@ Page({
 			isAdmin: (app.globalData.openid == res._openid) || (Number(app.globalData.position) >= 1),
 			isDead: res.deadTimeStamp - new Date().getTime() <= 0 ? 1 : 0,
 			isPintuan: res.isPintuan,
-
 			actions: res,
 			serviceTimeSpan: res.serviceTimeSpan,
-			boxer
-
 		})
 	},
 	adjustStatus(res) {
@@ -161,66 +166,55 @@ Page({
 	},
 	Join() {
 		var that = this
-		//先更新一下,查看是否满人了
-		db.collection('ActivityInfo').doc(that.data.id)
-			.get()
-			.then(res => {
-				that.setData({
-					actions: res.data,
-				})
-				if (that.data.actions.outJoin >= that.data.actions.outNum) {
-					that.setShow("error", "人数已满");
-					return
+		let t = new Date()
+		//按钮暂时设置不可见状态
+		that.setData({
+			isJoin: -1
+		})
+		wx.cloud.callFunction({
+			name: 'updateJoinActivity',
+			data: {
+				collectionName: 'ActivityInfo',//集合名字
+				docName: that.data.id,//活动id
+				//操作变量
+				outJoinAdd: 1,//加一人
+				idx: that.data.idx,//该岗位的逻辑位置
+				member: {
+					//个人身份信息
+					info: {
+						openid: app.globalData.openid, //openid
+						name: app.globalData.name, //名字
+						phone: app.globalData.phone, //电话
+						school: app.globalData.school, //学校
+						year: app.globalData.year, //学年
+						id: app.globalData.id, //身份证
+					},
+					bankCard: that.data.bankCard ? that.data.bankCard : '',
+					//岗位信息
+					joinTime: `${t.getFullYear()}-${app.Z(t.getMonth() + 1)}-${app.Z(t.getDate())} ${app.Z(t.getHours())}:${app.Z(t.getMinutes())}`,
+					posIdx: that.data.idx,
+					posName: that.data.serviceTimeSpan[that.data.idx[0]].positions[that.data.idx[1]].name,
 				}
-				let t = new Date()
-				//如果没满人,就去新增人数
-				wx.cloud.callFunction({
-					name: 'updateJoinActivity',
-					data: {
-						collectionName: 'ActivityInfo',//集合名字
-						docName: that.data.id,//活动id
-						//操作变量
-						outJoinAdd: 1,//加一人
-						idx: that.data.idx,//该岗位的逻辑位置
-						member: {
-							//个人身份信息
-							info: {
-								openid: app.globalData.openid, //openid
-								name: app.globalData.name, //名字
-								phone: app.globalData.phone, //电话
-								school: app.globalData.school, //学校
-								year: app.globalData.year, //学年
-								id: app.globalData.id, //身份证
-							},
-							//
-							bankCard: that.data.bankCard ? that.data.bankCard : '',
-							//岗位信息
-							joinTime: `${t.getFullYear()}-${app.Z(t.getMonth() + 1)}-${app.Z(t.getDate())} ${app.Z(t.getHours())}:${app.Z(t.getMinutes())}`,
-							posIdx: that.data.idx,
-							posName: that.data.serviceTimeSpan[that.data.idx[0]].positions[that.data.idx[1]].name,
-						}
-					}
-				}).then(res => {
-
-					//更改按钮状态
-					// that.setData({
-					// 	isJoin: 1
-					// })
-					//将该活动id加入到userInfo
-					db.collection('UserInfo').where({
-						_openid: app.globalData.openid,
-					}).update({
-						data: {
-							myActivity: db.command.push(that.data.id)
-						}
-					})
-					wx.hideLoading()
-					that.setShow("success", `成功参与${this.data.actions.ispintuan ? '拼团' : '报名'}`);
-				})
+			}
+		}).then(res => {
+			//将该活动id加入到userInfo
+			db.collection('UserInfo').where({
+				_openid: app.globalData.openid,
+			}).update({
+				data: {
+					myActivity: db.command.push(that.data.id)
+				}
 			})
+			wx.hideLoading()
+			that.setShow("success", `成功参与${this.data.actions.ispintuan ? '拼团' : '报名'}`);
+		})
 	},
 	unJoin() {
 		var that = this
+		//按钮暂时设置不可见状态
+		that.setData({
+			isJoin: -1
+		})
 		//(非云函数)先获取数据库
 		db.collection('ActivityInfo').doc(this.data.id)
 			.get()
@@ -241,10 +235,10 @@ Page({
 					this.setShow("error", "系统异常");
 					return
 				}
-				if (res.data.outNum < res.data.outJoin) {
-					this.setShow("error", "系统异常");
-					return
-				}
+				// if (res.data.outNum < res.data.outJoin) {
+				// 	this.setShow("error", "系统异常");
+				// 	return
+				// }
 				//(云函数)人数自减1,赋值新的名单
 				wx.cloud.callFunction({
 					name: 'updateJoinActivity',
@@ -305,7 +299,7 @@ Page({
 			})
 			return
 		}
-		if(this.data.isDead && tmp == 'toCancel'){
+		if (this.data.isDead && tmp == 'toCancel') {
 			this.setShow("error", "截止时间已到,不可操作")
 			return
 		}
@@ -338,9 +332,9 @@ Page({
 				this.setShow("error", "你尚未参与此活动");
 				return
 			}
-		}else if(tmp == 'showPosDesc'){
+		} else if (tmp == 'showPosDesc') {
 			this.setData({
-				showPosDescIdx: [e.currentTarget.dataset.sindex,e.currentTarget.dataset.pindex]
+				showPosDescIdx: [e.currentTarget.dataset.sindex, e.currentTarget.dataset.pindex]
 			})
 		}
 		this.setData({
@@ -595,55 +589,54 @@ Page({
 		})
 	},
 
-	openFile(e)
-	{
-		var idx =e.currentTarget.dataset.target;
-			var fileid = this.data.actions.FileID[idx];
-			var that = this;
-			wx.cloud.getTempFileURL({
-				fileList: [fileid],
-				//fileid不能在浏览器直接下载，要获取临时URL才可以
-				success: res => {
-					console.log(res.fileList)
-					that.setData({
+	openFile(e) {
+		var idx = e.currentTarget.dataset.target;
+		var fileid = this.data.actions.FileID[idx];
+		var that = this;
+		wx.cloud.getTempFileURL({
+			fileList: [fileid],
+			//fileid不能在浏览器直接下载，要获取临时URL才可以
+			success: res => {
+				console.log(res.fileList)
+				that.setData({
 					//res.fileList[0].tempFileURL是https格式的路径，可以根据这个路径在浏览器上下载
-						imgSrc: res.fileList[0].tempFileURL
-					});
-					wx.showLoading({
-						title: '下载中...',
-						mask:true
-					})
-					//根据https路径可以获得http格式的路径(指定文件下载后存储的路径 (本地路径)),根据这个路径可以预览
-					wx.downloadFile({
-						url: that.data.imgSrc,
-						success: (res) => {
-							console.log(res)
-							that.setData({
-								httpfile: res.tempFilePath
-							})
-							wx.hideLoading()
-							//预览文件
-							wx.openDocument({
-								filePath: that.data.httpfile,
-								success: res => {
-								},
-								fail: err => {
-									console.log(err);
-								}
-							})
-						},
-						fail: (err) => {
-							console.log('读取失败', err)
-						}
-					})
-				},
-				fail: err => {
-			console.log(err);
-				}
-			})
-			
+					imgSrc: res.fileList[0].tempFileURL
+				});
+				wx.showLoading({
+					title: '下载中...',
+					mask: true
+				})
+				//根据https路径可以获得http格式的路径(指定文件下载后存储的路径 (本地路径)),根据这个路径可以预览
+				wx.downloadFile({
+					url: that.data.imgSrc,
+					success: (res) => {
+						console.log(res)
+						that.setData({
+							httpfile: res.tempFilePath
+						})
+						wx.hideLoading()
+						//预览文件
+						wx.openDocument({
+							filePath: that.data.httpfile,
+							success: res => {
+							},
+							fail: err => {
+								console.log(err);
+							}
+						})
+					},
+					fail: (err) => {
+						console.log('读取失败', err)
+					}
+				})
+			},
+			fail: err => {
+				console.log(err);
+			}
+		})
+
 	},
-	M(name){
+	M(name) {
 		return name.replace(/(?<=^[\u4e00-\u9fa5])[^\u4e00-\u9fa5](?=[\u4e00-\u9fa5]$)/g, "*")
 	}
 })

@@ -65,7 +65,7 @@
 				<view class="content padding-left-lg">
 					<view class="cuIcon-friendaddfill text-green" catchtap="showModal" data-serviceSpanIndex="{{index}}" data-target="addPosition">添加岗位</view>
 				</view>
-				
+
 				<!-- 删除该时间段 -->
 				<view class="cuIcon-deletefill text-red" bindtap="deleteServiceSpan" data-index="{{index}}"></view>
 				<!-- 折叠箭头 -->
@@ -92,13 +92,7 @@
 				</view>
 			</view>
 		</view>
-		<view class="cu-form-group">
-			<view class="inline_name">是否为补贴活动：</view>
-			<radio-group bindchange="isSubsidy">
-				<radio value="1" />是
-				<radio value="0" class="margin-left" />否
-			</radio-group>
-		</view>
+
 		<view class="cu-form-group">
 			<view class="title">截止日期:</view>
 			<picker mode="date" value="{{beginDate}}" start="2023-09-01" end="2024-09-01" bindchange="bindDeadDateChange">
@@ -121,29 +115,48 @@
 			</view>
 		</view>
 		<view class="cu-form-group ">
-			<view class="title inteam " >报名要求:</view>
-			<textarea class="new_profile"  placeholder="(选填，说明志愿者群体类型)" bindinput="getType"></textarea>
+			<view class="title inteam">服务内容:</view>
+			<textarea class="new_profile" placeholder="（例：为村居老人提供慰问服务）" bindinput="getType"></textarea>
 		</view>
 		<view class="cu-form-group ">
-			<view class="title inteam">简介:</view>
+			<view class="title inteam">志愿者权益</view>
 			<textarea class="new_profile" placeholder="(选填，标注: 填写后可增强活动吸引力，吸引更多志愿者参与拼团)" bindinput="getintro"></textarea>
-		</view >
-
-		<view class="cu-form-group text-bold" style="margin-bottom: -20rpx;">
-			<text class="cuIcon-titles text-blue"><text class="text-lg text-black">请上传活动方案文件</text></text></view>
-
-		<view class="flex padding-sm solid{{size?'s':''}}"wx:for="{{temp_fileList}}" wx:key="item" wx-index="index" >
-		<view class="padding-lr-xs "> 
-		<view class="cu-avatar lg round iconfont {{item.filetype=='.excel'?'icon-excel text-green':(item.filetype=='.ppt'?'icon-ppt text-red':((item.filetype=='.docx'||item.filetype=='.doc')?'icon-word text-blue':(item.filetype=='.pdf'?'icon-PDF text-red':'icon-icon-test')))}}">
-        </view></view>
-			<view class="padding-xs text-xl text-black">
-        <view class="text-sm">{{item.name}}</view>
-        <view class="cu-tag round line-green sm">{{item.size}}</view>
 		</view>
-		<text bind:tap="DelFile" class="cuIcon-close text-red" style="position: absolute;right:30rpx" data-index="{{index}}"></text>
+		<view class="cu-form-group">
+			<view class="inline_name">是否为补贴活动：</view>
+
+
+			<radio-group bindchange="isSubsidy">
+				<radio value="1" />是
+				<radio value="0" class="margin-left" />否
+			</radio-group>
+		</view>
+		<view class="cu-form-group flex justify-between" wx:if="{{isSubsidy==1}}">
+			<view class="flex">
+				<view class="title outteam">补贴金额:</view>
+				<input class="title inteam " maxlength="5" bindinput="getSubsidyAmount" value="{{subsidyAmount}}" style="width:150rpx;">{{subsidyAmount}}</input>
+				<view class="title">元</view>
+			</view>
+		</view>
+		<!-- <view class="cu-form-group" wx:if="{{isSubsidy==1}}">补贴金额</view> -->
+		<view class="cu-form-group text-bold" style="margin-bottom: -20rpx;">请上传活动方案文件</view>
+
+		<view class="flex padding-sm solid{{size?'s':''}}" wx:for="{{temp_fileList}}" wx:key="item" wx-index="index">
+
+			<view class="padding-lr-xs ">
+				<view class="cu-avatar lg round iconfont {{item.filetype=='.excel'?'icon-excel text-green':(item.filetype=='.ppt'?'icon-ppt text-red':((item.filetype=='.docx'||item.filetype=='.doc')?'icon-word text-blue':(item.filetype=='.pdf'?'icon-PDF text-red':'icon-icon-test')))}}">
+				</view>
+			</view>
+
+			<view class="padding-xs text-xl text-black">
+				<view class="text-sm">{{item.name}}</view>
+				<view class="cu-tag round line-green sm">{{item.size}}</view>
+			</view>
+			<text bind:tap="DelFile" class="cuIcon-close text-red" style="position: absolute;right:30rpx" data-index="{{index}}"></text>
 		</view>
 
 		<view class=" margin-sm  radius-lg" style="justify-content: center; align-items: center;">
+
 		<view class=" padding-sm bg-oc-blue-4 light radius margin-top" style="width:100%" style="text-align: center;" bindtap="choosefile">
 		<text  style="color:white ;">
 		<text class="text-bold"> +</text> 点此上传
@@ -158,6 +171,7 @@
 	<text class=" text-xs"> 	群二维码将在志愿者报名拼团后自动弹出噢！</text>
 	</view>
 	</view>
+
 		<view class="cu-form-group">
 			<view class="grid col-4 grid-square flex-sub">
 				<view class="bg-img" wx:for="{{temp_imgList}}" wx:key="item" catchtap="ViewImage" data-which="1" data-url="{{temp_imgList[index]}}">
@@ -172,10 +186,12 @@
 			</view>
 		</view>
 		<view wx:if="{{isPintuan != 1}}">
+
 			<view class="cu-bar" style="margin-bottom: -10rpx;">
 			<view class="action border-title">
       	<text class="cuIcon-titles text-blue"></text><text class="text-lg text-bold" style="margin-left: -7rpx;">i志愿报名码</text>
 			</view>
+
 			</view>
 			<view class="cu-form-group">
 				<view class="grid col-4 grid-square flex-sub">
