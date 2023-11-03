@@ -129,10 +129,10 @@
 			<textarea class="new_profile" placeholder="(选填，标注: 填写后可增强活动吸引力，吸引更多志愿者参与拼团)" bindinput="getintro"></textarea>
 		</view >
 
-		<view class="cu-form-group text-bold" style="margin-bottom: -20rpx;">请上传活动方案文件</view>
+		<view class="cu-form-group text-bold" style="margin-bottom: -20rpx;">
+			<text class="cuIcon-titles text-blue"><text class="text-lg text-black">请上传活动方案文件</text></text></view>
 
 		<view class="flex padding-sm solid{{size?'s':''}}"wx:for="{{temp_fileList}}" wx:key="item" wx-index="index" >
-
 		<view class="padding-lr-xs "> 
 		<view class="cu-avatar lg round iconfont {{item.filetype=='.excel'?'icon-excel text-green':(item.filetype=='.ppt'?'icon-ppt text-red':((item.filetype=='.docx'||item.filetype=='.doc')?'icon-word text-blue':(item.filetype=='.pdf'?'icon-PDF text-red':'icon-icon-test')))}}">
         </view></view>
@@ -146,15 +146,18 @@
 		<view class=" margin-sm  radius-lg" style="justify-content: center; align-items: center;">
 		<view class=" padding-sm bg-oc-blue-4 light radius margin-top" style="width:100%" style="text-align: center;" bindtap="choosefile">
 		<text  style="color:white ;">
-		<text class="text-bold"> +</text>点此上传
+		<text class="text-bold"> +</text> 点此上传
 		</text></view>
-
 		</view>
 		
-	<view class=" margin-sm  radius-lg">
-  <view class="margin-top padding-sm bg-oc-blue-4 light radius margin-top" style="width:68%"><text  class="text-cut-3" style="color:white"><text class="text-bold"> 服务对接群 </text><text class="text-xs">
-	群二维码将在志愿者报名拼团后自动弹出噢！</text></text></view>
-</view>
+  <view class="margin-top padding-sm light radius margin-top" style="width:80%">
+		<text class="cuIcon-titles text-blue"></text>
+	<text class="text-bold"> 服务对接群 </text>
+	<view style="margin-top:5rpx ;">
+	<text class="cuIcon-title text-blue"></text>
+	<text class=" text-xs"> 	群二维码将在志愿者报名拼团后自动弹出噢！</text>
+	</view>
+	</view>
 		<view class="cu-form-group">
 			<view class="grid col-4 grid-square flex-sub">
 				<view class="bg-img" wx:for="{{temp_imgList}}" wx:key="item" catchtap="ViewImage" data-which="1" data-url="{{temp_imgList[index]}}">
@@ -169,9 +172,11 @@
 			</view>
 		</view>
 		<view wx:if="{{isPintuan != 1}}">
-			<view class=" margin-sm  radius-lg">
-  <view class="padding-sm bg-oc-blue-4 light radius margin-top" style="width:200rpx"><text  class="text-cut-3 text-bold" style="color: white;">i志愿报名码</text></view>
-</view>
+			<view class="cu-bar" style="margin-bottom: -10rpx;">
+			<view class="action border-title">
+      	<text class="cuIcon-titles text-blue"></text><text class="text-lg text-bold" style="margin-left: -7rpx;">i志愿报名码</text>
+			</view>
+			</view>
 			<view class="cu-form-group">
 				<view class="grid col-4 grid-square flex-sub">
 					<view class="bg-img" wx:for="{{temp_imgList2}}" wx:key="item" bindtap="ViewImage" data-url="{{temp_imgList2[index]}}">
@@ -189,7 +194,7 @@
 
 
 
-		<button class="new_button" bindtap="showModal" data-target="teamName">下一步</button>
+		<button class="new_button" bindtap="showModal" data-target="teamName">提交审核 / 发布</button>
 	</form>
 </view>
 <!-- 轻提示 -->

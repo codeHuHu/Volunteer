@@ -159,9 +159,9 @@
 		</view>
 	</view>
 </view>
-<!-- 审核界面或者负责人或者管理员才可以看到一下信息 -->
-<view wx:if="{{checkMode == 1 ||(actions.isFeedback&&isAdmin)}}" class=" radius-lg margin-sm bg-white">
-<view wx:if="{{actions.introFile}}" class="static radius-lg bg-white">
+<!-- 审核界面或者评价后负责人或管理员才可以看到以下信息 -->
+<view wx:if="{{actions.introFile.length}}">
+<view wx:if="{{checkMode ||(actions.isFeedback&&isAdmin)}}" class=" radius-lg margin-sm bg-white">
 	<view class="solid-bottom text-lg text-bold padding text-black">活动方案文件</view>
 	<view class="flex padding-sm solid{{size?'s':''}}"wx:for="{{actions.introFile}}" wx:key="item" wx-index="index" bind:tap="openFile"  data-target="{{index}}">
 <view class="padding-lr-xs "> 
