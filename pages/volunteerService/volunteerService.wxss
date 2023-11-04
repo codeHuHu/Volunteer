@@ -3,8 +3,8 @@ page {
 }
 
 .up image {
-	width: 894rpx;
-	height: 127rpx;
+	width: 900rpx;
+	height: 129rpx;
 	border-radius: 5%;
 }
 .top-bar {

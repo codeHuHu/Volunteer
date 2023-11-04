@@ -1,7 +1,7 @@
 <import src="/pages/icon_status/icon_status.wxml"/>
 
 <view class="up" style="border-radius: 5rpx; box-shadow: 0 1px 4px rgba(161, 229, 147, 0.555) ;" >
-	<image src="/images/tabbar/2.png" />
+	<image src="/images/tabbar/3.png" />
 </view>
 
 <view class="top-bar fixed" style=" margin:-30rpx 5rpx -20rpx 5rpx;">
