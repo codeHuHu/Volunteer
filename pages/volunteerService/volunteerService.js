@@ -1,6 +1,7 @@
 // pages/service/service.js
 const app = getApp();
 const db = wx.cloud.database();
+let loading = false;
 
 Page({
 
@@ -192,6 +193,10 @@ Page({
 		wx.setNavigationBarTitle({
 			title: '志愿服务',
 		})
+		this.setData({
+			myPos:app.globalData.position,
+			myId:app.globalData.openid
+		})
 		const currentDate = new Date();
 		const timeStamp = currentDate.getTime();
 		this.setData({
@@ -206,8 +211,8 @@ Page({
 
 		const collection = db.collection('ActivityInfo');
 		collection.where({
-			//获取非待审核或拒绝发布的活动
-			'status': db.command.nor(db.command.eq('0'), db.command.eq('-1'))
+			//获取非： 待审核、拒绝发布、已取消的活动
+			'status': db.command.nor(db.command.eq('0'), db.command.eq('-1'),db.command.eq('-2'))
 
 		}).field({
 			_id: true,
@@ -323,5 +328,66 @@ Page({
 	},
 	addstatus(e) {
 		//console.log(e.currentTarget.dataset.status)
-	}
+	},
+	cancell(e)
+	{
+		var that = this
+		wx.showModal({
+			title: '是否取消活动',
+			content: '取消后仅你和管理员可见',
+			success(res) {
+				// 用户点击了确定按钮
+				if (res.confirm) {
+					console.log(e.currentTarget.dataset.id)
+					const id = e.currentTarget.dataset.id
+					const collection = db.collection('ActivityInfo');
+					collection.doc(id).update({
+						data: {
+							status: '-2'	//-2表示取消活动
+						}
+					}).then(res => {
+						console.log(res)
+						that.setShow("success", "活动取消成功")
+						that.onLoad()
+					}
+					)
+				} else if (res.cancel) {
+
+				}
+			}
+		})
+	},
+	/**
+	 * 轻提示展示
+	 * @param {*} status 
+	 * @param {*} message 
+	 * @param {*} time 
+	 * @param {*} fun 
+	 */
+	setShow(status, message, time = 2000, fun = false) {
+		if (loading) {
+			return
+		}
+		loading = true;
+		try {
+			this.setData({
+				status,
+				message,
+				time,
+				show: true,
+			})
+			setTimeout(() => {
+				this.setData({
+					show: false,
+				})
+				loading = false;
+				// 触发回调函数
+				if (fun) {
+					this.end()
+				}
+			}, time)
+		} catch {
+			loading = false;
+		}
+	},
 })

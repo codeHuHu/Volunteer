@@ -3,12 +3,12 @@
     <view class="cuIcon-searchlist text-gray icon"></view>
   </view>
   <view class="flex justify-center padding-top-sm">
-    <view class="text-gray text">暂无数据</view>
+    <view class="text-gray text">暂无数据 可能是外星人来过~</view>
   </view>
 </view>
 
 <block wx:for="{{actionList}}" wx:key="index">
-	<view style="position: relative;" class="cu-card article {{isCard?'no-card':''}} margin" bindtap="toDetail" data-id="{{item._id}}">
+	<view wx:if="{{item.status>-2}}"   style="position: relative;" class="cu-card article {{isCard?'no-card':''}} margin" bindtap="toDetail" data-id="{{item._id}}">
 		<view wx:if="{{item.status == 1}}"><image class="myicon" src="/images/tabbar/sun.png"></image> </view>
 	<view wx:elif="{{item.status == 2}}"><image class="myicon" src="/images/tabbar/water_moon.png"></image> </view>
 		<view class="cu-item shadow">

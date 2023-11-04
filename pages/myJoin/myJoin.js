@@ -21,7 +21,8 @@ Page({
 			var myActivity = actions[0].myActivity
 			console.log(actions)
 			db.collection('ActivityInfo').where({
-				_id: db.command.in(myActivity)
+				_id: db.command.in(myActivity),
+				status:db.command.not(db.command.eq('-2'))
 			}).field({
 				_id: true,
 				actName: true,

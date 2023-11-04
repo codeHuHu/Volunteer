@@ -55,9 +55,11 @@
 </view>
 
 <!-- 抽屉部分 -->
-<scroll-view scroll-y class="cu-drawer-window {{modalName=='viewModal'?'show':''}}">
+<scroll-view scroll-y class="cu-drawer-window {{modalName=='viewModal'?'show':''}}"  >
 	<block wx:for="{{binActionList}}" wx:key="index">
-	<view class="cu-card article {{isCard?'no-card':''}} margin" bindtap="toDetail" data-id="{{item._id}}">
+		
+	<view style="position: relative;" class="cu-card article {{isCard?'no-card':''}} margin" bindtap="toDetail" data-id="{{item._id}}">
+		<view wx:if="{{item.status == -2||item.status== -1}}"><image class="myicon" src="/images/tabbar/water_bin.png"></image> </view>
 		<view class="cu-item shadow">
 			<view class="title">
 				<view class="text-cut">{{item.actName}}</view>
@@ -78,8 +80,11 @@
 		</view>
 		
 	</view>
-	<view class="justify-end grid col-5 bg-white padding-sm margin  margin-bottom-xs margin-top-xs">
+	<view wx:if="{{item.status=='-1'}}" class="justify-end grid col-5 bg-white padding-sm margin  margin-bottom-xs margin-top-xs">
 						<button class="sm cu-btn round line-grey {{shadow?'shadow':''}}" style="margin-top:-20rpx"  data-id="{{item._id}}">已拒绝发布</button>
+	</view>	
+	<view wx:if="{{item.status=='-2'}}" class="justify-end grid col-5 bg-white padding-sm margin  margin-bottom-xs margin-top-xs">
+						<button class="sm cu-btn round line-grey {{shadow?'shadow':''}}" style="margin-top:-20rpx"  data-id="{{item._id}}">活动已取消</button>
 	</view>	
 
 </block>

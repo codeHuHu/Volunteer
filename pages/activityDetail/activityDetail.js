@@ -12,6 +12,16 @@ Page({
 			deadTime: 'xxxxxxx',
 			serviceTime: 'xxxxxxx',
 		},
+		picker:['建设银行',
+		'邮储银行',
+	'农业银行',
+'工商银行',
+'中国银行',
+'交通银行',
+'其他银行'
+],
+BankPickerIndex:''
+
 	},
 	onLoad: function (options) {
 		console.log('app.globalData:', app.globalData)
@@ -136,6 +146,22 @@ Page({
 			serviceTimeSpan: res.serviceTimeSpan,
 		})
 	},
+
+	//改变选择银行索引
+	BankPickerChange(e) {
+		this.setData({
+			BankPickerIndex: e.detail.value,
+			Banktype:this.data.picker[e.detail.value]	//银行类型
+		})
+		console.log(this.data.Banktype)
+	},
+	getElseBank(e) {
+		this.setData({
+			elseBank: e.detail.value,
+			Banktype:e.detail.value
+		})
+		console.log(this.data.Banktype)
+	},
 	adjustStatus(res) {
 		//检测活动的报名成功状态
 		this.setData({
@@ -189,7 +215,9 @@ Page({
 						year: app.globalData.year, //学年
 						id: app.globalData.id, //身份证
 					},
-					bankCard: that.data.bankCard ? that.data.bankCard : '',
+					aliPay:that.data.aliPay?that.data.aliPay:'',
+					bankType: that.data.Banktype?that.data.Banktype:'',
+					bankCardNumber:that.data.bankCardNumber?that.data.bankCardNumber:'',
 					//岗位信息
 					joinTime: `${t.getFullYear()}-${app.Z(t.getMonth() + 1)}-${app.Z(t.getDate())} ${app.Z(t.getHours())}:${app.Z(t.getMinutes())}`,
 					posIdx: that.data.idx,
@@ -583,12 +611,24 @@ Page({
 			boxer
 		});
 	},
-	getBankcard(e) {
+	getAli(e)
+	{
 		this.setData({
-			bankCard: e.detail.value
+			aliPay:e.detail.value
 		})
 	},
-
+	getBankCardnumber(e) {
+		this.setData({
+			bankCardNumber: e.detail.value
+		})
+	},
+	getbutton(e)
+	{
+		console.log(e.detail.value)
+		this.setData({
+			payee:e.detail.value
+		})
+	},
 	openFile(e) {
 		var idx = e.currentTarget.dataset.target;
 		var fileid = this.data.actions.FileID[idx];
@@ -638,5 +678,6 @@ Page({
 	},
 	M(name) {
 		return name.replace(/(?<=^[\u4e00-\u9fa5])[^\u4e00-\u9fa5](?=[\u4e00-\u9fa5]$)/g, "*")
-	}
+	},
+
 })

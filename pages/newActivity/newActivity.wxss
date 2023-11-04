@@ -40,9 +40,17 @@
 
 .new_profile {
 	margin: 10rpx 0rpx;
+	border-radius: 5rpx;
 	width: 100%;
 	height: auto;
-	border: solid 1rpx #ddd;
+	border:dotted 1rpx #ddd;
+	padding:10rpx;
+	font-family: Arial, sans-serif; /* 设置字体 */
+  font-size: 14px; /* 设置字体大小 */
+  color: #333; /* 设置文本颜色 */
+  text-align: left; /* 设置文本对齐方式 */
+  line-height: 1.5; /* 设置行高 */
+  padding: 10px; /* 设置内边距 */
 }
 
 .new_button {

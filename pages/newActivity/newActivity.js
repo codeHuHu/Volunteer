@@ -19,7 +19,7 @@ Page({
 		outNum: 0,
 		subsidyAmount: 0,
 		address: '',
-		intro: '',
+		intro: '(选填，标注: 填写后可增强活动吸引力，吸引更多志愿者参与拼团)',
 		temp_imgList: [], //群二维码
 		temp_imgList2: [], //i志愿报名码
 		temp_fileList: [],	//简介文件
@@ -139,8 +139,16 @@ Page({
 
 	},
 	isSubsidy(e) {
+		console.log(e)
 		this.setData({
 			isSubsidy: e.detail.value
+		})
+	},
+	isfile(e)
+	{
+		console.log(e.detail.value)
+		this.setData({
+			isfile:e.detail.value
 		})
 	},
 	getactName(e) {
@@ -279,7 +287,7 @@ Page({
 									introFile: this.data.temp_fileList,	//简介文件
 									FileID,	//简介文件的FileID
 									isSubsidy: Number(this.data.isSubsidy),
-									subsidyAmount,
+									subsidyAmount:this.data.subsidyAmount,
 									isPintuan: 1,
 								}
 								db.collection('ActivityInfo').add({
@@ -431,6 +439,11 @@ Page({
 		}
 		if (this.data.serviceTimeSpan.length == 0) {
 			this.setShow("error", "请添加活动时间段");
+			return 0
+		}
+		if(this.data.outNum==0)
+		{
+			this.setShow("error",'请添加岗位');
 			return 0
 		}
 		if (!this.data.outNum) {

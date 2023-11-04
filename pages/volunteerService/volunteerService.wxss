@@ -128,7 +128,8 @@ background-color: rgb(17, 58, 241);
 }
 
 .cu-card {
-	margin-bottom: -20rpx;
+	
+	margin-bottom: 0;
 
 }
 
@@ -163,3 +164,9 @@ background-color: rgb(17, 58, 241);
 	right: 10rpx;
 	top:5rpx;
 }
+
+/* .cu-btn.text-sm.text-red
+{
+	color: red;
+	z-index: 999;
+} */

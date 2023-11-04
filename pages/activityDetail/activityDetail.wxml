@@ -1,17 +1,17 @@
 <view class="cu-bar">
-	<view class="action sub-title">
-		<text class="text-xl text-bold text-black bg-oc-gray-2">{{actions.actName}}</text>
-		<view class="padding-left-xl">
-			<view class="cu-tag bg-green light sm round going-on" wx:if="{{actions.status=='1'}}">服务进行中</view>
-			<view class="cu-tag bg-green light sm round going-on" wx:elif="{{actions.status=='2'}}" style="background-color: gray; color: aliceblue;">服务已结束</view>
-			<view class="cu-tag bg-{{isFull?'blue':'red'}} light xxl round going-on text-bold" wx:if="{{isPintuan=='1'}}">报名{{isDead?(isFull?'已满':'截止'):(isFull?'已满':'中')}}</view>
-		</view>
+	<view class="action  flex">
+	<view>
+		<text class="text-xl text-bold text-black bg-oc-lime-0">{{actions.actName}}</text>
+			<view class="margin-left cu-tag bg-green light sm round going-on" wx:if="{{actions.status=='1'}}">服务进行中</view>
+			<view class="margin-left cu-tag bg-green light sm round going-on" wx:elif="{{actions.status=='2'}}" style="background-color: gray; color: aliceblue;">服务已结束</view>
+			<!-- <view class="cu-tag bg-{{isFull?'blue':'red'}} light xxl round going-on text-bold" wx:if="{{isPintuan=='1'}}">报名{{isDead?(isFull?'已满':'截止'):(isFull?'已满':'中')}}</view> -->
+</view>
 	</view>
 </view>
 
 <view class="grid col-4 radius-lg padding-left">
-	<view class="bg-oc-gray-6 radius padding-tb-xs text-center margin-tb-xs margin-right" style="background-color: rgb(78, 187, 78);">
-		<view class="text-sm">
+	<view class="bg-oc-gray-6 radius padding-tb-xs text-center margin-tb-xs margin-right" style="width: auto; background-color: rgb(78, 187, 78);">
+		<view class=" text-sm">
 			{{actions.tag}}
 		</view>
 	</view>
@@ -48,7 +48,7 @@
 			<text class="text-df">{{constant.deadTime}}</text>
 		</view>
 		<view class="padding flex  justify-between">
-			<text class="">{{isPintuan==1?'报名':'报名'}}人数</text>
+			<text class="">{{isPintuan==1?'需求':'需求'}}人数</text>
 			<text class="text-df"> {{actions.outJoin}}/{{actions.outNum}}</text>
 		</view>
 	</view>
@@ -397,7 +397,7 @@
 			</view>
 		</view>
 		<view class="cu-form-group">
-			<view class="title">联系电话</view>
+			<view class="title">志愿者姓名</view>
 			<text>{{myInfo.name}}</text>
 		</view>
 		<view class="cu-form-group">
@@ -414,18 +414,54 @@
 		</view>
 
 		<view wx:if="{{actions.isSubsidy}}" class="cu-form-group">
-			<view class="title inteam ">银行卡号</view>
-			<input class="newName text-sm" placeholder="活动为补贴活动以便发放补贴" bindinput="getBankcard">{{bankCard}}</input>
+			<view class="title inteam ">收款单位</view>
+			<radio-group bindchange="getbutton">
+      <label class="margin-left-sm">
+        <radio class="blue sm radio" value="1" checked></radio>
+        <text> 支付宝</text>
+      </label>
+      <label class="margin-left-sm">
+        <radio class="blue sm radio" value="2"></radio>
+        <text> 银行卡</text>
+      </label>
+    </radio-group>
+		
+			<!-- <input class="newName text-sm" placeholder="活动为补贴活动以便发放补贴" bindinput="getBankcard">{{bankCard}}</input> -->
 		</view>
-
-		<view wx:for="{{actions.memo}}" wx:key="index" wx:for-item="item" wx:for-index="index" class="cu-form-group">
+<view wx:if="{{payee=='1'}}">
+<view class="cu-form-group" style="justify-content: between;" style="display: flex;align-items: center; ">
+				<view class="title outteam">支付宝号码:</view>
+				<input class="tel" bindinput="getAli" placeholder="支付宝号仅发放补贴用">
+				{{aliPay}}</input>
+</view>
+</view>
+<view wx:if="{{payee=='2'}}">
+	<view class="cu-form-group" >
+			<view class="title">请选择对应银行</view>
+			<picker bindchange="BankPickerChange" value="{{BankPickerIndex}}" range="{{picker}}">
+				<view class="picker">
+					{{BankPickerIndex?picker[BankPickerIndex]:'请选择'}}
+				</view>
+			</picker>
+</view>
+<view wx:if="{{BankPickerIndex==picker.length-1}}" class="cu-form-group">
+			<view class="title">银行名</view>
+			<input bindinput="getElseBank" placeholder="×××银行">{{elseBank}}</input>
+</view>
+<view class="cu-form-group" style="justify-content: between;" style="display: flex;align-items: center; ">
+				<view class="title outteam">银行卡号</view>
+				<input class="tel" bindinput="getBankCardnumber" placeholder="例：6217003810026896707">
+				{{bankCardNumber}}</input>	
+</view>
+</view>
+		<!-- <view wx:for="{{actions.memo}}" wx:key="index" wx:for-item="item" wx:for-index="index" class="cu-form-group">
 			<view class="title inteam">{{item}}</view>
 			<input class="newName" placeholder="请完善" bindinput="getactName"></input>
-		</view>
+		</view> -->
 		<!-- 选择框 -->
 		<view class="cu-bar bg-white">
-			<view class="action margin-0 flex-sub text-green solid-left" bindtap="hideModal">取消</view>
-			<view class="action margin-0 flex-sub  solid-left" bindtap="hideModal" data-target="join">确定</view>
+			<view class="action margin-0 flex-sub n solid-left" bindtap="hideModal">取消</view>
+			<view class="action margin-0 flex-sub  text-green solid-left" bindtap="hideModal" data-target="join">确定</view>
 		</view>
 	</view>
 </view>

@@ -28,12 +28,10 @@ Page({
 	},
 
 	getList: async function (e) {
-		console.log(e)
-		var s = e;
 		var that = this;
 		const collection = db.collection('ActivityInfo');
 		const res = await collection.where({
-			status: s
+			status: e=='0'?'0':db.command.in(['-1','-2'])
 		}).field({
 			_id: true,
 			actName: true,
@@ -51,7 +49,8 @@ Page({
 			.get();
 
 		var actions = res.data;
-		if (s == '0') {
+		console.log(actions)
+		if (e == '0') {
 			that.setData({
 				actionList: actions,
 			});
