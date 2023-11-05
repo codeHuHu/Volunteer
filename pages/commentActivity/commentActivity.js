@@ -64,9 +64,13 @@ Page({
 								info: Infos[i].info,
 								excellent: Infos[i].excellent,
 								isCome: Infos[i].isCome,
-								feedback: Infos[i].feedback
+								feedback: Infos[i].feedback,
+								serviceSpan: Infos[i].serviceSpan,
+								posName: Infos[i].posName,
+								aliPay: Infos[i].aliPay,
+								bankType: Infos[i].bankType,
+								bankCardNumber: Infos[i].bankCardNumber,
 							}
-							console.log(item)
 							newArray.push(item)
 						}
 						console.log(newArray)
@@ -81,40 +85,64 @@ Page({
 							imgList: [],
 							signInList: []
 						})
-						//db.command.in(members)
-						db.collection('UserInfo').where({
-							_openid: db.command.in(members)
-						}).field({
-							_openid: true,
-							userName: true,
-							idNumber: true,
-							phone: true,
-							college: true,
-							grade: true,
-							aliPay: true,
-							year: true,
-							school: true,
-						}).get().then(res => {
-							var tmp = res.data
-							for (var l in tmp) {
-								nameList.push(tmp[l])
+						var tmp = this.data.result.joinMembers
+						const newArray = []
+						for (var l = 0; l < tmp.length; l++) {
+							let TS = this.data.result.serviceTimeSpan[tmp[l].posIdx[0]]
+							const item = {
+								id: l,
+								info: tmp[l].info,
+								excellent: true,
+								isCome: true,
+								feedback: '',
+								serviceSpan: TS.date+' '+TS.time,
+								posName: tmp[l].posName,
+								aliPay: tmp[l].aliPay ? tmp[l].aliPay : '',
+								bankType: tmp[l].bankType ? tmp[l].bankType : '',
+								bankCardNumber: tmp[l].bankCardNumber ? tmp[l].bankCardNumber : '',
 							}
-							const newArray = []
-							for (var l = 0; l < tmp.length; l++) {
-								const item = {
-									id: l,
-									info: tmp[l],
-									excellent: true,
-									isCome: true,
-									feedback: ''
-								}
-								newArray.push(item)
-							}
-							console.log(newArray)
-							this.setData({
-								checkBox: newArray
-							})
+							newArray.push(item)
+						}
+						console.log(newArray)
+						this.setData({
+							checkBox: newArray
 						})
+
+
+						//db.command.in(members)
+						// db.collection('UserInfo').where({
+						// 	_openid: db.command.in(members)
+						// }).field({
+						// 	_openid: true,
+						// 	userName: true,
+						// 	idNumber: true,
+						// 	phone: true,
+						// 	college: true,
+						// 	grade: true,
+						// 	aliPay: true,
+						// 	year: true,
+						// 	school: true,
+						// }).get().then(res => {
+						// 	var tmp = res.data
+						// 	for (var l in tmp) {
+						// 		nameList.push(tmp[l])
+						// 	}
+						// 	const newArray = []
+						// 	for (var l = 0; l < tmp.length; l++) {
+						// 		const item = {
+						// 			id: l,
+						// 			info: tmp[l],
+						// 			excellent: true,
+						// 			isCome: true,
+						// 			feedback: ''
+						// 		}
+						// 		newArray.push(item)
+						// 	}
+						// 	console.log(newArray)
+						// 	this.setData({
+						// 		checkBox: newArray
+						// 	})
+						// })
 					}
 
 				})

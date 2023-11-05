@@ -1,11 +1,12 @@
 <view class="cu-bar">
 	<view class="action  flex">
-	<view>
-		<text class="text-xl text-bold text-black bg-oc-lime-0">{{actions.actName}}</text>
+		<view>
+			<text class="text-xl text-bold text-black bg-oc-lime-0">{{actions.actName}}</text>
+			<view class="margin-left cu-tag bg-red light sm round going-on" wx:if="{{actions.isSubsidy=='1'}}">补贴服务</view>
 			<view class="margin-left cu-tag bg-green light sm round going-on" wx:if="{{actions.status=='1'}}">服务进行中</view>
 			<view class="margin-left cu-tag bg-green light sm round going-on" wx:elif="{{actions.status=='2'}}" style="background-color: gray; color: aliceblue;">服务已结束</view>
 			<!-- <view class="cu-tag bg-{{isFull?'blue':'red'}} light xxl round going-on text-bold" wx:if="{{isPintuan=='1'}}">报名{{isDead?(isFull?'已满':'截止'):(isFull?'已满':'中')}}</view> -->
-</view>
+		</view>
 	</view>
 </view>
 
@@ -143,7 +144,7 @@
 	</view>
 	<view class="padding flex  justify-between">
 		<text class="">服务地点</text>
-		<text class="text-df">{{actions.address.length>0?actions.address.length>0:"发布者未填写"}}</text>
+		<text class="text-df">{{actions.address.length>0?actions.address:"发布者未填写"}}</text>
 	</view>
 	<view wx:if="{{actions.isSubsidy}}" class="padding flex  justify-between">
 		<text class="text-red">服务补贴</text>
@@ -165,18 +166,19 @@
 
 <!-- 审核界面或者评价后负责人或管理员才可以看到以下信息 -->
 <view wx:if="{{actions.introFile.length}}">
-<view wx:if="{{checkMode ||(actions.isFeedback&&isAdmin)}}" class=" radius-lg margin-sm bg-white">
-	<view class="solid-bottom text-lg text-bold padding text-black">活动方案文件</view>
-	<view class="flex padding-sm solid{{size?'s':''}}"wx:for="{{actions.introFile}}" wx:key="item" wx-index="index" bind:tap="openFile"  data-target="{{index}}">
-<view class="padding-lr-xs "> 
-<view class="cu-avatar lg round iconfont {{item.filetype=='.excel'?'icon-excel text-green':(item.filetype=='.ppt'?'icon-ppt text-red':((item.filetype=='.docx'||item.filetype=='.doc')?'icon-word text-blue':(item.filetype=='.pdf'?'icon-PDF text-red':'icon-icon-test')))}}">
-		</view></view>
-	<view class="padding-xs text-xl text-black">
-		<view class="text-sm">{{item.name}}</view>
-		<view class="cu-tag round line-green sm">{{item.size}}</view>
-</view>
-</view>
-</view>
+	<view wx:if="{{checkMode ||(actions.isFeedback&&isAdmin)}}" class=" radius-lg margin-sm bg-white">
+		<view class="solid-bottom text-lg text-bold padding text-black">活动方案文件</view>
+		<view class="flex padding-sm solid{{size?'s':''}}" wx:for="{{actions.introFile}}" wx:key="item" wx-index="index" bind:tap="openFile" data-target="{{index}}">
+			<view class="padding-lr-xs ">
+				<view class="cu-avatar lg round iconfont {{item.filetype=='.excel'?'icon-excel text-green':(item.filetype=='.ppt'?'icon-ppt text-red':((item.filetype=='.docx'||item.filetype=='.doc')?'icon-word text-blue':(item.filetype=='.pdf'?'icon-PDF text-red':'icon-icon-test')))}}">
+				</view>
+			</view>
+			<view class="padding-xs text-xl text-black">
+				<view class="text-sm">{{item.name}}</view>
+				<view class="cu-tag round line-green sm">{{item.size}}</view>
+			</view>
+		</view>
+	</view>
 
 </view>
 
@@ -265,11 +267,11 @@
 					<view class="table-th">评价</view>
 				</view>
 				<scroll-view scroll-y='true' style="height:250rpx;">
-					<view class="table-tr" wx:for="{{actions.feedback.membersInfo}}" wx:key="item">
-						<view class="table-th">{{item.info.userName}}</view>
+					<view class="table-tr" wx:for="{{actions.feedback.membersInfo}}" wx:key="item" wx:for-index="index">
+						<view class="table-th">{{item.info.name}}</view>
 						<view class="table-th">{{item.isCome?'实到':'未到'}}</view>
 						<view class="table-th">{{item.excellent?'优秀':'合格'}}</view>
-						<view class="table-th">点击查看</view>
+						<view class="table-th" bindtap="showModal" data-target="showFeedback" data-index="{{index}}">点击查看</view>
 					</view>
 				</scroll-view>
 			</view>
@@ -416,44 +418,44 @@
 		<view wx:if="{{actions.isSubsidy}}" class="cu-form-group">
 			<view class="title inteam ">收款单位</view>
 			<radio-group bindchange="getbutton">
-      <label class="margin-left-sm">
-        <radio class="blue sm radio" value="1" checked></radio>
-        <text> 支付宝</text>
-      </label>
-      <label class="margin-left-sm">
-        <radio class="blue sm radio" value="2"></radio>
-        <text> 银行卡</text>
-      </label>
-    </radio-group>
-		
+				<label class="margin-left-sm">
+					<radio class="blue sm radio" value="1" checked></radio>
+					<text> 支付宝</text>
+				</label>
+				<label class="margin-left-sm">
+					<radio class="blue sm radio" value="2"></radio>
+					<text> 银行卡</text>
+				</label>
+			</radio-group>
+
 			<!-- <input class="newName text-sm" placeholder="活动为补贴活动以便发放补贴" bindinput="getBankcard">{{bankCard}}</input> -->
 		</view>
-<view wx:if="{{payee=='1'}}">
-<view class="cu-form-group" style="justify-content: between;" style="display: flex;align-items: center; ">
+		<view wx:if="{{payee=='1'}}">
+			<view class="cu-form-group" style="justify-content: between;" style="display: flex;align-items: center; ">
 				<view class="title outteam">支付宝号码:</view>
 				<input class="tel" bindinput="getAli" placeholder="支付宝号仅发放补贴用">
 				{{aliPay}}</input>
-</view>
-</view>
-<view wx:if="{{payee=='2'}}">
-	<view class="cu-form-group" >
-			<view class="title">请选择对应银行</view>
-			<picker bindchange="BankPickerChange" value="{{BankPickerIndex}}" range="{{picker}}">
-				<view class="picker">
-					{{BankPickerIndex?picker[BankPickerIndex]:'请选择'}}
-				</view>
-			</picker>
-</view>
-<view wx:if="{{BankPickerIndex==picker.length-1}}" class="cu-form-group">
-			<view class="title">银行名</view>
-			<input bindinput="getElseBank" placeholder="×××银行">{{elseBank}}</input>
-</view>
-<view class="cu-form-group" style="justify-content: between;" style="display: flex;align-items: center; ">
+			</view>
+		</view>
+		<view wx:if="{{payee=='2'}}">
+			<view class="cu-form-group">
+				<view class="title">请选择对应银行</view>
+				<picker bindchange="BankPickerChange" value="{{BankPickerIndex}}" range="{{picker}}">
+					<view class="picker">
+						{{BankPickerIndex?picker[BankPickerIndex]:'请选择'}}
+					</view>
+				</picker>
+			</view>
+			<view wx:if="{{BankPickerIndex==picker.length-1}}" class="cu-form-group">
+				<view class="title">银行名</view>
+				<input bindinput="getElseBank" placeholder="×××银行">{{elseBank}}</input>
+			</view>
+			<view class="cu-form-group" style="justify-content: between;" style="display: flex;align-items: center; ">
 				<view class="title outteam">银行卡号</view>
 				<input class="tel" bindinput="getBankCardnumber" placeholder="例：6217003810026896707">
-				{{bankCardNumber}}</input>	
-</view>
-</view>
+				{{bankCardNumber}}</input>
+			</view>
+		</view>
 		<!-- <view wx:for="{{actions.memo}}" wx:key="index" wx:for-item="item" wx:for-index="index" class="cu-form-group">
 			<view class="title inteam">{{item}}</view>
 			<input class="newName" placeholder="请完善" bindinput="getactName"></input>
@@ -503,6 +505,22 @@
 		</view>
 		<view class="flex justify-around margin-xl">
 			<text>{{serviceTimeSpan[showPosDescIdx[0]].positions[showPosDescIdx[1]].desc?serviceTimeSpan[showPosDescIdx[0]].positions[showPosDescIdx[1]].desc:'无'}}</text>
+		</view>
+	</view>
+</view>
+
+<!-- 详细评价 -->
+<view class="cu-modal {{modalName=='showFeedback'?'show':''}}">
+	<view class="cu-dialog">
+		<!-- 标题 -->
+		<view class="cu-bar bg-white justify-end">
+			<view class="content">详细评价</view>
+			<view class="action" bindtap="hideModal">
+				<text class="cuIcon-close text-red"></text>
+			</view>
+		</view>
+		<view class="flex justify-around margin-xl">
+			<text>{{actions.feedback.membersInfo[showFeedbackIdx[0]].feedback}}</text>
 		</view>
 	</view>
 </view>

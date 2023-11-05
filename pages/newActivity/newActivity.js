@@ -50,6 +50,9 @@ Page({
 		}).slice(0, 5);
 		console.log(currentDate, currentTime)
 		this.setData({
+			nowDate: currentDate,
+			nowTime: currentTime,
+
 			beginDate: currentDate,//服务开始日期
 			startTime: currentTime,//服务阶段开始时刻
 			endTime: "23:59",//服务阶段结束时刻
@@ -82,20 +85,19 @@ Page({
 	bindStartChange: function (e) {
 		this.setData({
 			beginDate: e.detail.value,
-			deadDate: e.detail.value,
 		})
 	},
 	//添加时间段的开始时间
 	bindSTimeChange: function (e) {
 		this.setData({
 			startTime: e.detail.value,
-			deadTime: e.detail.value,
 		})
 	},
+	//添加时间段的结束时间
 	bindETimeChange: function (e) {
-		let combinedStartStr = this.data.beginDate + ' ' + this.data.startTime;
-		let combinedEndStr = this.data.beginDate + ' ' + e.detail.value;
-		this.checkTime(new Date(combinedStartStr).getTime(), new Date(combinedEndStr).getTime());
+		// let combinedStartStr = this.data.beginDate + ' ' + this.data.startTime;
+		// let combinedEndStr = this.data.beginDate + ' ' + e.detail.value;
+		// this.checkTime(new Date(combinedStartStr).getTime(), new Date(combinedEndStr).getTime());
 		this.setData({
 			endTime: e.detail.value,
 		})
@@ -144,11 +146,10 @@ Page({
 			isSubsidy: e.detail.value
 		})
 	},
-	isfile(e)
-	{
+	isfile(e) {
 		console.log(e.detail.value)
 		this.setData({
-			isfile:e.detail.value
+			isfile: e.detail.value
 		})
 	},
 	getactName(e) {
@@ -287,7 +288,7 @@ Page({
 									introFile: this.data.temp_fileList,	//简介文件
 									FileID,	//简介文件的FileID
 									isSubsidy: Number(this.data.isSubsidy),
-									subsidyAmount:this.data.subsidyAmount,
+									subsidyAmount: this.data.subsidyAmount,
 									isPintuan: 1,
 								}
 								db.collection('ActivityInfo').add({
@@ -441,9 +442,8 @@ Page({
 			this.setShow("error", "请添加活动时间段");
 			return 0
 		}
-		if(this.data.outNum==0)
-		{
-			this.setShow("error",'请添加岗位');
+		if (this.data.outNum == 0) {
+			this.setShow("error", '请添加岗位');
 			return 0
 		}
 		if (!this.data.outNum) {

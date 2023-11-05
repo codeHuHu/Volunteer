@@ -12,15 +12,15 @@ Page({
 			deadTime: 'xxxxxxx',
 			serviceTime: 'xxxxxxx',
 		},
-		picker:['建设银行',
-		'邮储银行',
-	'农业银行',
-'工商银行',
-'中国银行',
-'交通银行',
-'其他银行'
-],
-BankPickerIndex:''
+		picker: ['建设银行',
+			'邮储银行',
+			'农业银行',
+			'工商银行',
+			'中国银行',
+			'交通银行',
+			'其他银行'
+		],
+		BankPickerIndex: ''
 
 	},
 	onLoad: function (options) {
@@ -151,14 +151,14 @@ BankPickerIndex:''
 	BankPickerChange(e) {
 		this.setData({
 			BankPickerIndex: e.detail.value,
-			Banktype:this.data.picker[e.detail.value]	//银行类型
+			Banktype: this.data.picker[e.detail.value]	//银行类型
 		})
 		console.log(this.data.Banktype)
 	},
 	getElseBank(e) {
 		this.setData({
 			elseBank: e.detail.value,
-			Banktype:e.detail.value
+			Banktype: e.detail.value
 		})
 		console.log(this.data.Banktype)
 	},
@@ -215,9 +215,9 @@ BankPickerIndex:''
 						year: app.globalData.year, //学年
 						id: app.globalData.id, //身份证
 					},
-					aliPay:that.data.aliPay?that.data.aliPay:'',
-					bankType: that.data.Banktype?that.data.Banktype:'',
-					bankCardNumber:that.data.bankCardNumber?that.data.bankCardNumber:'',
+					aliPay: that.data.aliPay ? that.data.aliPay : '',
+					bankType: that.data.Banktype ? that.data.Banktype : '',
+					bankCardNumber: that.data.bankCardNumber ? that.data.bankCardNumber : '',
 					//岗位信息
 					joinTime: `${t.getFullYear()}-${app.Z(t.getMonth() + 1)}-${app.Z(t.getDate())} ${app.Z(t.getHours())}:${app.Z(t.getMinutes())}`,
 					posIdx: that.data.idx,
@@ -364,6 +364,10 @@ BankPickerIndex:''
 			this.setData({
 				showPosDescIdx: [e.currentTarget.dataset.sindex, e.currentTarget.dataset.pindex]
 			})
+		} else if (tmp == 'showFeedback') {
+			this.setData({
+				showFeedbackIdx: [e.currentTarget.dataset.index]
+			})
 		}
 		this.setData({
 			modalName: tmp
@@ -487,12 +491,12 @@ BankPickerIndex:''
 		// 表头
 		sheet.push(
 			['活动名称', DA.actName],
-			['活动类型', DA.isPintuan ? '拼团' : '报名'],
+			//['活动类型', DA.isPintuan ? '拼团' : '报名'],
 			['活动标签', DA.tag],
-			['活动状态', '已结束'],
-			['活动组织', DA.teamName],
+			//['活动状态', '已结束'],
+			//['活动组织', DA.teamName],
 			['组织负责人', DA.holder],
-			['服务时间', D.serviceTime],
+			['服务时间', D.constant.serviceTime],
 			['服务时长', D.constant.hours + '小时' + D.constant.minutes + '分钟'],
 			['服务地点', DA.address],
 			['服务简介', DA.intro],
@@ -500,35 +504,38 @@ BankPickerIndex:''
 			['截止时间', D.constant.deadTime],
 			[],
 			[],
-			['用户名称', '学历', '学年', '学校/单位', '学院', '电话', '支付宝', '参加状态', '评级', '详细评价']
+			['用户名称', '服务时间段', '岗位', '参加状态', '评级', '详细评价', '电话', '支付宝', '银行卡信息', '学历', '学年', '学校/单位', '学院',]
 		)
 		DA.feedback.membersInfo.forEach(item => {
 			let rowcontent = []
-			rowcontent.push(item.info.userName)
+			rowcontent.push(item.info.name)
+			rowcontent.push(item.serviceSpan)
+			rowcontent.push(item.posName)
+			rowcontent.push(item.isCome ? '实到' : '未到')
+			rowcontent.push(item.excellent ? '优秀' : '及格')
+			rowcontent.push(item.feedback)
+			rowcontent.push(item.info.phone)
+			rowcontent.push(item.info.aliPay || item.aliPay)
+			rowcontent.push(item.bankType + ' ' + item.bankCardNumber)
 			rowcontent.push(item.info.grade)
 			rowcontent.push(item.info.year)
 			rowcontent.push(item.info.school)
 			rowcontent.push(item.info.college)
-			rowcontent.push(item.info.phone)
-			rowcontent.push(item.info.aliPay)
-			rowcontent.push(item.isCome ? '实到' : '未到')
-			rowcontent.push(item.excellent ? '优秀' : '及格')
-			rowcontent.push(item.feedback)
 			sheet.push(rowcontent)
 		})
 		// XLSX插件使用
 		//自定义列宽
 		const colWidth = [
-			{ wch: 15 },
-			{ wch: 25 },
+			{ wch: 13 },
+			{ wch: 23 },
+			{ wch: 7 },
 			{ wch: 10 },
-			{ wch: 15 },
-			{ wch: 20 },
-			{ wch: 15 },
-			{ wch: 15 },
+			{ wch: 11 },
+			{ wch: 13 },
+			{ wch: 13 },
+			{ wch: 13 },
+			{ wch: 25},
 			{ wch: 10 },
-			{ wch: 10 },
-			{ wch: 35 },
 		]
 		const rowWidth = [
 			// {/* visibility */
@@ -611,10 +618,9 @@ BankPickerIndex:''
 			boxer
 		});
 	},
-	getAli(e)
-	{
+	getAli(e) {
 		this.setData({
-			aliPay:e.detail.value
+			aliPay: e.detail.value
 		})
 	},
 	getBankCardnumber(e) {
@@ -622,11 +628,10 @@ BankPickerIndex:''
 			bankCardNumber: e.detail.value
 		})
 	},
-	getbutton(e)
-	{
+	getbutton(e) {
 		console.log(e.detail.value)
 		this.setData({
-			payee:e.detail.value
+			payee: e.detail.value
 		})
 	},
 	openFile(e) {
