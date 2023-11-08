@@ -6,6 +6,7 @@ Page({
 	data: {
 		serviceTimeSpan: [],//服务时间段
 		boxer: [],
+		labelBoxer: 1,
 		beginDate: '',//服务阶段开始日期(用于添加服务时间段)
 		startTime: '',//服务阶段开始时刻(用于添加服务时间段)
 		endTime: '',//服务阶段结束时刻(用于添加服务时间段)
@@ -122,8 +123,6 @@ Page({
 			tagIndex: index,
 			showLightButton: lb, // 点击标签时显示高光
 		});
-
-		console.log(e.currentTarget.dataset.index)
 	},
 	handleHiddenClick(e) {
 		const index = e.currentTarget.dataset.index; // 获取点击的标签索引
@@ -506,8 +505,15 @@ Page({
 		})
 	},
 	// 点击列表,收缩与展示
-	click(event) {
-		const index = event.currentTarget.dataset.index;
+	click(e) {
+
+		if (e.currentTarget.dataset.label == 'label') {
+			this.setData({
+				labelBoxer: !this.data.labelBoxer
+			})
+		}
+
+		const index = e.currentTarget.dataset.index;
 		const {
 			boxer
 		} = this.data;

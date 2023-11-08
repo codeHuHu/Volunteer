@@ -419,7 +419,7 @@
 			<view class="title inteam ">收款单位</view>
 			<radio-group bindchange="getbutton">
 				<label class="margin-left-sm">
-					<radio class="blue sm radio" value="1" checked></radio>
+					<radio class="blue sm radio" value="1"></radio>
 					<text> 支付宝</text>
 				</label>
 				<label class="margin-left-sm">

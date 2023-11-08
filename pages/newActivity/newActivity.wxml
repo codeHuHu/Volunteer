@@ -7,18 +7,27 @@
 				<radio value="0" class="margin-left" />报名
 			</radio-group>
 		</view> -->
-		<view class=" cu-form-group" style="display:grid">
-			<view class="inline_name" style="width:40%"><text class="text-red text-xxl">*</text> 添加标签：</view>
-			<view class="new_inline ">
-				<view wx:for="{{tagList}}" wx:key="index" class="tag {{showLightButton[index]?'red':'default'}} ">
-					<view bindtap="handlemyTagClick" data-index="{{index}}">
-						{{item}}
-					</view>
+		<!-- margin-left:-2%; -->
+		<view class="cu-form-group flex" style="margin-left:-3%;">
+			<view class="inline_name" style="width:40%">
+				<text class="text-red text-xxl">*</text> 添加标签：
+				
+				</view>
+			<view class="action margin-left-lg text-grey" bindtap="click" data-label="label">
+				<text class="cuIcon-{{labelBoxer ? 'unfold' : 'right'}}">{{labelBoxer ? '收回' : '展开'}}标签</text>
+			</view>
+		</view>
+		<view class="{{labelBoxer ? '' : 'piano-hidden-content'}}">
+			<view wx:for="{{tagList}}" wx:key="index" class="tag {{showLightButton[index]?'red':'default'}} ">
+				<view bindtap="handlemyTagClick" data-index="{{index}}">
+					{{item}}
 				</view>
 			</view>
 		</view>
-		<view class="cu-form-group">
-			<view class="title inteam"><text class="text-red text-xxl">*</text>活动名称:</view>
+		<view class="cu-form-group" style="margin-left:-3%;">
+
+			<text class="text-red text-xxl">*</text>
+			<text class="title">活动名称:</text>
 			<input class="newName" placeholder="请输入名称" bindinput="getactName" model:value="{{actName}}" />
 		</view>
 		<view class="cu-form-group" style="justify-content: between;">
@@ -35,21 +44,26 @@
 			<view class="title inteam">负责人介绍:</view>
 			<input class="newName" placeholder="选填" bindinput="getHolderDetail" model:value="{{holderDetail}}" />
 		</view>
-		<view class="cu-form-group flex justify-between">
+		<!-- <view class="cu-form-group flex justify-between">
 			<view class="flex">
 				<view class="title outteam">需求人数:</view>
 				<input class="title inteam" maxlength="3" bindinput="getoutNum" value="{{outNum}}">{{outNum}}</input>
 			</view>
-		</view>
+		</view> -->
 		<view class="cu-bar bg-white">
-			<view class="action flex justify-between">
-				<view>
+			<view class="action flex justify-between" >
+				<view class="flex" style="align-items: center; ">
 					<text class="cuIcon-titles text-blue"></text>
 					<text class="text-red text-xxl">*</text>
 					<text class="text-bold">服务时间段</text>
 				</view>
 				<!-- 点击显示模态框 -->
 				<text class="padding-left-xl cuIcon-roundaddfill lg text-cyan" catchtap="showModal" data-target="addServiceTime"></text>
+				<view class="flex margin-left-xxl">
+					<view class="title outteam">需求人数:</view>
+					<input style="width: 60rpx;text-decoration-line: underline;" class=" margin-left title inteam" maxlength="3" bindinput="getoutNum" value="{{outNum}}">{{outNum}}</input>
+					人
+				</view>
 			</view>
 		</view>
 
@@ -108,19 +122,19 @@
 		</view>
 
 		<view class="cu-form-group">
-			<view style="display: flex;align-items: center; ">
+			<view style="display: flex;align-items: center;margin-left:-3%;">
 				<text class="text-red text-xxl">*</text>
-				<view class="title inteam">服务地点:</view>
+				<view class="title">服务地点:</view>
 				<input bindinput="getAddress" placeholder="地址" />
 			</view>
 		</view>
 		<view class="cu-form-group ">
 			<view class="title inteam">服务内容:</view>
-			<textarea class="new_profile " placeholder="（例：为村居老人提供慰问服务）" bindinput="getType" auto-height="true" ></textarea>
+			<textarea class="new_profile " placeholder="（例：为村居老人提供慰问服务）" bindinput="getType" auto-height="true"></textarea>
 		</view>
 		<view class="cu-form-group ">
 			<view class="title inteam">志愿者权益:</view>
-			<textarea class="new_profile" placeholder="(选填，标注: 填写后可增强活动吸引力，吸引更多志愿者参与拼团)" bindinput="getintro" ></textarea>
+			<textarea class="new_profile" placeholder="(选填，标注: 填写后可增强活动吸引力，吸引更多志愿者参与拼团)" bindinput="getintro"></textarea>
 		</view>
 		<view class="cu-form-group">
 			<view class="inline_name">是否为补贴活动:</view>
@@ -137,7 +151,7 @@
 			</view>
 		</view>
 		<!-- <view class="cu-form-group" wx:if="{{isSubsidy==1}}">补贴金额</view> -->
-		<view class="cu-form-group" >
+		<view class="cu-form-group">
 			<view class="inline_name">是否上传活动方案(选填):</view>
 			<radio-group bindchange="isfile">
 				<radio value="1" />是
@@ -146,39 +160,41 @@
 		</view>
 		<view class="padding-left-sm" style="margin-top: -15rpx;">
 			<text class="cuIcon-title text-blue"></text>
-		<text class=" text-xs">活动方案仅审核可见</text></view>
-		
+			<text class=" text-xs">活动方案仅审核可见</text>
+		</view>
+
 		<view wx:if="{{isfile=='1'}}">
-		<!-- <view class="cu-form-group text-bold" style="margin-bottom: -20rpx;">
+			<!-- <view class="cu-form-group text-bold" style="margin-bottom: -20rpx;">
 			<text class="cuIcon-titles text-blue"><text class="text-lg text-black">请上传活动方案文件</text></text></view> -->
-		<view class="flex padding-sm solid{{size?'s':''}}" wx:for="{{temp_fileList}}" wx:key="item" wx-index="index">
-			<view class="padding-lr-xs ">
-				<view class="cu-avatar lg round iconfont {{item.filetype=='.excel'?'icon-excel text-green':(item.filetype=='.ppt'?'icon-ppt text-red':((item.filetype=='.docx'||item.filetype=='.doc')?'icon-word text-blue':(item.filetype=='.pdf'?'icon-PDF text-red':'icon-icon-test')))}}">
+			<view class="flex padding-sm solid{{size?'s':''}}" wx:for="{{temp_fileList}}" wx:key="item" wx-index="index">
+				<view class="padding-lr-xs ">
+					<view class="cu-avatar lg round iconfont {{item.filetype=='.excel'?'icon-excel text-green':(item.filetype=='.ppt'?'icon-ppt text-red':((item.filetype=='.docx'||item.filetype=='.doc')?'icon-word text-blue':(item.filetype=='.pdf'?'icon-PDF text-red':'icon-icon-test')))}}">
+					</view>
+				</view>
+				<view class="padding-xs text-xl text-black">
+					<view class="text-sm">{{item.name}}</view>
+					<view class="cu-tag round line-green sm">{{item.size}}</view>
+				</view>
+				<text bind:tap="DelFile" class="cuIcon-close text-red" style="position: absolute;right:30rpx" data-index="{{index}}"></text>
+			</view>
+
+			<view class=" margin-sm  radius-lg" style="justify-content: center; align-items: center;">
+				<view class=" padding-sm bg-oc-blue-4 light radius margin-top" style="width:100%" style="text-align: center;" bindtap="choosefile">
+					<text style="color:white ;">
+						<text class="text-bold"> +</text> 点此上传
+					</text>
 				</view>
 			</view>
-			<view class="padding-xs text-xl text-black">
-				<view class="text-sm">{{item.name}}</view>
-				<view class="cu-tag round line-green sm">{{item.size}}</view>
-			</view>
-			<text bind:tap="DelFile" class="cuIcon-close text-red" style="position: absolute;right:30rpx" data-index="{{index}}"></text>
 		</view>
-	
-		<view class=" margin-sm  radius-lg" style="justify-content: center; align-items: center;">
-		<view class=" padding-sm bg-oc-blue-4 light radius margin-top" style="width:100%" style="text-align: center;" bindtap="choosefile">
-		<text  style="color:white ;">
-		<text class="text-bold"> +</text> 点此上传
-		</text></view>
-		</view>
-</view>		
 
-  <view class="margin-top padding-sm light radius margin-top" style="width:80%">
-		<text class="cuIcon-titles text-blue"></text>
-	<text class="text-bold"> 服务对接群 </text>
-	<view style="margin-top:5rpx ;">
-	<text class="cuIcon-title text-blue"></text>
-	<text class=" text-xs"> 	群二维码将在志愿者报名拼团后自动弹出噢！</text>
-	</view>
-	</view>
+		<view class="margin-top padding-sm light radius margin-top" style="width:80%">
+			<text class="cuIcon-titles text-blue"></text>
+			<text class="text-bold"> 服务对接群 </text>
+			<view style="margin-top:5rpx ;">
+				<text class="cuIcon-title text-blue"></text>
+				<text class=" text-xs"> 群二维码将在志愿者报名拼团后自动弹出噢！</text>
+			</view>
+		</view>
 
 		<view class="cu-form-group">
 			<view class="grid col-4 grid-square flex-sub">
@@ -196,9 +212,9 @@
 		<view wx:if="{{isPintuan != 1}}">
 
 			<view class="cu-bar" style="margin-bottom: -10rpx;">
-			<view class="action border-title">
-      	<text class="cuIcon-titles text-blue"></text><text class="text-lg text-bold" style="margin-left: -7rpx;">i志愿报名码</text>
-			</view>
+				<view class="action border-title">
+					<text class="cuIcon-titles text-blue"></text><text class="text-lg text-bold" style="margin-left: -7rpx;">i志愿报名码</text>
+				</view>
 
 			</view>
 			<view class="cu-form-group">

@@ -68,6 +68,7 @@ Page({
 				status: true,
 				tag: true,
 				teamName: true,
+				isSubsidy: true,
 				_openid: true
 			}).limit(20)
 				.orderBy('serviceStartStamp', 'desc')
@@ -105,6 +106,7 @@ Page({
 				status: true,
 				tag: true,
 				teamName: true,
+				isSubsidy: true,
 				_openid: true
 			})
 				.limit(20)
@@ -142,6 +144,7 @@ Page({
 				status: true,
 				tag: true,
 				teamName: true,
+				isSubsidy: true,
 				_openid: true
 			})
 				.limit(20)
@@ -168,6 +171,7 @@ Page({
 				status: true,
 				tag: true,
 				teamName: true,
+				isSubsidy: true,
 				_openid: true
 			})
 				.limit(20)
@@ -194,8 +198,8 @@ Page({
 			title: '志愿服务',
 		})
 		this.setData({
-			myPos:app.globalData.position,
-			myId:app.globalData.openid
+			myPos: app.globalData.position,
+			myId: app.globalData.openid
 		})
 		const currentDate = new Date();
 		const timeStamp = currentDate.getTime();
@@ -212,7 +216,7 @@ Page({
 		const collection = db.collection('ActivityInfo');
 		collection.where({
 			//获取非： 待审核、拒绝发布、已取消的活动
-			'status': db.command.nor(db.command.eq('0'), db.command.eq('-1'),db.command.eq('-2'))
+			'status': db.command.nor(db.command.eq('0'), db.command.eq('-1'), db.command.eq('-2'))
 
 		}).field({
 			_id: true,
@@ -222,6 +226,7 @@ Page({
 			status: true,
 			tag: true,
 			teamName: true,
+			isSubsidy: true,
 			_openid: true
 		})
 
@@ -270,7 +275,7 @@ Page({
 	 * 生命周期函数--监听页面显示
 	 */
 	onShow: function () {
-	
+
 	},
 	setTime(result) {
 		var res = result
@@ -329,8 +334,7 @@ Page({
 	addstatus(e) {
 		//console.log(e.currentTarget.dataset.status)
 	},
-	cancell(e)
-	{
+	cancell(e) {
 		var that = this
 		wx.showModal({
 			title: '是否取消活动',

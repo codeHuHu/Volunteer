@@ -10,12 +10,6 @@ Page({
 	},
 
 	getPhoneNumber(e){
-		// wx.openPrivacyContract({
-		// 	success:()=>{
-		// 	},
-		// 	fail:()=>{
-		// 	}
-		// })
 		console.log(e)
     let cloudID = e.detail.cloudID //开放数据ID      	
 		console.log(cloudID)
@@ -24,18 +18,18 @@ Page({
         return
     }
     // 调用云函数获取手机号
-    wx.cloud.callFunction({
-        name: 'getPhoneNum',
-        data: {
-          weRunData: wx.cloud.CloudID(e.detail.cloudID),
-        }
-      })
-      .then( res => {
-          console.log('手机号', res.result)
-      })
-      .catch( err => {
-        console.log('手机号err', err)
-      })
+    // wx.cloud.callFunction({
+    //     name: 'getPhoneNum',
+    //     data: {
+    //       weRunData: wx.cloud.CloudID(e.detail.code),
+    //     }
+    //   })
+    //   .then( res => {
+    //       console.log('手机号', res.result)
+    //   })
+    //   .catch( err => {
+    //     console.log('手机号err', err)
+    //   })
   },
 
 	/**

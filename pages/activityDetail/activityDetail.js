@@ -140,7 +140,8 @@ Page({
 			constant,
 			//记录用户是否有导出特权(负责人或管理员)
 			isAdmin: (app.globalData.openid == res._openid) || (Number(app.globalData.position) >= 1),
-			isDead: res.deadTimeStamp - new Date().getTime() <= 0 ? 1 : 0,
+			isDead:0,
+			//isDead: res.deadTimeStamp - new Date().getTime() <= 0 ? 1 : 0,
 			isPintuan: res.isPintuan,
 			actions: res,
 			serviceTimeSpan: res.serviceTimeSpan,
