@@ -1,4 +1,5 @@
 // pages/upLoadFile.js
+const app=getApp()
 Page({
 
 	/**
@@ -7,6 +8,35 @@ Page({
 	data: {
 	number:'17325977262'
 	},
+
+	getPhoneNumber(e){
+		// wx.openPrivacyContract({
+		// 	success:()=>{
+		// 	},
+		// 	fail:()=>{
+		// 	}
+		// })
+		console.log(e)
+    let cloudID = e.detail.cloudID //开放数据ID      	
+		console.log(cloudID)
+    if (!cloudID) {
+        wx.showToast('用户未授权')
+        return
+    }
+    // 调用云函数获取手机号
+    wx.cloud.callFunction({
+        name: 'getPhoneNum',
+        data: {
+          weRunData: wx.cloud.CloudID(e.detail.cloudID),
+        }
+      })
+      .then( res => {
+          console.log('手机号', res.result)
+      })
+      .catch( err => {
+        console.log('手机号err', err)
+      })
+  },
 
 	/**
 	 * 生命周期函数--监听页面加载

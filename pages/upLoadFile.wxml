@@ -1,2 +1,2 @@
-<view> </view>
-<view>{{number}}</view>
+<button open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber" 
+class="uploader-text">请点击授权您的手机号</button> 
