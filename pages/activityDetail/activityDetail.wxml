@@ -151,8 +151,8 @@
 		<text class="">服务地点</text>
 		<text class="text-df">{{actions.address.length>0?actions.address:"发布者未填写"}}</text>
 	</view>
-	<view class="padding flex  justify-between">
-		<text class="">服务群体</text>
+	<view wx:if="{{actions.groupTag}}" class="padding flex  justify-between">
+		<text >服务群体</text>
 		<view wx:for="{{actions.groupTag}}" wx:key="index" class="cu-tag bg-pink">
 			<view>
 				#{{item}}
