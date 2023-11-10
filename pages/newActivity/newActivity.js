@@ -4,9 +4,47 @@ let loading = false;
 const app = getApp()
 Page({
 	data: {
-		serviceTimeSpan: [],//服务时间段
+		constants: {
+			//岗位
+			picker: [
+				'方案策划',
+				'现场执行',
+				'美工设计',
+				'新媒体宣传',
+				'文案撰写',
+				'主持人',
+				'小队长',
+				'其他（可自由编辑)'
+			],
+			//活动类型
+			tagList: [
+				'党建引领',
+				'乡村振兴',
+				'新时代文明实践（文化/文艺/体育）',
+				'科普科教',
+				'社区/城中村治理',
+				'环境保护',
+				'弱势群体帮扶',
+				'志愿驿站值班',
+				'其他'
+			],
+			//服务群体
+			groupTagList: [
+				'青年人',
+				'少年人'
+			],
+			//文件类型
+			icon: ['excel', 'ppt', 'word', 'pdf'],
+
+		},
+
 		boxer: [],
 		labelBoxer: 1,
+		groupBoxer: 1,
+
+
+		serviceTimeSpan: [],//服务时间段
+
 		beginDate: '',//服务阶段开始日期(用于添加服务时间段)
 		startTime: '',//服务阶段开始时刻(用于添加服务时间段)
 		endTime: '',//服务阶段结束时刻(用于添加服务时间段)
@@ -16,6 +54,7 @@ Page({
 		inputValue: '', // 清空输入框的值
 		showLightButton: [], // 控制按钮显示高光
 		actName: '',
+		groupTagName: '',
 		teamName: '',
 		outNum: 0,
 		subsidyAmount: 0,
@@ -24,18 +63,11 @@ Page({
 		temp_imgList: [], //群二维码
 		temp_imgList2: [], //i志愿报名码
 		temp_fileList: [],	//简介文件
-		tagList: ['党建引领', '乡村振兴', '新时代文明实践（文化/文艺/体育）', '科普科教', '社区/城中村治理', '环境保护', '弱势群体帮扶', '志愿驿站值班', '其他'],
-		icon: ['excel', 'ppt', 'word', 'pdf'],
-		picker: [
-			'方案策划',
-			'现场执行',
-			'美工设计',
-			'新媒体宣传',
-			'文案撰写',
-			'主持人',
-			'小队长',
-			'其他（可自由编辑)'
-		],
+
+
+		myGroupTagList: [],
+
+
 	},
 	onLoad: function () {
 		this.setData({
@@ -126,7 +158,7 @@ Page({
 	},
 	handleHiddenClick(e) {
 		const index = e.currentTarget.dataset.index; // 获取点击的标签索引
-		const tagList = this.data.tagList;
+		const tagList = this.data.constants.tagList;
 		var mytagList = []
 		mytagList.push(tagList[index])
 		this.setData({
@@ -216,6 +248,11 @@ Page({
 			positonDescription: e.detail.value
 		})
 	},
+	getGroupTagName(e) {
+		this.setData({
+			groupTagName: e.detail.value
+		})
+	},
 	async sendNew(e) {
 		//检测是否输入完整
 		if (this.check() == 0) {
@@ -279,7 +316,8 @@ Page({
 									serviceEndStamp: stamps[1],//服务结束时间戳
 									deadTimeStamp: stamps[2],//截止报名时间戳
 
-									tag: this.data.tagList[this.data.tagIndex],
+									tag: this.data.constants.tagList[this.data.tagIndex],
+									groupTag:this.data.myGroupTagList,
 
 									teamName: this.data.teamName,
 									qr_code,
@@ -513,6 +551,12 @@ Page({
 			})
 		}
 
+		if (e.currentTarget.dataset.group == 'group') {
+			this.setData({
+				groupBoxer: !this.data.groupBoxer
+			})
+		}
+
 		const index = e.currentTarget.dataset.index;
 		const {
 			boxer
@@ -607,7 +651,7 @@ Page({
 		if (span >= 0 && picker >= 0) {
 			let tempPos = {
 				//判断是已有的岗位还是自定义岗位
-				name: picker == this.data.picker.length - 1 ? this.data.elsePosition : this.data.picker[picker],
+				name: picker == this.data.constants.picker.length - 1 ? this.data.elsePosition : this.data.constants.picker[picker],
 				number: 1,
 				joined: 0,
 				desc: this.data.positonDescription
@@ -814,6 +858,42 @@ Page({
 		this.setData({
 			temp_fileList: this.data.temp_fileList
 		})
-	}
+	},
+	//添加到服务群体
+	addGroupTag(e) {
+		let idx = e.currentTarget.dataset.index
+		//如果是自定义标签的话
+		if (idx == -1) {
+			let groupTagName = this.data.groupTagName;
+			//判断是否为空
+			if (groupTagName === '') {
+				return
+			}
 
+			let myGroupTagList = this.data.myGroupTagList
+			myGroupTagList.push(groupTagName)
+
+			this.setData({
+				groupTagName: '',
+				myGroupTagList
+			})
+		} else {
+			let myGroupTagList = this.data.myGroupTagList
+			myGroupTagList.push(this.data.constants.groupTagList[idx])
+			this.setData({
+				myGroupTagList
+			})
+		}
+	},
+	//删除服务群体
+	delGroupTag(e) {
+		let idx = e.currentTarget.dataset.index;
+		let myGroupTagList = this.data.myGroupTagList;
+
+		myGroupTagList.splice(idx, 1);
+		this.setData({
+			myGroupTagList
+		})
+		console.log(idx)
+	},
 })

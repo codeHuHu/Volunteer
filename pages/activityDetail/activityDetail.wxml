@@ -40,9 +40,14 @@
 			<text class="iconfont icon-icon-test20 text-green"></text>
 		</button>
 		<view class="solid-bottom text-lg text-bold padding text-black">{{isPintuan?'报名':'报名'}}要求</view>
-		<view wx:if="{{actions.peoType}}" class="padding flex justify-between">
-			<text class="">{{isPintuan?'报名':'报名'}}需知</text>
-			<text class="text-df">{{actions.peoType}}</text>
+		<view wx:if="{{actions.peoType}}" class="padding flex ">
+			<view class="flex-sub">
+				<text class="">{{isPintuan?'报名':'报名'}}需知</text>
+			</view>
+			<view class="flex-twice">
+				<text class="text-df">{{actions.peoType}}</text>
+			</view>
+
 		</view>
 		<view class="padding flex justify-between">
 			<text class="">{{isPintuan?'报名':'报名'}}截止日期</text>
@@ -145,6 +150,14 @@
 	<view class="padding flex  justify-between">
 		<text class="">服务地点</text>
 		<text class="text-df">{{actions.address.length>0?actions.address:"发布者未填写"}}</text>
+	</view>
+	<view class="padding flex  justify-between">
+		<text class="">服务群体</text>
+		<view wx:for="{{actions.groupTag}}" wx:key="index" class="cu-tag bg-pink">
+			<view>
+				#{{item}}
+			</view>
+		</view>
 	</view>
 	<view wx:if="{{actions.isSubsidy}}" class="padding flex  justify-between">
 		<text class="text-red">服务补贴</text>

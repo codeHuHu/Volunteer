@@ -11,14 +11,14 @@
 		<view class="cu-form-group flex" style="margin-left:-3%;">
 			<view class="inline_name" style="width:40%">
 				<text class="text-red text-xxl">*</text> 添加标签：
-				
-				</view>
+
+			</view>
 			<view class="action margin-left-lg text-grey" bindtap="click" data-label="label">
-				<text class="cuIcon-{{labelBoxer ? 'unfold' : 'right'}}">{{labelBoxer ? '收回' : '展开'}}标签</text>
+				<text class="cuIcon-{{labelBoxer ? 'unfold' : 'right'}}">{{labelBoxer ? '收回' : '展开'}}</text>
 			</view>
 		</view>
 		<view class="{{labelBoxer ? '' : 'piano-hidden-content'}}">
-			<view wx:for="{{tagList}}" wx:key="index" class="tag {{showLightButton[index]?'red':'default'}} ">
+			<view wx:for="{{constants.tagList}}" wx:key="index" class="tag {{showLightButton[index]?'red':'default'}} ">
 				<view bindtap="handlemyTagClick" data-index="{{index}}">
 					{{item}}
 				</view>
@@ -51,10 +51,10 @@
 			</view>
 		</view> -->
 		<view class="cu-bar bg-white">
-			<view class="action flex justify-between" >
-				<view class="flex" style="align-items: center; ">
-					<text class="cuIcon-titles text-blue"></text>
+			<view class="action flex justify-between">
+				<view class="flex" style="align-items: center; margin-left:-8%;">
 					<text class="text-red text-xxl">*</text>
+					<text class="cuIcon-titles text-blue"></text>
 					<text class="text-bold">服务时间段</text>
 				</view>
 				<!-- 点击显示模态框 -->
@@ -128,9 +128,34 @@
 				<input bindinput="getAddress" placeholder="地址" />
 			</view>
 		</view>
+
+		<view class="cu-bar bg-white ">
+			<view class="action flex justify-between">
+
+				<view style="align-items: center; margin-left:-8%;">
+					<text class="cuIcon-titles text-blue"></text>
+					<text class="text-bold">服务群体类型</text>
+					<!-- 点击显示模态框 -->
+					<text class="padding-left-xl cuIcon-roundaddfill lg text-cyan" catchtap="showModal" data-target="addServiceGroup"></text>
+				</view>
+				<view class="margin-left-lg text-grey" bindtap="click" data-group="group">
+					<text class="cuIcon-{{groupBoxer ? 'unfold' : 'right'}}">{{groupBoxer ? '收回' : '展开'}}</text>
+				</view>
+			</view>
+		</view>
+
+		<view class="{{groupBoxer ? '' : 'piano-hidden-content'}}">
+			<!-- {{showLightButton[index]?'red':'default'}}  -->
+			<view wx:for="{{myGroupTagList}}" wx:key="index" class="tag ">
+				<!-- bindtap="handlemyTagClick" data-index="{{index}}" -->
+				<view>
+					#{{item}}
+				</view>
+			</view>
+		</view>
 		<view class="cu-form-group ">
 			<view class="title inteam">服务内容:</view>
-			<textarea class="new_profile " placeholder="（例：为村居老人提供慰问服务）" bindinput="getType" auto-height="true"></textarea>
+			<textarea placeholder="（例：为村居老人提供慰问服务）" bindinput="getType" auto-height="true"></textarea>
 		</view>
 		<view class="cu-form-group ">
 			<view class="title inteam">志愿者权益:</view>
@@ -321,13 +346,13 @@
 		</view>
 		<view class="cu-form-group ">
 			<view class="title">岗位</view>
-			<picker bindchange="positionPickerChange" value="{{positionPickerIndex}}" range="{{picker}}">
+			<picker bindchange="positionPickerChange" value="{{positionPickerIndex}}" range="{{constants.picker}}">
 				<view class="picker">
-					{{positionPickerIndex?picker[positionPickerIndex]:'请选择'}}
+					{{positionPickerIndex?constants.picker[positionPickerIndex]:'请选择'}}
 				</view>
 			</picker>
 		</view>
-		<view wx:if="{{positionPickerIndex==picker.length-1}}" class="cu-form-group">
+		<view wx:if="{{positionPickerIndex==constants.picker.length-1}}" class="cu-form-group">
 			<view class="title">自定义岗位</view>
 			<input bindinput="getElsePositon" placeholder="起个岗位名称">{{elsePosition}}</input>
 		</view>
@@ -358,4 +383,43 @@
 			<text>{{serviceTimeSpan[showPosDescIdx[0]].positions[showPosDescIdx[1]].desc}}</text>
 		</view>
 	</view>
+</view>
+
+
+<!-- 添加服务群体模态框 -->
+<view class="cu-modal {{modalName=='addServiceGroup'?'show':''}}">
+	<view class="cu-dialog">
+		<!-- 标题 -->
+		<view class="cu-bar bg-white justify-end">
+			<view class="content">服务群体类型</view>
+			<view class="action" bindtap="hideModal">
+				<text class="cuIcon-close text-red"></text>
+			</view>
+		</view>
+		<view class="margin-sm">
+			<view>
+				<view class="">可选择标签</view>
+				<view wx:for="{{constants.groupTagList}}" wx:key="index" class="tag" bindtap="addGroupTag" data-index="{{index}}">
+					#{{item}}
+				</view>
+			</view>
+			<view class="margin-top solids-top-blue padding-top">自定义</view>
+			<view class="cu-form-group">
+				<input class="solid-blue margin-right" bindinput="getGroupTagName" placeholder="输入标签名字" model:value="{{groupTagName}}"></input>
+				<button class="sm cu-btn bg-green shadow" bindtap="addGroupTag" data-index="{{-1}}">确定</button>
+			</view>
+
+			<view class="margin-top solids-top-blue padding">已添加</view>
+			<view class="">
+				<!-- {{showLightButton[index]?'red':'default'}}  -->
+				<view wx:for="{{myGroupTagList}}" wx:key="index" class="tag" style="align-items: center;">
+					<!-- bindtap="handlemyTagClick" data-index="{{index}}" -->
+					#{{item}}
+					<text class="text-red text-lg padding-bottom" bindtap="delGroupTag" data-index="{{index}}">x</text>
+				</view>
+			</view>
+		</view>
+
+	</view>
+
 </view>
