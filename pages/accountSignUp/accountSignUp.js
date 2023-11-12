@@ -20,7 +20,7 @@ Page({
 		isCheck: false,
 		List: [],
 		school:'',
-		selectedYear: '请选择年份'
+		selectedYear: '请选择入学年份'
 	},
 
 	/**
