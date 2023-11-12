@@ -30,8 +30,11 @@ Page({
 			],
 			//服务群体
 			groupTagList: [
-				'青年人',
-				'少年人'
+				'18周岁以上青年大学生',
+				'热心慈善公益事业',
+				'性格开朗',
+				'听从安排',
+				'具备参加志愿服务相应的基本能力和身体素质'
 			],
 			//文件类型
 			icon: ['excel', 'ppt', 'word', 'pdf'],
@@ -218,16 +221,23 @@ Page({
 			address: e.detail.value
 		})
 	},
-	getType(e) {
-		this.setData({
-			peopleType: e.detail.value
-		})
-	},
-	getintro(e) {
+		getintro(e) {
 		this.setData({
 			intro: e.detail.value
 		})
 	},
+	getnotice(e)
+	{
+		this.setData({
+			notice: e.detail.value
+		})
+	},
+	getgift(e) {
+		this.setData({
+			peoplegift: e.detail.value
+		})
+	},
+
 	getTeamName(e) {
 		this.setData({
 			teamName: e.detail.value
@@ -302,7 +312,8 @@ Page({
 									holderDetail: this.data.holderDetail,
 									//act
 									actName: this.data.actName,
-									peoType: this.data.peopleType,
+									peogift: this.data.peoplegift,
+									notice:this.data.notice,
 									intro: this.data.intro,
 									status: this.data.myPos >= 1 ? '1' : '0', // 如果pos为1，活动状态为0：待审核，否则为1：进行中
 									address: this.data.address,

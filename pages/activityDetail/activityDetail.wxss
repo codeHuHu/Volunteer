@@ -30,3 +30,25 @@
 	top:20px;
 	right:20px;
 }
+
+/* 在样式文件中添加以下样式 */
+.flex-container {
+	display: flex;
+	flex-wrap: wrap; /* 允许自动换行 */
+}
+
+.request-left {
+	box-sizing: border-box;
+	padding: 10px;
+}
+
+.tag-container {
+	flex-grow: 1; /* 占满剩余空间 */
+	display: flex;
+	flex-wrap: wrap; /* 允许自动换行 */
+	justify-content: flex-start; /* 右对齐 */
+}
+
+.cu-tag {
+	margin: 5px; /* 间距 */
+}

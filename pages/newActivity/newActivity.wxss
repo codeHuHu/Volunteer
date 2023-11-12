@@ -92,3 +92,7 @@
 	width: 300rpx;
 	border-bottom: solid 1rpx #ddd;
 }
+
+.cu-tag {
+	margin:10rpx 10rpx;
+}

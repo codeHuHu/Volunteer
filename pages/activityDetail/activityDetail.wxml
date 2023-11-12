@@ -40,15 +40,19 @@
 			<text class="iconfont icon-icon-test20 text-green"></text>
 		</button>
 		<view class="solid-bottom text-lg text-bold padding text-black">{{isPintuan?'报名':'报名'}}要求</view>
-		<view wx:if="{{actions.peoType}}" class="padding flex ">
-			<view class="flex-sub">
-				<text class="">{{isPintuan?'报名':'报名'}}需知</text>
-			</view>
-			<view class="flex-twice">
-				<text class="text-df">{{actions.peoType}}</text>
-			</view>
-
+		<view wx:if="{{actions.groupTag}}" class="flex-container cu-form-group padding flex align-start">
+<view class="request-left" style="width: auto;">
+				<text class="">{{isPintuan?'志愿者':'志愿者'}}要求</text>
 		</view>
+		<view class="tag-container">
+		<view wx:for="{{actions.groupTag}}" wx:key="index" class="margin-left cu-tag radius bg-cyan">
+			<view>
+				#{{item}}
+			</view>
+		</view>
+</view>
+		</view>
+
 		<view class="padding flex justify-between">
 			<text class="">{{isPintuan?'报名':'报名'}}截止日期</text>
 			<text class="text-df">{{constant.deadTime}}</text>
@@ -89,7 +93,7 @@
 				</view>
 				<!-- 折叠箭头 -->
 				<view class="action margin-left-lg text-grey" bindtap="click" data-index="{{index}}">
-					<text class="cuIcon-{{boxer[index] ? 'unfold' : 'right'}}">{{item['checked'] ? '收回' : '展开'}}</text>
+					<text class="text-bold text-blue cuIcon-{{boxer[index] ? 'unfold' : 'right'}}">{{item['checked'] ? '收回' : '点此报名'}}</text>
 				</view>
 			</view>
 			<!-- 岗位内容 -->
@@ -98,7 +102,7 @@
 					<!-- 岗位名称 -->
 					<view class="flex-treble flex justify-center text-sm text-black ">
 						<text>{{ child['name'] }}</text>
-						<text class="cuIcon-info text-blue margin-bottom" bindtap="showModal" data-target="showPosDesc" data-sindex="{{index}}" data-pindex="{{pindex}}"></text>
+						<text  class="cuIcon-info text-xxl text-blue margin-bottom" bindtap="showModal" data-target="showPosDesc" data-sindex="{{index}}" data-pindex="{{pindex}}"></text>
 					</view>
 					<!-- 步进器 -->
 					<view class="flex-twice flex-treble flex justify-center align-center text-lg">
@@ -106,11 +110,11 @@
 					</view>
 					<!-- 报名 -->
 					<view wx:if="{{!isDead&&isJoin == 0}}" bindtap="showModal" data-target="toPintuan" data-timespan="{{index}}" data-position="{{pindex}}" class="flex-sub flex-treble flex justify-center align-center text-lg">
-						<text class="cuIcon-friendaddfill xl text-green">+</text>
+						<text class="cuIcon-friendaddfill text-xxl text-green">+</text>
 					</view>
 					<!-- 取消报名 -->
 					<view wx:elif="{{isJoin == 1&&index==idx[0]&&pindex==idx[1]}}" bindtap="showModal" data-target="toCancel" data-timespan="{{index}}" data-position="{{pindex}}" class="flex-sub flex-treble flex justify-center align-center text-lg">
-						<text class="cuIcon-friendaddfill xl text-red">-</text>
+						<text class="cuIcon-friendaddfill text-xxl text-red">-</text>
 					</view>
 					<!-- 占个位置而已 -->
 					<view wx:else class="flex-sub flex-treble flex justify-center align-center text-lg">
@@ -151,14 +155,6 @@
 		<text class="">服务地点</text>
 		<text class="text-df">{{actions.address.length>0?actions.address:"发布者未填写"}}</text>
 	</view>
-	<view wx:if="{{actions.groupTag}}" class="padding flex  justify-between">
-		<text >服务群体</text>
-		<view wx:for="{{actions.groupTag}}" wx:key="index" class="cu-tag bg-pink">
-			<view>
-				#{{item}}
-			</view>
-		</view>
-	</view>
 	<view wx:if="{{actions.isSubsidy}}" class="padding flex  justify-between">
 		<text class="text-red">服务补贴</text>
 		<text class="text-df text-red">{{actions.subsidyAmount}}元</text>
@@ -169,14 +165,35 @@
 <view wx:if="{{actions.intro}}" class="static margin-sm radius-lg bg-white">
 
 	<view class=" radius-lg bg-white">
-		<view class="solid-bottom text-lg text-bold padding text-black">服务简介</view>
+		<view class="solid-bottom text-lg text-bold padding text-black">服务内容</view>
 		<view class="padding flex  justify-between">
 			<text class="text-df">{{actions.intro}}
 			</text>
 		</view>
 	</view>
 </view>
+<!-- 注意事项 -->
+<view wx:if="{{actions.notice}}" class="static margin-sm radius-lg bg-white">
 
+<view class=" radius-lg bg-white">
+	<view class="solid-bottom text-lg text-bold padding text-black">注意事项</view>
+	<view class="padding flex  justify-between">
+		<text class="text-df">{{actions.notice}}
+		</text>
+	</view>
+</view>
+</view>
+<!-- 服务简介 -->
+<view wx:if="{{actions.peogift}}" class="static margin-sm radius-lg bg-white">
+
+<view class=" radius-lg bg-white">
+	<view class="solid-bottom text-lg text-bold padding text-black">志愿者权益</view>
+	<view class="padding flex  justify-between">
+		<text class="text-df">{{actions.peogift}}
+		</text>
+	</view>
+</view>
+</view>
 <!-- 审核界面或者评价后负责人或管理员才可以看到以下信息 -->
 <view wx:if="{{actions.introFile.length}}">
 	<view wx:if="{{checkMode ||(actions.isFeedback&&isAdmin)}}" class=" radius-lg margin-sm bg-white">

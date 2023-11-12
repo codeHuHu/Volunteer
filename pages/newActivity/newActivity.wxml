@@ -50,6 +50,29 @@
 				<input class="title inteam" maxlength="3" bindinput="getoutNum" value="{{outNum}}">{{outNum}}</input>
 			</view>
 		</view> -->
+		<view class="cu-bar bg-white ">
+			<view class="action flex justify-between">
+
+				<view style="align-items: center; margin-left:-3%;">
+				  <text class="cuIcon-titles text-blue"></text>
+					<text class="text-bold">志愿者要求</text>
+					<!-- 点击显示模态框 -->
+					<text class="padding-left-xl cuIcon-roundaddfill lg text-cyan" catchtap="showModal" data-target="addServiceGroup"></text>
+				</view>
+				<view class="margin-left-lg text-grey" bindtap="click" data-group="group">
+					<text class="cuIcon-{{groupBoxer ? 'unfold' : 'right'}}">{{groupBoxer ? '收回' : '展开'}}</text>
+				</view>
+			</view>
+		</view>
+		<view class="{{groupBoxer ? '' : 'piano-hidden-content'}}">
+			<!-- {{showLightButton[index]?'red':'default'}}  -->
+			<view wx:for="{{myGroupTagList}}" wx:key="index" class="cu-tag radius">
+				<!-- bindtap="handlemyTagClick" data-index="{{index}}" -->
+				<view  bind:tap="delGroupTag" data-index="{{index}}">
+					#{{item}}
+				</view>
+			</view>
+		</view>
 		<view class="cu-bar bg-white">
 			<view class="action flex justify-between">
 				<view class="flex" style="align-items: center; margin-left:-8%;">
@@ -61,7 +84,7 @@
 				<text class="padding-left-xl cuIcon-roundaddfill lg text-cyan" catchtap="showModal" data-target="addServiceTime"></text>
 				<view class="flex margin-left-xxl">
 					<view class="title outteam">需求人数:</view>
-					<input style="width: 60rpx;text-decoration-line: underline;" class=" margin-left title inteam" maxlength="3" bindinput="getoutNum" value="{{outNum}}">{{outNum}}</input>
+					<input  class=" margin-left-sm title inteam" maxlength="3" bindinput="getoutNum" style="width: 60rpx; border-bottom: solid 1rpx #d48d8d;" value="{{outNum}}">{{outNum}}</input>
 					人
 				</view>
 			</view>
@@ -108,7 +131,7 @@
 		</view>
 
 		<view class="cu-form-group">
-			<view class="title">截止日期:</view>
+			<view class="title">报名截止日期:</view>
 			<picker mode="date" value="{{beginDate}}" start="{{nowDate}}" bindchange="bindDeadDateChange">
 				<view class="picker">
 					{{deadDate}}
@@ -125,41 +148,21 @@
 			<view style="display: flex;align-items: center;margin-left:-3%;">
 				<text class="text-red text-xxl">*</text>
 				<view class="title">服务地点:</view>
-				<input bindinput="getAddress" placeholder="地址" />
+				<input bindinput="getAddress" placeholder="活动开展地址" />
 			</view>
 		</view>
 
-		<view class="cu-bar bg-white ">
-			<view class="action flex justify-between">
-
-				<view style="align-items: center; margin-left:-8%;">
-					<text class="cuIcon-titles text-blue"></text>
-					<text class="text-bold">服务群体类型</text>
-					<!-- 点击显示模态框 -->
-					<text class="padding-left-xl cuIcon-roundaddfill lg text-cyan" catchtap="showModal" data-target="addServiceGroup"></text>
-				</view>
-				<view class="margin-left-lg text-grey" bindtap="click" data-group="group">
-					<text class="cuIcon-{{groupBoxer ? 'unfold' : 'right'}}">{{groupBoxer ? '收回' : '展开'}}</text>
-				</view>
-			</view>
-		</view>
-
-		<view class="{{groupBoxer ? '' : 'piano-hidden-content'}}">
-			<!-- {{showLightButton[index]?'red':'default'}}  -->
-			<view wx:for="{{myGroupTagList}}" wx:key="index" class="tag ">
-				<!-- bindtap="handlemyTagClick" data-index="{{index}}" -->
-				<view>
-					#{{item}}
-				</view>
-			</view>
+		<view class="cu-form-group ">
+			<view class="title inteam">服务内容(选填，下同):</view>
+			<textarea placeholder="（例：为村居老人提供慰问服务）" bindinput="getintro" auto-height="true"></textarea>
 		</view>
 		<view class="cu-form-group ">
-			<view class="title inteam">服务内容:</view>
-			<textarea placeholder="（例：为村居老人提供慰问服务）" bindinput="getType" auto-height="true"></textarea>
+			<view class="title inteam">注意事项:</view>
+			<textarea placeholder="（例：穿长裤不穿裙子和短裤）" bindinput="getnotice" auto-height="true"></textarea>
 		</view>
 		<view class="cu-form-group ">
 			<view class="title inteam">志愿者权益:</view>
-			<textarea class="new_profile" placeholder="(选填，标注: 填写后可增强活动吸引力，吸引更多志愿者参与拼团)" bindinput="getintro"></textarea>
+			<textarea class="new_profile" placeholder="如：1.接受相关志愿服务培训；2.提供【i志愿时长】等" bindinput="getgift"></textarea>
 		</view>
 		<view class="cu-form-group">
 			<view class="inline_name">是否为补贴活动:</view>
@@ -177,7 +180,7 @@
 		</view>
 		<!-- <view class="cu-form-group" wx:if="{{isSubsidy==1}}">补贴金额</view> -->
 		<view class="cu-form-group">
-			<view class="inline_name">是否上传活动方案(选填):</view>
+			<view class="inline_name">是否上传活动方案:</view>
 			<radio-group bindchange="isfile">
 				<radio value="1" />是
 				<radio value="0" class="margin-left" checked />否
@@ -391,7 +394,7 @@
 	<view class="cu-dialog">
 		<!-- 标题 -->
 		<view class="cu-bar bg-white justify-end">
-			<view class="content">服务群体类型</view>
+			<view class="content">志愿者群体类型</view>
 			<view class="action" bindtap="hideModal">
 				<text class="cuIcon-close text-red"></text>
 			</view>
@@ -399,7 +402,7 @@
 		<view class="margin-sm">
 			<view>
 				<view class="">可选择标签</view>
-				<view wx:for="{{constants.groupTagList}}" wx:key="index" class="tag" bindtap="addGroupTag" data-index="{{index}}">
+				<view wx:for="{{constants.groupTagList}}" wx:key="index" class="cu-tag bg-grey light" bindtap="addGroupTag" data-index="{{index}}">
 					#{{item}}
 				</view>
 			</view>
@@ -412,10 +415,10 @@
 			<view class="margin-top solids-top-blue padding">已添加</view>
 			<view class="">
 				<!-- {{showLightButton[index]?'red':'default'}}  -->
-				<view wx:for="{{myGroupTagList}}" wx:key="index" class="tag" style="align-items: center;">
+				<view wx:for="{{myGroupTagList}}" wx:key="index" class="cu-tag radius " style="align-items: center;" >
 					<!-- bindtap="handlemyTagClick" data-index="{{index}}" -->
-					#{{item}}
-					<text class="text-red text-lg padding-bottom" bindtap="delGroupTag" data-index="{{index}}">x</text>
+					<view bindtap="delGroupTag" data-index="{{index}}" >#{{item}}</view>
+					<text class="text-red text-sm padding-bottom" bindtap="delGroupTag"  data-index="{{index}}">x</text>
 				</view>
 			</view>
 		</view>
