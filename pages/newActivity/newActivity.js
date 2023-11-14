@@ -66,8 +66,6 @@ Page({
 		temp_imgList: [], //群二维码
 		temp_imgList2: [], //i志愿报名码
 		temp_fileList: [],	//简介文件
-
-
 		myGroupTagList: [],
 
 
@@ -84,7 +82,6 @@ Page({
 			hour: '2-digit',
 			minute: '2-digit'
 		}).slice(0, 5);
-		console.log(currentDate, currentTime)
 		this.setData({
 			nowDate: currentDate,
 			nowTime: currentTime,
@@ -131,9 +128,6 @@ Page({
 	},
 	//添加时间段的结束时间
 	bindETimeChange: function (e) {
-		// let combinedStartStr = this.data.beginDate + ' ' + this.data.startTime;
-		// let combinedEndStr = this.data.beginDate + ' ' + e.detail.value;
-		// this.checkTime(new Date(combinedStartStr).getTime(), new Date(combinedEndStr).getTime());
 		this.setData({
 			endTime: e.detail.value,
 		})
@@ -158,21 +152,6 @@ Page({
 			tagIndex: index,
 			showLightButton: lb, // 点击标签时显示高光
 		});
-	},
-	handleHiddenClick(e) {
-		const index = e.currentTarget.dataset.index; // 获取点击的标签索引
-		const tagList = this.data.constants.tagList;
-		var mytagList = []
-		mytagList.push(tagList[index])
-		this.setData({
-			mytagList: mytagList
-		})
-		tagList.splice(index, 1); // 从数组中删除该索引对应的元素
-		this.setData({
-			tagList: tagList,
-			showCloseButton: false,
-		});
-
 	},
 	isSubsidy(e) {
 		console.log(e)
@@ -221,13 +200,12 @@ Page({
 			address: e.detail.value
 		})
 	},
-		getintro(e) {
+	getintro(e) {
 		this.setData({
 			intro: e.detail.value
 		})
 	},
-	getnotice(e)
-	{
+	getnotice(e) {
 		this.setData({
 			notice: e.detail.value
 		})
@@ -268,7 +246,6 @@ Page({
 		if (this.check() == 0) {
 			return
 		}
-		console.log('执行提交中')
 		wx.showLoading({
 			title: '',
 		})
@@ -313,7 +290,7 @@ Page({
 									//act
 									actName: this.data.actName,
 									peogift: this.data.peoplegift,
-									notice:this.data.notice,
+									notice: this.data.notice,
 									intro: this.data.intro,
 									status: this.data.myPos >= 1 ? '1' : '0', // 如果pos为1，活动状态为0：待审核，否则为1：进行中
 									address: this.data.address,
@@ -328,7 +305,7 @@ Page({
 									deadTimeStamp: stamps[2],//截止报名时间戳
 
 									tag: this.data.constants.tagList[this.data.tagIndex],
-									groupTag:this.data.myGroupTagList,
+									groupTag: this.data.myGroupTagList,
 
 									teamName: this.data.teamName,
 									qr_code,
@@ -483,7 +460,7 @@ Page({
 	},
 	check() {
 		if (!this.data.holder || !this.data.phone) {
-			this.setShow("error", "请重启本小程序");
+			this.setShow("error", "请重启小程序");
 			return 0
 		}
 		if (this.data.serviceTimeSpan.length == 0) {
@@ -494,31 +471,25 @@ Page({
 			this.setShow("error", '请添加岗位');
 			return 0
 		}
-		if (!this.data.outNum) {
-			if (this.data.outNum != 0) {
-				this.setShow("error", "公开招募错误");
-				return 0
-			}
-		}
-		if (!this.data.tagIndex) {
-			if (this.data.tagIndex != 0) {
-				this.setShow("error", "未选择活动标签");
-				return 0
-			}
-		}
-		if(this.data.address == '')
-		{
-			this.setShow("error","未指定服务地点")
+		if (!this.data.outNum && this.data.outNum != 0) {
+			this.setShow("error", "公开招募错误");
 			return 0
 		}
-		if (this.data.isSubsidy==1 && this.data.subsidyAmount==0) {
-				this.setShow("error", "未指定补贴金额");
-				return 0
+		if (!this.data.tagIndex && this.data.tagIndex != 0) {
+			this.setShow("error", "未选择活动标签");
+			return 0
 		}
-		if(this.data.isfile ==1 && this.data.temp_fileList =='')
-		{
+		if (this.data.address == '') {
+			this.setShow("error", "未指定服务地点")
+			return 0
+		}
+		if (this.data.isSubsidy == 1 && this.data.subsidyAmount == 0) {
+			this.setShow("error", "未指定补贴金额");
+			return 0
+		}
+		if (this.data.isfile == 1 && this.data.temp_fileList == '') {
 			this.setShow("error", "未上传文件");
-				return 0
+			return 0
 		}
 	},
 	setShow(status, message, time = 1000, fun = false) {
@@ -548,40 +519,45 @@ Page({
 		}
 	},
 	showModal(e) {
-		var tmp = e.currentTarget.dataset.target
-		if (tmp == 'teamName') {
+		var t = e.currentTarget.dataset.target
+		//队伍起个名字
+		if (t == 'teamName') {
 			console.log('teamName')
 		}
-		if (tmp == 'addPosition') {
+		//添加岗位
+		if (t == 'addPosition') {
 			this.setData({
 				serviceSpanIndex_active: e.currentTarget.dataset.servicespanindex
 			})
 		}
-		if (tmp == 'showPosDesc') {
+		//展示岗位描述
+		if (t == 'showPosDesc') {
 			this.setData({
 				showPosDescIdx: [e.currentTarget.dataset.sindex, e.currentTarget.dataset.pindex]
 			})
 		}
 
 		this.setData({
-			modalName: tmp
+			modalName: t
 		})
 	},
 	// 点击列表,收缩与展示
 	click(e) {
-
+		//活动标签
 		if (e.currentTarget.dataset.label == 'label') {
 			this.setData({
 				labelBoxer: !this.data.labelBoxer
 			})
+			return
 		}
-
+		//志愿者人群
 		if (e.currentTarget.dataset.group == 'group') {
 			this.setData({
 				groupBoxer: !this.data.groupBoxer
 			})
+			return
 		}
-
+		//活动时间段box
 		const index = e.currentTarget.dataset.index;
 		const {
 			boxer
@@ -626,18 +602,28 @@ Page({
 	},
 	//添加服务时间段
 	addServiceSpan() {
-		let tempSpan = {	//tempSpan对象
+		//tempSpan对象
+		let Span = {
 			date: this.data.beginDate,
 			time: this.data.startTime + "-" + this.data.endTime,
-			positions: [],
+			positions: [
+				{
+					//自动生成一个岗位
+					name: '候补',
+					number: 1,
+					joined: 0,
+					desc: '可以作为人满时的报名方式'
+				}
+			],
 		}
-		let tempList = this.data.serviceTimeSpan	//数组[]里面有多个对象{}
+		let serviceTimeSpan = this.data.serviceTimeSpan	//数组[]里面有多个对象{}
 		let boxer = this.data.boxer
-		tempList.push(tempSpan)
+		serviceTimeSpan.push(Span)
+		//新增 一列 已打开的 伸缩box
 		boxer.push(1)
 		this.setData({
 			endTime: "23:59",
-			serviceTimeSpan: tempList,
+			serviceTimeSpan,
 			boxer
 		})
 		this.handleTotalNum();
@@ -651,18 +637,18 @@ Page({
 			content: '是否要删除此时间段',
 			success(res) {
 				if (res.confirm) {
-					let tempList = that.data.serviceTimeSpan
-					tempList.splice(e.currentTarget.dataset.index, 1)
+					let serviceTimeSpan = that.data.serviceTimeSpan
 					let boxer = that.data.boxer
+					serviceTimeSpan.splice(e.currentTarget.dataset.index, 1)
 					boxer.splice(e.currentTarget.dataset.index, 1)
 
 					that.setData({
-						serviceTimeSpan: tempList,
+						serviceTimeSpan,
 						boxer
 					})
 					setTimeout(() => {
 						that.handleTotalNum();
-					}, 200);
+					}, 500);
 				} else if (res.cancel) {
 					console.log('用户点击取消')
 				}
@@ -749,7 +735,7 @@ Page({
 				serviceTimeSpan: tempList
 			})
 		} else {
-			console.log("操作数错误")
+			console.log("op错误")
 		}
 
 		this.handleTotalNum();

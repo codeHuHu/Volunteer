@@ -12,7 +12,8 @@ Page({
 			deadTime: 'xxxxxxx',
 			serviceTime: 'xxxxxxx',
 		},
-		picker: ['建设银行',
+		picker: [
+			'建设银行',
 			'邮储银行',
 			'农业银行',
 			'工商银行',
@@ -28,30 +29,28 @@ Page({
 	},
 	onLoad: function (options) {
 		console.log('app.globalData:', app.globalData)
+		var that = this
 		//记录是否登录
-		this.setData({
+		that.setData({
 			isLogin: app.globalData.isLogin,
 			myInfo: app.globalData,
 			//传入活动id
 			id: options.id,
+
+			//判断是否为审核页面
+			checkMode: options.check ? 1 : 0
 		})
-		var that = this
-		//判断是否为审核页面
-		if (options.check) {
-			this.setData({
-				checkMode: 1
-			})
-		}
+
 		//判断是否为从转发进来的
 		if (options.actions) {
 			console.log('从转发进来的')
 			let info = JSON.parse(decodeURIComponent(options.actions))
-			this.data.actions = info
-			var tmp = wx.getStorageSync('user_status')
-			if (tmp) {
-				console.log('从本地读取是否已注册', tmp)
-				this.data.isLogin = tmp[1]
-			}
+			let tmp = wx.getStorageSync('user_status')
+
+			that.setData({
+				actions: info,
+				isLogin: tmp ? tmp[1] : false
+			})
 		}
 		db.collection('ActivityInfo').doc(options.id).get({
 			success(res) {
@@ -67,23 +66,21 @@ Page({
 				if (t.isSubsidy) {
 					let payInfo = wx.getStorageSync('payInfo')
 					if (payInfo) {
-						that.setData({
-							aliPay: payInfo['aliPay'],
-							bankCardNumber: payInfo['bankCardNumber'],
-							Banktype: payInfo['Banktype'],
-						})
+						let BankPickerIndex = 0;
 						for (var i in that.data.picker) {
-							that.setData({
-								BankPickerIndex: i
-							})
+							BankPickerIndex = i
 							if (that.data.picker[i] == payInfo['Banktype']) {
 								break
 							}
 						}
+						that.setData({
+							aliPay: payInfo['aliPay'],
+							bankCardNumber: payInfo['bankCardNumber'],
+							Banktype: payInfo['Banktype'],
+							BankPickerIndex
+						})
 					}
-
 				}
-
 			}
 		})
 
@@ -151,19 +148,15 @@ Page({
 			boxer.push(0)
 		}
 
-		this.setData({
-			boxer
-		})
-
 		let constant = {
 			hours: thours,
 			minutes: tminutes,
 			deadTime: formattedDate + ' ' + formattedTime,
 			serviceTime: serviceDate + ' ' + serviceStartTime + '-' + serviceEndTime,
-
 			checkMode: Number(res.status) <= 0 ? 1 : 0,
 		}
 		this.setData({
+			boxer,
 			constant,
 			//记录用户是否有导出特权(负责人或管理员)
 			isAdmin: (app.globalData.openid == res._openid) || (Number(app.globalData.position) >= 1),
@@ -251,9 +244,8 @@ Page({
 				}
 			}
 		}).then(res => {
-
+			//如果是补贴活动,那将银行卡和支付宝信息保存到本地
 			if (that.data.actions.isSubsidy == 1) {
-				//如果是补贴活动,那将银行卡和支付宝信息保存到本地
 				let payInfo = {
 					'aliPay': that.data.aliPay,
 					'Banktype': that.data.Banktype,
@@ -317,10 +309,6 @@ Page({
 					}
 				})
 					.then(res => {
-						//更改按钮状态
-						// that.setData({
-						// 	isJoin: 0
-						// })
 						//在userInfo中删除此活动id
 						db.collection('UserInfo').where({
 							_openid: app.globalData.openid
@@ -352,11 +340,6 @@ Page({
 	},
 	showModal(e) {
 		var tmp = e.currentTarget.dataset.target
-		console.log(tmp)
-		if (e.currentTarget.dataset.target == 'None') {
-			//无操作
-			return
-		}
 		if (!this.data.isLogin) {
 			this.setShow("error", "您尚未注册");
 			wx.navigateTo({
@@ -425,9 +408,6 @@ Page({
 
 		} else if (a == 'unjoin') {
 			wx.showLoading()
-			// this.setData({
-			// 	isJoin: 0
-			// })
 			this.unJoin()
 		}
 		this.setData({
@@ -466,7 +446,6 @@ Page({
 	},
 	//转发朋友
 	onShareAppMessage(event) {
-		console.log('shareApp', this.data.actions.actName)
 		return {
 			title: this.data.actions.actName,
 			//imageUrl: this.data.actions.images[0],
@@ -475,7 +454,6 @@ Page({
 	},
 	//转发朋友圈
 	onShareTimeline(event) {
-		console.log('shareTimeLine', this.data.actions.actName)
 		return {
 			title: this.data.actions.actName + '~快来一起参加吧!',
 			query: 'id=' + this.data.id + '&actions=' + encodeURIComponent(JSON.stringify(this.data.actions))
@@ -670,7 +648,6 @@ Page({
 		})
 	},
 	getbutton(e) {
-		console.log(e.detail.value)
 		this.setData({
 			payee: e.detail.value
 		})
@@ -722,9 +699,10 @@ Page({
 		})
 
 	},
-	M(name) {
-		return name.replace(/(?<=^[\u4e00-\u9fa5])[^\u4e00-\u9fa5](?=[\u4e00-\u9fa5]$)/g, "*")
-	},
+	//mask名字
+	// M(name) {
+	// 	return name.replace(/(?<=^[\u4e00-\u9fa5])[^\u4e00-\u9fa5](?=[\u4e00-\u9fa5]$)/g, "*")
+	// },
 	checkInfo() {
 		const that = this
 		if (that.data.actions.isSubsidy) {
