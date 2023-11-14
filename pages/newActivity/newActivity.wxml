@@ -173,7 +173,7 @@
 		</view>
 		<view class="cu-form-group flex justify-between" wx:if="{{isSubsidy==1}}">
 			<view class="flex">
-				<view class="title outteam">补贴金额:</view>
+				<view class="title outteam"><text class="text-red text-xxl">*</text>补贴金额:</view>
 				<input class="title inteam " maxlength="5" bindinput="getSubsidyAmount" value="{{subsidyAmount}}" style="width:150rpx;">{{subsidyAmount}}</input>
 				<view class="title">元</view>
 			</view>
@@ -276,7 +276,7 @@
 <view class="cu-modal {{modalName=='teamName'?'show':''}}">
 	<view class="cu-dialog">
 		<view class="cu-bar bg-white justify-end">
-			<view class="content">给小队取个好听的名字</view>
+			<view class="content">给小队取个好听的名字吧~</view>
 			<view class="action" bindtap="hideModal">
 				<text class="cuIcon-close text-red"></text>
 			</view>
@@ -331,8 +331,8 @@
 		</view>
 		<!-- 选择框 -->
 		<view class="cu-bar bg-white">
-			<view class="action margin-0 flex-sub text-green solid-left" catchtap="hideModal">取消</view>
-			<view class="action margin-0 flex-sub  solid-left" bindtap="addServiceSpan">确定</view>
+			<view class="action margin-0 flex-sub  solid-left" catchtap="hideModal">取消</view>
+			<view class="action margin-0 flex-sub text-green solid-left" bindtap="addServiceSpan">确定</view>
 		</view>
 	</view>
 </view>

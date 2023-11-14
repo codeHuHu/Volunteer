@@ -72,7 +72,7 @@
 				</button>
 			</view>
 			<view wx:else bindtap="showModal" data-target="{{actions.length!=0?(isDead?(isPintuan?'toGroup':'报名已截止无操作'):(isJoin?'toGroup':(isPintuan?'toPintuan':'toJoin'))):'None'}}">
-				<button wx:if="{{isDead||isJoin==1}}" class="signUp cu-avatar round xl bg-{{isFull?'purple':'grey'}} animation-{{animation}}" bindtap="toggle" data-class="scale-up" role="button" aria-disabled="false">
+				<button wx:if="{{isDead||isJoin==1}}" class="signUp cu-avatar round xl bg-{{isFull?'purple':'green'}} animation-{{animation}}" bindtap="toggle" data-class="scale-up" role="button" aria-disabled="false">
 					<text class="avatar-text">{{isPintuan?(isJoin||isFull?'群二维码':'报名截止'):'报名截止'}}</text>
 				</button>
 				<!-- <button wx:elif="{{!isJoin}}" class="signUp cu-avatar round xl bg-green animation-{{animation}}" bindtap="toggle" data-class="scale-up" role="button" aria-disabled="false">

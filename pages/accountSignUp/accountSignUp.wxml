@@ -10,7 +10,7 @@
 		</view>
 	</view>
 <view  class="cu-form-group flex">
-	<view class="flex-sub title justify-center flex">学年</view>
+	<view class="flex-sub title justify-center flex">入学年份</view>
   <view class="flex-treble">
 		<picker mode="date" start="1900-01-01" end="2099-01-01" fields="year"  bindchange="YearChange" value="{{selectedYear}}" >
 				<view class="picker">

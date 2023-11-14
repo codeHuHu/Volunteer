@@ -502,9 +502,23 @@ Page({
 		}
 		if (!this.data.tagIndex) {
 			if (this.data.tagIndex != 0) {
-				this.setShow("error", "未选择标签");
+				this.setShow("error", "未选择活动标签");
 				return 0
 			}
+		}
+		if(this.data.address == '')
+		{
+			this.setShow("error","未指定服务地点")
+			return 0
+		}
+		if (this.data.isSubsidy==1 && this.data.subsidyAmount==0) {
+				this.setShow("error", "未指定补贴金额");
+				return 0
+		}
+		if(this.data.isfile ==1 && this.data.temp_fileList =='')
+		{
+			this.setShow("error", "未上传文件");
+				return 0
 		}
 	},
 	setShow(status, message, time = 1000, fun = false) {
