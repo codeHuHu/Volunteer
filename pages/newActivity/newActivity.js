@@ -660,9 +660,15 @@ Page({
 		let span = this.data.serviceSpanIndex_active
 		let picker = this.data.positionPickerIndex
 		if (span >= 0 && picker >= 0) {
+			let name = this.data.constants.picker[picker].split('（可自由编辑)')[0]
+
+			if ((picker == this.data.constants.picker.length - 1) && !this.data.elsePosition == '') {
+				name = this.data.elsePosition
+			}
+
 			let tempPos = {
 				//判断是已有的岗位还是自定义岗位
-				name: picker == this.data.constants.picker.length - 1 ? this.data.elsePosition : this.data.constants.picker[picker],
+				name: name,
 				number: 1,
 				joined: 0,
 				desc: this.data.positonDescription
