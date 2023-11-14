@@ -216,6 +216,7 @@ Page({
 		}
 	},
 	Join() {
+
 		var that = this
 		let t = new Date()
 		//按钮暂时设置不可见状态
@@ -375,6 +376,7 @@ Page({
 				return
 			}
 		} else if (tmp == 'toPintuan') {
+
 			this.setData({
 				idx: [e.currentTarget.dataset.timespan, e.currentTarget.dataset.position],
 			})
@@ -413,11 +415,14 @@ Page({
 		var a = e.currentTarget.dataset.target
 		console.log(a)
 		if (a == 'join') {
-			wx.showLoading()
-			this.setData({
-				isJoin: 1
-			})
-			this.Join()
+			if (this.checkInfo()) {
+				wx.showLoading()
+				this.setData({
+					isJoin: 1
+				})
+				this.Join()
+			}
+
 		} else if (a == 'unjoin') {
 			wx.showLoading()
 			// this.setData({
@@ -720,5 +725,26 @@ Page({
 	M(name) {
 		return name.replace(/(?<=^[\u4e00-\u9fa5])[^\u4e00-\u9fa5](?=[\u4e00-\u9fa5]$)/g, "*")
 	},
+	checkInfo() {
+		const that = this
+		if (that.data.actions.isSubsidy) {
+			if (!that.data.payee) {
+				this.setShow("error", "支付信息没填");
+				return false
+			}
+
+			if (that.data.payee == 1 && that.data.aliPay == '') {
+				this.setShow("error", "支付信息没填");
+				return false
+			}
+			if (that.data.payee == 2 && (that.data.BankPickerIndex == '' || that.data.Banktype == '')) {
+				this.setShow("error", "支付信息没填");
+				return false
+			}
+		}
+
+		return true
+
+	}
 
 })
