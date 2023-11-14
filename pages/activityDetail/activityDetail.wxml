@@ -41,16 +41,16 @@
 		</button>
 		<view class="solid-bottom text-lg text-bold padding text-black">{{isPintuan?'报名':'报名'}}要求</view>
 		<view wx:if="{{actions.groupTag}}" class="flex-container cu-form-group padding flex align-start">
-<view class="request-left" style="width: auto;">
+			<view class="request-left" style="width: auto;">
 				<text class="">{{isPintuan?'志愿者':'志愿者'}}要求</text>
-		</view>
-		<view class="tag-container">
-		<view wx:for="{{actions.groupTag}}" wx:key="index" class="margin-left cu-tag radius bg-cyan">
-			<view>
-				#{{item}}
 			</view>
-		</view>
-</view>
+			<view class="tag-container">
+				<view wx:for="{{actions.groupTag}}" wx:key="index" class="margin-left cu-tag radius bg-cyan">
+					<view>
+						#{{item}}
+					</view>
+				</view>
+			</view>
 		</view>
 
 		<view class="padding flex justify-between">
@@ -102,7 +102,7 @@
 					<!-- 岗位名称 -->
 					<view class="flex-treble flex justify-center text-sm text-black ">
 						<text>{{ child['name'] }}</text>
-						<text  class="cuIcon-info text-xxl text-blue margin-bottom" bindtap="showModal" data-target="showPosDesc" data-sindex="{{index}}" data-pindex="{{pindex}}"></text>
+						<text class="cuIcon-info text-xxl text-blue margin-bottom" bindtap="showModal" data-target="showPosDesc" data-sindex="{{index}}" data-pindex="{{pindex}}"></text>
 					</view>
 					<!-- 步进器 -->
 					<view class="flex-twice flex-treble flex justify-center align-center text-lg">
@@ -175,24 +175,24 @@
 <!-- 注意事项 -->
 <view wx:if="{{actions.notice}}" class="static margin-sm radius-lg bg-white">
 
-<view class=" radius-lg bg-white">
-	<view class="solid-bottom text-lg text-bold padding text-black">注意事项</view>
-	<view class="padding flex  justify-between">
-		<text class="text-df">{{actions.notice}}
-		</text>
+	<view class=" radius-lg bg-white">
+		<view class="solid-bottom text-lg text-bold padding text-black">注意事项</view>
+		<view class="padding flex  justify-between">
+			<text class="text-df">{{actions.notice}}
+			</text>
+		</view>
 	</view>
-</view>
 </view>
 <!-- 服务简介 -->
 <view wx:if="{{actions.peogift}}" class="static margin-sm radius-lg bg-white">
 
-<view class=" radius-lg bg-white">
-	<view class="solid-bottom text-lg text-bold padding text-black">志愿者权益</view>
-	<view class="padding flex  justify-between">
-		<text class="text-df">{{actions.peogift}}
-		</text>
+	<view class=" radius-lg bg-white">
+		<view class="solid-bottom text-lg text-bold padding text-black">志愿者权益</view>
+		<view class="padding flex  justify-between">
+			<text class="text-df">{{actions.peogift}}
+			</text>
+		</view>
 	</view>
-</view>
 </view>
 <!-- 审核界面或者评价后负责人或管理员才可以看到以下信息 -->
 <view wx:if="{{actions.introFile.length}}">
@@ -463,8 +463,8 @@
 		<view wx:if="{{payee=='1'}}">
 			<view class="cu-form-group" style="justify-content: between;" style="display: flex;align-items: center; ">
 				<view class="title outteam">支付宝号码:</view>
-				<input class="tel" bindinput="getAli" placeholder="支付宝号仅发放补贴用">
-				{{aliPay}}</input>
+				<input class="tel" bindinput="getAli" model:value="{{aliPay}}" placeholder="支付宝号仅发放补贴用">
+				</input>
 			</view>
 		</view>
 		<view wx:if="{{payee=='2'}}">
@@ -478,12 +478,12 @@
 			</view>
 			<view wx:if="{{BankPickerIndex==picker.length-1}}" class="cu-form-group">
 				<view class="title">银行名</view>
-				<input bindinput="getElseBank" placeholder="×××银行">{{elseBank}}</input>
+				<input bindinput="getElseBank" model:value="{{Banktype}}" placeholder="×××银行"></input>
 			</view>
 			<view class="cu-form-group" style="justify-content: between;" style="display: flex;align-items: center; ">
 				<view class="title outteam">银行卡号</view>
-				<input class="tel" bindinput="getBankCardnumber" placeholder="例：6217003810026896707">
-				{{bankCardNumber}}</input>
+				<input class="tel" bindinput="getBankCardnumber" model:value="{{bankCardNumber}}" placeholder="例：6217003810026896707">
+				</input>
 			</view>
 		</view>
 		<!-- <view wx:for="{{actions.memo}}" wx:key="index" wx:for-item="item" wx:for-index="index" class="cu-form-group">
