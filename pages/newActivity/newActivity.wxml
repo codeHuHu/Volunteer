@@ -418,7 +418,7 @@
 				<!-- {{showLightButton[index]?'red':'default'}}  -->
 				<view wx:for="{{myGroupTagList}}" wx:key="index" class="cu-tag radius " style="align-items: center;" >
 					<!-- bindtap="handlemyTagClick" data-index="{{index}}" -->
-					<view bindtap="delGroupTag" data-index="{{index}}" >#{{item}}</view>
+					<view >#{{item}}</view>
 					<text class="text-red text-sm padding-bottom" bindtap="delGroupTag"  data-index="{{index}}">x</text>
 				</view>
 			</view>

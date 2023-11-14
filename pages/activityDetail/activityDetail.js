@@ -20,7 +20,10 @@ Page({
 			'交通银行',
 			'其他银行'
 		],
-		BankPickerIndex: ''
+		BankPickerIndex: '',
+		bankCardNumber: '',
+		Banktype: '',
+		aliPay: ''
 
 	},
 	onLoad: function (options) {
@@ -59,8 +62,32 @@ Page({
 				that.adjustStatus(t);
 				//开启监听(传入该页面的id)
 				that.watcher(options.id);
+
+				//如果是补贴活动,读取本地数据
+				if (t.isSubsidy) {
+					let payInfo = wx.getStorageSync('payInfo')
+					if (payInfo) {
+						that.setData({
+							aliPay: payInfo['aliPay'],
+							bankCardNumber: payInfo['bankCardNumber'],
+							Banktype: payInfo['Banktype'],
+						})
+						for (var i in that.data.picker) {
+							that.setData({
+								BankPickerIndex: i
+							})
+							if (that.data.picker[i] == payInfo['Banktype']) {
+								break
+							}
+						}
+					}
+
+				}
+
 			}
 		})
+
+
 	},
 	onPullDownRefresh() {
 		wx.stopPullDownRefresh()
@@ -140,7 +167,7 @@ Page({
 			constant,
 			//记录用户是否有导出特权(负责人或管理员)
 			isAdmin: (app.globalData.openid == res._openid) || (Number(app.globalData.position) >= 1),
-			isDead:0,
+			isDead: 0,
 			//isDead: res.deadTimeStamp - new Date().getTime() <= 0 ? 1 : 0,
 			isPintuan: res.isPintuan,
 			actions: res,
@@ -154,14 +181,11 @@ Page({
 			BankPickerIndex: e.detail.value,
 			Banktype: this.data.picker[e.detail.value]	//银行类型
 		})
-		console.log(this.data.Banktype)
 	},
 	getElseBank(e) {
 		this.setData({
-			elseBank: e.detail.value,
 			Banktype: e.detail.value
 		})
-		console.log(this.data.Banktype)
 	},
 	adjustStatus(res) {
 		//检测活动的报名成功状态
@@ -226,6 +250,17 @@ Page({
 				}
 			}
 		}).then(res => {
+
+			if (that.data.actions.isSubsidy == 1) {
+				//如果是补贴活动,那将银行卡和支付宝信息保存到本地
+				let payInfo = {
+					'aliPay': that.data.aliPay,
+					'Banktype': that.data.Banktype,
+					'bankCardNumber': that.data.bankCardNumber
+				}
+				wx.setStorageSync('payInfo', payInfo)
+			}
+
 			//将该活动id加入到userInfo
 			db.collection('UserInfo').where({
 				_openid: app.globalData.openid,
@@ -535,7 +570,7 @@ Page({
 			{ wch: 13 },
 			{ wch: 13 },
 			{ wch: 13 },
-			{ wch: 25},
+			{ wch: 25 },
 			{ wch: 10 },
 		]
 		const rowWidth = [
