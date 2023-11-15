@@ -1,58 +1,47 @@
 {
 	"pages": [
-		"pages/home/home",
-		"pages/accountSignUp/accountSignUp",
-		"pages/joinTeam/joinTeam",
-		"pages/volunteerService/volunteerService",
-		"pages/activityDetail/activityDetail",
-		"pages/teamDetail/teamDetail",
-		"pages/teamMembers/teamMembers",
-		"pages/mine/mine",
-		"pages/setting/setting",
-		"pages/myActivity/myActivity",
-		"pages/newActivity/newActivity",
-		"pages/newTeam/newTeam",
-		"pages/commentActivity/commentActivity",
-		"pages/checkActivity/checkActivity",
-		"pages/recycleBin/recycleBin",
-		"pages/myJoin/myJoin",
-		"pages/volunteerWelfare/volunteerWelfare",
-		"pages/welfareIndex/welfareIndex",
-		"pages/testPage/testPage",
-		"pages/icon_status/icon_status",
-		"pages/testKeFu/testKeFu",
-		"pages/aboutUs/aboutUs",
-		"pages/upLoadFile",
-		"pages/InformTest/InformTest"
+		"pages/HomeCenter/home/home",
+		"pages/HomeCenter/volunteerWelfare/volunteerWelfare",
+		
+		"pages/PersonalCenter/accountSignUp/accountSignUp",
+		"pages/PersonalCenter/mine/mine",
+		"pages/PersonalCenter/myActivity/myActivity",
+		"pages/PersonalCenter/newActivity/newActivity",
+		"pages/PersonalCenter/commentActivity/commentActivity",
+		"pages/PersonalCenter/checkActivity/checkActivity",
+		"pages/PersonalCenter/recycleBin/recycleBin",
+		"pages/PersonalCenter/myJoin/myJoin",
+		"pages/PersonalCenter/setting/setting",
+		"pages/PersonalCenter/aboutUs/aboutUs",
+		"pages/PersonalCenter/InformTest/InformTest",
+
+		"pages/ServiceCenter/volunteerService/volunteerService",
+		"pages/ServiceCenter/activityDetail/activityDetail"
 	],
-	"usingComponents": {
-		"cu-custom": "colorui/components/cu-custom/cu-custom"
-	},
 	"window": {
 		"backgroundColor": "#F6F6F6",
 		"backgroundTextStyle": "light",
 		"navigationBarBackgroundColor": "#F6F6F6",
-		"navigationBarTitleText": "Volunteer",
+		"navigationBarTitleText": "广州大学城志愿拼团",
 		"navigationBarTextStyle": "black",
 		"enablePullDownRefresh": true
 	},
 	"lazyCodeLoading": "requiredComponents",
 	"tabBar": {
-		"list": [
-			{
-				"pagePath": "pages/home/home",
+		"list": [{
+				"pagePath": "pages/HomeCenter/home/home",
 				"text": "首页",
 				"iconPath": "images/tabbar/home1.png",
 				"selectedIconPath": "images/tabbar/home1_activate.png"
 			},
 			{
-				"pagePath": "pages/volunteerService/volunteerService",
+				"pagePath": "pages/ServiceCenter/volunteerService/volunteerService",
 				"text": "志愿服务",
 				"iconPath": "images/tabbar/activity.png",
 				"selectedIconPath": "images/tabbar/activity_activate.png"
 			},
 			{
-				"pagePath": "pages/mine/mine",
+				"pagePath": "pages/PersonalCenter/mine/mine",
 				"text": "个人中心",
 				"iconPath": "images/tabbar/mine.png",
 				"selectedIconPath": "images/tabbar/mine_activate.png"
