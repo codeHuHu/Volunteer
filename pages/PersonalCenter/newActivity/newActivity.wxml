@@ -54,7 +54,7 @@
 			<view class="action flex justify-between">
 
 				<view style="align-items: center; margin-left:-3%;">
-				  <text class="cuIcon-titles text-blue"></text>
+					<text class="cuIcon-titles text-blue"></text>
 					<text class="text-bold">志愿者要求</text>
 					<!-- 点击显示模态框 -->
 					<text class="padding-left-xl cuIcon-roundaddfill lg text-cyan" catchtap="showModal" data-target="addServiceGroup"></text>
@@ -67,9 +67,9 @@
 		<view class="{{groupBoxer ? '' : 'piano-hidden-content'}}">
 			<!-- {{showLightButton[index]?'red':'default'}}  -->
 			<view wx:for="{{myGroupTagList}}" wx:key="index" class="cu-tag radius">
-				<view >
+				<view>
 					#{{item}}
-					<text class="text-red text-sm padding-bottom" bindtap="delGroupTag"  data-index="{{index}}">x</text>
+					<text class="text-red text-sm padding-bottom" bindtap="delGroupTag" data-index="{{index}}">x</text>
 				</view>
 			</view>
 		</view>
@@ -79,12 +79,14 @@
 					<text class="text-red text-xxl">*</text>
 					<text class="cuIcon-titles text-blue"></text>
 					<text class="text-bold">服务时间段</text>
+					<text class="text-sm text-bold">(可多选)</text>
 				</view>
 				<!-- 点击显示模态框 -->
-				<text class="padding-left-xl cuIcon-roundaddfill lg text-cyan" catchtap="showModal" data-target="addServiceTime"></text>
-				<view class="flex margin-left-xxl">
+				<text class="padding-left-sm cuIcon-roundaddfill lg text-cyan" catchtap="showModal" data-target="addServiceTime"></text>
+				<view class="flex margin-left-xl">
+					<text class="text-red text-xxl">*</text>
 					<view class="title outteam">需求人数:</view>
-					<input  class=" margin-left-sm title inteam" maxlength="3" bindinput="getoutNum" style="width: 60rpx; border-bottom: solid 1rpx #d48d8d;" value="{{outNum}}">{{outNum}}</input>
+					<input class=" margin-left-sm title inteam" maxlength="3" bindinput="getoutNum" style="width: 60rpx; border-bottom: solid 1rpx #d48d8d;" value="{{outNum}}">{{outNum}}</input>
 					人
 				</view>
 			</view>
@@ -99,8 +101,11 @@
 					<view class="text-sm text-gray">{{item['date']}} </view>
 				</view>
 				<!-- 添加岗位按钮 -->
-				<view class="content padding-left-lg">
-					<view class="cuIcon-friendaddfill text-green" catchtap="showModal" data-serviceSpanIndex="{{index}}" data-target="addPosition">添加岗位</view>
+				<view class="content padding-left-lg padding-right">
+					<view class="cuIcon-friendaddfill text-green" catchtap="showModal" data-serviceSpanIndex="{{index}}" data-target="addPosition">
+						添加岗位
+						<text class="text-sm">(选填)</text>
+					</view>
 				</view>
 
 				<!-- 删除该时间段 -->
@@ -409,19 +414,21 @@
 			<view class="margin-top solids-top-blue padding-top">自定义</view>
 			<view class="cu-form-group">
 				<input class="solid-blue margin-right" bindinput="getGroupTagName" placeholder="输入标签名字" model:value="{{groupTagName}}"></input>
-				<button class="sm cu-btn bg-green shadow" bindtap="addGroupTag" data-index="{{-1}}">确定</button>
+				<button class="sm cu-btn bg-cyan shadow" bindtap="addGroupTag" data-index="{{-1}}">确定</button>
 			</view>
 
 			<view class="margin-top solids-top-blue padding">已添加</view>
 			<view class="">
 				<!-- {{showLightButton[index]?'red':'default'}}  -->
-				<view wx:for="{{myGroupTagList}}" wx:key="index" class="cu-tag radius " style="align-items: center;" >
-					<view >#{{item}}</view>
-					<text class="text-red text-sm padding-bottom" bindtap="delGroupTag"  data-index="{{index}}">x</text>
+				<view wx:for="{{myGroupTagList}}" wx:key="index" class="cu-tag radius " style="align-items: center;">
+					<view>#{{item}}</view>
+					<text class="text-red text-sm padding-bottom" bindtap="delGroupTag" data-index="{{index}}">x</text>
 				</view>
 			</view>
 		</view>
-
+		<view class="margin-top solids-top-blue padding">
+			<button class="xl cu-btn bg-green shadow" bindtap="hideModal">完成</button>
+		</view>
 	</view>
 
 </view>

@@ -491,6 +491,10 @@ Page({
 			this.setShow("error", "未上传文件");
 			return 0
 		}
+		if (this.data.temp_imgList.length == 0 || this.data.temp_imgList2.length == 0) {
+			this.setShow("error", "未上传群图片或i志愿图片");
+			return 0
+		}
 	},
 	setShow(status, message, time = 1000, fun = false) {
 		if (loading) {

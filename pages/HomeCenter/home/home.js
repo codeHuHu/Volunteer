@@ -18,8 +18,6 @@ Page({
 		this.setData({
 			myPos: app.globalData.position,
 		})
-		//查找活动
-		this.getData()
 	},
 	//查找活动
 	getData() {
@@ -42,6 +40,7 @@ Page({
 
 	},
 	onShow: function () {
+		this.getData()
 		wx.hideHomeButton()
 
 	},
