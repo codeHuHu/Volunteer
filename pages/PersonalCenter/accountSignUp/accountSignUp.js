@@ -3,10 +3,6 @@ let loading = false;
 const db = wx.cloud.database()
 const app = getApp()
 Page({
-
-	/**
-	 * 页面的初始数据
-	 */
 	data: {
 
 		region: ['广东省', '广州市', '番禺区'],
@@ -22,119 +18,59 @@ Page({
 		school: '',
 		selectedYear: '请选择入学年份'
 	},
-
-	/**
-	 * 生命周期函数--监听页面加载
-	 */
-	onLoad(options) {
-
-	},
-
-	/**
-	 * 生命周期函数--监听页面初次渲染完成
-	 */
-	onReady() {
-
-	},
-
-	/**
-	 * 生命周期函数--监听页面显示
-	 */
-	onShow() {
-
-	},
-
-	/**
-	 * 生命周期函数--监听页面隐藏
-	 */
-	onHide() {
-
-	},
-
-	/**
-	 * 生命周期函数--监听页面卸载
-	 */
-	onUnload() {
-
-	},
-
-	/**
-	 * 页面相关事件处理函数--监听用户下拉动作
-	 */
-	onPullDownRefresh() {
-
-	},
-
-	/**
-	 * 页面上拉触底事件的处理函数
-	 */
-	onReachBottom() {
-
-	},
-
-	/**
-	 * 用户点击右上角分享
-	 */
-	onShareAppMessage() {
-
-	},
-
-	YearChange: function (e) {
+	onLoad(options) { },
+	onReady() { },
+	onShow() { },
+	onHide() { },
+	onUnload() { },
+	onPullDownRefresh() { },
+	onReachBottom() { },
+	onShareAppMessage() { },
+	YearChange(e) {
 		const value = e.detail.value;
 		const year = value.substring(0, 4);
 		this.setData({
 			value: value,
 			selectedYear: year
 		});
-		console.log(this.data.selectedYear)
 	},
-	RegionChange: function (e) {
+	RegionChange(e) {
 		this.setData({
 			region: e.detail.value
 
 		})
-		console.log(this.data.region)
 	},
 	GradeChange(e) {
-		console.log(e.detail.value)
 		this.setData({
 			Gindex: e.detail.value
 		})
 	},
 	PickerChange(e) {
-		console.log(e);
 		this.setData({
 			index: e.detail.value
 		})
-		console.log(e.detail.value)
 	},
 	teamChange(e) {
-		console.log(e);
 		this.setData({
 			teamId: e.detail.value
 		})
 	},
-
 	getName(event) {
-		console.log(event.detail.value);
 		this.setData({
 			userName: event.detail.value
 		})
 	},
 	getIdnumber(e) {
-		console.log(e.detail.value);
 		this.setData({
 			userIdNumber: e.detail.value
 		})
 	},
 	getAliPay(e) {
-		console.log(e.detail.value);
 		this.setData({
 			userAliPay: e.detail.value
 		})
 	},
 	getPhone(e) {
-		console.log(e.detail.value);
 		this.setData({
 			userPhone: e.detail.value
 		})
@@ -163,7 +99,6 @@ Page({
 		if (this.check() == 0) {
 			return
 		}
-
 		var that = this;
 		db.collection('UserInfo').add({
 			data: {
@@ -202,30 +137,28 @@ Page({
 			}
 		})
 	},
+	checkchange() {
+		this.setData({
+			isCheck: !this.data.isCheck
+		})
+	},
 	check() {
-
-		if (!this.data.Gindex) {
-			if (this.data.Gindex != 0) {
-				this.setShow("error", "请选择年级");
-				return 0
-			}
+		if (!this.data.Gindex && this.data.Gindex != 0) {
+			this.setShow("error", "请选择年级");
+			return 0
 		}
-		if (!this.data.value) {
-			if (this.data.value != 0) {
-				this.setShow("error", "请选择学年");
-				return 0
-			}
+		if (!this.data.value && this.data.value != 0) {
+			this.setShow("error", "请选择学年");
+			return 0
 		}
 		if (this.data.userName == '') {
 			this.setShow("error", "姓名为空");
 			return 0
 		}
 
-		if (!this.data.index) {
-			if (this.data.index != 0) {
-				this.setShow("error", "请选择证件类型");
-				return 0
-			}
+		if (!this.data.index && this.data.index != 0) {
+			this.setShow("error", "请选择证件类型");
+			return 0
 		}
 		if (this.data.userIdNumber == '') {
 			this.setShow("error", "证件号不能为空");
@@ -244,25 +177,11 @@ Page({
 			this.setShow("error", "请仔细阅读并同意协议");
 			return 0
 		}
+		return 1
 	},
-	checkchange() {
-		console.log(111)
-		this.setData({
-			isCheck: !this.data.isCheck
-		})
+	navTo(e) {
+		wx.$navTo(e)
 	},
-	toInformTest() {
-		wx.navigateTo({
-			url: '/pages/PersonalCenter/InformTest/InformTest',
-		})
-	},
-	/**
- * 轻提示展示
- * @param {*} status 
- * @param {*} message 
- * @param {*} time 
- * @param {*} fun 
- */
 	setShow(status, message, time = 1000, fun = false) {
 		if (loading) {
 			return

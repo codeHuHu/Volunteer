@@ -104,7 +104,6 @@ Page({
 		}
 	},
 	watcher(id) {
-
 		var that = this
 		this.watcher = db.collection('ActivityInfo')
 			.doc(id)
@@ -124,7 +123,6 @@ Page({
 	},
 	adjustTimeStamp(res) {
 		//报名截止时间	报名截止日期
-
 		let t = new Date(res.deadTimeStamp);
 		const formattedTime = `${utils.Z(t.getHours())}:${utils.Z(t.getMinutes())}`;
 		const formattedDate = `${t.getFullYear()}-${utils.Z(t.getMonth() + 1)}-${utils.Z(t.getDate())}`;
@@ -170,7 +168,6 @@ Page({
 			serviceTimeSpan: res.serviceTimeSpan,
 		})
 	},
-
 	//改变选择银行索引
 	BankPickerChange(e) {
 		this.setData({
@@ -212,7 +209,6 @@ Page({
 		}
 	},
 	Join() {
-
 		var that = this
 		let t = new Date()
 		//按钮暂时设置不可见状态
@@ -345,9 +341,7 @@ Page({
 		var tmp = e.currentTarget.dataset.target
 		if (!this.data.isLogin) {
 			this.setShow("error", "您尚未注册");
-			wx.navigateTo({
-				url: '/pages/PersonalCenter/accountSignUp/accountSignUp',
-			})
+			wx.$navTo('/pages/PersonalCenter/accountSignUp/accountSignUp')
 			return
 		}
 		if (this.data.isDead && tmp == 'toCancel') {
@@ -431,7 +425,6 @@ Page({
 		}, 1000)
 	},
 	previewImage(e) {
-		console.log('previeww')
 		var tmp = []
 		if (e.currentTarget.dataset.url == "0") {
 			tmp = this.data.actions.qr_code
@@ -505,10 +498,8 @@ Page({
 		})
 	},
 	exportExcel() {
-
 		const D = this.data
 		const DA = D.actions
-
 		let sheet = []
 		// 表头
 		sheet.push(
@@ -702,10 +693,6 @@ Page({
 		})
 
 	},
-	//mask名字
-	// M(name) {
-	// 	return name.replace(/(?<=^[\u4e00-\u9fa5])[^\u4e00-\u9fa5](?=[\u4e00-\u9fa5]$)/g, "*")
-	// },
 	checkInfo() {
 		const that = this
 		if (that.data.actions.isSubsidy) {
@@ -713,7 +700,6 @@ Page({
 				this.setShow("error", "支付信息没填");
 				return false
 			}
-
 			if (that.data.payee == 1 && that.data.aliPay == '') {
 				this.setShow("error", "支付信息没填");
 				return false
@@ -723,9 +709,8 @@ Page({
 				return false
 			}
 		}
-
 		return true
-
 	}
+	
 
 })

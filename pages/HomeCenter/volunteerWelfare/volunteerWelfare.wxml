@@ -1,36 +1,3 @@
-<!--pages/volunteerWelfare/volunteerWelfare.wxml-->
-
-<view class="post-container bg-gray ">
-  <view class="cu-bar bg-white ">
-    <view class="action ">礼品图片</view>
-    <view class="action">{{temp_imgList.length}}/9</view>
-  </view>
-  <view class="cu-form-group ">
-    <view class="grid col-4 grid-square flex-sub">
-      <view class="bg-img" wx:for="{{temp_imgList}}" wx:key="{{index}}" bindtap="viewImage" data-url="{{temp_imgList[index]}}">
-        <image src='{{temp_imgList[index]}}' mode='aspectFill'></image>
-        <view class="cu-tag bg-red" catchtap="deleteImage" data-index="{{index}}">
-          <text class="cuIcon-close"></text>
-					<view class="solids" bindtap="ChooseImage" wx:if="{{imgList.length<4}}">
-        <text class="cuIcon-cameraadd"></text>
-      </view>
-        </view>
-      </view>
-      <view class="solids" bindtap="chooseImage" wx:if="{{temp_imgList.length<9}}">
-        <text class="cuIcon-cameraadd"></text>
-      </view>
-    </view>
-  </view>
-
-  <view class="cu-form-group ">
-    <textarea maxlength="2000" style="height: 30rpx;" disabled="{{modalName!=null}}" bindinput="sendtitle" placeholder="礼品兑换积分"></textarea>
-  </view>
-  <view class="cu-form-group ">
-    <textarea maxlength="2000" style="height: 300rpx;" disabled="{{modalName!=null}}" bindinput="sendcontent" placeholder="礼品介绍"></textarea>
-  </view>
-	  <view class="cu-bar btn-group">
-    <button class="cu-btn bg-green shadow-blur round lg" open-type="getUserInfo" bindtap="Submit">
-      上传
-    </button>
-  </view>
+<view>
+  
 </view>

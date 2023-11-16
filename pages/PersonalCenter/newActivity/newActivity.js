@@ -70,7 +70,7 @@ Page({
 
 
 	},
-	onLoad: function () {
+	onLoad() {
 		this.setData({
 			holder: app.globalData.name,
 			phone: app.globalData.phone,
@@ -152,94 +152,6 @@ Page({
 			tagIndex: index,
 			showLightButton: lb, // 点击标签时显示高光
 		});
-	},
-	isSubsidy(e) {
-		console.log(e)
-		this.setData({
-			isSubsidy: e.detail.value
-		})
-	},
-	isfile(e) {
-		console.log(e.detail.value)
-		this.setData({
-			isfile: e.detail.value
-		})
-	},
-	getactName(e) {
-		this.setData({
-			actName: e.detail.value
-		})
-	},
-	getholder(e) {
-		this.setData({
-			holder: e.detail.value
-		})
-	},
-	getPhone(e) {
-		this.setData({
-			phone: e.detail.value
-		})
-	},
-	getinNum(e) {
-		this.setData({
-			inNum: Number(e.detail.value)
-		})
-	},
-	getoutNum(e) {
-		this.setData({
-			outNum: Number(e.detail.value)
-		})
-	},
-	getSubsidyAmount(e) {
-		this.setData({
-			subsidyAmount: Number(e.detail.value)
-		})
-	},
-	getAddress(e) {
-		this.setData({
-			address: e.detail.value
-		})
-	},
-	getintro(e) {
-		this.setData({
-			intro: e.detail.value
-		})
-	},
-	getnotice(e) {
-		this.setData({
-			notice: e.detail.value
-		})
-	},
-	getgift(e) {
-		this.setData({
-			peoplegift: e.detail.value
-		})
-	},
-
-	getTeamName(e) {
-		this.setData({
-			teamName: e.detail.value
-		})
-	},
-	getElsePositon(e) {
-		this.setData({
-			elsePosition: e.detail.value
-		})
-	},
-	getHolderDetail(e) {
-		this.setData({
-			holderDetail: e.detail.value
-		})
-	},
-	getPositonDescription(e) {
-		this.setData({
-			positonDescription: e.detail.value
-		})
-	},
-	getGroupTagName(e) {
-		this.setData({
-			groupTagName: e.detail.value
-		})
 	},
 	async sendNew(e) {
 		//检测是否输入完整
@@ -495,6 +407,7 @@ Page({
 			this.setShow("error", "未上传群图片或i志愿图片");
 			return 0
 		}
+		return 1
 	},
 	setShow(status, message, time = 1000, fun = false) {
 		if (loading) {
@@ -764,7 +677,6 @@ Page({
 			outNum: total
 		})
 	},
-
 	choosefile: function () {
 		var that = this
 		wx.chooseMessageFile({
@@ -805,7 +717,6 @@ Page({
 		})
 
 	},
-
 	uploadFile: function (filepath) {
 		return new Promise(function (callback) {
 			const houzhui = filepath.match(/\.[^.]+?$/)[0];
@@ -916,5 +827,91 @@ Page({
 			myGroupTagList
 		})
 		console.log(idx)
+	},
+	isSubsidy(e) {
+		this.setData({
+			isSubsidy: e.detail.value
+		})
+	},
+	isfile(e) {
+		this.setData({
+			isfile: e.detail.value
+		})
+	},
+	getactName(e) {
+		this.setData({
+			actName: e.detail.value
+		})
+	},
+	getholder(e) {
+		this.setData({
+			holder: e.detail.value
+		})
+	},
+	getPhone(e) {
+		this.setData({
+			phone: e.detail.value
+		})
+	},
+	getinNum(e) {
+		this.setData({
+			inNum: Number(e.detail.value)
+		})
+	},
+	getoutNum(e) {
+		this.setData({
+			outNum: Number(e.detail.value)
+		})
+	},
+	getSubsidyAmount(e) {
+		this.setData({
+			subsidyAmount: Number(e.detail.value)
+		})
+	},
+	getAddress(e) {
+		this.setData({
+			address: e.detail.value
+		})
+	},
+	getintro(e) {
+		this.setData({
+			intro: e.detail.value
+		})
+	},
+	getnotice(e) {
+		this.setData({
+			notice: e.detail.value
+		})
+	},
+	getgift(e) {
+		this.setData({
+			peoplegift: e.detail.value
+		})
+	},
+
+	getTeamName(e) {
+		this.setData({
+			teamName: e.detail.value
+		})
+	},
+	getElsePositon(e) {
+		this.setData({
+			elsePosition: e.detail.value
+		})
+	},
+	getHolderDetail(e) {
+		this.setData({
+			holderDetail: e.detail.value
+		})
+	},
+	getPositonDescription(e) {
+		this.setData({
+			positonDescription: e.detail.value
+		})
+	},
+	getGroupTagName(e) {
+		this.setData({
+			groupTagName: e.detail.value
+		})
 	},
 })

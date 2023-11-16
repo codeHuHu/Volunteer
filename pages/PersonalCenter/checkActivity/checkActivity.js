@@ -5,15 +5,10 @@ var utils = require("../../../utils/date.js")
 let loading = false;
 
 Page({
-
-	/**
-	 * 页面的初始数据
-	 */
 	data: {
 
 	},
-
-	onLoad: async function (event) {
+	async onLoad(event) {
 		wx.setNavigationBarTitle({
 			title: '审核发布',
 		})
@@ -27,8 +22,7 @@ Page({
 		await this.getList('0');
 		await this.getList('-1');
 	},
-
-	getList: async function (e) {
+	async getList(e) {
 		var that = this;
 		const collection = db.collection('ActivityInfo');
 		const res = await collection.where({
@@ -50,7 +44,6 @@ Page({
 			.get();
 
 		var actions = res.data;
-		console.log(actions)
 		if (e == '0') {
 			that.setData({
 				actionList: actions,
@@ -63,10 +56,8 @@ Page({
 		this.setTime(res.data)
 
 	},
-
-	setTime: async function (result) {
+	async setTime(result) {
 		var res = result
-		console.log(res)
 		var dataArr = []
 		let status = ''
 		var t
@@ -97,14 +88,6 @@ Page({
 			}
 		}
 	},
-
-	toDetail(e) {
-		//console.log(e.currentTarget.dataset.id)
-		wx.navigateTo({
-			url: '/pages/ServiceCenter/activityDetail/activityDetail?id=' + e.currentTarget.dataset.id + '&check=1',
-		})
-	},
-
 	Agree(e) {
 		var that = this
 		wx.showModal({
@@ -159,7 +142,6 @@ Page({
 			}
 		})
 	},
-
 	showModal(e) {
 		this.setData({
 			modalName: e.currentTarget.dataset.target
@@ -170,13 +152,6 @@ Page({
 			modalName: null
 		})
 	},
-	/**
-	 * 轻提示展示
-	 * @param {*} status 
-	 * @param {*} message 
-	 * @param {*} time 
-	 * @param {*} fun 
-	 */
 	setShow(status, message, time = 2000, fun = false) {
 		if (loading) {
 			return
@@ -209,5 +184,8 @@ Page({
 			TabCur: e.currentTarget.dataset.id,
 			scrollLeft: (e.currentTarget.dataset.id - 1) * 60
 		})
-	}
+	},
+	navTo(e) {
+		wx.$navTo(e)
+	},
 })

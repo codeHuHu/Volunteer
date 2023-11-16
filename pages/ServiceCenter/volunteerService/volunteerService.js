@@ -5,10 +5,6 @@ var utils = require("../../../utils/date.js")
 let loading = false;
 
 Page({
-
-	/**
-	 * 页面的初始数据
-	 */
 	data: {
 		show1: false, //控制下拉列表的显示隐藏，false隐藏、true显示
 		show2: false,
@@ -29,7 +25,28 @@ Page({
 		toUpdateArr: [''],
 		actions_Status: ['1'],
 	},
-
+	onLoad: function (event) {
+		wx.setNavigationBarTitle({
+			title: '志愿服务',
+		})
+		this.setData({
+			myPos: app.globalData.position,
+			myId: app.globalData.openid
+		})
+		const currentDate = new Date();
+		const timeStamp = currentDate.getTime();
+		this.setData({
+			timeStamp,
+			currentDate
+		})
+		this.getStatus()
+	},
+	onPullDownRefresh() {
+		this.onLoad()
+		wx.stopPullDownRefresh()
+	},
+	onReachBottom() { },
+	onShareAppMessage() { },
 	// 点击下拉显示框
 	selectallTap() {
 		this.setData({
@@ -191,25 +208,6 @@ Page({
 			this.onLoad()
 		}
 	},
-	/**
-	 * 生命周期函数--监听页面加载
-	 */
-	onLoad: function (event) {
-		wx.setNavigationBarTitle({
-			title: '志愿服务',
-		})
-		this.setData({
-			myPos: app.globalData.position,
-			myId: app.globalData.openid
-		})
-		const currentDate = new Date();
-		const timeStamp = currentDate.getTime();
-		this.setData({
-			timeStamp,
-			currentDate
-		})
-		this.getStatus()
-	},
 	getStatus() {
 		var that = this;
 		var toUpdateArr = [];
@@ -264,20 +262,6 @@ Page({
 				console.error(error);
 			});
 	},
-
-	/**
-	 * 生命周期函数--监听页面初次渲染完成
-	 */
-	onReady() {
-
-	},
-
-	/**
-	 * 生命周期函数--监听页面显示
-	 */
-	onShow: function () {
-
-	},
 	setTime(result) {
 		var res = result
 		var dataArr = []
@@ -290,49 +274,6 @@ Page({
 			data_Arr: dataArr
 		})
 		wx.stopPullDownRefresh()
-	},
-	/**
-	 * 生命周期函数--监听页面隐藏
-	 */
-	onHide() {
-
-	},
-
-	/**
-	 * 生命周期函数--监听页面卸载
-	 */
-	onUnload() {
-
-	},
-
-	/**
-	 * 页面相关事件处理函数--监听用户下拉动作
-	 */
-	onPullDownRefresh() {
-		this.onLoad()
-		wx.stopPullDownRefresh()
-	},
-
-	/**
-	 * 页面上拉触底事件的处理函数
-	 */
-	onReachBottom() {
-
-	},
-
-	/**
-	 * 用户点击右上角分享
-	 */
-	onShareAppMessage() {
-
-	},
-	toDetail(e) {
-		wx.navigateTo({
-			url: '/pages/ServiceCenter/activityDetail/activityDetail?id=' + e.currentTarget.dataset.id,
-		})
-	},
-	addstatus(e) {
-		//console.log(e.currentTarget.dataset.status)
 	},
 	cancell(e) {
 		var that = this
@@ -361,13 +302,6 @@ Page({
 			}
 		})
 	},
-	/**
-	 * 轻提示展示
-	 * @param {*} status 
-	 * @param {*} message 
-	 * @param {*} time 
-	 * @param {*} fun 
-	 */
 	setShow(status, message, time = 2000, fun = false) {
 		if (loading) {
 			return
@@ -393,5 +327,8 @@ Page({
 		} catch {
 			loading = false;
 		}
+	},
+	navTo(e) {
+		wx.$navTo(e)
 	},
 })

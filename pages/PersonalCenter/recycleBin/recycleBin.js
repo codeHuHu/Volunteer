@@ -1,18 +1,8 @@
 // pages/RecycleBin/RecycleBin.js
-const db=wx.cloud.database()
-const app =getApp()
+const db = wx.cloud.database()
+const app = getApp()
 Page({
-
-	/**
-	 * 页面的初始数据
-	 */
-	data: {
-
-	},
-
-	/**
-	 * 生命周期函数--监听页面加载
-	 */
+	data: {},
 	onLoad: function (event) {
 		wx.setNavigationBarTitle({
 			title: '回收站',
@@ -30,7 +20,7 @@ Page({
 
 		const collection = db.collection('ActivityInfo');
 		collection.where({
-			status : '-1'
+			status: '-1'
 		}).field({
 			_id: true,
 			actName: true,
@@ -52,12 +42,7 @@ Page({
 				this.setTime(res.data)
 				return Promise.resolve(); // 返回一个 resolved 状态的 Promise 对象
 			});
-		},
-		onShow()
-			{
-				
-			},
-		
+	},
 	setTime(result) {
 		var res = result
 		var dataArr = []
@@ -71,59 +56,7 @@ Page({
 		})
 		wx.stopPullDownRefresh()
 	},
-
-	toDetail(e) {
-		//console.log(e.currentTarget.dataset.id)
-		wx.navigateTo({
-			url: '/pages/ServiceCenter/activityDetail/activityDetail?id=' + e.currentTarget.dataset.id,
-		})
+	navTo(e) {
+		wx.$navTo(e)
 	},
-	/**
-	 * 生命周期函数--监听页面初次渲染完成
-	 */
-	onReady() {
-
-	},
-
-	/**
-	 * 生命周期函数--监听页面显示
-	 */
-	onShow() {
-
-	},
-
-	/**
-	 * 生命周期函数--监听页面隐藏
-	 */
-	onHide() {
-
-	},
-
-	/**
-	 * 生命周期函数--监听页面卸载
-	 */
-	onUnload() {
-
-	},
-
-	/**
-	 * 页面相关事件处理函数--监听用户下拉动作
-	 */
-	onPullDownRefresh() {
-
-	},
-
-	/**
-	 * 页面上拉触底事件的处理函数
-	 */
-	onReachBottom() {
-
-	},
-
-	/**
-	 * 用户点击右上角分享
-	 */
-	onShareAppMessage() {
-
-	}
 })

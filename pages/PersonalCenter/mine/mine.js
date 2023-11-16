@@ -9,9 +9,8 @@ Page({
 		showModal: true, // 是否显示模态框
 		showImageModal: false, // 是否显示图片和提示信息框
 		imageSrc: 'cloud://volunteer-4gaukcmqce212f11.766f-volunteer-4gaukcmqce212f11-1321274883/kefu.jpg', // 图片链接，请替换为实际的图片链接
-		isTip:'1'	//是否弹出提示链接
 	},
-	onLoad: function (event) {
+	onLoad(event) {
 		console.log('app.globalData', app.globalData)
 		this.setData({
 			openid: app.globalData.openid,
@@ -41,18 +40,8 @@ Page({
 				}
 			})
 	},
-	/**
-	 * 生命周期函数--监听页面初次渲染完成
-	 */
-	onReady() {
-
-	},
-
-	/**
-	 * 生命周期函数--监听页面显示
-	 */
+	onReady() {},
 	onShow() {
-		
 		this.setData({
 			openid: app.globalData.openid,
 			isLogin: app.globalData.isLogin,
@@ -60,71 +49,16 @@ Page({
 		})
 		this.getDetail()
 	},
-	toregister() {
-		wx.navigateTo({
-			url: '/pages/PersonalCenter/accountSignUp/accountSignUp',
-		})
-	},
-	toNewActivity() {
-
-		if (!this.data.isLogin) {
+	navTo(e) {
+		if (e.currentTarget.dataset.check=="1" && !this.data.isLogin) {
 			this.setShow("error", "未注册");
 			return 0
 		}
-		this.setData({
-			isTip:0
-		})
-		
-		wx.navigateTo({
-			url: '/pages/PersonalCenter/newActivity/newActivity',
-		})
-	},
-	toSetting() {
-		if (!this.data.isLogin) {
-			this.setShow("error", "未注册");
-			return 0
-		}
-		wx.navigateTo({
-			url: '/pages/PersonalCenter/setting/setting',
-		})
-	},
-	toMyActivity() {
-		if (!this.data.isLogin) {
-			this.setShow("error", "未注册");
-			return 0
-		}
-		wx.navigateTo({
-			url: '/pages/PersonalCenter/myActivity/myActivity',
-		})
-	},
-	toMyJoin() {
-		if (!this.data.isLogin) {
-			this.setShow("error", "未注册");
-			return 0
-		}
-		wx.navigateTo({
-			url: '/pages/PersonalCenter/myJoin/myJoin',
-		})
-	},
-
-	toCommentActivity() {
-		if (!this.data.isLogin) {
-			this.setShow("error", "未注册");
-			return 0
-		}
-
-		wx.navigateTo({
-			url: '/pages/PersonalCenter/commentActivity/commentActivity',
-		})
-	},
-	toCheckActivity() {
-		wx.navigateTo({
-			url: '/pages/PersonalCenter/checkActivity/checkActivity',
-		})
+		this.hideModal()
+		wx.$navTo(e)
 	},
 	showModal(e) {
 		this.setData({
-			isTip:1,
 			modalName: e.currentTarget.dataset.target
 		})
 	},
@@ -177,9 +111,4 @@ Page({
 			loading = false;
 		}
 	},
-	toaboutUs() {
-		wx.navigateTo({
-			url: '/pages/PersonalCenter/aboutUs/aboutUs',
-		})
-	}
 })

@@ -1,5 +1,5 @@
 <block wx:for="{{actionList}}" wx:key="index">
-	<view class="cu-card article {{isCard?'no-card':''}} margin" bindtap="toDetail" data-id="{{item._id}}">
+	<view class="cu-card article {{isCard?'no-card':''}} margin" bindtap="navTo" data-url="/pages/ServiceCenter/activityDetail/activityDetail?id={{item._id}}">
 		<view class="cu-item shadow">
 			<view class="title">
 				<view class="text-cut">{{item.actName}}</view>

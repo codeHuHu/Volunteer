@@ -2,17 +2,7 @@
 const app = getApp()
 const db = wx.cloud.database()
 Page({
-
-	/**
-	 * 页面的初始数据
-	 */
-	data: {
-
-	},
-
-	/**
-	 * 生命周期函数--监听页面加载
-	 */
+	data: {},
 	onLoad(options) {
 		this.data.mode = options.mode
 		var filter = {
@@ -65,9 +55,7 @@ Page({
 		}
 
 	},
-	onShow() {
-		console.log('myAct onShow')
-	},
+	onShow() {},
 	setTime(result) {
 		var res = result
 		console.log(res)
@@ -97,8 +85,6 @@ Page({
 			wx.navigateBack({})
 			return
 		}
-		wx.navigateTo({
-			url: '/pages/ServiceCenter/activityDetail/activityDetail?id=' + e.currentTarget.dataset.id,
-		})
+		wx.$navTo("/pages/ServiceCenter/activityDetail/activityDetail?id=" + e.currentTarget.dataset.id)
 	}
 })

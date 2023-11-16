@@ -1,3 +1,5 @@
+require("./utils/wx.js")
+
 App({
 	onLaunch: function () {
 		wx.showLoading({

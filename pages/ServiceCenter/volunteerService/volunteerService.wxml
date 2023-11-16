@@ -52,7 +52,7 @@
 
 <block wx:for="{{actionList}}" wx:key="index">
 	<!-- 仅显示被拒绝发布、进行中、已结束的活动 -->
-	<view wx:if="{{item.status>-2}}" class="cu-card article {{isCard?'no-card':''}} margin" bindtap="toDetail" style="position:relative;" data-id="{{item._id}}">
+	<view wx:if="{{item.status>-2}}" class="cu-card article {{isCard?'no-card':''}} margin" bindtap="navTo" data-url="/pages/ServiceCenter/activityDetail/activityDetail?id={{item._id}}" style="position:relative;">
 		<view wx:if="{{item.status == 1}}">
 			<image class="icon" src="/images/tabbar/sun.png"></image>
 		</view>

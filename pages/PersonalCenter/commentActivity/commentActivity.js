@@ -3,7 +3,6 @@ const db = wx.cloud.database()
 const app = getApp()
 
 Page({
-
 	data: {
 		picker: '',
 		index1: '',
@@ -26,7 +25,7 @@ Page({
 		count: 0,
 		id: ''
 	},
-	onLoad: function () {
+	onLoad() {
 	},
 	onReady() {
 	},
@@ -149,22 +148,9 @@ Page({
 		}
 		console.log('onShow')
 	},
-	onHide() {
-		console.log('onHide')
-	},
-	PickerChange(e) {
-		wx.navigateTo({
-			url: '/pages/PersonalCenter/myActivity/myActivity?mode=comment',
-		})
-	},
-	onPullDownRefresh() {
-
-	},
-	onReachBottom() {
-
-	},
-	onShareAppMessage() {
-
+	onHide() {},
+	navTo(e){
+		wx.$navTo(e)
 	},
 	ChooseImage(e) {
 		let param = e.currentTarget.dataset.param;
@@ -362,7 +348,7 @@ Page({
 					})
 			})
 	},
-	uploadFile: function (filePath) {
+	uploadFile(filePath) {
 		//返回上传文件后的信息
 		return new Promise(function (callback) {
 			wx.cloud.uploadFile({

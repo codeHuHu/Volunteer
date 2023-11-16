@@ -1,6 +1,6 @@
 <!--pages/checkActivity/checkActivity.wxml-->
 <view class="cu-list menu card-menu margin-bottom-xl shadow-lg radius">
-	<view class="cu-form-group" style="width: auto;" bindtap="PickerChange">
+	<view class="cu-form-group" style="width: auto;" bindtap="navTo" data-url="/pages/PersonalCenter/myActivity/myActivity?mode=comment">
 		<view class="title">活动名称</view>
 		<view >
 			<view class="">

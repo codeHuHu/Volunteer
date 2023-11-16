@@ -16,7 +16,7 @@
 
 <view class="icon-bar" style="display:none" >
 
-	<view class="item" bindtap="toHonor">
+	<view class="item" bindtap="toToast">
 		<view class="greencircle">
 			<view class="bar-icon">
 				<text class="cuIcon-selection lg "></text>
@@ -38,7 +38,7 @@
 		</view>
 	</view>
 
-	<view class="item"  bindtap="toGift">
+	<view class="item"  bindtap="toToast">
 		<view class="greencircle">
 			<view class="bar-icon">
 				<text class="cuIcon-present lg "></text>
@@ -48,14 +48,6 @@
 			<text class="fontsize">志愿福利</text>
 		</view>
 	</view>
-	<!-- <view class="item" bindtap="toJoinTeam">
-		<view class="bluecircle">
-			<view class="bar-icon">
-				<text class="iconfont icon-duiwu"></text>
-			</view>
-		</view>
-		<text class="fontsize">加入队伍</text>
-	</view> -->
 </view>
 <!-- 分割线 -->
 <view class="home-header-line1"></view>
@@ -80,7 +72,7 @@
 						
 						<view class="cu-tag bg-green light sm round" style="max-width: 200rpx; overflow: hidden;">{{item.tag}}</view>
 						<view class="detail">
-							<button class="btn-detail" bindtap="toDetail" data-id="{{item._id}}">查看</button>
+							<button class="btn-detail" bindtap="navTo" data-url="/pages/ServiceCenter/activityDetail/activityDetail?id={{item._id}}">查看</button>
 						</view>
 					</view>
 				</view>
@@ -97,7 +89,7 @@
 	<view class="sm cu-btn round " style="top:-3rpx; color:#aca6a6;background-color: transparent;">联系客服</view>
 	</button>
 		<view style=" font-size:20rpx;color: #aca6a6; ">丨</view>
-		<button bind:tap="toaboutUs" style=" height:100rpx; width: 300rpx;">
+		<button bind:tap="toaboutUs" data-url="/pages/PersonalCenter/aboutUs/aboutUs" style=" height:100rpx; width: 300rpx;">
 			<text class='iconfont icon-guanyu text-grey text-xl'></text>
 		<view class="sm cu-btn round" style="top:-3rpx; color:#aca6a6; background-color: transparent; ">
 		关于开发者</view></button>

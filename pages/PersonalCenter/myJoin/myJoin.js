@@ -2,17 +2,7 @@
 const app = getApp()
 const db = wx.cloud.database()
 Page({
-
-	/**
-	 * 页面的初始数据
-	 */
-	data: {
-
-	},
-
-	/**
-	 * 生命周期函数--监听页面加载
-	 */
+	data: {},
 	onLoad(options) {
 		db.collection('UserInfo').where({
 			_openid: app.globalData.openid
@@ -42,20 +32,8 @@ Page({
 			})
 		})
 	},
-
-	/**
-	 * 生命周期函数--监听页面初次渲染完成
-	 */
-	onReady() {
-
-	},
-
-	/**
-	 * 生命周期函数--监听页面显示
-	 */
-	onShow() {
-
-	},
+	onReady() {},
+	onShow() {},
 	setTime(result) {
 		var res = result
 		console.log(res)
@@ -74,9 +52,7 @@ Page({
 		})
 		wx.stopPullDownRefresh()
 	},
-	toDetail(e) {
-		wx.navigateTo({
-			url: '/pages/ServiceCenter/activityDetail/activityDetail?id=' + e.currentTarget.dataset.id,
-		})
+	navTo(e){
+		wx.$navTo(e)
 	}
 })

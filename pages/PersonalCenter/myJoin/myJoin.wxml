@@ -8,7 +8,7 @@
 </view>
 
 <block wx:for="{{actionList}}" wx:key="index">
-	<view wx:if="{{item.status>-2}}"   style="position: relative;" class="cu-card article {{isCard?'no-card':''}} margin" bindtap="toDetail" data-id="{{item._id}}">
+	<view wx:if="{{item.status>-2}}"   style="position: relative;" class="cu-card article {{isCard?'no-card':''}} margin" bindtap="navTo" data-url="/pages/ServiceCenter/activityDetail/activityDetail?id={{item._id}}">
 		<view wx:if="{{item.status == 1}}"><image class="myicon" src="/images/tabbar/sun.png"></image> </view>
 	<view wx:elif="{{item.status == 2}}"><image class="myicon" src="/images/tabbar/water_moon.png"></image> </view>
 		<view class="cu-item shadow">
