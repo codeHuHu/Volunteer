@@ -62,7 +62,7 @@ Page({
 		outNum: 0,
 		subsidyAmount: 0,
 		address: '',
-		intro: '(选填，标注: 填写后可增强活动吸引力，吸引更多志愿者参与拼团)',
+		intro: '',
 		temp_imgList: [], //群二维码
 		temp_imgList2: [], //i志愿报名码
 		temp_fileList: [],	//简介文件
