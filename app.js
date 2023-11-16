@@ -1,4 +1,5 @@
-// app.js
+require("./utils/wx.js")
+
 App({
 	onLaunch: function () {
 		wx.showLoading({
@@ -113,9 +114,7 @@ App({
 	onshow: function () {
 
 	},
-	Z(num, length = 2) {
-		return ("0000000000000000" + num).substr(-length);
-	},
+
 	globalData: {
 		openid: null,
 		name: '',

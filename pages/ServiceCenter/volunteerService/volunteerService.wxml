@@ -1,0 +1,98 @@
+<import src="/pages/icon_status/icon_status.wxml" />
+
+<view class="up" style="border-radius: 5rpx; box-shadow: 0 1px 4px rgba(161, 229, 147, 0.555) ;">
+	<image src="/images/tabbar/3.png" />
+</view>
+
+<view class="top-bar fixed" style=" margin:-30rpx 5rpx -20rpx 5rpx;">
+	<view class='select_box'>
+		<view class='select' catchtap='selectallTap'>
+			<text class='select_text'>{{selectAll[index1]}}</text>
+			<text class='select_img {{show1&&"select_img_rotate"}} iconfont icon-icon-test65'></text>
+		</view>
+		<view class='option_box' style='height:{{show1?(selectAll.length>5?300:selectAll.length*60):0}}rpx;'>
+			<text class='option' style='{{index1==selectAll.length-1&&"border:0;"}}' wx:for='{{selectAll}}' wx:key='this' data-index='{{index}}' catchtap='optionallTap'>{{item}}</text>
+		</view>
+	</view>
+	<view class="select_box">
+		<view class='select' catchtap='selecttypeTap'>
+			<text class='select_text'>{{selectType[index2]}}</text>
+			<text class='select_img {{show2&&"select_img_rotate"}} iconfont icon-icon-test65'></text>
+		</view>
+		<view class='option_box' style='height:{{show2?(selectData.length>5?300:selectType.length*60):0}}rpx;'>
+			<text class='option' style='{{index2==selectType.length-1&&"border:0;"}}' wx:for='{{selectType}}' wx:key='this' data-index='{{index}}' catchtap='optiontypeTap'>{{item}}</text>
+		</view>
+	</view>
+	<view class="select_box">
+		<view class='select' catchtap='selectstatusTap'>
+			<text class='select_text'>{{selectStatus[index3]}}</text>
+			<text class='select_img {{show3&&"select_img_rotate"}} iconfont icon-icon-test65'></text>
+		</view>
+		<view class='option_box' style='height:{{show3?(selectStatus.length>5?300:selectStatus.length*60):0}}rpx;'>
+			<text class='option' style='{{index3==selectstatuseData.length-1&&"border:0;"}}' wx:for='{{selectStatus}}' wx:key='this' data-index='{{index}}' catchtap='optionstatusTap'>{{item}}</text>
+		</view>
+	</view>
+</view>
+
+<!-- show&&"select_img_rotate"-----给显示框右边的下拉箭头添加动画
+ height:{{show?(selectData.length>5?300:selectData.length*60):0}}rpx;-----给改变下拉框高度，实现下拉框的显示隐藏，每个下拉选项的高度为60，下拉框的最大高度这里设置的是300，所以这里写成当数据长度大于5时，下拉框高度为300，反之下拉框高度为数据长度乘以60
+ index==selectData.length-1&&"border:0;"-----取消下拉选项的最后一个的下边框 -->
+<view wx:if="{{!actionList.length}}" class="margin-tb-sm padding-top-lg padding-bottom-xl " style="position: relative;">
+	<view class="flex justify-center text-xsl" style="position:absolute; left: 380rpx; top:90rpx">
+		<view class="cuIcon-searchlist text-gray  icon"></view>
+	</view>
+	<view class="flex justify-center padding-top-sm">
+		<view class="text-gray text-bold">暂无数据</view>
+	</view>
+	<view style="display: flex; justify-content: center; align-items: center;">
+		<image mode="aspectFill" style=" top:330rpx;width: 80%; opacity: .7;" src="cloud://volunteer-4gaukcmqce212f11.766f-volunteer-4gaukcmqce212f11-1321274883/banner.png" />
+	</view>
+
+</view>
+
+<block wx:for="{{actionList}}" wx:key="index">
+	<!-- 仅显示被拒绝发布、进行中、已结束的活动 -->
+	<view wx:if="{{item.status>-2}}" class="cu-card article {{isCard?'no-card':''}} margin" bindtap="navTo" data-url="/pages/ServiceCenter/activityDetail/activityDetail?id={{item._id}}" style="position:relative;">
+		<view wx:if="{{item.status == 1}}">
+			<image class="icon" src="/images/tabbar/sun.png"></image>
+		</view>
+		<view wx:elif="{{item.status == 2}}">
+			<image class="icon" src="/images/tabbar/water_moon.png"></image>
+		</view>
+		<view class="cu-item shadow">
+			<view class="title">
+				<view class="text-cut">{{item.actName}}</view>
+			</view>
+			<view class="content">
+				<view class="desc">
+
+					<view class="character">
+						<view wx:if="{{item.isSubsidy}}" class="cu-tag bg-red light sm round">补贴服务</view>
+						<!-- <view wx:if="{{item.teamName.length!=0}}" class="cu-tag bg-red light sm round">{{item.teamName}}</view> -->
+						<view class="cu-tag bg-green light sm round" style="max-width: 200rpx; white-space:nowrap; overflow: hidden;">{{item.tag}}</view>
+						<view class="cu-tag bg-green light sm round going-on" wx:if="{{item.status==1}}">进行中</view>
+						<view class="cu-tag bg-green light sm round going-on" wx:elif="{{item.status==2}}" style="background-color: gray;">已结束</view>
+						<view class="cu-tag bg-green light sm round going-on" wx:elif="{{item.status==-1}}" style="background-color: gray;">拒绝发布</view>
+						<!-- <view class="cu-tag bg-green light sm round going-on" wx:elif="{{item.status==-2}}" style="background-color: gray;">活动已取消</view> -->
+						<view>
+							<text class="data">{{data_Arr[index]}}</text>
+						</view>
+					</view>
+
+				</view>
+			</view>
+		</view>
+	</view>
+	<view wx:if="{{myPos>=1 || myId == item._openid}}" class="flex justify-end">
+		<button wx:if="{{item.status!='-2'}}" class="sm cu-btn text-sm text-red line-red shadow margin-right" data-id="{{item._id}}" bind:tap="cancell">
+			取消活动</button>
+	</view>
+
+</block>
+
+<!-- 轻提示 -->
+<view class="toast-fixed-center" hidden="{{!show}}" style="z-index: 99;">
+	<view class="radius-lg padding animation-slide-top text-lg {{status == 'success' ? 'bg-green light':'bg-red light'}}">
+		<text class="cuIcon-info"></text> {{message}}
+	</view>
+</view>

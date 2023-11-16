@@ -1,0 +1,430 @@
+<view class="cu-list menu card-menu new_activity">
+	<form class="new_activity">
+		<!-- <view class="cu-form-group">
+			<view class="inline_name">请选择类型：</view>
+			<radio-group bindchange="isPintuan">
+				<radio value="1" />拼团
+				<radio value="0" class="margin-left" />报名
+			</radio-group>
+		</view> -->
+		<!-- margin-left:-2%; -->
+		<view class="cu-form-group flex" style="margin-left:-3%;">
+			<view class="inline_name" style="width:40%">
+				<text class="text-red text-xxl">*</text> 添加标签：
+
+			</view>
+			<view class="action margin-left-lg text-grey" bindtap="click" data-label="label">
+				<text class="cuIcon-{{labelBoxer ? 'unfold' : 'right'}}">{{labelBoxer ? '收回' : '展开'}}</text>
+			</view>
+		</view>
+		<view class="{{labelBoxer ? '' : 'piano-hidden-content'}}">
+			<view wx:for="{{constants.tagList}}" wx:key="index" class="tag {{showLightButton[index]?'red':'default'}} ">
+				<view bindtap="handlemyTagClick" data-index="{{index}}">
+					{{item}}
+				</view>
+			</view>
+		</view>
+		<view class="cu-form-group" style="margin-left:-3%;">
+
+			<text class="text-red text-xxl">*</text>
+			<text class="title">活动名称:</text>
+			<input class="newName" placeholder="请输入名称" model:value="{{actName}}" />
+		</view>
+		<view class="cu-form-group" style="justify-content: between;">
+			<view style="display: flex;align-items: center; ">
+				<view class="title inteam">负责人:</view>
+				<input placeholder="{{holder}}" disabled="1" />
+			</view>
+			<view style="display: flex;align-items: center; ">
+				<view class="title outteam">联系电话:</view>
+				<input class="tel" placeholder="{{phone}}" disabled="1" />
+			</view>
+		</view>
+		<view class="cu-form-group">
+			<view class="title inteam">负责人介绍:</view>
+			<input class="newName" placeholder="选填" model:value="{{holderDetail}}" />
+		</view>
+		<view class="cu-bar bg-white ">
+			<view class="action flex justify-between">
+
+				<view style="align-items: center; margin-left:-3%;">
+					<text class="cuIcon-titles text-blue"></text>
+					<text class="text-bold">志愿者要求</text>
+					<!-- 点击显示模态框 -->
+					<text class="padding-left-xl cuIcon-roundaddfill lg text-cyan" catchtap="showModal" data-target="addServiceGroup"></text>
+				</view>
+				<view class="margin-left-lg text-grey" bindtap="click" data-group="group">
+					<text class="cuIcon-{{groupBoxer ? 'unfold' : 'right'}}">{{groupBoxer ? '收回' : '展开'}}</text>
+				</view>
+			</view>
+		</view>
+		<view class="{{groupBoxer ? '' : 'piano-hidden-content'}}">
+			<!-- {{showLightButton[index]?'red':'default'}}  -->
+			<view wx:for="{{myGroupTagList}}" wx:key="index" class="cu-tag radius">
+				<view>
+					#{{item}}
+					<text class="text-red text-sm padding-bottom" bindtap="delGroupTag" data-index="{{index}}">x</text>
+				</view>
+			</view>
+		</view>
+		<view class="cu-bar bg-white">
+			<view class="action flex justify-between">
+				<view class="flex" style="align-items: center; margin-left:-8%;">
+					<text class="text-red text-xxl">*</text>
+					<text class="cuIcon-titles text-blue"></text>
+					<text class="text-bold">服务时间段</text>
+					<text class="text-sm text-bold">(可多选)</text>
+				</view>
+				<!-- 点击显示模态框 -->
+				<text class="padding-left-sm cuIcon-roundaddfill lg text-cyan" catchtap="showModal" data-target="addServiceTime"></text>
+				<view class="flex margin-left-xl">
+					<text class="text-red text-xxl">*</text>
+					<view class="title outteam">需求人数:</view>
+					<input class=" margin-left-sm title inteam" maxlength="3" model:value="{{outNum}}" style="width: 60rpx; border-bottom: solid 1rpx #d48d8d;"></input>
+					人
+				</view>
+			</view>
+		</view>
+
+		<!-- 服务时间段列表 -->
+		<view class="cu-list menu" wx:for="{{serviceTimeSpan}}" wx:key="item" wx:for-index="index">
+			<view class="cu-item">
+				<!-- 时间段 -->
+				<view class="content">
+					<view class="text-lg text-bold">{{item['time']}}</view>
+					<view class="text-sm text-gray">{{item['date']}} </view>
+				</view>
+				<!-- 添加岗位按钮 -->
+				<view class="content padding-left-lg padding-right">
+					<view class="cuIcon-friendaddfill text-green" catchtap="showModal" data-serviceSpanIndex="{{index}}" data-target="addPosition">
+						添加岗位
+						<text class="text-sm">(选填)</text>
+					</view>
+				</view>
+
+				<!-- 删除该时间段 -->
+				<view class="cuIcon-deletefill text-red" bindtap="deleteServiceSpan" data-index="{{index}}"></view>
+				<!-- 折叠箭头 -->
+				<view class="action margin-left-lg text-grey" bindtap="click" data-index="{{index}}">
+					<text class="cuIcon-{{boxer[index] ? 'unfold' : 'right'}}">{{boxer[index] ? '收回' : '展开'}}</text>
+				</view>
+			</view>
+			<!-- 岗位内容 -->
+			<view wx:if="{{item.positions.length}}" class="cu-item {{boxer[index] ? '' : 'piano-hidden-content'}}" wx:for="{{item.positions}}" wx:for-index="pindex" wx:for-item="child" wx:key="item">
+				<view class="content flex justify-around">
+					<!-- 岗位名称 -->
+					<view class="flex-treble flex justify-center text-sm text-black ">
+						<text>{{ child['name'] }}</text>
+						<text class="cuIcon-info text-blue margin-bottom" bindtap="showModal" data-target="showPosDesc" data-sindex="{{index}}" data-pindex="{{pindex}}"></text>
+					</view>
+					<!-- 步进器 -->
+					<view class="flex-twice flex-treble flex justify-center align-center text-lg">
+						<view class="cu-tag round bg-green light xl cuIcon-move" bindtap="changePosNum" data-op="decrease" data-sindex="{{index}}" data-pindex="{{pindex}}"></view>
+						<view class=" margin-lr text-black">{{child['number']}}</view>
+						<view class="cu-tag round bg-red light xl cuIcon-add" bindtap="changePosNum" data-op="increase" data-sindex="{{index}}" data-pindex="{{pindex}}"></view>
+					</view>
+					<!-- 删除该岗位 -->
+					<view class="flex-sub cuIcon-deletefill xl text-blue margin" bindtap="deletePosition" data-sindex="{{index}}" data-pindex="{{pindex}}"></view>
+				</view>
+			</view>
+		</view>
+
+		<view class="cu-form-group">
+			<view class="title">报名截止日期:</view>
+			<picker mode="date" value="{{beginDate}}" start="{{nowDate}}" bindchange="bindDeadDateChange">
+				<view class="picker">
+					{{deadDate}}
+				</view>
+			</picker>
+			<picker class="margin-right" mode="time" value="{{nowTime}}" start="00:00" end="23:59" bindchange="bindDeadTimeChange">
+				<view style="content: 'sa';" class="picker">
+					{{deadTime}}
+				</view>
+			</picker>
+		</view>
+
+		<view class="cu-form-group">
+			<view style="display: flex;align-items: center;margin-left:-3%;">
+				<text class="text-red text-xxl">*</text>
+				<view class="title">服务地点:</view>
+				<input model:value="{{address}}" placeholder="活动开展地址" />
+			</view>
+		</view>
+
+		<view class="cu-form-group ">
+
+			<view class="title inteam">服务内容:</view>
+			<textarea placeholder="（例：为村居老人提供慰问服务）" bindinput="getintro" auto-height="true"></textarea>
+		</view>
+		<view class="cu-form-group ">
+			<view class="title inteam">注意事项:</view>
+			<textarea model:value="{{notice}}" placeholder="（例：穿长裤，不穿裙子和短裤）" bindinput="getnotice" auto-height="true"></textarea>
+
+		</view>
+		<view class="cu-form-group ">
+			<view class="title inteam">志愿者权益:</view>
+			<textarea model:value="{{peoplegift}}" placeholder="如：1.接受相关志愿服务培训；2.提供【i志愿时长】等" class="new_profile" ></textarea>
+		</view>
+		<view class="cu-form-group">
+			<view class="inline_name">是否为补贴活动:</view>
+			<radio-group bindchange="isSubsidy">
+				<radio value="1" />是
+				<radio value="0" class="margin-left" />否
+			</radio-group>
+		</view>
+		<view class="cu-form-group flex justify-between" wx:if="{{isSubsidy==1}}">
+			<view class="flex">
+				<view class="title outteam"><text class="text-red text-xxl">*</text>补贴金额:</view>
+				<input class="title inteam " maxlength="5" model:value="{{subsidyAmount}}" style="width:150rpx;">{{subsidyAmount}}</input>
+				<view class="title">元</view>
+			</view>
+		</view>
+		<!-- <view class="cu-form-group" wx:if="{{isSubsidy==1}}">补贴金额</view> -->
+		<view class="cu-form-group">
+			<view class="inline_name">是否上传活动方案:</view>
+			<radio-group bindchange="isfile">
+				<radio value="1" />是
+				<radio value="0" class="margin-left" checked />否
+			</radio-group>
+		</view>
+		<view class="padding-left-sm" style="margin-top: -15rpx;">
+			<text class="cuIcon-title text-blue"></text>
+			<text class=" text-xs">活动方案仅审核可见</text>
+		</view>
+
+		<view wx:if="{{isfile=='1'}}">
+			<!-- <view class="cu-form-group text-bold" style="margin-bottom: -20rpx;">
+			<text class="cuIcon-titles text-blue"><text class="text-lg text-black">请上传活动方案文件</text></text></view> -->
+			<view class="flex padding-sm solid{{size?'s':''}}" wx:for="{{temp_fileList}}" wx:key="item" wx-index="index">
+				<view class="padding-lr-xs ">
+					<view class="cu-avatar lg round iconfont {{item.filetype=='.excel'?'icon-excel text-green':(item.filetype=='.ppt'?'icon-ppt text-red':((item.filetype=='.docx'||item.filetype=='.doc')?'icon-word text-blue':(item.filetype=='.pdf'?'icon-PDF text-red':'icon-icon-test')))}}">
+					</view>
+				</view>
+				<view class="padding-xs text-xl text-black">
+					<view class="text-sm">{{item.name}}</view>
+					<view class="cu-tag round line-green sm">{{item.size}}</view>
+				</view>
+				<text bind:tap="DelFile" class="cuIcon-close text-red" style="position: absolute;right:30rpx" data-index="{{index}}"></text>
+			</view>
+
+			<view class=" margin-sm  radius-lg" style="justify-content: center; align-items: center;">
+				<view class=" padding-sm bg-oc-blue-4 light radius margin-top" style="width:100%" style="text-align: center;" bindtap="choosefile">
+					<text style="color:white ;">
+						<text class="text-bold"> +</text> 点此上传
+					</text>
+				</view>
+			</view>
+		</view>
+
+		<view class="margin-top padding-sm light radius margin-top" style="width:80%">
+			<text class="cuIcon-titles text-blue"></text>
+			<text class="text-bold"> 服务对接群 </text>
+			<view style="margin-top:5rpx ;">
+				<text class="cuIcon-title text-blue"></text>
+				<text class=" text-xs"> 群二维码将在志愿者报名拼团后自动弹出噢！</text>
+			</view>
+		</view>
+
+		<view class="cu-form-group">
+			<view class="grid col-4 grid-square flex-sub">
+				<view class="bg-img" wx:for="{{temp_imgList}}" wx:key="item" catchtap="ViewImage" data-which="1" data-url="{{temp_imgList[index]}}">
+					<image src='{{temp_imgList[index]}}' mode='aspectFill'></image>
+					<view class="cu-tag bg-red" catchtap="DelImg" data-index="{{index}}" data-which="1">
+						<text class="cuIcon-close"></text>
+					</view>
+				</view>
+				<view class="solids" catchtap="ChooseImage" wx:if="{{temp_imgList.length<1}}">
+					<text class="cuIcon-cameraadd"></text>
+				</view>
+			</view>
+		</view>
+		<view wx:if="{{isPintuan != 1}}">
+
+			<view class="cu-bar" style="margin-bottom: -10rpx;">
+				<view class="action border-title">
+					<text class="cuIcon-titles text-blue"></text><text class="text-lg text-bold" style="margin-left: -7rpx;">i志愿报名码</text>
+				</view>
+
+			</view>
+			<view class="cu-form-group">
+				<view class="grid col-4 grid-square flex-sub">
+					<view class="bg-img" wx:for="{{temp_imgList2}}" wx:key="item" bindtap="ViewImage" data-url="{{temp_imgList2[index]}}">
+						<image src='{{temp_imgList2[index]}}' mode='aspectFill'></image>
+						<view class="cu-tag bg-red" catchtap="DelImg2" data-index="{{index}}">
+							<text class="cuIcon-close"></text>
+						</view>
+					</view>
+					<view class="solids" catchtap="ChooseImage2" wx:if="{{temp_imgList2.length<1}}">
+						<text class="cuIcon-cameraadd"></text>
+					</view>
+				</view>
+			</view>
+		</view>
+
+
+
+		<button class="new_button" bindtap="showModal" data-target="teamName">提交审核 / 发布</button>
+	</form>
+</view>
+<!-- 轻提示 -->
+<view class="toast-fixed-center" hidden="{{!show}}" style="z-index: 99;">
+	<view class="radius-lg padding animation-slide-top text-lg {{status == 'success' ? 'bg-green light':'bg-red light'}}">
+		<text class="cuIcon-info"></text> {{message}}
+	</view>
+</view>
+
+<!-- 小分队名字 -->
+<view class="cu-modal {{modalName=='teamName'?'show':''}}">
+	<view class="cu-dialog">
+		<view class="cu-bar bg-white justify-end">
+			<view class="content">给小队取个好听的名字吧~</view>
+			<view class="action" bindtap="hideModal">
+				<text class="cuIcon-close text-red"></text>
+			</view>
+		</view>
+		<view class="padding-xl  justify-center flex">
+			<view class="">
+				<input model:value="{{teamName}}" class="input-field" placeholder="请输入队伍名字" />
+			</view>
+		</view>
+		<view class="cu-bar bg-white justify-end">
+			<view class="action" bindtap="hideModal">
+				<button class="cu-btn line-green text-green">算了</button>
+				<button class="cu-btn bg-green margin-left" bindtap="sendNew">确定并发布</button>
+			</view>
+		</view>
+	</view>
+</view>
+
+<!-- 添加时间段模态框 -->
+<view class="cu-modal {{modalName=='addServiceTime'?'show':''}}">
+	<view class="cu-dialog">
+		<!-- 标题 -->
+		<view class="cu-bar bg-white justify-end">
+			<view class="content">添加时间段</view>
+			<view class="action" bindtap="hideModal">
+				<text class="cuIcon-close text-red"></text>
+			</view>
+		</view>
+		<view class="cu-form-group">
+			<view class="title">日期选择</view>
+			<picker mode="date" model:value="{{beginDate}}" start="{{nowDate}}" end="2030-11-05">
+				<view class="picker">
+					{{beginDate}}
+				</view>
+			</picker>
+		</view>
+		<view class="cu-form-group">
+			<view class="title">开始时间</view>
+			<picker mode="time" model:value="{{nowTime}}" start="00:00" end="23:59" bindchange="bindSTimeChange">
+				<view class="picker">
+					{{startTime}}
+				</view>
+			</picker>
+		</view>
+		<view class="cu-form-group">
+			<view class="title">结束时间</view>
+			<picker mode="time" model:value="{{endTime}}" start="{{startTime}}" end="23:59" bindchange="bindETimeChange">
+				<view class="picker">
+					{{endTime}}
+				</view>
+			</picker>
+		</view>
+		<!-- 选择框 -->
+		<view class="cu-bar bg-white">
+			<view class="action margin-0 flex-sub  solid-left" catchtap="hideModal">取消</view>
+			<view class="action margin-0 flex-sub text-green solid-left" bindtap="addServiceSpan">确定</view>
+		</view>
+	</view>
+</view>
+
+<!-- 添加岗位模态框 -->
+<view class="cu-modal {{modalName=='addPosition'?'show':''}}">
+	<view class="cu-dialog">
+		<!-- 标题 -->
+		<view class="cu-bar bg-white justify-end">
+			<view class="content">添加岗位</view>
+			<view class="action" bindtap="hideModal">
+				<text class="cuIcon-close text-red"></text>
+			</view>
+		</view>
+		<view class="cu-form-group ">
+			<view class="title">岗位</view>
+			<picker bindchange="positionPickerChange" value="{{positionPickerIndex}}" range="{{constants.picker}}">
+				<view class="picker">
+					{{positionPickerIndex?constants.picker[positionPickerIndex]:'请选择'}}
+				</view>
+			</picker>
+		</view>
+		<view wx:if="{{positionPickerIndex==constants.picker.length-1}}" class="cu-form-group">
+			<view class="title">自定义岗位</view>
+			<input model:value="{{elsePosition}}" placeholder="起个岗位名称"></input>
+		</view>
+		<view wx:if="{{positionPickerIndex}}" class="cu-form-group">
+			<view class="title">岗位描述</view>
+			<input model:value="{{positonDescription}}" placeholder="简短介绍下岗位的工作"></input>
+		</view>
+		<!-- 选择框 -->
+		<view class="cu-bar bg-white">
+			<view class="action margin-0 flex-sub  solid-left" bindtap="hideModal">取消</view>
+			<view class="action margin-0 flex-sub text-green solid-left" bindtap="addPosition">确定</view>
+		</view>
+	</view>
+</view>
+
+
+<!-- 岗位描述模态框 -->
+<view class="cu-modal {{modalName=='showPosDesc'?'show':''}}">
+	<view class="cu-dialog">
+		<!-- 标题 -->
+		<view class="cu-bar bg-white justify-end">
+			<view class="content">岗位描述</view>
+			<view class="action" bindtap="hideModal">
+				<text class="cuIcon-close text-red"></text>
+			</view>
+		</view>
+		<view class="flex justify-around margin-xl">
+			<text>{{serviceTimeSpan[showPosDescIdx[0]].positions[showPosDescIdx[1]].desc}}</text>
+		</view>
+	</view>
+</view>
+
+
+<!-- 添加服务群体模态框 -->
+<view class="cu-modal {{modalName=='addServiceGroup'?'show':''}}">
+	<view class="cu-dialog">
+		<!-- 标题 -->
+		<view class="cu-bar bg-white justify-end">
+			<view class="content">志愿者群体类型</view>
+			<view class="action" bindtap="hideModal">
+				<text class="cuIcon-close text-red"></text>
+			</view>
+		</view>
+		<view class="margin-sm">
+			<view>
+				<view class="">可选择标签</view>
+				<view wx:for="{{constants.groupTagList}}" wx:key="index" class="cu-tag bg-grey light" bindtap="addGroupTag" data-index="{{index}}">
+					#{{item}}
+				</view>
+			</view>
+			<view class="margin-top solids-top-blue padding-top">自定义</view>
+			<view class="cu-form-group">
+				<input model:value="{{groupTagName}}" class="solid-blue margin-right" placeholder="输入标签名字"></input>
+				<button class="sm cu-btn bg-cyan shadow" bindtap="addGroupTag" data-index="{{-1}}">确定</button>
+			</view>
+
+			<view class="margin-top solids-top-blue padding">已添加</view>
+			<view class="">
+				<!-- {{showLightButton[index]?'red':'default'}}  -->
+				<view wx:for="{{myGroupTagList}}" wx:key="index" class="cu-tag radius " style="align-items: center;">
+					<view>#{{item}}</view>
+					<text class="text-red text-sm padding-bottom" bindtap="delGroupTag" data-index="{{index}}">x</text>
+				</view>
+			</view>
+		</view>
+		<view class="margin-top solids-top-blue padding">
+			<button class="xl cu-btn bg-green shadow" bindtap="hideModal">完成</button>
+		</view>
+	</view>
+
+</view>

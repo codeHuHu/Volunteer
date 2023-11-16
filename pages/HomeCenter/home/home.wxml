@@ -1,0 +1,149 @@
+<!--pages/home/home.wxml-->
+<view class="mask" wx:if="{{showImageModal}}" bindtap="preventTap"></view>
+
+
+<view class="up">
+	<image mode="aspectFill" src="cloud://volunteer-4gaukcmqce212f11.766f-volunteer-4gaukcmqce212f11-1321274883/2-up.png" />
+</view>
+
+
+<view class="cu-bar bg-white search search-bar" style="top:{{CustomBar}}px col-display;">
+	<view class="search-form round padding">
+		<input type="text" placeholder="搜索志愿" confirm-type="search" model:value="{{keyword}}"></input>
+		<text class="cuIcon-search text-bold" style="color:rgb(40, 166, 216)" bindtap="searchActivity"></text>
+	</view>
+</view>
+
+<view class="icon-bar" style="display:none">
+
+	<view class="item" bindtap="toToast">
+		<view class="greencircle">
+			<view class="bar-icon">
+				<text class="cuIcon-selection lg "></text>
+			</view>
+		</view>
+		<view>
+			<text class="fontsize">我的排名</text>
+		</view>
+	</view>
+
+	<view class="item" wx:if="{{myPos>0}}" bindtap="showModal" data-target="isAccess">
+		<view class="bluecircle">
+			<view class="bar-icon">
+				<text class="iconfont icon-jushou "></text>
+			</view>
+		</view>
+		<view>
+			<text class="fontsize1 text-green">发起拼团</text>
+		</view>
+	</view>
+
+	<view class="item" bindtap="toToast">
+		<view class="greencircle">
+			<view class="bar-icon">
+				<text class="cuIcon-present lg "></text>
+			</view>
+		</view>
+		<view>
+			<text class="fontsize">志愿福利</text>
+		</view>
+	</view>
+</view>
+<!-- 分割线 -->
+<view class="home-header-line1"></view>
+
+<view class="new-join flex justify-between">
+	<text class="text-bold text-black text-grey">最新志愿活动</text>
+	<button class="joinvolunteer" bindtap="toregister">成为志愿者</button>
+</view>
+
+<view wx:if="{{actions.length}}">
+	<block wx:for="{{actions}}" wx:key="index">
+		<view class="cu-card article {{isCard?'no-card':''}} margin" style="position: relative;">
+			<view>
+				<image class="icon" src="/images/tabbar/sun.png"></image>
+			</view>
+			<view class="cu-item shadow">
+				<view class="title">
+					<view class="text-cut">{{item.actName}}</view>
+				</view>
+				<view class="content">
+					<view class="desc" style="width: 100%; white-space:normal;">
+						<view class="text-content" style="font-size: 25rpx; height:auto; margin: -10rpx 0rpx 10rpx 0rpx;">{{item.intro}}</view>
+						<view class="character " style="justify-content: space-between; ">
+
+							<view class="cu-tag bg-green light sm round" style="max-width: 200rpx; overflow: hidden;">{{item.tag}}</view>
+							<view class="detail">
+								<button class="btn-detail" bindtap="navTo" data-url="/pages/ServiceCenter/activityDetail/activityDetail?id={{item._id}}">查看</button>
+							</view>
+						</view>
+					</view>
+				</view>
+			</view>
+		</view>
+	</block>
+</view>
+<view wx:else style="display: flex; justify-content: center; align-items: center;">
+	<image mode="aspectFill" style=" top:40rpx;width: 80%; opacity: .8;" src="cloud://volunteer-4gaukcmqce212f11.766f-volunteer-4gaukcmqce212f11-1321274883/banner.png" />
+	<view class="text-center padding-tb bottom-bar" style="display: flex; justify-content: center; align-items: center; position: absolute; bottom:20rpx;width: 100%;">
+		<button open-type="contact" style="height:100rpx; width:300rpx;">
+			<text class='iconfont icon-lianxikefu text-grey text-xl'></text>
+			<view class="sm cu-btn round " style="top:-3rpx; color:#aca6a6;background-color: transparent;">联系客服</view>
+		</button>
+		<view style=" font-size:20rpx;color: #aca6a6; ">丨</view>
+		<button bind:tap="toaboutUs" data-url="/pages/PersonalCenter/aboutUs/aboutUs" style=" height:100rpx; width: 300rpx;">
+			<text class='iconfont icon-guanyu text-grey text-xl'></text>
+			<view class="sm cu-btn round" style="top:-3rpx; color:#aca6a6; background-color: transparent; ">
+				关于开发者</view>
+		</button>
+	</view>
+</view>
+<!-- 轻提示 -->
+<view class="toast-fixed-center" hidden="{{!show}}" style="z-index: 99;">
+	<view class="radius-lg padding-xs animation-slide-top  {{status == 'success' ? 'bg-green light':'bg-red light'}}" style="width:auto ">
+		<text class="cuIcon-info"></text> {{message}}
+	</view>
+</view>
+
+<view class="cu-modal {{modalName=='isAccess'?'show':''}}">
+	<view class="cu-dialog">
+		<view class="cu-bar bg-white justify-end">
+			<view class="content text-red">温馨提示</view>
+			<view class="action" bindtap="hideModal">
+				<text class="cuIcon-close text-red"></text>
+			</view>
+		</view>
+		<view class="padding text-left justify-center flex">
+			请确认已有 <text class="text-red"> i志愿服务</text>的发布活动权限
+		</view>
+		<view class="cu-bar bg-white">
+			<view class="flex-sub solid-left" bindtap="handleNotHaveOption" style="min-height:100rpx; line-height: 100rpx; text-align: center;">
+				<text class="text-grey">未有</text>
+			</view>
+			<view class=" flex-sub solid-left text-green" bindtap="toNewActivity" style="min-height:100rpx; line-height: 100rpx; text-align: center;">
+				<text>已有</text>
+			</view>
+		</view>
+	</view>
+</view>
+<view class="image-modal" wx:if="{{showImageModal}}">
+	<button class="close-button" bindtap="hideImgmodal">×</button>
+	<view class="image-container" bindtap="hideImgModal">
+		<view class="box">
+			<image src="{{imageSrc}}" mode="aspectFit" bindtap="longTap" data-url="{{imageSrc}}"></image>
+			<text>请联系客服建立i志愿链接</text>
+		</view>
+	</view>
+</view>
+
+<!-- <view class="text-center padding-tb bottom-bar" style="display: flex; justify-content: center; align-items: center; position: absolute; bottom:20rpx;width: 100%;"  >
+	<button open-type="contact"  style="height:100rpx; width:300rpx;" >
+		<text class='iconfont icon-lianxikefu text-grey text-xl'></text>
+	<view class="sm cu-btn round " style="top:-3rpx; color:#aca6a6;background-color: transparent;">联系客服</view>
+	</button>
+		<view style=" font-size:20rpx;color: #aca6a6; ">丨</view>
+		<button bind:tap="toaboutUs" style=" height:100rpx; width: 300rpx;">
+			<text class='iconfont icon-guanyu text-grey text-xl'></text>
+		<view class="sm cu-btn round" style="top:-3rpx; color:#aca6a6; background-color: transparent; ">
+		关于开发者</view></button>
+</view> -->

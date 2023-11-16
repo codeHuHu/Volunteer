@@ -1,5 +1,0 @@
-
-<template name="icon_status">
-<view wx:if="{{item.status == 1}}"><image class="icon" src="/images/tabbar/sun.png"></image> </view>
-	<view wx:elif="{{item.status == 2}}"><image class="icon" src="/images/tabbar/water_moon.png"></image> </view>
-	</template>
