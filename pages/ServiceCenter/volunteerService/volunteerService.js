@@ -48,36 +48,31 @@ Page({
 	onReachBottom() { },
 	onShareAppMessage() { },
 	// 点击下拉显示框
-	selectallTap() {
+	selectallTap(e) {
+		console.log(e.currentTarget.dataset.show)
+		var suffix=e.currentTarget.dataset.show
+		
 		this.setData({
-			show1: !this.data.show1
+			['show'+suffix]: !this.data['show'+suffix]
 		});
 	},
-	// 点击下拉显示框
-	selecttypeTap() {
-		this.setData({
-			show2: !this.data.show2
-		});
-	},
-	// 点击下拉显示框
-	selectstatusTap() {
-		this.setData({
-			show3: !this.data.show3
-		});
-	},
+
 	// 点击下拉列表
 	optionallTap(e) {
+		var that=this
 		let index = e.currentTarget.dataset.index; //获取点击的下拉列表的下标
 		this.setData({
 			index1: index,
-			show1: !this.data.show1
+			show1: !this.data.show1,
+			index2:0,
+			index3:0
 		});
 		if (index == 0) {
-			this.onLoad()
+			that.onLoad()
 		} else {
 			db.collection('ActivityInfo').where({
 				_openid: app.globalData.openid,
-				status: db.command.not(db.command.eq('0'))
+				status: db.command.not(db.command.eq('0')),
 			}).field({
 				_id: true,
 				actName: true,
@@ -92,10 +87,10 @@ Page({
 				.orderBy('serviceStartStamp', 'desc')
 				.get()
 				.then(res => {
-					this.setData({
+					that.setData({
 						actionList: res.data
 					})
-					this.setTime(res.data)
+					that.setTime(res.data)
 				}).catch(err => {
 					console.log(err);
 				})
@@ -107,15 +102,18 @@ Page({
 		let index = e.currentTarget.dataset.index; //获取点击的下拉列表的下标
 		this.setData({
 			index2: index,
-			show2: !this.data.show2
+			show2: !this.data.show2,
+			index1:0,
+			index3:0
 		});
 		if (index == 0) {
 			this.onLoad()
 		} else {
 			const collection = db.collection('ActivityInfo');
 			collection.where({
+				
 				'tag': that.data.selectType[index],
-				'status': db.command.nor(db.command.eq('0'), db.command.eq('-1'))
+				'status':  db.command.nor(db.command.eq('0'), db.command.eq('-1'))
 			}).field({
 				_id: true,
 				actName: true,
@@ -132,10 +130,10 @@ Page({
 				.get()
 				.then(res => {
 					//console.log(res.data);
-					this.setData({
+					that.setData({
 						actionList: res.data
 					})
-					this.setTime(res.data)
+					that.setTime(res.data)
 				}).catch(err => {
 					console.log(err);
 				})
@@ -144,13 +142,15 @@ Page({
 	},
 	// 点击下拉列表
 	optionstatusTap(e) {
+		var that=this
 		let index = e.currentTarget.dataset.index; //获取点击的下拉列表的下标
 		this.setData({
 			index3: index,
-			show3: !this.data.show3
+			show3: !this.data.show3,
+			index1:0,
+			index2:0
 		});
 		if (index == 1) {
-
 			const collection = db.collection('ActivityInfo');
 			collection.where({
 				'status': '1' //进行中
@@ -170,10 +170,10 @@ Page({
 				.get()
 				.then(res => {
 					//console.log(res.data);
-					this.setData({
+					that.setData({
 						actionList: res.data
 					})
-					this.setTime(res.data)
+					that.setTime(res.data)
 				}).catch(err => {
 					console.log(err);
 				})
@@ -197,15 +197,15 @@ Page({
 				.get()
 				.then(res => {
 					//console.log(res.data);
-					this.setData({
+					that.setData({
 						actionList: res.data
 					})
-					this.setTime(res.data)
+					that.setTime(res.data)
 				}).catch(err => {
 					console.log(err);
 				})
 		} else {
-			this.onLoad()
+			that.onLoad()
 		}
 	},
 	getStatus() {
