@@ -17,10 +17,15 @@ Page({
 			myPos: app.globalData.position,
 		})
 	},
-	onReady() {},
+	onReady() { },
 	onShow() {
 		this.getData()
+		this.saveData()
 		wx.hideHomeButton()
+	},
+	saveData(){
+		console.log('触发save')
+		wx.setStorageSync('app_globalData',app.globalData)
 	},
 	//查找活动
 	getData() {
@@ -29,10 +34,17 @@ Page({
 			.where({
 				status: '1'
 			})
+			.limit(10)
 			.get()
 			.then(res => {
+				const processedData = res.data.map(item => {
+					return {
+						...item,
+						intro: item.intro.length > 50 ? item.intro.slice(0, 50) + '...' : item.intro
+					}
+				})
 				that.setData({
-					actions: res.data
+					actions: processedData
 				})
 			})
 			.catch(err => {
@@ -61,8 +73,14 @@ Page({
 				}
 			})
 				.then(res => {
+					const processedData = res.result.map(item => {
+						return {
+							...item,
+							intro: item.intro.length > 50 ? item.intro.slice(0, 50) + '...' : item.intro
+						}
+					})
 					that.setData({
-						actions: res.result
+						actions: processedData
 					})
 					wx.hideLoading()
 				})

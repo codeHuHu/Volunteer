@@ -69,7 +69,9 @@
 				</view>
 				<view class="content">
 					<view class="desc" style="width: 100%; white-space:normal;">
-						<view class="text-content" style="font-size: 25rpx; height:auto; margin: -10rpx 0rpx 10rpx 0rpx;">{{item.intro}}</view>
+						<view class="text-content" style="font-size: 25rpx; height:auto; margin: -10rpx 0rpx 10rpx 0rpx;">
+							<text max-lines="2">{{item.intro}}</text>
+						</view>
 						<view class="character " style="justify-content: space-between; ">
 
 							<view class="cu-tag bg-green light sm round" style="max-width: 200rpx; overflow: hidden;">{{item.tag}}</view>

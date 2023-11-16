@@ -41,11 +41,12 @@ Page({
 	},
 	onLoad: function (options) {
 		console.log('app.globalData:', app.globalData)
+		let myInfo = wx.getStorageSync('app_globalData')
 		var that = this
 		//记录是否登录
 		that.setData({
 			isLogin: app.globalData.isLogin,
-			myInfo: app.globalData,
+			myInfo: myInfo,
 			//传入活动id
 			id: options.id,
 
@@ -56,12 +57,11 @@ Page({
 		//判断是否为从转发进来的
 		if (options.actions) {
 			console.log('从转发进来的')
-			let info = JSON.parse(decodeURIComponent(options.actions))
-			let tmp = wx.getStorageSync('user_status')
-
+			let actions = JSON.parse(decodeURIComponent(options.actions))
+			let isLogin = wx.getStorageSync('user_status')
 			that.setData({
-				actions: info,
-				isLogin: tmp ? tmp[1] : false
+				actions,
+				isLogin: isLogin ? isLogin[1] : false,
 			})
 		}
 		db.collection('ActivityInfo').doc(options.id).get({
@@ -446,7 +446,7 @@ Page({
 		return {
 			title: this.data.actions.actName,
 			//imageUrl: this.data.actions.images[0],
-			path: 'pages/activityDetail/activityDetail?id=' + this.data.id + '&actions=' + encodeURIComponent(JSON.stringify(this.data.actions))
+			path: 'pages/ServiceCenter/activityDetail/activityDetail?id=' + this.data.id + '&actions=' + encodeURIComponent(JSON.stringify(this.data.actions))
 		}
 	},
 	//转发朋友圈
