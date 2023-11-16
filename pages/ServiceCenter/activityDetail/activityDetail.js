@@ -631,16 +631,6 @@ Page({
 			boxer
 		});
 	},
-	getAli(e) {
-		this.setData({
-			aliPay: e.detail.value
-		})
-	},
-	getBankCardnumber(e) {
-		this.setData({
-			bankCardNumber: e.detail.value
-		})
-	},
 	getbutton(e) {
 		this.setData({
 			payee: e.detail.value

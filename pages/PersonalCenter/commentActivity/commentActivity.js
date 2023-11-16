@@ -230,7 +230,7 @@ Page({
 		this.showModal(e);
 	},
 	//出现未定义警告时，重新编译即可
-	handleInput: function (e) {
+	handleInput(e) {
 		const btnId = this.data.tempId;
 		const checkBox = this.data.checkBox.map(item => {
 			if (item.id === btnId) {

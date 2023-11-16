@@ -4,7 +4,6 @@ const db = wx.cloud.database()
 const app = getApp()
 Page({
 	data: {
-
 		region: ['广东省', '广州市', '番禺区'],
 		picker: ['居民身份证', '香港居民身份证', '澳门居民身份证', '台湾身份证'],
 		grade: ['小学', '中学', '本科', '研究生', '博士', '已毕业'],
@@ -12,7 +11,6 @@ Page({
 		userName: '',
 		userIdNumber: '',
 		userPhone: '',
-		UserAliPay: '',
 		isCheck: false,
 		List: [],
 		school: '',
@@ -34,12 +32,6 @@ Page({
 			selectedYear: year
 		});
 	},
-	RegionChange(e) {
-		this.setData({
-			region: e.detail.value
-
-		})
-	},
 	GradeChange(e) {
 		this.setData({
 			Gindex: e.detail.value
@@ -48,51 +40,6 @@ Page({
 	PickerChange(e) {
 		this.setData({
 			index: e.detail.value
-		})
-	},
-	teamChange(e) {
-		this.setData({
-			teamId: e.detail.value
-		})
-	},
-	getName(event) {
-		this.setData({
-			userName: event.detail.value
-		})
-	},
-	getIdnumber(e) {
-		this.setData({
-			userIdNumber: e.detail.value
-		})
-	},
-	getAliPay(e) {
-		this.setData({
-			userAliPay: e.detail.value
-		})
-	},
-	getPhone(e) {
-		this.setData({
-			userPhone: e.detail.value
-		})
-	},
-	getSchool(e) {
-		this.setData({
-			school: e.detail.value
-		})
-	},
-	getCollege(e) {
-		this.setData({
-			college: e.detail.value
-		})
-	},
-	getCrade(e) {
-		this.setData({
-			grade: e.detail.value
-		})
-	},
-	getClass(e) {
-		this.setData({
-			class: e.detail.value
 		})
 	},
 	register() {
@@ -105,9 +52,7 @@ Page({
 				userName: that.data.userName,
 				idType: that.data.picker[that.data.index],
 				idNumber: that.data.userIdNumber,
-				//team: that.data.team[that.data.teamid],
 				phone: that.data.userPhone,
-				aliPay: that.data.userAliPay,
 				school: that.data.school,
 				college: that.data.college,
 				grade: that.data.grade[that.data.Gindex],
@@ -122,7 +67,6 @@ Page({
 				app.globalData.id = that.data.userIdNumber;
 				app.globalData.isLogin = true;
 				app.globalData.college = that.data.college;
-				app.globalData.aliPay = that.data.userAliPay;
 				app.globalData.school = that.data.school;
 				app.globalData.grade = that.data.grade[that.data.Gindex];
 				app.globalData.year = that.data.selectedYear;

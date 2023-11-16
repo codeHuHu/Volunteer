@@ -14,7 +14,10 @@
 		<view class="modal-mask" wx:if="{{showModal == 'nameModal' }}" bindtap="closeModal">
 			<view class="modal" catchtap>
 				<view class="modal-title">修改名字</view>
-				<view><input class="input-field" focus="true" bindinput="handleNameInput" placeholder="请输入新的昵称" value="{{}}" /></view>
+				<view>
+					<input class="input-field" focus="true" model:value="{{name}}" placeholder="请输入新的昵称" />
+
+				</view>
 				<button bindtap="handleSave" class="button">保存</button>
 			</view>
 		</view>
@@ -34,13 +37,6 @@
 				</view>
 			</view>
 		</view>
-		<!-- <view class="modal-mask" wx:if="{{ showModal == 'gradeModal' }}" bindtap="closeModal" >
-  <view class="modal"  catchtap>
-		<view class="modal-title">修改年级</view>
-    <view><input class="input-field" focus="true" bindinput="handleGradeInput" placeholder="请输入年级" value="{{}}" /></view>
-    <button bindtap="handleSave" class="button">保存</button>
-  </view>
-</view> -->
 		<view class="cu-item">
 			<view class="content cu-form-group flex">
 				<view>
@@ -68,7 +64,9 @@
 		<view class="modal-mask" wx:if="{{showModal == 'schoolModal' }}" bindtap="closeModal">
 			<view class="modal" catchtap>
 				<view class="modal-title">修改学校</view>
-				<view><input class="input-field" focus="true" bindinput="handleSchoolInput" placeholder="请输入" value="{{}}" /></view>
+				<view>
+					<input class="input-field" focus="true" model:value="{{school}}" placeholder="请输入" />
+				</view>
 				<button bindtap="handleSave" class="button">保存</button>
 			</view>
 		</view>
@@ -84,7 +82,7 @@
 		<view class="modal-mask" wx:if="{{showModal == 'collegeModal' }}" bindtap="closeModal">
 			<view class="modal" catchtap>
 				<view class="modal-title">修改学院</view>
-				<view><input class="input-field" focus="true" bindinput="handleCollegeInput" placeholder="请输入" value="{{}}" /></view>
+				<view><input class="input-field" focus="true" model:value="{{college}}" placeholder="请输入" /></view>
 				<button bindtap="handleSave" class="button">保存</button>
 			</view>
 		</view>
@@ -101,7 +99,9 @@
 		<view class="modal-mask" wx:if="{{ showModal == 'phoneModal' }}" bindtap="closeModal">
 			<view class="modal" catchtap>
 				<view class="modal-title">修改电话</view>
-				<view><input class="input-field" focus="true" bindinput="handlePhoneInput" placeholder="请输入电话" value="{{}}" /></view>
+				<view>
+					<input class="input-field" focus="true" model:value="{{phone}}" placeholder="请输入电话" />
+				</view>
 				<button bindtap="handleSave" class="button">保存</button>
 			</view>
 		</view>
@@ -118,7 +118,7 @@
 		<view class="modal-mask" wx:if="{{ showModal == 'aliPayModal' }}" bindtap="closeModal">
 			<view class="modal" catchtap>
 				<view class="modal-title">修改支付宝</view>
-				<view><input class="input-field" bindinput="handlealiPayInput" placeholder="请输入账号" value="{{}}" /></view>
+				<view><input class="input-field" model:value="{{aliPay}}" placeholder="请输入账号" /></view>
 				<button bindtap="handleSave" class="button">保存</button>
 			</view>
 		</view>
@@ -135,12 +135,12 @@
 	</view>
 
 	<view class="cu-list menu card-menu margin-top-xl margin-bottom-xl shadow-lg radius">
-    <view class="cu-item">
-      <button class='cu-btn content' open-type='feedback'>
-        <text class='cuIcon-write text-cyan text-xl'></text>
-        <text class='text-l text-black'>意见反馈</text>
-      </button>
-    </view>
+		<view class="cu-item">
+			<button class='cu-btn content' open-type='feedback'>
+				<text class='cuIcon-write text-cyan text-xl'></text>
+				<text class='text-l text-black'>意见反馈</text>
+			</button>
+		</view>
 		<!-- <view class="floating-textbox" wx:if="{{isTextBoxVisible}}">
 			<textarea class="textbox-content" type="text" placeholder="请输入建议/意见"></textarea>
 			<button class="close-button" bindtap="hideTextBox">×</button>
@@ -153,12 +153,12 @@
 
 	</view>	 -->
 
-	<view class="cu-item">
-      <button class='cu-btn content' open-type='contact'>
-        <text class='cuIcon-service text-orange text-xl'></text>
-        <text class='text-l text-black'>联系客服</text>
-      </button>
-    </view>
+		<view class="cu-item">
+			<button class='cu-btn content' open-type='contact'>
+				<text class='cuIcon-service text-orange text-xl'></text>
+				<text class='text-l text-black'>联系客服</text>
+			</button>
+		</view>
 
 	</view>
 	<view class="cu-tabbar-height"></view>

@@ -62,7 +62,7 @@ Page({
 		outNum: 0,
 		subsidyAmount: 0,
 		address: '',
-		intro: '(选填，标注: 填写后可增强活动吸引力，吸引更多志愿者参与拼团)',
+		intro: '',
 		temp_imgList: [], //群二维码
 		temp_imgList2: [], //i志愿报名码
 		temp_fileList: [],	//简介文件
@@ -836,82 +836,6 @@ Page({
 	isfile(e) {
 		this.setData({
 			isfile: e.detail.value
-		})
-	},
-	getactName(e) {
-		this.setData({
-			actName: e.detail.value
-		})
-	},
-	getholder(e) {
-		this.setData({
-			holder: e.detail.value
-		})
-	},
-	getPhone(e) {
-		this.setData({
-			phone: e.detail.value
-		})
-	},
-	getinNum(e) {
-		this.setData({
-			inNum: Number(e.detail.value)
-		})
-	},
-	getoutNum(e) {
-		this.setData({
-			outNum: Number(e.detail.value)
-		})
-	},
-	getSubsidyAmount(e) {
-		this.setData({
-			subsidyAmount: Number(e.detail.value)
-		})
-	},
-	getAddress(e) {
-		this.setData({
-			address: e.detail.value
-		})
-	},
-	getintro(e) {
-		this.setData({
-			intro: e.detail.value
-		})
-	},
-	getnotice(e) {
-		this.setData({
-			notice: e.detail.value
-		})
-	},
-	getgift(e) {
-		this.setData({
-			peoplegift: e.detail.value
-		})
-	},
-
-	getTeamName(e) {
-		this.setData({
-			teamName: e.detail.value
-		})
-	},
-	getElsePositon(e) {
-		this.setData({
-			elsePosition: e.detail.value
-		})
-	},
-	getHolderDetail(e) {
-		this.setData({
-			holderDetail: e.detail.value
-		})
-	},
-	getPositonDescription(e) {
-		this.setData({
-			positonDescription: e.detail.value
-		})
-	},
-	getGroupTagName(e) {
-		this.setData({
-			groupTagName: e.detail.value
 		})
 	},
 })

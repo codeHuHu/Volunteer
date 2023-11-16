@@ -94,31 +94,6 @@ Page({
 			showModal: null // 关闭模态框
 		});
 	},
-	handleNameInput(e) {
-		this.setData({
-			name: e.detail.value // 更新昵称数据
-		});
-	},
-	handleSchoolInput(e) {
-		this.setData({
-			school: e.detail.value // 更新昵称数据
-		});
-	},
-	handleCollegeInput(e) {
-		this.setData({
-			college: e.detail.value // 更新昵称数据
-		});
-	},
-	handlePhoneInput(e) {
-		this.setData({
-			phone: e.detail.value // 更新昵称数据
-		});
-	},
-	handlealiPayInput(e) {
-		this.setData({
-			aliPay: e.detail.value // 更新昵称数据
-		});
-	},
 	handleSave() {
 		// 调用API保存昵称到本地存储或后台服务器
 		wx.showToast({

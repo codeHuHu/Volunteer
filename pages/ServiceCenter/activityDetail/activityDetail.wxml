@@ -457,13 +457,11 @@
 					<text> 银行卡</text>
 				</label>
 			</radio-group>
-
-			<!-- <input class="newName text-sm" placeholder="活动为补贴活动以便发放补贴" bindinput="getBankcard">{{bankCard}}</input> -->
 		</view>
 		<view wx:if="{{payee=='1'}}">
 			<view class="cu-form-group" style="justify-content: between;" style="display: flex;align-items: center; ">
 				<view class="title outteam">支付宝号码:</view>
-				<input class="tel" bindinput="getAli" model:value="{{aliPay}}" placeholder="支付宝号仅发放补贴用">
+				<input class="tel" model:value="{{aliPay}}" placeholder="支付宝号仅发放补贴用">
 				</input>
 			</view>
 		</view>
@@ -478,18 +476,14 @@
 			</view>
 			<view wx:if="{{BankPickerIndex==picker.length-1}}" class="cu-form-group">
 				<view class="title">银行名</view>
-				<input bindinput="getElseBank" model:value="{{Banktype}}" placeholder="×××银行"></input>
+				<input model:value="{{Banktype}}" placeholder="×××银行"></input>
 			</view>
 			<view class="cu-form-group" style="justify-content: between;" style="display: flex;align-items: center; ">
 				<view class="title outteam">银行卡号</view>
-				<input class="tel" bindinput="getBankCardnumber" model:value="{{bankCardNumber}}" placeholder="例：6217003810026896707">
+				<input class="tel" model:value="{{bankCardNumber}}" placeholder="例：6217003810026896707">
 				</input>
 			</view>
 		</view>
-		<!-- <view wx:for="{{actions.memo}}" wx:key="index" wx:for-item="item" wx:for-index="index" class="cu-form-group">
-			<view class="title inteam">{{item}}</view>
-			<input class="newName" placeholder="请完善" bindinput="getactName"></input>
-		</view> -->
 		<!-- 选择框 -->
 		<view class="cu-bar bg-white">
 			<view class="action margin-0 flex-sub n solid-left" bindtap="hideModal">取消</view>

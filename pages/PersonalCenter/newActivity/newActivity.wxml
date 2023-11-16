@@ -28,28 +28,22 @@
 
 			<text class="text-red text-xxl">*</text>
 			<text class="title">活动名称:</text>
-			<input class="newName" placeholder="请输入名称" bindinput="getactName" model:value="{{actName}}" />
+			<input class="newName" placeholder="请输入名称" model:value="{{actName}}" />
 		</view>
 		<view class="cu-form-group" style="justify-content: between;">
 			<view style="display: flex;align-items: center; ">
 				<view class="title inteam">负责人:</view>
-				<input bindinput="getholder" placeholder="{{holder}}" disabled="1" model:value="" />
+				<input placeholder="{{holder}}" disabled="1" />
 			</view>
 			<view style="display: flex;align-items: center; ">
 				<view class="title outteam">联系电话:</view>
-				<input class="tel" bindinput="getPhone" placeholder="{{phone}}" disabled="1" />
+				<input class="tel" placeholder="{{phone}}" disabled="1" />
 			</view>
 		</view>
 		<view class="cu-form-group">
 			<view class="title inteam">负责人介绍:</view>
-			<input class="newName" placeholder="选填" bindinput="getHolderDetail" model:value="{{holderDetail}}" />
+			<input class="newName" placeholder="选填" model:value="{{holderDetail}}" />
 		</view>
-		<!-- <view class="cu-form-group flex justify-between">
-			<view class="flex">
-				<view class="title outteam">需求人数:</view>
-				<input class="title inteam" maxlength="3" bindinput="getoutNum" value="{{outNum}}">{{outNum}}</input>
-			</view>
-		</view> -->
 		<view class="cu-bar bg-white ">
 			<view class="action flex justify-between">
 
@@ -86,7 +80,7 @@
 				<view class="flex margin-left-xl">
 					<text class="text-red text-xxl">*</text>
 					<view class="title outteam">需求人数:</view>
-					<input class=" margin-left-sm title inteam" maxlength="3" bindinput="getoutNum" style="width: 60rpx; border-bottom: solid 1rpx #d48d8d;" value="{{outNum}}">{{outNum}}</input>
+					<input class=" margin-left-sm title inteam" maxlength="3" model:value="{{outNum}}" style="width: 60rpx; border-bottom: solid 1rpx #d48d8d;"></input>
 					人
 				</view>
 			</view>
@@ -153,21 +147,21 @@
 			<view style="display: flex;align-items: center;margin-left:-3%;">
 				<text class="text-red text-xxl">*</text>
 				<view class="title">服务地点:</view>
-				<input bindinput="getAddress" placeholder="活动开展地址" />
+				<input model:value="{{address}}" placeholder="活动开展地址" />
 			</view>
 		</view>
 
 		<view class="cu-form-group ">
 			<view class="title inteam">服务内容(选填，下同):</view>
-			<textarea placeholder="（例：为村居老人提供慰问服务）" bindinput="getintro" auto-height="true"></textarea>
+			<textarea model:value="{{intro}}" placeholder="（例：为村居老人提供慰问服务）" auto-height="true"></textarea>
 		</view>
 		<view class="cu-form-group ">
 			<view class="title inteam">注意事项:</view>
-			<textarea placeholder="（例：穿长裤不穿裙子和短裤）" bindinput="getnotice" auto-height="true"></textarea>
+			<textarea model:value="{{notice}}" placeholder="（例：穿长裤不穿裙子和短裤）" auto-height="true"></textarea>
 		</view>
 		<view class="cu-form-group ">
 			<view class="title inteam">志愿者权益:</view>
-			<textarea class="new_profile" placeholder="如：1.接受相关志愿服务培训；2.提供【i志愿时长】等" bindinput="getgift"></textarea>
+			<textarea model:value="{{peoplegift}}" placeholder="如：1.接受相关志愿服务培训；2.提供【i志愿时长】等" class="new_profile" ></textarea>
 		</view>
 		<view class="cu-form-group">
 			<view class="inline_name">是否为补贴活动:</view>
@@ -179,7 +173,7 @@
 		<view class="cu-form-group flex justify-between" wx:if="{{isSubsidy==1}}">
 			<view class="flex">
 				<view class="title outteam"><text class="text-red text-xxl">*</text>补贴金额:</view>
-				<input class="title inteam " maxlength="5" bindinput="getSubsidyAmount" value="{{subsidyAmount}}" style="width:150rpx;">{{subsidyAmount}}</input>
+				<input class="title inteam " maxlength="5" model:value="{{subsidyAmount}}" style="width:150rpx;">{{subsidyAmount}}</input>
 				<view class="title">元</view>
 			</view>
 		</view>
@@ -288,7 +282,7 @@
 		</view>
 		<view class="padding-xl  justify-center flex">
 			<view class="">
-				<input class="input-field" bindinput="getTeamName" placeholder="请输入队伍名字" value="{{teamName}}" />
+				<input model:value="{{teamName}}" class="input-field" placeholder="请输入队伍名字" />
 			</view>
 		</view>
 		<view class="cu-bar bg-white justify-end">
@@ -312,7 +306,7 @@
 		</view>
 		<view class="cu-form-group">
 			<view class="title">日期选择</view>
-			<picker mode="date" value="{{nowDate}}" start="{{nowDate}}" end="2030-11-05" bindchange="bindStartChange">
+			<picker mode="date" model:value="{{beginDate}}" start="{{nowDate}}" end="2030-11-05">
 				<view class="picker">
 					{{beginDate}}
 				</view>
@@ -320,7 +314,7 @@
 		</view>
 		<view class="cu-form-group">
 			<view class="title">开始时间</view>
-			<picker mode="time" value="{{nowTime}}" start="00:00" end="23:59" bindchange="bindSTimeChange">
+			<picker mode="time" model:value="{{nowTime}}" start="00:00" end="23:59" bindchange="bindSTimeChange">
 				<view class="picker">
 					{{startTime}}
 				</view>
@@ -328,7 +322,7 @@
 		</view>
 		<view class="cu-form-group">
 			<view class="title">结束时间</view>
-			<picker mode="time" value="{{startTime}}" start="{{startTime}}" end="23:59" bindchange="bindETimeChange">
+			<picker mode="time" model:value="{{endTime}}" start="{{startTime}}" end="23:59" bindchange="bindETimeChange">
 				<view class="picker">
 					{{endTime}}
 				</view>
@@ -362,11 +356,11 @@
 		</view>
 		<view wx:if="{{positionPickerIndex==constants.picker.length-1}}" class="cu-form-group">
 			<view class="title">自定义岗位</view>
-			<input bindinput="getElsePositon" placeholder="起个岗位名称">{{elsePosition}}</input>
+			<input model:value="{{elsePosition}}" placeholder="起个岗位名称"></input>
 		</view>
 		<view wx:if="{{positionPickerIndex}}" class="cu-form-group">
 			<view class="title">岗位描述</view>
-			<input bindinput="getPositonDescription" placeholder="简短介绍下岗位的工作">{{positonDescription}}</input>
+			<input model:value="{{positonDescription}}" placeholder="简短介绍下岗位的工作"></input>
 		</view>
 		<!-- 选择框 -->
 		<view class="cu-bar bg-white">
@@ -413,7 +407,7 @@
 			</view>
 			<view class="margin-top solids-top-blue padding-top">自定义</view>
 			<view class="cu-form-group">
-				<input class="solid-blue margin-right" bindinput="getGroupTagName" placeholder="输入标签名字" model:value="{{groupTagName}}"></input>
+				<input model:value="{{groupTagName}}" class="solid-blue margin-right" placeholder="输入标签名字"></input>
 				<button class="sm cu-btn bg-cyan shadow" bindtap="addGroupTag" data-index="{{-1}}">确定</button>
 			</view>
 
