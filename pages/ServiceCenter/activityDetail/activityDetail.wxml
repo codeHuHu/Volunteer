@@ -55,7 +55,7 @@
 
 		<view class="padding flex justify-between">
 			<text class="">{{isPintuan?'报名':'报名'}}截止日期</text>
-			<text class="text-df">{{constant.deadTime}}</text>
+			<text class="text-df">{{constants.deadTime}}</text>
 		</view>
 		<view class="padding flex  justify-between">
 			<text class="">{{isPintuan==1?'需求':'需求'}}人数</text>
@@ -109,11 +109,11 @@
 						<text class="text-df"> {{child.joined}}/{{child.number}}</text>
 					</view>
 					<!-- 报名 -->
-					<view wx:if="{{!isDead&&isJoin == 0}}" bindtap="showModal" data-target="toPintuan" data-timespan="{{index}}" data-position="{{pindex}}" class="flex-sub flex-treble flex justify-center align-center text-lg">
+					<view wx:if="{{!checkMode&&(!isDead&&isJoin == 0)}}" bindtap="showModal" data-target="toPintuan" data-timespan="{{index}}" data-position="{{pindex}}" class="flex-sub flex-treble flex justify-center align-center text-lg">
 						<text class="cuIcon-friendaddfill text-xxl text-green">+</text>
 					</view>
 					<!-- 取消报名 -->
-					<view wx:elif="{{isJoin == 1&&index==idx[0]&&pindex==idx[1]}}" bindtap="showModal" data-target="toCancel" data-timespan="{{index}}" data-position="{{pindex}}" class="flex-sub flex-treble flex justify-center align-center text-lg">
+					<view wx:elif="{{!checkMode&&(isJoin == 1&&index==idx[0]&&pindex==idx[1])}}" bindtap="showModal" data-target="toCancel" data-timespan="{{index}}" data-position="{{pindex}}" class="flex-sub flex-treble flex justify-center align-center text-lg">
 						<text class="cuIcon-friendaddfill text-xxl text-red">-</text>
 					</view>
 					<!-- 占个位置而已 -->
@@ -131,10 +131,14 @@
 		</view>
 		<view class="margin-right-xl" bindtap="showModal" data-target="joinMembers">
 			<view class="cu-avatar-group">
-				<view wx:for="{{actions.joinMembers}}" wx:key="index" class="cu-avatar round sm" style="background-image:url(https://image.meiye.art/FiLUT-wb9DP0-dpxRQH19HJOOJOW?imageMogr2/thumbnail/450x/interlace/1);"></view>
-				<!-- <view class="cu-avatar round sm" style="background-image:url(https://image.meiye.art/FlqKg5bugFQD5Qzm_QhGM7ET4Mtx?imageMogr2/thumbnail/450x/interlace/1);"></view>
-				<view class="cu-avatar round sm" style="background-image:url(https://image.meiye.art/Fha6tqRTIwHtlLW3xuZBJj8ZXSX3?imageMogr2/thumbnail/450x/interlace/1);"></view>
-				<view class="cu-avatar round sm" style="background-image:url(https://image.meiye.art/FhHGe9NyO0uddb6D4203jevC_gzc?imageMogr2/thumbnail/450x/interlace/1);"></view> -->
+				<view wx:if="{{actions.joinMembers.length<6}}">
+					<view wx:for="{{actions.joinMembers}}" wx:key="index" class="cu-avatar round sm" style="background-image:url({{avators[index]}});"></view>
+				</view>
+
+				<view wx:else>
+					<view wx:for="111111" wx:key="index" class="cu-avatar round sm" style="background-image:url({{avators[index]}});"></view>
+				</view>
+
 			</view>
 			<text class="text-grey text-sm ">{{actions.outJoin}} 人</text>
 		</view>
@@ -145,11 +149,11 @@
 	<view class="solid-bottom text-lg text-bold padding text-black">服务信息</view>
 	<view class="padding flex justify-between">
 		<text class="">服务时间</text>
-		<text class="text-df">{{constant.serviceTime}}</text>
+		<text class="text-df">{{constants.serviceTime}}</text>
 	</view>
 	<view class="padding flex  justify-between">
 		<text class="">服务时长</text>
-		<text class="text-df ">{{constant.hours+'小时'+constant.minutes+'分钟'}}</text>
+		<text class="text-df ">{{constants.hours+'小时'+constants.minutes+'分钟'}}</text>
 	</view>
 	<view class="padding flex  justify-between">
 		<text class="">服务地点</text>
@@ -223,7 +227,7 @@
 		</view>
 		<view class="cu-form-group">
 			<view class="grid col-4 grid-square flex-sub">
-				<view class="bg-img" wx:for="{{actions.qr_code}}" wx:key="index" catchtap="previewImage" data-index="{{index}}" data-url="0">
+				<view class="bg-img" wx:for="{{actions.qr_code}}" wx:key="index" catchtap="previewImage" data-index="{{index}}" data-urls="{{actions.qr_code}}">
 					<image src='{{actions.qr_code[index]}}' mode='aspectFill'></image>
 				</view>
 			</view>
@@ -239,7 +243,7 @@
 		</view>
 		<view class="cu-form-group">
 			<view class="grid col-4 grid-square flex-sub">
-				<view class="bg-img" wx:for="{{actions.iZhiYuan}}" wx:key="index" bindtap="previewImage" data-index="{{index}}" data-url="1">
+				<view class="bg-img" wx:for="{{actions.iZhiYuan}}" wx:key="index" bindtap="previewImage" data-index="{{index}}" data-urls="{{actions.iZhiYuan}}">
 					<image src='{{actions.iZhiYuan[index]}}' mode='aspectFill'></image>
 				</view>
 			</view>
@@ -255,7 +259,7 @@
 			</view>
 			<view class="cu-form-group">
 				<view class="grid col-4 grid-square flex-sub">
-					<view class="bg-img" wx:for="{{actions.feedback.signInList}}" wx:key="index" catchtap="previewImage" data-index="{{index}}" data-url="2">
+					<view class="bg-img" wx:for="{{actions.feedback.signInList}}" wx:key="index" catchtap="previewImage" data-index="{{index}}" data-urls="{{actions.feedback.signInList}}">
 						<image src='{{actions.feedback.signInList[index]}}' mode='aspectFill'></image>
 					</view>
 				</view>
@@ -271,7 +275,7 @@
 			</view>
 			<view class="cu-form-group">
 				<view class="grid col-4 grid-square flex-sub">
-					<view class="bg-img" wx:for="{{actions.feedback.imgList}}" wx:key="index" bindtap="previewImage" data-index="{{index}}" data-url="3">
+					<view class="bg-img" wx:for="{{actions.feedback.imgList}}" wx:key="index" bindtap="previewImage" data-index="{{index}}" data-urls="{{actions.feedback.imgList}}">
 						<image src='{{actions.feedback.imgList[index]}}' mode='aspectFill'></image>
 					</view>
 				</view>
@@ -323,7 +327,7 @@
 		<swiper style="height: 500rpx;">
 			<swiper-item wx:for="{{actions.qr_code}}" wx:key="index" class="bg-img" style="height: 360rpx;" show-menu-by-longpress="true">
 				<view class="cu-bar justify-center text-white">
-					<image class="margin-top" src="{{item}}" bindtap="previewImage" data-index="{{index}}" data-url="0" mode="aspectFit" />
+					<image class="margin-top" src="{{item}}" bindtap="previewImage" data-index="{{index}}" data-url="{{actions.qr_code}}" mode="aspectFit" />
 				</view>
 				<view class="cu-tag cancleButton bg-white round button" catchtap="hideModal">
 					<text class="cuIcon-close text-xl text-bold text-black"></text>
@@ -331,7 +335,7 @@
 			</swiper-item>
 			<swiper-item wx:if="{{!actions.qr_code}}" wx:key="index" class="bg-img" style="height: 360rpx;" show-menu-by-longpress="true">
 				<view class="cu-bar justify-center text-white">
-					<image class="margin-top" src="" bindtap="previewImage" data-index="{{index}}" mode="aspectFit" />
+					<image class="margin-top" src="" bindtap="previewImage" data-index="{{index}}" data-url="{{[]}}" mode="aspectFit" />
 				</view>
 				<view class="cu-tag cancleButton bg-white round button" catchtap="hideModal">
 					<text class="cuIcon-close text-xl text-bold text-black"></text>
@@ -369,7 +373,7 @@
 		<swiper style="height: 500rpx;">
 			<swiper-item wx:for="{{actions.qr_code}}" wx:key="index" class="bg-img" style="height: 360rpx;" show-menu-by-longpress="true">
 				<view class="cu-bar justify-center text-white">
-					<image class="margin-top" src="{{item}}" bindtap="previewImage" data-index="{{index}}" data-url="0" mode="aspectFit" />
+					<image class="margin-top" src="{{item}}" bindtap="previewImage" data-index="{{index}}" data-urls="{{actions.qr_code}}" mode="aspectFit" />
 				</view>
 				<view class="cu-tag cancleButton bg-white round button" catchtap="hideModal">
 					<text class="cuIcon-close text-xl text-bold text-black"></text>
@@ -377,7 +381,7 @@
 			</swiper-item>
 			<swiper-item wx:if="{{!actions.qr_code}}" wx:key="index" class="bg-img" style="height: 360rpx;" show-menu-by-longpress="true">
 				<view class="cu-bar justify-center text-white">
-					<image class="margin-top" src="" bindtap="previewImage" data-index="{{index}}" mode="aspectFit" />
+					<image class="margin-top" src="" bindtap="previewImage" data-index="{{index}}" data-urls="{{[]}}" mode="aspectFit" />
 				</view>
 				<view class="cu-tag cancleButton bg-white round button" catchtap="hideModal">
 					<text class="cuIcon-close text-xl text-bold text-black"></text>

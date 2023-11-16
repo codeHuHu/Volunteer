@@ -8,8 +8,17 @@ const XLSX = require('../../../utils/excel.js') //引入
 
 Page({
 	data: {
+		avators: [
+			'https://image.meiye.art/FlqKg5bugFQD5Qzm_QhGM7ET4Mtx?imageMogr2/thumbnail/450x/interlace/1',
+			'https://image.meiye.art/FiLUT-wb9DP0-dpxRQH19HJOOJOW?imageMogr2/thumbnail/450x/interlace/1',
+			'https://image.meiye.art/Fha6tqRTIwHtlLW3xuZBJj8ZXSX3?imageMogr2/thumbnail/450x/interlace/1',
+			'https://image.meiye.art/FhHGe9NyO0uddb6D4203jevC_gzc?imageMogr2/thumbnail/450x/interlace/1',
+			'https://image.meiye.art/FlqKg5bugFQD5Qzm_QhGM7ET4Mtx?imageMogr2/thumbnail/450x/interlace/1',
+			'https://image.meiye.art/Fha6tqRTIwHtlLW3xuZBJj8ZXSX3?imageMogr2/thumbnail/450x/interlace/1',
+			'https://image.meiye.art/FhHGe9NyO0uddb6D4203jevC_gzc?imageMogr2/thumbnail/450x/interlace/1'
+		],
 		checkMode: 0,
-		constant: {
+		constants: {
 			hours: 'xxxxxxxx',
 			minutes: 'xxxxxxx',
 			deadTime: 'xxxxxxx',
@@ -149,7 +158,7 @@ Page({
 			boxer.push(0)
 		}
 
-		let constant = {
+		let constants = {
 			hours: thours,
 			minutes: tminutes,
 			deadTime: formattedDate + ' ' + formattedTime,
@@ -158,7 +167,7 @@ Page({
 		}
 		this.setData({
 			boxer,
-			constant,
+			constants,
 			//记录用户是否有导出特权(负责人或管理员)
 			isAdmin: (app.globalData.openid == res._openid) || (Number(app.globalData.position) >= 1),
 			isDead: 0,
@@ -425,19 +434,11 @@ Page({
 		}, 1000)
 	},
 	previewImage(e) {
-		var tmp = []
-		if (e.currentTarget.dataset.url == "0") {
-			tmp = this.data.actions.qr_code
-		} else if (e.currentTarget.dataset.url == "1") {
-			tmp = this.data.actions.iZhiYuan
-		} else if (e.currentTarget.dataset.url == "2") {
-			tmp = this.data.actions.feedback.signInList
-		} else if (e.currentTarget.dataset.url == "3") {
-			tmp = this.data.actions.feedback.imgList
-		}
+		let urls = e.currentTarget.dataset.urls
+		let current = e.currentTarget.dataset.index
 		wx.previewImage({
-			urls: tmp,
-			current: e.currentTarget.dataset.index
+			urls,
+			current
 		})
 	},
 	//转发朋友
@@ -509,12 +510,12 @@ Page({
 			//['活动状态', '已结束'],
 			//['活动组织', DA.teamName],
 			['组织负责人', DA.holder],
-			['服务时间', D.constant.serviceTime],
-			['服务时长', D.constant.hours + '小时' + D.constant.minutes + '分钟'],
+			['服务时间', D.constants.serviceTime],
+			['服务时长', D.constants.hours + '小时' + D.constants.minutes + '分钟'],
 			['服务地点', DA.address],
 			['服务简介', DA.intro],
 			['参加活动人数', `${DA.outJoin}人`],
-			['截止时间', D.constant.deadTime],
+			['截止时间', D.constants.deadTime],
 			[],
 			[],
 			['用户名称', '服务时间段', '岗位', '参加状态', '评级', '详细评价', '电话', '支付宝', '银行卡信息', '学历', '学年', '学校/单位', '学院',]
@@ -701,6 +702,6 @@ Page({
 		}
 		return true
 	}
-	
+
 
 })
