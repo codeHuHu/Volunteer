@@ -20,12 +20,7 @@ Page({
 	onReady() { },
 	onShow() {
 		this.getData()
-		this.saveData()
 		wx.hideHomeButton()
-	},
-	saveData(){
-		console.log('触发save')
-		wx.setStorageSync('app_globalData',app.globalData)
 	},
 	//查找活动
 	getData() {

@@ -18,6 +18,12 @@ Page({
 			isLogin: app.globalData.isLogin
 		})
 	},
+	onReady(){
+		
+	},
+	saveData(){
+		wx.setStorageSync('app_globalData',app.globalData)
+	},
 	getDetail() {
 		var that = this
 		wx.cloud.database().collection('UserInfo').where({
@@ -40,7 +46,6 @@ Page({
 				}
 			})
 	},
-	onReady() {},
 	onShow() {
 		this.setData({
 			openid: app.globalData.openid,
@@ -48,6 +53,7 @@ Page({
 			myPos: app.globalData.position,
 		})
 		this.getDetail()
+		this.saveData()
 	},
 	navTo(e) {
 		if (e.currentTarget.dataset.check=="1" && !this.data.isLogin) {
