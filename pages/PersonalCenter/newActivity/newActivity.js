@@ -72,9 +72,9 @@ Page({
 	},
 	onLoad() {
 		this.setData({
-			holder: app.globalData.name,
-			phone: app.globalData.phone,
-			myPos: app.globalData.position
+			holder: app.globalData.userInfo["userName"],
+			phone: app.globalData.userInfo["phone"],
+			myPos: app.globalData.userInfo["position"]
 		})
 		const currentDate = new Date().toISOString().slice(0, 10);
 		const currentTime = new Date().toLocaleTimeString('en-US', {

@@ -30,8 +30,8 @@ Page({
 			title: '志愿服务',
 		})
 		this.setData({
-			myPos: app.globalData.position,
-			myId: app.globalData.openid
+			myPos: app.globalData.userInfo["position"],
+			myId: app.globalData.userInfo["_openid"]
 		})
 		const currentDate = new Date();
 		const timeStamp = currentDate.getTime();
@@ -50,28 +50,28 @@ Page({
 	// 点击下拉显示框
 	selectallTap(e) {
 		console.log(e.currentTarget.dataset.show)
-		var suffix=e.currentTarget.dataset.show
-		
+		var suffix = e.currentTarget.dataset.show
+
 		this.setData({
-			['show'+suffix]: !this.data['show'+suffix]
+			['show' + suffix]: !this.data['show' + suffix]
 		});
 	},
 
 	// 点击下拉列表
 	optionallTap(e) {
-		var that=this
+		var that = this
 		let index = e.currentTarget.dataset.index; //获取点击的下拉列表的下标
 		this.setData({
 			index1: index,
 			show1: !this.data.show1,
-			index2:0,
-			index3:0
+			index2: 0,
+			index3: 0
 		});
 		if (index == 0) {
 			that.onLoad()
 		} else {
 			db.collection('ActivityInfo').where({
-				_openid: app.globalData.openid,
+				_openid: app.globalData.userInfo["_openid"],
 				status: db.command.not(db.command.eq('0')),
 			}).field({
 				_id: true,
@@ -103,17 +103,17 @@ Page({
 		this.setData({
 			index2: index,
 			show2: !this.data.show2,
-			index1:0,
-			index3:0
+			index1: 0,
+			index3: 0
 		});
 		if (index == 0) {
 			this.onLoad()
 		} else {
 			const collection = db.collection('ActivityInfo');
 			collection.where({
-				
+
 				'tag': that.data.selectType[index],
-				'status':  db.command.nor(db.command.eq('0'), db.command.eq('-1'))
+				'status': db.command.nor(db.command.eq('0'), db.command.eq('-1'))
 			}).field({
 				_id: true,
 				actName: true,
@@ -142,13 +142,13 @@ Page({
 	},
 	// 点击下拉列表
 	optionstatusTap(e) {
-		var that=this
+		var that = this
 		let index = e.currentTarget.dataset.index; //获取点击的下拉列表的下标
 		this.setData({
 			index3: index,
 			show3: !this.data.show3,
-			index1:0,
-			index2:0
+			index1: 0,
+			index2: 0
 		});
 		if (index == 1) {
 			const collection = db.collection('ActivityInfo');

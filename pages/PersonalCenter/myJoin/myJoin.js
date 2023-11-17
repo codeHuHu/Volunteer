@@ -4,15 +4,19 @@ const db = wx.cloud.database()
 Page({
 	data: {},
 	onLoad(options) {
+
+	},
+	onReady() { },
+	onShow() {
 		db.collection('UserInfo').where({
-			_openid: app.globalData.openid
+			_openid: app.globalData.userInfo["_openid"]
 		}).get().then(res => {
 			var actions = res.data
 			var myActivity = actions[0].myActivity
 			console.log(actions)
 			db.collection('ActivityInfo').where({
 				_id: db.command.in(myActivity),
-				status:db.command.not(db.command.eq('-2'))
+				status: db.command.not(db.command.eq('-2'))
 			}).field({
 				_id: true,
 				actName: true,
@@ -32,8 +36,6 @@ Page({
 			})
 		})
 	},
-	onReady() {},
-	onShow() {},
 	setTime(result) {
 		var res = result
 		console.log(res)
@@ -52,7 +54,7 @@ Page({
 		})
 		wx.stopPullDownRefresh()
 	},
-	navTo(e){
+	navTo(e) {
 		wx.$navTo(e)
 	}
 })

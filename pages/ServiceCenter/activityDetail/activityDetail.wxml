@@ -434,7 +434,7 @@
 		</view>
 		<view class="cu-form-group">
 			<view class="title">志愿者姓名</view>
-			<text>{{myInfo.name}}</text>
+			<text>{{myInfo.userName}}</text>
 		</view>
 		<view class="cu-form-group">
 			<view class="title">联系电话</view>

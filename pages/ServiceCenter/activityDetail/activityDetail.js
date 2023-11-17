@@ -41,11 +41,11 @@ Page({
 	},
 	onLoad: function (options) {
 		console.log('app.globalData:', app.globalData)
-		let myInfo = wx.getStorageSync('app_globalData')
+		let myInfo = wx.getStorageSync('userInfo')
 		var that = this
 		//记录是否登录
 		that.setData({
-			isLogin: app.globalData.isLogin,
+			isLogin: app.globalData.isAuth,
 			myInfo: myInfo,
 			//传入活动id
 			id: options.id,
@@ -58,10 +58,10 @@ Page({
 		if (options.actions) {
 			console.log('从转发进来的')
 			let actions = JSON.parse(decodeURIComponent(options.actions))
-			let isLogin = wx.getStorageSync('user_status')
+			let userInfo = wx.getStorageSync('userInfo')
 			that.setData({
 				actions,
-				isLogin: isLogin ? isLogin[1] : false,
+				isLogin: userInfo ? true : false,
 			})
 		}
 		db.collection('ActivityInfo').doc(options.id).get({
@@ -169,7 +169,7 @@ Page({
 			boxer,
 			constants,
 			//记录用户是否有导出特权(负责人或管理员)
-			isAdmin: (app.globalData.openid == res._openid) || (Number(app.globalData.position) >= 1),
+			isAdmin: (app.globalData.userInfo["_openid"] == res._openid) || (Number(app.globalData.userInfo["position"]) >= 1),
 			isDead: 0,
 			//isDead: res.deadTimeStamp - new Date().getTime() <= 0 ? 1 : 0,
 			isPintuan: res.isPintuan,
@@ -198,7 +198,7 @@ Page({
 			var flag = 0
 			// 如果名单里有该志愿者,改变报名按钮状态
 			for (var i in res.joinMembers) {
-				if (res.joinMembers[i].info.openid == app.globalData.openid) {
+				if (res.joinMembers[i].info.openid == app.globalData.userInfo["_openid"]) {
 					flag = 1
 					// 找出所报名的岗位逻辑位置
 					this.setData({
@@ -235,12 +235,12 @@ Page({
 				member: {
 					//个人身份信息
 					info: {
-						openid: app.globalData.openid, //openid
-						name: app.globalData.name, //名字
-						phone: app.globalData.phone, //电话
-						school: app.globalData.school, //学校
-						year: app.globalData.year, //学年
-						id: app.globalData.id, //身份证
+						openid: app.globalData.userInfo["_openid"], //openid
+						name: app.globalData.userInfo["userName"], //名字
+						phone: app.globalData.userInfo["phone"], //电话
+						school: app.globalData.userInfo["school"], //学校
+						year: app.globalData.userInfo["year"], //学年
+						id: app.globalData.userInfo["id"], //身份证
 					},
 					aliPay: that.data.aliPay ? that.data.aliPay : '',
 					bankType: that.data.Banktype ? that.data.Banktype : '',
@@ -264,7 +264,7 @@ Page({
 
 			//将该活动id加入到userInfo
 			db.collection('UserInfo').where({
-				_openid: app.globalData.openid,
+				_openid: app.globalData.userInfo["_openid"],
 			}).update({
 				data: {
 					myActivity: db.command.push(that.data.id)
@@ -291,7 +291,7 @@ Page({
 				var tmpList = res.data.joinMembers
 				var result = []
 				for (var i in tmpList) {
-					if (tmpList[i].info.openid != app.globalData.openid) {
+					if (tmpList[i].info.openid != app.globalData.userInfo["_openid"]) {
 						result.push(tmpList[i])
 					}
 				}
@@ -319,7 +319,7 @@ Page({
 					.then(res => {
 						//在userInfo中删除此活动id
 						db.collection('UserInfo').where({
-							_openid: app.globalData.openid
+							_openid: app.globalData.userInfo["_openid"]
 						}).get({
 							success(res) {
 								var myActivityList = []
@@ -331,7 +331,7 @@ Page({
 								}
 								db.collection('UserInfo')
 									.where({
-										_openid: app.globalData.openid
+										_openid: app.globalData.userInfo["_openid"]
 									}).update({
 										data: {
 											myActivity: myActivityList

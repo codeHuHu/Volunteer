@@ -3,60 +3,59 @@ const app = getApp()
 let loading = false;
 Page({
 	data: {
-		openid: null,
 		isLogin: false,
-		actions: '',
+		actions: {},
 		showModal: true, // 是否显示模态框
 		showImageModal: false, // 是否显示图片和提示信息框
 		imageSrc: 'cloud://volunteer-4gaukcmqce212f11.766f-volunteer-4gaukcmqce212f11-1321274883/kefu.jpg', // 图片链接，请替换为实际的图片链接
 	},
-	onLoad(event) {
-		console.log('app.globalData', app.globalData)
-		this.setData({
-			openid: app.globalData.openid,
-			myPos: app.globalData.position,
-			isLogin: app.globalData.isLogin
+	onLoad() {
+	},
+	onShow() {
+		this.getUserInfo()
+		this.saveData()
+	},
+	saveData() {
+		wx.setStorageSync('app_globalData', app.globalData)
+	},
+	getOpenid() {
+		let openid = wx.getStorageSync('openid')
+		if (openid.length > 1) {
+			return openid
+		}
+		wx.cloud.callFunction({
+			name: 'getUserOpenid',
+			success(res) {
+				return res.result.openid
+
+			}
 		})
 	},
-	onReady(){
-		
-	},
-	saveData(){
-		wx.setStorageSync('app_globalData',app.globalData)
-	},
-	getDetail() {
+	getUserInfo() {
 		var that = this
+		let openid = this.getOpenid()
 		wx.cloud.database().collection('UserInfo').where({
-			_openid: app.globalData.openid
+			_openid: openid ? openid : (app.globalData.userInfo['_openid'] ? app.globalData.userInfo['_openid'] : 1)
 		})
 			.get({
 				success(res) {
 					that.setData({
 						actions: res.data[0],
+						isLogin: true,
+						myPos: res.data[0].position,
 					})
-					app.globalData.isLogin = that.data.actions.isLogin
-					wx.setStorageSync('user_status', [res.data[0]._openid, app.globalData.isLogin])
-					return true;
+					app.globalData.userInfo=res.data[0]
 				},
 				fail(err) {
 					that.setData({
 						isLogin: false
 					})
-					return false;
 				}
 			})
 	},
-	onShow() {
-		this.setData({
-			openid: app.globalData.openid,
-			isLogin: app.globalData.isLogin,
-			myPos: app.globalData.position,
-		})
-		this.getDetail()
-		this.saveData()
-	},
+
 	navTo(e) {
-		if (e.currentTarget.dataset.check=="1" && !this.data.isLogin) {
+		if (e.currentTarget.dataset.check == "1" && !this.data.isLogin) {
 			this.setShow("error", "未注册");
 			return 0
 		}
