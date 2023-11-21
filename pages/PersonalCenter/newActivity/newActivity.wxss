@@ -96,3 +96,37 @@
 .cu-tag {
 	margin:10rpx 10rpx;
 }
+
+/* .solid-blue {
+  border: 1px solid #4da1ff;
+  color: #4da1ff;
+  border-radius: 10px;
+  padding: 6px 12px;
+} */
+
+.input-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.input {
+  flex: 1;
+  margin-right: 10rpx;
+  border: 1rpx solid #dcdfe6;
+  border-radius: 4rpx;
+  padding: 10rpx;
+	font-size: 26rpx;
+}
+
+.btn {
+  display: inline-block;
+  width: 110rpx;
+  height: 55rpx;
+  line-height: 55rpx;
+  text-align: center;
+  background-color: #1890ff;
+  color: #fff;
+  border-radius: 4rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.15);
+  font-size: 26rpx;
+}

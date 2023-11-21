@@ -60,10 +60,11 @@
 		</view>
 		<view class="{{groupBoxer ? '' : 'piano-hidden-content'}}">
 			<!-- {{showLightButton[index]?'red':'default'}}  -->
-			<view wx:for="{{myGroupTagList}}" wx:key="index" class="cu-tag radius">
-				<view>
-					#{{item}}
-					<text class="text-red text-sm padding-bottom" bindtap="delGroupTag" data-index="{{index}}">x</text>
+			<view wx:for="{{constants.groupTagList}}" wx:if="{{item.light}}"wx:key="index" class=" light cu-tag radius bg-green">
+		
+				<view bindtap="delGroupTag" data-index="{{index}}">
+					#{{item.tag}}
+					<text class="text-red text-sm padding-bottom" catchtap="delGroupTag" data-index="{{index}}">x</text>
 				</view>
 			</view>
 		</view>
@@ -403,26 +404,26 @@
 		<view class="margin-sm">
 			<view>
 				<view class="">可选择标签</view>
-				<view wx:for="{{constants.groupTagList}}" wx:key="index" class="cu-tag bg-grey light" bindtap="addGroupTag" data-index="{{index}}">
-					#{{item}}
+				<view wx:for="{{constants.groupTagList}}" wx:key="index" class="cu-tag light {{item.light?'bg-green':'bg-grey'}}" bindtap="addGroupTag" data-index="{{index}}" >
+					#{{item.tag}}
 				</view>
 			</view>
-			<view class="margin-top solids-top-blue padding-top">自定义</view>
-			<view class="cu-form-group">
-				<input model:value="{{groupTagName}}" class="solid-blue margin-right" placeholder="输入标签名字"></input>
-				<button class="sm cu-btn bg-cyan shadow" bindtap="addGroupTag" data-index="{{-1}}">确定</button>
-			</view>
+			<view class=" margin-top margin-bottom-xs solids-top-blue padding-top">自定义</view>
+			<view class="input-wrapper">
+  <input model:value="{{groupTagName}}" class="input" placeholder="输入标签名字"></input>
+  <button class="btn" bindtap="addGroupTag" data-index="{{-1}}">确定</button>
+</view>
 
-			<view class="margin-top solids-top-blue padding">已添加</view>
-			<view class="">
-				<!-- {{showLightButton[index]?'red':'default'}}  -->
+		
+			<!-- <view class="">
+				{{showLightButton[index]?'red':'default'}} 
 				<view wx:for="{{myGroupTagList}}" wx:key="index" class="cu-tag radius " style="align-items: center;">
-					<view>#{{item}}</view>
+					<view bindtap="delGroupTag" data-index="{{index}}">#{{item.tag}}</view>
 					<text class="text-red text-sm padding-bottom" bindtap="delGroupTag" data-index="{{index}}">x</text>
 				</view>
-			</view>
+			</view> -->
 		</view>
-		<view class="margin-top solids-top-blue padding">
+		<view class="padding ">
 			<button class="xl cu-btn bg-green shadow" bindtap="hideModal">完成</button>
 		</view>
 	</view>

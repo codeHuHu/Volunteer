@@ -30,11 +30,11 @@ Page({
 			],
 			//服务群体
 			groupTagList: [
-				'18周岁以上青年大学生',
-				'热心慈善公益事业',
-				'性格开朗',
-				'听从安排',
-				'具备参加志愿服务相应的基本能力和身体素质'
+				{tag:'18周岁以上青年大学生',light:false},
+				{tag:'热心慈善公益事业',light:false},
+				{tag:'性格开朗',light:false},
+				{tag:'听从安排',light:false},
+				{tag:'具备参加志愿服务相应的基本能力和身体素质',light:false}
 			],
 			//文件类型
 			icon: ['excel', 'ppt', 'word', 'pdf'],
@@ -154,6 +154,7 @@ Page({
 		});
 	},
 	async sendNew(e) {
+		var that=this
 		//检测是否输入完整
 		if (this.check() == 0) {
 			return
@@ -192,6 +193,15 @@ Page({
 						const iZhiYuan = result
 						Promise.all(uploadTask[2])
 							.then(result => {
+								let groupTag=[]
+								var tmpgroup=that.data.constants.groupTagList
+								for(var l in tmpgroup)
+								{
+									if(tmpgroup[l].light)
+									{
+										groupTag.push(tmpgroup[l].tag)
+									}
+								}
 								const FileID = result
 								const stamps = this.generateStamp()
 								let data = {
@@ -217,7 +227,7 @@ Page({
 									deadTimeStamp: stamps[2],//截止报名时间戳
 
 									tag: this.data.constants.tagList[this.data.tagIndex],
-									groupTag: this.data.myGroupTagList,
+									groupTag,
 
 									teamName: this.data.teamName,
 									qr_code,
@@ -796,37 +806,47 @@ Page({
 		let idx = e.currentTarget.dataset.index
 		//如果是自定义标签的话
 		if (idx == -1) {
-			let groupTagName = this.data.groupTagName;
+			let groupTagName=
+			 {tag: this.data.groupTagName,
+				light:true}
+
 			//判断是否为空
-			if (groupTagName === '') {
+			if (groupTagName.tag === '') {
 				return
 			}
-
-			let myGroupTagList = this.data.myGroupTagList
-			myGroupTagList.push(groupTagName)
-
+			
+			let tmpgroup=this.data.constants.groupTagList
+			tmpgroup.push(groupTagName)
 			this.setData({
-				groupTagName: '',
-				myGroupTagList
+				'constants.groupTagList':tmpgroup
 			})
 		} else {
-			let myGroupTagList = this.data.myGroupTagList
-			myGroupTagList.push(this.data.constants.groupTagList[idx])
+			let tmpgroup=this.data.constants.groupTagList
+			console.log(tmpgroup)
+			tmpgroup[idx].light=!tmpgroup[idx].light;
 			this.setData({
-				myGroupTagList
+			'constants.groupTagList':tmpgroup
 			})
 		}
 	},
 	//删除服务群体
 	delGroupTag(e) {
-		let idx = e.currentTarget.dataset.index;
-		let myGroupTagList = this.data.myGroupTagList;
+		// let idx = e.currentTarget.dataset.index;
+		// let myGroupTagList = this.data.constants.groupTagName;
 
-		myGroupTagList.splice(idx, 1);
+		// myGroupTagList.splice(idx, 1);
+		// this.setData({
+		// 	myGroupTagList
+		// })
+		// console.log(idx)
+		let idx = e.currentTarget.dataset.index
+		let tmpgroup=this.data.constants.groupTagList
+		console.log(tmpgroup)
+		tmpgroup[idx].light=!tmpgroup[idx].light;
 		this.setData({
-			myGroupTagList
+		'constants.groupTagList':tmpgroup
 		})
-		console.log(idx)
+
 	},
 	isSubsidy(e) {
 		this.setData({
