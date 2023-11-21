@@ -1,6 +1,10 @@
 require("./utils/wx.js")
 
 App({
+	globalData: {
+		isAuth: false,
+		userInfo: {}
+	},
 	onLaunch: function () {
 		wx.showLoading({
 			title: '',
@@ -17,114 +21,58 @@ App({
 				env: 'volunteer-4gaukcmqce212f11',
 				traceUser: true,
 			})
-			//从storage获取openid
-			var tmp = wx.getStorageSync('openid')
-			if (tmp) {
-				console.log('从storage获取openid:')
-				this.globalData.openid = tmp
-			} else {
-				//从云函数获取openid
-				wx.cloud.callFunction({
-					name: 'getUserOpenid',
-					success(res) {
-						console.log('从云函数获取openid', res.result.openid)
-						wx.cloud.callFunction({
-							name: 'getUserInfo',
-							data: {
-								openid: res.result.openid
-							},
-							success(res) {
-								console.log('openid不为空,获取当前用户的信息', res)
+			this.getAuthStatus()
+			setTimeout(() => {
+				wx.hideLoading()
+			}, 2000)
+		}
+	},
+	onshow: function () {
 
-								if (res.result.data.length) {
-									console.log('用户注册信息获取到了,正在配置globalData')
-									that.globalData.name = res.result.data[0].userName;
-									that.globalData.phone = res.result.data[0].phone;
-									that.globalData.position = res.result.data[0].position;
-									that.globalData.Id = res.result.data[0].idnumber;
-									that.globalData.aliPay = res.result.data[0].aliPay;
-									that.globalData.school = res.result.data[0].school;
-									that.globalData.grade = res.result.data[0].grade;
-									that.globalData.college = res.result.data[0].college;
-									that.globalData.year = res.result.data[0].year;
-
-									that.globalData.islogin = res.result.data[0].islogin;
-									try {
-										wx.setStorageSync('user_status', [that.globalData.openid, that.globalData.islogin]);
-									} catch (e) {
-										console.log('app配置storage:status错误', e);
-									}
-								} else {
-									console.log('用户还没注册,获得不到信息')
-								}
-							},
-							fail(err) {
-								console.log(err)
-							}
-						})
-						that.globalData.openid = res.result.openid
-						wx.setStorageSync('openid', res.result.openid)
-					}
-				})
-			}
-			//openid不为空，获取当前用户的信息
-			if (tmp) {
+	},
+	getAuthStatus() {
+		let that = this
+		wx.cloud.callFunction({
+			name: 'getUserOpenid',
+			success(res) {
+				console.log('从云函数获取openid', res.result.openid)
+				//本地存储openid
+				wx.setStorageSync('openid', res.result.openid)
 				wx.cloud.callFunction({
 					name: 'getUserInfo',
 					data: {
-						openid: tmp
+						openid: res.result.openid
 					},
 					success(res) {
-
-						console.log('openid不为空,获取当前用户的信息', res)
-
-						if (res.result.data.length) {
-							console.log('用户注册信息获取到了,正在配置globalData')
-							that.globalData.name = res.result.data[0].userName;
-							that.globalData.phone = res.result.data[0].phone;
-							that.globalData.position = res.result.data[0].position;
-							that.globalData.id = res.result.data[0].idNumber;
-							that.globalData.aliPay = res.result.data[0].aliPay;
-							that.globalData.school = res.result.data[0].school;
-							that.globalData.grade = res.result.data[0].grade;
-							that.globalData.college = res.result.data[0].college;
-							that.globalData.year = res.result.data[0].year;
-
-							that.globalData.isLogin = res.result.data[0].isLogin;
+						console.log('获取成功')
+						if (res.result.data.length == 1) {
+							console.log('用户信息获取到了,配置globalData')
+							//这个用于正常使用小程序的用户验证
+							that.globalData.isAuth = true
+							that.globalData.userInfo = res.result.data[0]
 							try {
-								wx.setStorageSync('user_status', [that.globalData.openid, that.globalData.isLogin]);
+								wx.setStorageSync('userInfo', res.result.data[0]);
 							} catch (e) {
-								console.log('app配置storage:status错误', e);
+								console.log('app配置storage:userInfo错误', e);
 							}
+							console.log(that.globalData)
 						} else {
 							console.log('用户还没注册,获得不到信息')
+							try {
+								wx.setStorageSync('userInfo', null);
+							} catch (e) {
+								console.log('app配置storage:userInfo错误', e);
+							}
 						}
-
 					},
 					fail(err) {
 						console.log(err)
 					}
 				})
 			}
-			setTimeout(() => {
-				wx.hideLoading()
-			}, 1000)
-		}
-	},
-	onshow: function () {
+		})
 
 	},
 
-	globalData: {
-		openid: null,
-		name: '',
-		isLogin: false,
-		phone: 0,
-		aliPay: '',
-		school: '',
-		grade: '',
-		year: '',
-		college: '',
-		position: '',	//pos为0表示普通志愿者，1表示队长，2表示管理员
-	}
+
 });

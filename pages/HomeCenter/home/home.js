@@ -14,10 +14,10 @@ Page({
 			title: '首页',
 		})
 		this.setData({
-			myPos: app.globalData.position,
+			myPos: app.globalData.userInfo['position'],
 		})
 	},
-	onReady() {},
+	onReady() { },
 	onShow() {
 		this.getData()
 		wx.hideHomeButton()
@@ -29,10 +29,17 @@ Page({
 			.where({
 				status: '1'
 			})
+			.limit(10)
 			.get()
 			.then(res => {
+				const processedData = res.data.map(item => {
+					return {
+						...item,
+						intro: item.intro.length > 50 ? item.intro.slice(0, 50) + '...' : item.intro
+					}
+				})
 				that.setData({
-					actions: res.data
+					actions: processedData
 				})
 			})
 			.catch(err => {
@@ -61,8 +68,14 @@ Page({
 				}
 			})
 				.then(res => {
+					const processedData = res.result.map(item => {
+						return {
+							...item,
+							intro: item.intro.length > 50 ? item.intro.slice(0, 50) + '...' : item.intro
+						}
+					})
 					that.setData({
-						actions: res.result
+						actions: processedData
 					})
 					wx.hideLoading()
 				})
@@ -131,63 +144,49 @@ Page({
 		wx.$navTo(e)
 	},
 	toNewActivity() {
-		if (!app.globalData.isLogin) {
+		if (!app.globalData.isAuth) {
 			this.setShow("error", "请先前往个人中心注册");
 			return 0
 		}
-		if (this.byhistory()) {
+		if (this.byhistory() || this.byBase()) {
 			this.setData({
 				modalName: null
 			});
 			wx.$navTo('/pages/PersonalCenter/newActivity/newActivity')
-
-		} else if (this.byBase()) {
+		} else {
+			wx.$navTo("/pages/PersonalCenter/accountSignUp/accountSignUp")
 		}
 	},
 	toregister() {
-		if (this.byhistory()) {
+		if (this.byhistory() || this.byBase()) {
 			wx.showToast({
 				title: '你已注册成为志愿者',
 				icon: 'none'
 			})
-		} else if (this.byBase()) { }
-	},
-	byhistory() {
-		var value = wx.getStorageSync('user_status')
-		if (value) {
-			try {
-				if (value[0] == app.globalData.openid && value[1] == true) {
-					return true
-				}
-				return false
-			} catch (e) {
-
-			}
-		} else {
-			return false
+		}
+		else {
+			wx.$navTo("/pages/PersonalCenter/accountSignUp/accountSignUp")
 		}
 	},
+	byhistory() {
+		var userInfo = wx.getStorageSync('userInfo')
+		return userInfo ? true : false
+	},
 	byBase() {
-		const that = this
 		wx.cloud.database().collection('UserInfo')
 			.where({
-				_openid: app.globalData.openid
+				_openid: app.globalData.userInfo["_openid"]
 			})
 			.get({
 				success(res) {
 					if (res.data.length) {
-						app.globalData.isLogin = true
-						wx.setStorageSync('user_status', [res.data[0]._openid, app.globalData.isLogin])
-						wx.showToast({
-							title: '你已注册成为志愿者',
-							icon: 'none'
-						})
+						return true
 					} else {
-						wx.$navTo("/pages/PersonalCenter/accountSignUp/accountSignUp")
+						return false
 					}
 				},
 				fail(err) {
-
+					return false
 				}
 			});
 	},

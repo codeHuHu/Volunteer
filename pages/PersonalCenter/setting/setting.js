@@ -3,6 +3,7 @@ const app = getApp()
 const db = wx.cloud.database()
 Page({
 	data: {
+		isUpdate: false,
 		isTextBoxVisible: false,
 		showModal: null,
 		grade: ['小学', '中学', '本科', '研究生', '博士', '已毕业'],
@@ -14,14 +15,14 @@ Page({
 	},
 	onLoad(options) {
 		this.setData({
-			openid: app.globalData.openid,
-			name: app.globalData.name ? app.globalData.name : '未填写',
-			phone: app.globalData.phone ? app.globalData.phone : '未填写',
-			aliPay: app.globalData.aliPay ? app.globalData.aliPay : '未填写',
-			school: app.globalData.school ? app.globalData.school : '未填写',
-			mygrade: app.globalData.grade ? app.globalData.grade : '未填写',
-			college: app.globalData.college ? app.globalData.college : '未填写',
-			selectedYear: app.globalData.year ? app.globalData.year : '未填写',
+			openid: app.globalData.userInfo["_openid"],
+			name: app.globalData.userInfo["userName"] ? app.globalData.userInfo["userName"] : '未填写',
+			phone: app.globalData.userInfo["phone"] ? app.globalData.userInfo["phone"] : '未填写',
+			aliPay: app.globalData.userInfo["aliPay"] ? app.globalData.userInfo["aliPay"] : '未填写',
+			school: app.globalData.userInfo["school"] ? app.globalData.userInfo["school"] : '未填写',
+			mygrade: app.globalData.userInfo["grade"] ? app.globalData.userInfo["grade"] : '未填写',
+			college: app.globalData.userInfo["college"] ? app.globalData.userInfo["college"] : '未填写',
+			selectedYear: app.globalData.userInfo["year"] ? app.globalData.userInfo["year"] : '未填写',
 		})
 	},
 	onReady() { },
@@ -29,37 +30,45 @@ Page({
 	onHide() { },
 	onUnload() {
 		var that = this
-		wx.showLoading({
-			title: '(数据上传中...)',
-			mask: true
-		})
-		db.collection('UserInfo').where({
-			_openid: this.data.openid
-		}).update({
-			data: {
-				userName: this.data.name,
-				school: this.data.school,
-				grade: this.data.mygrade,
-				college: this.data.college,
-				phone: this.data.phone,
-				aliPay: this.data.aliPay,
-				year: this.data.selectedYear
-			},
-			success(res) {
-				wx.hideLoading();
-				app.globalData.name = that.data.name,
-					app.globalData.school = that.data.school,
-					app.globalData.grade = that.data.mygrade,
-					app.globalData.college = that.data.college,
-					app.globalData.year = that.data.selectedYear,
-					app.globalData.phone = that.data.phone,
-					app.globalData.aliPay = that.data.aliPay
+		if (that.data.isUpdate) {
+			wx.showLoading({
+				title: '(数据上传中...)',
+				mask: true
+			})
+			db.collection('UserInfo').where({
+				_openid: this.data.openid
+			}).update({
+				data: {
+					userName: this.data.name,
+					school: this.data.school,
+					grade: this.data.mygrade,
+					college: this.data.college,
+					phone: this.data.phone,
+					aliPay: this.data.aliPay,
+					year: this.data.selectedYear
+				},
+				success(res) {
+					wx.hideLoading();
+					// app.globalData.name = that.data.name
+					// app.globalData.school = that.data.school
+					// app.globalData.grade = that.data.mygrade
+					// app.globalData.college = that.data.college
+					// app.globalData.year = that.data.selectedYear
+					// app.globalData.phone = that.data.phone
+					// app.globalData.aliPay = that.data.aliPay
 
-				// 在此处执行其他操作
-			},
-			fail(error) {
-				console.error('更新失败', error);
-			}
+					// 在此处执行其他操作
+				},
+				fail(error) {
+					console.error('更新失败', error);
+				}
+			})
+		}
+
+	},
+	checkchange(e) {
+		this.setData({
+			isUpdate: !this.data.isUpdate
 		})
 	},
 	showQRcode() {

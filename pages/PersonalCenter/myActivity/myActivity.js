@@ -6,10 +6,10 @@ Page({
 	onLoad(options) {
 		this.data.mode = options.mode
 		var filter = {
-			_openid: app.globalData.openid,
+			_openid: app.globalData.userInfo["_openid"],
 			status: '2',
 		}
-		if (Number(app.globalData.position) >= 1) {
+		if (Number(app.globalData.userInfo['position']) >= 1) {
 			filter = {
 				status: '2',
 			}
@@ -34,7 +34,7 @@ Page({
 			})
 		} else {
 			db.collection('ActivityInfo').where({
-				_openid: app.globalData.openid,
+				_openid: app.globalData.userInfo["_openid"],
 			}).field({
 				_id: true,
 				actName: true,

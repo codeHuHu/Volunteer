@@ -106,42 +106,6 @@ Page({
 						this.setData({
 							checkBox: newArray
 						})
-
-
-						//db.command.in(members)
-						// db.collection('UserInfo').where({
-						// 	_openid: db.command.in(members)
-						// }).field({
-						// 	_openid: true,
-						// 	userName: true,
-						// 	idNumber: true,
-						// 	phone: true,
-						// 	college: true,
-						// 	grade: true,
-						// 	aliPay: true,
-						// 	year: true,
-						// 	school: true,
-						// }).get().then(res => {
-						// 	var tmp = res.data
-						// 	for (var l in tmp) {
-						// 		nameList.push(tmp[l])
-						// 	}
-						// 	const newArray = []
-						// 	for (var l = 0; l < tmp.length; l++) {
-						// 		const item = {
-						// 			id: l,
-						// 			info: tmp[l],
-						// 			excellent: true,
-						// 			isCome: true,
-						// 			feedback: ''
-						// 		}
-						// 		newArray.push(item)
-						// 	}
-						// 	console.log(newArray)
-						// 	this.setData({
-						// 		checkBox: newArray
-						// 	})
-						// })
 					}
 
 				})
@@ -186,7 +150,6 @@ Page({
 	},
 	ViewImage(e) {
 		wx.previewImage({
-
 			urls: e.currentTarget.dataset.urls == 'signInList' ? this.data.signInList : this.data.imgList,
 			current: e.currentTarget.dataset.url
 		});

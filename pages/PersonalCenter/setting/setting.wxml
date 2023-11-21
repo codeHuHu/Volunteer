@@ -122,7 +122,14 @@
 				<button bindtap="handleSave" class="button">保存</button>
 			</view>
 		</view>
-
+		<view class="cu-list menu card-menu shadow-lg radius">
+			<!-- <view class=""> -->
+			<!-- <text class="text-xs text-grey " style="letter-spacing:2rpx">注：支付宝账号仅用来对部分活动发放补贴</text></view> -->
+			<view class="margin-top">
+				<checkbox class="round margin-right" checked="{{isUpdate}}" bindtap="checkchange"></checkbox>
+				<text class="text-xs text-red ">点击勾选,退出时会自动更新数据哦</text>
+			</view>
+		</view>
 		<!-- <view class="cu-item  ">
 		<navigator class="content cu-form-group " url="/pages/about/log/log" hover-class="none">
 			<view >

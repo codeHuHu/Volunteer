@@ -62,18 +62,9 @@ Page({
 			},
 			success(res) {
 				console.log('注册成功')
-				app.globalData.name = that.data.userName;
-				app.globalData.phone = that.data.userPhone;
-				app.globalData.id = that.data.userIdNumber;
-				app.globalData.isLogin = true;
-				app.globalData.college = that.data.college;
-				app.globalData.school = that.data.school;
-				app.globalData.grade = that.data.grade[that.data.Gindex];
-				app.globalData.year = that.data.selectedYear;
-				app.globalData.position = 0
-				wx.setStorageSync('user_status', [app.globalData.openid, app.globalData.isLogin]);
+				app.getAuthStatus();
 				wx.reLaunch({
-					url: '/pages/home/home',
+					url: '/pages/HomeCenter/home/home',
 				})
 				wx.showToast({
 					title: '注册成功',
