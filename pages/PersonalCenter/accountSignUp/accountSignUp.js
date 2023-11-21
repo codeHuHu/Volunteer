@@ -62,11 +62,12 @@ Page({
 			},
 			success(res) {
 				console.log('注册成功')
+				app.getAuthStatus();
+				wx.reLaunch({
+					url: '/pages/HomeCenter/home/home',
+				})
 				wx.showToast({
 					title: '注册成功',
-				})
-				wx.reLaunch({
-					url: '/pages/home/home',
 				})
 			}
 		})
