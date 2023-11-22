@@ -24,20 +24,8 @@ Page({
 			deadTime: 'xxxxxxx',
 			serviceTime: 'xxxxxxx',
 		},
-		picker: [
-			'建设银行',
-			'邮储银行',
-			'农业银行',
-			'工商银行',
-			'中国银行',
-			'交通银行',
-			'其他银行'
-		],
-		BankPickerIndex: '',
-		bankCardNumber: '',
-		Banktype: '',
-		aliPay: ''
-
+		payType: '',
+		payNumber: '',
 	},
 	onLoad: function (options) {
 		console.log('app.globalData:', app.globalData)
@@ -76,26 +64,18 @@ Page({
 
 				//如果是补贴活动,读取本地数据
 				if (t.isSubsidy) {
+					that.setData({
+						payType: t.payType,
+					})
 					let payInfo = wx.getStorageSync('payInfo')
 					if (payInfo) {
-						let BankPickerIndex = 0;
-						for (var i in that.data.picker) {
-							BankPickerIndex = i
-							if (that.data.picker[i] == payInfo['Banktype']) {
-								break
-							}
-						}
 						that.setData({
-							aliPay: payInfo['aliPay'],
-							bankCardNumber: payInfo['bankCardNumber'],
-							Banktype: payInfo['Banktype'],
-							BankPickerIndex
+							payNumber: payInfo[t.payType]
 						})
 					}
 				}
 			}
 		})
-
 
 	},
 	onPullDownRefresh() {
@@ -177,18 +157,6 @@ Page({
 			serviceTimeSpan: res.serviceTimeSpan,
 		})
 	},
-	//改变选择银行索引
-	BankPickerChange(e) {
-		this.setData({
-			BankPickerIndex: e.detail.value,
-			Banktype: this.data.picker[e.detail.value]	//银行类型
-		})
-	},
-	getElseBank(e) {
-		this.setData({
-			Banktype: e.detail.value
-		})
-	},
 	adjustStatus(res) {
 		//检测活动的报名成功状态
 		this.setData({
@@ -242,9 +210,8 @@ Page({
 						year: app.globalData.userInfo["year"], //学年
 						id: app.globalData.userInfo["id"], //身份证
 					},
-					aliPay: that.data.aliPay ? that.data.aliPay : '',
-					bankType: that.data.Banktype ? that.data.Banktype : '',
-					bankCardNumber: that.data.bankCardNumber ? that.data.bankCardNumber : '',
+					payType: that.data.payType ? that.data.payType : '',
+					payNumber: that.data.payNumber ? that.data.payNumber : '',
 					//岗位信息
 					joinTime: `${t.getFullYear()}-${utils.Z(t.getMonth() + 1)}-${utils.Z(t.getDate())} ${utils.Z(t.getHours())}:${utils.Z(t.getMinutes())}`,
 					posIdx: that.data.idx,
@@ -254,14 +221,8 @@ Page({
 		}).then(res => {
 			//如果是补贴活动,那将银行卡和支付宝信息保存到本地
 			if (that.data.actions.isSubsidy == 1) {
-				let payInfo = {
-					'aliPay': that.data.aliPay,
-					'Banktype': that.data.Banktype,
-					'bankCardNumber': that.data.bankCardNumber
-				}
-				wx.setStorageSync('payInfo', payInfo)
+				that.savePayInfo()
 			}
-
 			//将该活动id加入到userInfo
 			db.collection('UserInfo').where({
 				_openid: app.globalData.userInfo["_openid"],
@@ -345,6 +306,17 @@ Page({
 						})
 					})
 			})
+	},
+	savePayInfo() {
+		const that = this;
+
+		let localPayInfo = wx.getStorageSync('payInfo')
+		if (!localPayInfo) {
+			localPayInfo = {}
+		}
+		localPayInfo[that.data.payType] = that.data.payNumber
+		wx.setStorageSync('payInfo', localPayInfo)
+
 	},
 	showModal(e) {
 		var tmp = e.currentTarget.dataset.target
@@ -632,11 +604,6 @@ Page({
 			boxer
 		});
 	},
-	getbutton(e) {
-		this.setData({
-			payee: e.detail.value
-		})
-	},
 	openFile(e) {
 		var idx = e.currentTarget.dataset.target;
 		var fileid = this.data.actions.FileID[idx];
@@ -687,15 +654,7 @@ Page({
 	checkInfo() {
 		const that = this
 		if (that.data.actions.isSubsidy) {
-			if (!that.data.payee) {
-				this.setShow("error", "支付信息没填");
-				return false
-			}
-			if (that.data.payee == 1 && that.data.aliPay == '') {
-				this.setShow("error", "支付信息没填");
-				return false
-			}
-			if (that.data.payee == 2 && (that.data.BankPickerIndex == '' || that.data.Banktype == '')) {
+			if (!that.data.payNumber) {
 				this.setShow("error", "支付信息没填");
 				return false
 			}

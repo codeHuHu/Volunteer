@@ -448,43 +448,16 @@
 			<view class="title">服务岗位</view>
 			<text>{{serviceTimeSpan[idx[0]]['positions'][idx[1]]['name']}}</text>
 		</view>
-
-		<view wx:if="{{actions.isSubsidy}}" class="cu-form-group">
-			<view class="title inteam ">收款单位</view>
-			<radio-group bindchange="getbutton">
-				<label class="margin-left-sm">
-					<radio class="blue sm radio" value="1"></radio>
-					<text> 支付宝</text>
-				</label>
-				<label class="margin-left-sm">
-					<radio class="blue sm radio" value="2"></radio>
-					<text> 银行卡</text>
-				</label>
-			</radio-group>
-		</view>
-		<view wx:if="{{payee=='1'}}">
-			<view class="cu-form-group" style="justify-content: between;" style="display: flex;align-items: center; ">
-				<view class="title outteam">支付宝号码:</view>
-				<input class="tel" model:value="{{aliPay}}" placeholder="支付宝号仅发放补贴用">
-				</input>
-			</view>
-		</view>
-		<view wx:if="{{payee=='2'}}">
+		<view>
 			<view class="cu-form-group">
-				<view class="title">请选择对应银行</view>
-				<picker bindchange="BankPickerChange" value="{{BankPickerIndex}}" range="{{picker}}">
-					<view class="picker">
-						{{BankPickerIndex?picker[BankPickerIndex]:'请选择'}}
-					</view>
-				</picker>
-			</view>
-			<view wx:if="{{BankPickerIndex==picker.length-1}}" class="cu-form-group">
-				<view class="title">银行名</view>
-				<input model:value="{{Banktype}}" placeholder="×××银行"></input>
+				<view class="title">收款单位</view>
+				<view class="picker">
+					{{payType}}
+				</view>
 			</view>
 			<view class="cu-form-group" style="justify-content: between;" style="display: flex;align-items: center; ">
 				<view class="title outteam">银行卡号</view>
-				<input class="tel" model:value="{{bankCardNumber}}" placeholder="例：6217003810026896707">
+				<input class="tel" model:value="{{payNumber}}" placeholder="例：6217003810026896707">
 				</input>
 			</view>
 		</view>
