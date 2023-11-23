@@ -180,6 +180,21 @@
 				<view class="title">元</view>
 			</view>
 		</view>
+		<view>
+			<view class="cu-form-group" wx:if="{{isSubsidy==1}}">
+				<text class="text-red text-xxl">*</text>
+				<view class="title">请指定转账方式</view>
+				<picker bindchange="BankPickerChange" value="{{BankPickerIndex}}" range="{{picker}}">
+					<view class="picker">
+						{{BankPickerIndex?picker[BankPickerIndex]:'请选择'}}
+					</view>
+				</picker>
+			</view>
+			<view wx:if="{{isSubsidy==1&&BankPickerIndex==picker.length-1}}" class="cu-form-group">
+				<view class="title">银行名</view>
+				<input model:value="{{payType}}" placeholder="×××银行"></input>
+			</view>
+		</view>
 		<!-- <view class="cu-form-group" wx:if="{{isSubsidy==1}}">补贴金额</view> -->
 		<view class="cu-form-group">
 			<view class="inline_name">是否上传活动方案:</view>

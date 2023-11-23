@@ -68,7 +68,17 @@ Page({
 		temp_fileList: [],	//简介文件
 		myGroupTagList: [],
 
-
+		picker: [
+			'支付宝',
+			'建设银行',
+			'邮储银行',
+			'农业银行',
+			'工商银行',
+			'中国银行',
+			'交通银行',
+			'其他银行(自定义)'
+		],
+		payType:''
 	},
 	onLoad() {
 		this.setData({
@@ -228,7 +238,7 @@ Page({
 
 									tag: this.data.constants.tagList[this.data.tagIndex],
 									groupTag,
-
+									payType,
 									teamName: this.data.teamName,
 									qr_code,
 									iZhiYuan,
@@ -408,6 +418,10 @@ Page({
 		if (this.data.isSubsidy == 1 && this.data.subsidyAmount == 0) {
 			this.setShow("error", "未指定补贴金额");
 			return 0
+		}
+		if(this.data.isSubsidy ==1 && this.data.payType=='')
+		{
+			this.setShow("error","未指定转账方式");
 		}
 		if (this.data.isfile == 1 && this.data.temp_fileList == '') {
 			this.setShow("error", "未上传文件");
@@ -601,6 +615,7 @@ Page({
 				desc: this.data.positonDescription
 			}
 			let tempList = this.data.serviceTimeSpan
+			//‘position’是字段数组,对象才可以通过字段拿到值
 			tempList[span]['positions'].push(tempPos)
 			//添加岗位后,自动展开列表
 			let boxer = this.data.boxer
@@ -858,4 +873,17 @@ Page({
 			isfile: e.detail.value
 		})
 	},
+
+		//改变选择银行索引
+		BankPickerChange(e) {
+		
+				var idx=this.data.picker.length-1
+			this.setData({
+				BankPickerIndex: e.detail.value,
+				payType: e.detail.value==idx?'':this.data.picker[e.detail.value]	//银行类型
+			})
+			
+	},
+	
+
 })
