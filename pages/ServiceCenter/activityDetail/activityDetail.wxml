@@ -40,7 +40,7 @@
 			<text class="iconfont icon-icon-test20 text-green"></text>
 		</button>
 		<view class="solid-bottom text-lg text-bold padding text-black">{{isPintuan?'报名':'报名'}}要求</view>
-		<view wx:if="{{actions.groupTag}}" class="flex-container cu-form-group padding flex align-start">
+		<view wx:if="{{actions.groupTag!=''}}" class="flex-container cu-form-group padding flex align-start">
 			<view class="request-left" style="width: auto;">
 				<text class="">{{isPintuan?'志愿者':'志愿者'}}要求</text>
 			</view>
@@ -448,16 +448,19 @@
 			<view class="title">服务岗位</view>
 			<text>{{serviceTimeSpan[idx[0]]['positions'][idx[1]]['name']}}</text>
 		</view>
-		<view>
+		<view >
 			<view class="cu-form-group">
 				<view class="title">收款单位</view>
 				<view class="picker">
 					{{payType}}
 				</view>
 			</view>
-			<view class="cu-form-group" style="justify-content: between;" style="display: flex;align-items: center; ">
-				<view class="title outteam">银行卡号</view>
-				<input class="tel" model:value="{{payNumber}}" placeholder="例：6217003810026896707">
+			<view wx:if="{{payType=='支付宝'}}" class="cu-form-group" style="justify-content: between;" style="display: flex;align-items: center; ">
+				<input class="tel" model:value="{{payNumber}}" placeholder="请填写支付宝账号">
+				</input>
+			</view>
+			<view wx:else class="cu-form-group" style="justify-content: between;" style="display: flex;align-items: center; ">
+				<input class="tel" model:value="{{payNumber}}" placeholder="请填写对应的银行卡号">
 				</input>
 			</view>
 		</view>

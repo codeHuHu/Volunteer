@@ -86,12 +86,27 @@ Page({
 			phone: app.globalData.userInfo["phone"],
 			myPos: app.globalData.userInfo["position"]
 		})
+		
+
 		const currentDate = new Date().toISOString().slice(0, 10);
 		const currentTime = new Date().toLocaleTimeString('en-US', {
 			hour12: false,
 			hour: '2-digit',
 			minute: '2-digit'
 		}).slice(0, 5);
+
+		
+		const tmpDate = new Date();
+tmpDate.setDate(tmpDate.getDate() + 3);
+		const tmpTime=new Date()
+		tmpTime.setHours(0,0,0,0);
+		const tmpDTime = tmpTime.toLocaleTimeString('en-US', {
+			hour12: false,
+			hour: '2-digit',
+			minute: '2-digit'
+	}).slice(0, 5);
+
+const reDeadDate = tmpDate.toISOString().slice(0, 10);
 		this.setData({
 			nowDate: currentDate,
 			nowTime: currentTime,
@@ -99,8 +114,8 @@ Page({
 			beginDate: currentDate,//服务开始日期
 			startTime: currentTime,//服务阶段开始时刻
 			endTime: "23:59",//服务阶段结束时刻
-			deadDate: currentDate,//截止日期
-			deadTime: currentTime,//截止时刻
+			deadDate: reDeadDate,//截止日期
+			deadTime: tmpDTime,//截止时刻
 		});
 	},
 	onReady() {
@@ -144,13 +159,15 @@ Page({
 	},
 	//填写截止日期的时刻
 	bindDeadTimeChange: function (e) {
+		console.log(e.detail.value)
 		this.setData({
 			deadTime: e.detail.value,
 		})
 	},
 	//填写截止日期的日期
 	bindDeadDateChange: function (e) {
-		this.setData({
+	
+    this.setData({
 			deadDate: e.detail.value,
 		})
 	},
@@ -238,7 +255,7 @@ Page({
 
 									tag: this.data.constants.tagList[this.data.tagIndex],
 									groupTag,
-									payType,
+									payType:this.data.payType,
 									teamName: this.data.teamName,
 									qr_code,
 									iZhiYuan,
@@ -391,6 +408,7 @@ Page({
 		})
 	},
 	check() {
+	
 		if (!this.data.holder || !this.data.phone) {
 			this.setShow("error", "请重启小程序");
 			return 0
@@ -402,6 +420,10 @@ Page({
 		if (this.data.outNum == 0) {
 			this.setShow("error", '请添加岗位');
 			return 0
+		}
+		if(!this.numEqual())
+		{
+			this.setShow("error","各岗位人数需要与总需求人数一致")
 		}
 		if (!this.data.outNum && this.data.outNum != 0) {
 			this.setShow("error", "公开招募错误");
@@ -432,6 +454,22 @@ Page({
 			return 0
 		}
 		return 1
+	},
+	numEqual()
+	{
+		
+		let tempList = this.data.serviceTimeSpan
+		let sum=0
+		for(let i in tempList)
+		{
+			for(let j in tempList[i]['positions'])
+			{
+			sum+=tempList[i]['positions'][j].number
+			}
+		}
+		if(sum == this.data.outNum)
+		return true
+		return false
 	},
 	setShow(status, message, time = 1000, fun = false) {
 		if (loading) {

@@ -150,7 +150,7 @@ Page({
 			constants,
 			//记录用户是否有导出特权(负责人或管理员)
 			isAdmin: (app.globalData.userInfo["_openid"] == res._openid) || (Number(app.globalData.userInfo["position"]) >= 1),
-			isDead: 0,
+			isDead: res.deadTimeStamp - new Date().getTime() <= 0 ? 1 : 0,
 			//isDead: res.deadTimeStamp - new Date().getTime() <= 0 ? 1 : 0,
 			isPintuan: res.isPintuan,
 			actions: res,
@@ -236,6 +236,10 @@ Page({
 		})
 	},
 	unJoin() {
+		if (this.data.isDead ) {
+			this.setShow("error", "截止时间已到,不可操作")
+			return
+		}
 		var that = this
 		//按钮暂时设置不可见状态
 		that.setData({
@@ -655,7 +659,7 @@ Page({
 		const that = this
 		if (that.data.actions.isSubsidy) {
 			if (!that.data.payNumber) {
-				this.setShow("error", "支付信息没填");
+				this.setShow("error", "收款信息没填");
 				return false
 			}
 		}

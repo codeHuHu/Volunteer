@@ -137,7 +137,7 @@
 					{{deadDate}}
 				</view>
 			</picker>
-			<picker class="margin-right" mode="time" value="{{nowTime}}" start="00:00" end="23:59" bindchange="bindDeadTimeChange">
+			<picker class="margin-right" mode="time" value="{{nowTime}}"  bindchange="bindDeadTimeChange">
 				<view style="content: 'sa';" class="picker">
 					{{deadTime}}
 				</view>
