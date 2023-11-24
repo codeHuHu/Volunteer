@@ -131,13 +131,11 @@
 		</view>
 		<view class="margin-right-xl" bindtap="showModal" data-target="joinMembers">
 			<view class="cu-avatar-group">
-				<view wx:if="{{actions.joinMembers.length<6}}">
+				<view wx:if="{{actions.joinMembers!=''&&actions.joinMembers.length<6}}">
 					<view wx:for="{{actions.joinMembers}}" wx:key="index" class="cu-avatar round sm" style="background-image:url({{avators[index]}});"></view>
 				</view>
 
-				<view wx:else>
-					<view wx:for="111111" wx:key="index" class="cu-avatar round sm" style="background-image:url({{avators[index]}});"></view>
-				</view>
+			
 
 			</view>
 			<text class="text-grey text-sm ">{{actions.outJoin}} 人</text>
@@ -448,7 +446,7 @@
 			<view class="title">服务岗位</view>
 			<text>{{serviceTimeSpan[idx[0]]['positions'][idx[1]]['name']}}</text>
 		</view>
-		<view >
+		<view wx:if="{{actions.isSubsidy==1}}">
 			<view class="cu-form-group">
 				<view class="title">收款单位</view>
 				<view class="picker">
