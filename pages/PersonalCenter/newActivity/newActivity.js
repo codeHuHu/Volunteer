@@ -20,7 +20,7 @@ Page({
 			tagList: [
 				'党建引领',
 				'乡村振兴',
-				'新时代文明实践（文化/文艺/体育）',
+				'新时代文明实践',
 				'科普科教',
 				'社区/城中村治理',
 				'环境保护',
@@ -30,11 +30,11 @@ Page({
 			],
 			//服务群体
 			groupTagList: [
-				{tag:'18周岁以上青年大学生',light:false},
-				{tag:'热心慈善公益事业',light:false},
-				{tag:'性格开朗',light:false},
-				{tag:'听从安排',light:false},
-				{tag:'具备参加志愿服务相应的基本能力和身体素质',light:false}
+				{ tag: '18周岁以上青年大学生', light: false },
+				{ tag: '热心慈善公益事业', light: false },
+				{ tag: '性格开朗', light: false },
+				{ tag: '听从安排', light: false },
+				{ tag: '具备参加志愿服务相应的基本能力和身体素质', light: false }
 			],
 			//文件类型
 			icon: ['excel', 'ppt', 'word', 'pdf'],
@@ -72,7 +72,7 @@ Page({
 	},
 	onLoad() {
 		this.setData({
-			holder: app.globalData.userInfo["userName"],
+			holder: app.globalData.userInfo["name"],
 			phone: app.globalData.userInfo["phone"],
 			myPos: app.globalData.userInfo["position"]
 		})
@@ -122,6 +122,7 @@ Page({
 	},
 	//添加时间段的开始时间
 	bindSTimeChange: function (e) {
+		console.log(e)
 		this.setData({
 			startTime: e.detail.value,
 		})
@@ -154,112 +155,161 @@ Page({
 		});
 	},
 	async sendNew(e) {
-		var that=this
+		var that = this
 		//检测是否输入完整
 		if (this.check() == 0) {
 			return
 		}
-		wx.showLoading({
-			title: '',
+		// wx.showLoading({
+		// 	title: '',
+		// })
+		// //创建异步上传任务数组
+		// let uploadTask = [
+		// 	[],
+		// 	[],
+		// 	[]
+		// ]
+		// //群二维码
+		// for (let i in this.data.temp_imgList) {
+		// 	uploadTask[0].push(this.uploadImage(this.data.temp_imgList[i]))
+		// }
+
+		// //i志愿报名码
+		// for (let i in this.data.temp_imgList2) {
+		// 	uploadTask[1].push(this.uploadImage(this.data.temp_imgList2[i]))
+		// }
+
+		// //获取简介文件的fileId
+		// for (let i in this.data.temp_fileList) {
+		// 	//upladTask[2]是promise对象数组
+		// 	uploadTask[2].push(this.uploadFile(this.data.temp_fileList[i].tempFilePath));  // 直接将返回值推入 this.data.temp_fileList[i]
+		// }
+
+		const stamps = this.generateStamp()
+		let groupTag = []
+		var tmpgroup = that.data.constants.groupTagList
+		for (var l in tmpgroup) {
+			if (tmpgroup[l].light) {
+				groupTag.push(tmpgroup[l].tag)
+			}
+		}
+		let form = {
+			holderDetail: this.data.holderDetail,
+			//service
+			serviceName: this.data.actName,
+			serviceAddress: this.data.address,
+			serviceIntro: this.data.intro,
+			serviceTag: this.data.constants.tagList[this.data.tagIndex],
+			serviceNotice: this.data.notice,
+			serviceStartStamp: stamps[0],//服务开始时间戳
+			serviceEndStamp: stamps[1],//服务结束时间戳
+			serviceDeadStamp: stamps[2],//截止报名时间戳
+			serviceTimeSpan: this.data.serviceTimeSpan,
+
+			benefits: this.data.peoplegift,
+			status: this.data.myPos >= 1 ? 1 : 0, // 如果pos为1，活动状态为0：待审核，否则为1：进行中
+			groupTag,
+			//number
+			outJoin: 0,
+			outNum: this.data.outNum,
+
+			teamName: this.data.teamName,
+			qr_code: [],
+			iZhiYuan: [],
+			introFile: [],	//简介文件
+			isSubsidy: !!this.data.isSubsidy,//转换为布尔值
+			subsidyAmount: this.data.subsidyAmount,
+		}
+
+		wx.$ajax({
+			url: wx.$param.server['fastapi'] + "/service/create",
+			method: "post",
+			data: form,
+			header: {
+				'content-type': 'application/json'
+			},
+		}).then(res => {
+
+		}).catch(err => {
+
 		})
-		//创建异步上传任务数组
-		let uploadTask = [
-			[],
-			[],
-			[]
-		]
-		//群二维码
-		for (let i in this.data.temp_imgList) {
-			uploadTask[0].push(this.uploadImage(this.data.temp_imgList[i]))
-		}
 
-		//i志愿报名码
-		for (let i in this.data.temp_imgList2) {
-			uploadTask[1].push(this.uploadImage(this.data.temp_imgList2[i]))
-		}
-
-		//获取简介文件的fileId
-		for (let i in this.data.temp_fileList) {
-			//upladTask[2]是promise对象数组
-			uploadTask[2].push(this.uploadFile(this.data.temp_fileList[i].tempFilePath));  // 直接将返回值推入 this.data.temp_fileList[i]
-		}
+		console.log(form);
 
 
-		Promise.all(uploadTask[0])
-			.then(result => {
-				const qr_code = result	//result保存群二维码，赋值给qr_code
-				Promise.all(uploadTask[1])
-					.then(result => {
-						const iZhiYuan = result
-						Promise.all(uploadTask[2])
-							.then(result => {
-								let groupTag=[]
-								var tmpgroup=that.data.constants.groupTagList
-								for(var l in tmpgroup)
-								{
-									if(tmpgroup[l].light)
-									{
-										groupTag.push(tmpgroup[l].tag)
-									}
-								}
-								const FileID = result
-								const stamps = this.generateStamp()
-								let data = {
-									//holder
-									holder: this.data.holder,
-									phone: this.data.phone,
-									holderDetail: this.data.holderDetail,
-									//act
-									actName: this.data.actName,
-									peogift: this.data.peoplegift,
-									notice: this.data.notice,
-									intro: this.data.intro,
-									status: this.data.myPos >= 1 ? '1' : '0', // 如果pos为1，活动状态为0：待审核，否则为1：进行中
-									address: this.data.address,
-									//number
-									outJoin: 0,
-									outNum: this.data.outNum,
+		// Promise.all(uploadTask[0])
+		// 	.then(result => {
+		// 		const qr_code = result	//result保存群二维码，赋值给qr_code
+		// 		Promise.all(uploadTask[1])
+		// 			.then(result => {
+		// 				const iZhiYuan = result
+		// 				Promise.all(uploadTask[2])
+		// 					.then(result => {
+		// 						let groupTag = []
+		// 						var tmpgroup = that.data.constants.groupTagList
+		// 						for (var l in tmpgroup) {
+		// 							if (tmpgroup[l].light) {
+		// 								groupTag.push(tmpgroup[l].tag)
+		// 							}
+		// 						}
+		// 						const FileID = result
+		// 						const stamps = this.generateStamp()
+		// 						let data = {
+		// 							//holder
+		// 							holder: this.data.holder,
+		// 							phone: this.data.phone,
+		// 							holderDetail: this.data.holderDetail,
+		// 							//act
+		// 							actName: this.data.actName,
+		// 							peogift: this.data.peoplegift,
+		// 							notice: this.data.notice,
+		// 							intro: this.data.intro,
+		// 							status: this.data.myPos >= 1 ? '1' : '0', // 如果pos为1，活动状态为0：待审核，否则为1：进行中
+		// 							address: this.data.address,
+		// 							//number
+		// 							outJoin: 0,
+		// 							outNum: this.data.outNum,
 
-									serviceTimeSpan: this.data.serviceTimeSpan,
+		// 							serviceTimeSpan: this.data.serviceTimeSpan,
 
-									serviceStartStamp: stamps[0],//服务开始时间戳
-									serviceEndStamp: stamps[1],//服务结束时间戳
-									deadTimeStamp: stamps[2],//截止报名时间戳
+		// 							serviceStartStamp: stamps[0],//服务开始时间戳
+		// 							serviceEndStamp: stamps[1],//服务结束时间戳
+		// 							deadTimeStamp: stamps[2],//截止报名时间戳
 
-									tag: this.data.constants.tagList[this.data.tagIndex],
-									groupTag,
+		// 							tag: this.data.constants.tagList[this.data.tagIndex],
+		// 							groupTag,
 
-									teamName: this.data.teamName,
-									qr_code,
-									iZhiYuan,
-									introFile: this.data.temp_fileList,	//简介文件
-									FileID,	//简介文件的FileID
-									isSubsidy: Number(this.data.isSubsidy),
-									subsidyAmount: this.data.subsidyAmount,
-									isPintuan: 1,
-								}
-								db.collection('ActivityInfo').add({
-									data: data,
-									success() {
-										console.log("添加活动成功")
-										if (that.data.myPos == 1) {
-											wx.showToast({
-												icon: 'loading',
-												title: '请尽快联系管理员审核并发布',
-											})
-										} else {
-											this.setShow("success", "发布成功");
-										}
-									}
-								})
-							})
-					})
-			})
-		setTimeout(() => {
-			wx.navigateBack(),
-				wx.hideToast()
-			wx.hideLoading()
-		}, 2000); // 延迟 2000 毫秒后执行
+		// 							teamName: this.data.teamName,
+		// 							qr_code,
+		// 							iZhiYuan,
+		// 							introFile: this.data.temp_fileList,	//简介文件
+		// 							FileID,	//简介文件的FileID
+		// 							isSubsidy: Number(this.data.isSubsidy),
+		// 							subsidyAmount: this.data.subsidyAmount,
+		// 							isPintuan: 1,
+		// 						}
+		// 						db.collection('ActivityInfo').add({
+		// 							data: data,
+		// 							success() {
+		// 								console.log("添加活动成功")
+		// 								if (that.data.myPos == 1) {
+		// 									wx.showToast({
+		// 										icon: 'loading',
+		// 										title: '请尽快联系管理员审核并发布',
+		// 									})
+		// 								} else {
+		// 									this.setShow("success", "发布成功");
+		// 								}
+		// 							}
+		// 						})
+		// 					})
+		// 			})
+		// 	})
+		// setTimeout(() => {
+		// 	wx.navigateBack(),
+		// 		wx.hideToast()
+		// 	wx.hideLoading()
+		// }, 2000); // 延迟 2000 毫秒后执行
 	},
 	ChooseImage() {
 		wx.chooseMedia({
@@ -389,11 +439,11 @@ Page({
 			this.setShow("error", "请添加活动时间段");
 			return 0
 		}
-		if (this.data.outNum == 0) {
-			this.setShow("error", '请添加岗位');
-			return 0
-		}
-		if (!this.data.outNum && this.data.outNum != 0) {
+		// if (this.data.outNum == 0) {
+		// 	this.setShow("error", '请添加岗位');
+		// 	return 0
+		// }
+		if (!!!this.data.outNum && this.data.outNum != 0) {
 			this.setShow("error", "公开招募错误");
 			return 0
 		}
@@ -405,18 +455,18 @@ Page({
 			this.setShow("error", "未指定服务地点")
 			return 0
 		}
-		if (this.data.isSubsidy == 1 && this.data.subsidyAmount == 0) {
+		if (!!this.data.isSubsidy && this.data.subsidyAmount == 0) {
 			this.setShow("error", "未指定补贴金额");
 			return 0
 		}
-		if (this.data.isfile == 1 && this.data.temp_fileList == '') {
+		if (!!this.data.isfile && this.data.temp_fileList == '') {
 			this.setShow("error", "未上传文件");
 			return 0
 		}
-		if (this.data.temp_imgList.length == 0 || this.data.temp_imgList2.length == 0) {
-			this.setShow("error", "未上传群图片或i志愿图片");
-			return 0
-		}
+		// if (this.data.temp_imgList.length == 0 || this.data.temp_imgList2.length == 0) {
+		// 	this.setShow("error", "未上传群图片或i志愿图片");
+		// 	return 0
+		// }
 		return 1
 	},
 	setShow(status, message, time = 1000, fun = false) {
@@ -519,7 +569,7 @@ Page({
 				serviceEndStamp = stamp
 			}
 		}
-		return [serviceStartStamp, serviceEndStamp, deadTimeStamp]
+		return [serviceStartStamp / 1000, serviceEndStamp / 1000, deadTimeStamp / 1000]
 	},
 	//改变选择岗位索引
 	positionPickerChange(e) {
@@ -806,26 +856,28 @@ Page({
 		let idx = e.currentTarget.dataset.index
 		//如果是自定义标签的话
 		if (idx == -1) {
-			let groupTagName=
-			 {tag: this.data.groupTagName,
-				light:true}
+			let groupTagName =
+			{
+				tag: this.data.groupTagName,
+				light: true
+			}
 
 			//判断是否为空
 			if (groupTagName.tag === '') {
 				return
 			}
-			
-			let tmpgroup=this.data.constants.groupTagList
+
+			let tmpgroup = this.data.constants.groupTagList
 			tmpgroup.push(groupTagName)
 			this.setData({
-				'constants.groupTagList':tmpgroup
+				'constants.groupTagList': tmpgroup
 			})
 		} else {
-			let tmpgroup=this.data.constants.groupTagList
+			let tmpgroup = this.data.constants.groupTagList
 			console.log(tmpgroup)
-			tmpgroup[idx].light=!tmpgroup[idx].light;
+			tmpgroup[idx].light = !tmpgroup[idx].light;
 			this.setData({
-			'constants.groupTagList':tmpgroup
+				'constants.groupTagList': tmpgroup
 			})
 		}
 	},
@@ -840,11 +892,11 @@ Page({
 		// })
 		// console.log(idx)
 		let idx = e.currentTarget.dataset.index
-		let tmpgroup=this.data.constants.groupTagList
+		let tmpgroup = this.data.constants.groupTagList
 		console.log(tmpgroup)
-		tmpgroup[idx].light=!tmpgroup[idx].light;
+		tmpgroup[idx].light = !tmpgroup[idx].light;
 		this.setData({
-		'constants.groupTagList':tmpgroup
+			'constants.groupTagList': tmpgroup
 		})
 
 	},

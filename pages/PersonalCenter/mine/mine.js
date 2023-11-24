@@ -13,47 +13,40 @@ Page({
 	},
 	onShow() {
 		this.getUserInfo()
-		this.saveData()
+		this.refreshData()
+		this.saveGlobalData()
 	},
-	saveData() {
+	saveGlobalData() {
 		wx.setStorageSync('app_globalData', app.globalData)
-	},
-	getOpenid() {
-		let openid = wx.getStorageSync('openid')
-		if (openid.length > 1) {
-			return openid
-		}
-		wx.cloud.callFunction({
-			name: 'getUserOpenid',
-			success(res) {
-				return res.result.openid
-
-			}
-		})
 	},
 	getUserInfo() {
 		var that = this
-		let openid = this.getOpenid()
-		wx.cloud.database().collection('UserInfo').where({
-			_openid: openid ? openid : (app.globalData.userInfo['_openid'] ? app.globalData.userInfo['_openid'] : 1)
-		})
-			.get({
-				success(res) {
-					that.setData({
-						actions: res.data[0],
-						isLogin: true,
-						myPos: res.data[0].position,
-					})
-					app.globalData.userInfo=res.data[0]
-				},
-				fail(err) {
-					that.setData({
-						isLogin: false
-					})
-				}
+		//先拿本地JWT_Token来获取用户信息
+		wx.$ajax({
+			url: wx.$param.server['fastapi'] + "/user/get",
+			method: "get"
+		}).then(res => {
+			//console.log('获取信息res', res)
+			app.globalData.isAuth = true
+			app.globalData.userInfo = res
+			this.setData({
+				isLogin: true,
+				actions: res
 			})
+			wx.setStorageSync('userInfo', res)
+		}).catch(err => {
+			that.globalData.isAuth = false
+			console.log('获取信息err', err);
+			that.getToken()
+		})
 	},
-
+	refreshData() {
+		this.setData({
+			isLogin: app.globalData.isAuth,
+			actions: app.globalData.userInfo,
+			myPos:app.globalData.userInfo['position']
+		})
+	},
 	navTo(e) {
 		if (e.currentTarget.dataset.check == "1" && !this.data.isLogin) {
 			this.setShow("error", "未注册");

@@ -19,25 +19,20 @@ Page({
 		],
 		checkMode: 0,
 		constants: {
-			hours: 'xxxxxxxx',
-			minutes: 'xxxxxxx',
 			deadTime: 'xxxxxxx',
-			serviceTime: 'xxxxxxx',
 		},
 		payType: '',
 		payNumber: '',
 	},
-	onLoad: function (options) {
+	onLoad(options) {
 		console.log('app.globalData:', app.globalData)
 		let myInfo = wx.getStorageSync('userInfo')
-		var that = this
-		//记录是否登录
-		that.setData({
-			isLogin: app.globalData.isAuth,
-			myInfo: myInfo,
-			//传入活动id
-			id: options.id,
+		let that = this
 
+		that.setData({
+			isLogin: app.globalData.isAuth,//记录是否登录
+			myInfo: myInfo,//记录个人信息
+			id: options.id,//传入活动id
 			//判断是否为审核页面
 			checkMode: options.check ? 1 : 0
 		})
@@ -46,267 +41,177 @@ Page({
 		if (options.actions) {
 			console.log('从转发进来的')
 			let actions = JSON.parse(decodeURIComponent(options.actions))
-			let userInfo = wx.getStorageSync('userInfo')
+			//let myInfo = wx.getStorageSync('userInfo')
 			that.setData({
 				actions,
-				isLogin: userInfo ? true : false,
+				//isLogin: myInfo ? true : false,
 			})
 		}
-		db.collection('ActivityInfo').doc(options.id).get({
-			success(res) {
-				var t = res.data
-				// 时间戳的转换
-				that.adjustTimeStamp(t);
-				// 活动对于用户的状态转换
-				that.adjustStatus(t);
-				//开启监听(传入该页面的id)
-				that.watcher(options.id);
 
-				//如果是补贴活动,读取本地数据
-				if (t.isSubsidy) {
-					that.setData({
-						payType: t.payType,
-					})
-					let payInfo = wx.getStorageSync('payInfo')
-					if (payInfo) {
-						that.setData({
-							payNumber: payInfo[t.payType]
-						})
-					}
-				}
-			}
-		})
+		that.getService(options.id)
 
 	},
 	onPullDownRefresh() {
 		wx.stopPullDownRefresh()
 	},
 	onUnload() {
-		try {
-			if (this.watcher) {
-				this.watcher.close();
-				console.log('关闭数据监听')
+	},
+	getService(id = null) {
+		let that = this
+		if (!id) {
+			id = that.data.id
+		}
+
+		//获取服务
+		wx.$ajax({
+			url: wx.$param.server['fastapi'] + "/service/show",
+			method: "post",
+			data: {
+				"id": id,
+			},
+			header: {
+				'content-type': 'application/json'
 			}
-
-		} catch (error) {
-			console.log('关闭监听失败', error)
-		}
+		}).then(res => {
+			that.adjustData(res.data[0])
+		}).catch(err => {
+		})
 	},
-	watcher(id) {
-		var that = this
-		this.watcher = db.collection('ActivityInfo')
-			.doc(id)
-			.watch({
-				onChange: function (snapShot) {
-					console.log(snapShot)
-					that.adjustStatus(snapShot.docs[0])
-					that.setData({
-						actions: snapShot.docs[0],
-						serviceTimeSpan: snapShot.docs[0].serviceTimeSpan
-					})
-				},
-				onError: function (err) {
-					console.error('the watch closed because of error', err)
-				}
+	//调整数据
+	adjustData(res) {
+		let that = this
+
+		//如果是补贴活动,读取本地数据
+		if (res.isSubsidy) {
+			that.setData({
+				payType: res.payType,
 			})
-	},
-	adjustTimeStamp(res) {
-		//报名截止时间	报名截止日期
-		let t = new Date(res.deadTimeStamp);
-		const formattedTime = `${utils.Z(t.getHours())}:${utils.Z(t.getMinutes())}`;
-		const formattedDate = `${t.getFullYear()}-${utils.Z(t.getMonth() + 1)}-${utils.Z(t.getDate())}`;
-		//活动日期 服务开始时间 服务结束时间
-		t = new Date(res.serviceStartStamp);
-		const serviceDate = `${t.getFullYear()}-${utils.Z(t.getMonth() + 1)}-${utils.Z(t.getDate())}`;
-		const serviceStartTime = `${utils.Z(t.getHours())}:${utils.Z(t.getMinutes())}`;
-		t = new Date(res.serviceEndStamp);
-		const serviceEndTime = `${utils.Z(t.getHours())}:${utils.Z(t.getMinutes())}`;
-		//服务时长
-		t = 0;
-		for (var i in res.serviceTimeSpan) {
-			var splitTime = res.serviceTimeSpan[i].time.split('-')
-			var start = new Date(`${res.serviceTimeSpan[i].date} ${splitTime[0]}`).getTime()
-			var end = new Date(`${res.serviceTimeSpan[i].date} ${splitTime[1]}`).getTime()
-			t += end - start
-		}
-		const thours = Math.floor(t / (1000 * 60 * 60));
-		const tminutes = Math.floor((t % (1000 * 60 * 60)) / (1000 * 60));
-
-		//在这里加个非时间的功能,计算boxer
-		let boxer = []
-		for (var i in res.serviceTimeSpan) {
-			boxer.push(0)
+			let payInfo = wx.getStorageSync('payInfo')
+			if (payInfo) {
+				that.setData({
+					payNumber: payInfo[res.payType]
+				})
+			}
 		}
 
-		let constants = {
-			hours: thours,
-			minutes: tminutes,
-			deadTime: formattedDate + ' ' + formattedTime,
-			serviceTime: serviceDate + ' ' + serviceStartTime + '-' + serviceEndTime,
-			checkMode: Number(res.status) <= 0 ? 1 : 0,
-		}
-		this.setData({
-			boxer,
-			constants,
-			//记录用户是否有导出特权(负责人或管理员)
-			isAdmin: (app.globalData.userInfo["_openid"] == res._openid) || (Number(app.globalData.userInfo["position"]) >= 1),
-			isDead: 0,
-			//isDead: res.deadTimeStamp - new Date().getTime() <= 0 ? 1 : 0,
-			isPintuan: res.isPintuan,
-			actions: res,
-			serviceTimeSpan: res.serviceTimeSpan,
-		})
-	},
-	adjustStatus(res) {
-		//检测活动的报名成功状态
-		this.setData({
-			isFull: (res.outJoin == res.outNum) ? 1 : 0
-		})
+		let activeIdx = -1
 		if (res.joinMembers) {
-			var flag = 0
+			let joinFlag = 0
 			// 如果名单里有该志愿者,改变报名按钮状态
-			for (var i in res.joinMembers) {
-				if (res.joinMembers[i].info.openid == app.globalData.userInfo["_openid"]) {
-					flag = 1
+			for (let i in res.joinMembers) {
+				//暂时通过名字来判断
+				if (res.joinMembers[i]["name"] == app.globalData.userInfo["name"] && res.joinMembers[i]["id"] == app.globalData.userInfo["id"]) {
+					activeIdx = res.joinMembers[i].posIdx[0]
+					joinFlag = 1
 					// 找出所报名的岗位逻辑位置
-					this.setData({
+					that.setData({
 						idx: res.joinMembers[i].posIdx,
 					})
 					break
 				}
-
 			}
-			this.setData({
-				isJoin: flag,
+			that.setData({
+				isJoin: joinFlag,
 			})
 		} else {
-			this.setData({
+			that.setData({
 				isJoin: 0
 			})
 		}
+
+		//在这里加个非时间的功能,计算boxer
+		let boxer = []
+		for (let i in res.serviceTimeSpan) {
+			if (i == activeIdx) {
+				boxer.push(1)
+			} else {
+				boxer.push(0)
+			}
+		}
+
+		//一些常量
+		let constants = {
+			deadTime: res.serviceDeadTime,
+		}
+
+
+		that.setData({
+			isFull: (res.outJoin >= res.outNum) ? 1 : 0,
+			boxer,
+			constants,
+			//记录用户是否有导出特权(负责人或管理员)
+			isAdmin: app.globalData["userInfo"]["position"] >= 1,
+			isDead: false,
+			//isDead: res.deadTimeStamp - new Date().getTime() <= 0 ? 1 : 0,
+			actions: res,
+			serviceTimeSpan: res.serviceTimeSpan,
+		})
 	},
 	Join() {
-		var that = this
-		let t = new Date()
+		let that = this
+
 		//按钮暂时设置不可见状态
 		that.setData({
 			isJoin: -1
 		})
-		wx.cloud.callFunction({
-			name: 'updateJoinActivity',
-			data: {
-				collectionName: 'ActivityInfo',//集合名字
-				docName: that.data.id,//活动id
-				//操作变量
-				outJoinAdd: 1,//加一人
-				idx: that.data.idx,//该岗位的逻辑位置
-				member: {
-					//个人身份信息
-					info: {
-						openid: app.globalData.userInfo["_openid"], //openid
-						name: app.globalData.userInfo["userName"], //名字
-						phone: app.globalData.userInfo["phone"], //电话
-						school: app.globalData.userInfo["school"], //学校
-						year: app.globalData.userInfo["year"], //学年
-						id: app.globalData.userInfo["id"], //身份证
-					},
-					payType: that.data.payType ? that.data.payType : '',
-					payNumber: that.data.payNumber ? that.data.payNumber : '',
-					//岗位信息
-					joinTime: `${t.getFullYear()}-${utils.Z(t.getMonth() + 1)}-${utils.Z(t.getDate())} ${utils.Z(t.getHours())}:${utils.Z(t.getMinutes())}`,
-					posIdx: that.data.idx,
-					posName: that.data.serviceTimeSpan[that.data.idx[0]].positions[that.data.idx[1]].name,
-				}
+
+		let form = {
+			id: that.data.id,
+			payType: that.data.payType ? that.data.payType : '',
+			payNumber: that.data.payNumber ? that.data.payNumber : '',
+			posIdx: that.data.idx,
+			posName: that.data.serviceTimeSpan[that.data.idx[0]].positions[that.data.idx[1]].name,
+		}
+
+		console.log(form)
+
+		wx.$ajax({
+			url: wx.$param.server['fastapi'] + "/service/engage",
+			method: "post",
+			data: form,
+			header: {
+				'content-type': 'application/json'
 			}
 		}).then(res => {
-			//如果是补贴活动,那将银行卡和支付宝信息保存到本地
-			if (that.data.actions.isSubsidy == 1) {
+			console.log("报名成功res", res)
+			//如果是补贴活动,那将支付信息保存到本地
+			if (!!that.data.actions.isSubsidy) {
 				that.savePayInfo()
 			}
-			//将该活动id加入到userInfo
-			db.collection('UserInfo').where({
-				_openid: app.globalData.userInfo["_openid"],
-			}).update({
-				data: {
-					myActivity: db.command.push(that.data.id)
-				}
-			})
 			wx.hideLoading()
-			that.setShow("success", `成功参与${this.data.actions.ispintuan ? '拼团' : '报名'}`);
+			that.setShow("success", "成功参与");
+			that.getService()
+		}).catch(err => {
+			console.log("报名失败err", err)
+			wx.hideLoading()
 		})
 	},
 	unJoin() {
-		var that = this
+		let that = this
 		//按钮暂时设置不可见状态
 		that.setData({
 			isJoin: -1
 		})
-		//(非云函数)先获取数据库
-		db.collection('ActivityInfo').doc(this.data.id)
-			.get()
-			.then(res => {
-				this.setData({
-					actions: res.data
-				})
-				// 比较安全地在名单中清除该志愿者
-				var tmpList = res.data.joinMembers
-				var result = []
-				for (var i in tmpList) {
-					if (tmpList[i].info.openid != app.globalData.userInfo["_openid"]) {
-						result.push(tmpList[i])
-					}
-				}
-				//加入两个错误判断
-				if (res.data.outNum < 0) {
-					this.setShow("error", "系统异常");
-					return
-				}
-				// if (res.data.outNum < res.data.outJoin) {
-				// 	this.setShow("error", "系统异常");
-				// 	return
-				// }
-				//(云函数)人数自减1,赋值新的名单
-				wx.cloud.callFunction({
-					name: 'updateJoinActivity',
-					data: {
-						collectionName: 'ActivityInfo',
-						docName: that.data.id,
-						//操作变量
-						outJoinAdd: -1,
-						newJoinMembers: result,
-						idx: that.data.idx,
-					}
-				})
-					.then(res => {
-						//在userInfo中删除此活动id
-						db.collection('UserInfo').where({
-							_openid: app.globalData.userInfo["_openid"]
-						}).get({
-							success(res) {
-								var myActivityList = []
-								var myActivity = res.data[0].myActivity
-								for (var l in myActivity) {
-									if (myActivity[l] != that.data.id) {
-										myActivityList.push(myActivity[l])
-									}
-								}
-								db.collection('UserInfo')
-									.where({
-										_openid: app.globalData.userInfo["_openid"]
-									}).update({
-										data: {
-											myActivity: myActivityList
-										}
-									})
-									.then(res => {
-										wx.hideLoading()
-										that.setShow("success", "取消成功");
-									})
-							}
-						})
-					})
-			})
+
+		wx.$ajax({
+			url: wx.$param.server['fastapi'] + "/service/engage",
+			method: "post",
+			data: {
+				id: that.data.id
+			},
+			header: {
+				'content-type': 'application/json'
+			}
+		}).then(res => {
+			console.log("取消成功res", res)
+			that.getService()
+			wx.hideLoading()
+		}).catch(err => {
+			console.log("取消失败err", err)
+			wx.hideLoading()
+		})
 	},
+	//保存支付信息到本地
 	savePayInfo() {
 		const that = this;
 
@@ -319,46 +224,28 @@ Page({
 
 	},
 	showModal(e) {
-		var tmp = e.currentTarget.dataset.target
+		//首先看是否登录了
 		if (!this.data.isLogin) {
 			this.setShow("error", "您尚未注册");
 			wx.$navTo('/pages/PersonalCenter/accountSignUp/accountSignUp')
 			return
 		}
+
+		let tmp = e.currentTarget.dataset.target
+		
 		if (this.data.isDead && tmp == 'toCancel') {
 			this.setShow("error", "截止时间已到,不可操作")
 			return
 		}
-		if (tmp == 'toJoin') {
-			//报名窗口
-			//先判断是否满人
-			if (this.data.actions.outJoin >= this.data.actions.outNum) {
-				this.setShow("error", "人数已满");
-				return
-			}
-		} else if (tmp == 'toPintuan') {
+		if (tmp == 'toGroup' && !this.data.isJoin) {
+			this.setShow("error", "你尚未参与此活动");
+			return
+		}
 
+		if (tmp == 'comfirmInfo') {
 			this.setData({
 				idx: [e.currentTarget.dataset.timespan, e.currentTarget.dataset.position],
 			})
-			// wx.showLoading()
-			// //拼团
-			// //先判断是否满人
-			// if (this.data.actions.outJoin >= this.data.actions.outNum) {
-			// 	this.setShow("error", "人数已满");
-			// 	wx.hideLoading()
-			// 	return
-			// }
-			// this.setData({
-			// 	isJoin: 1
-			// })
-			// this.Join()
-			// return
-		} else if (tmp == 'toGroup') {
-			if (!this.data.isJoin) {
-				this.setShow("error", "你尚未参与此活动");
-				return
-			}
 		} else if (tmp == 'showPosDesc') {
 			this.setData({
 				showPosDescIdx: [e.currentTarget.dataset.sindex, e.currentTarget.dataset.pindex]
@@ -368,14 +255,15 @@ Page({
 				showFeedbackIdx: [e.currentTarget.dataset.index]
 			})
 		}
+
 		this.setData({
 			modalName: tmp
 		})
 	},
 	hideModal(e) {
-		var a = e.currentTarget.dataset.target
-		console.log(a)
-		if (a == 'join') {
+		let tmp = e.currentTarget.dataset.target
+
+		if (tmp == 'join') {
 			if (this.checkInfo()) {
 				wx.showLoading()
 				this.setData({
@@ -384,7 +272,7 @@ Page({
 				this.Join()
 			}
 
-		} else if (a == 'unjoin') {
+		} else if (tmp == 'unjoin') {
 			wx.showLoading()
 			this.unJoin()
 		}
@@ -394,8 +282,8 @@ Page({
 	},
 	//动画
 	toggle(e) {
-		var anmiaton = e.currentTarget.dataset.class;
-		var that = this;
+		let anmiaton = e.currentTarget.dataset.class;
+		let that = this;
 		that.setData({
 			animation: anmiaton
 		})
@@ -477,7 +365,6 @@ Page({
 		// 表头
 		sheet.push(
 			['活动名称', DA.actName],
-			//['活动类型', DA.isPintuan ? '拼团' : '报名'],
 			['活动标签', DA.tag],
 			//['活动状态', '已结束'],
 			//['活动组织', DA.teamName],
@@ -533,15 +420,15 @@ Page({
 			// 	hpt: 10,
 			// }
 		]
-		var ws = XLSX.utils.aoa_to_sheet(sheet);
+		let ws = XLSX.utils.aoa_to_sheet(sheet);
 		console.log('ws', ws)
-		var wb = XLSX.utils.book_new();
+		let wb = XLSX.utils.book_new();
 		console.log('wb', wb)
 		ws['!cols'] = colWidth
 		ws['!rows'] = rowWidth
 		//增加sheet
 		XLSX.utils.book_append_sheet(wb, ws, "sheet名字");
-		var fileData = XLSX.write(wb, {
+		let fileData = XLSX.write(wb, {
 			bookType: "xlsx",
 			type: 'base64'
 		});
@@ -605,9 +492,9 @@ Page({
 		});
 	},
 	openFile(e) {
-		var idx = e.currentTarget.dataset.target;
-		var fileid = this.data.actions.FileID[idx];
-		var that = this;
+		let idx = e.currentTarget.dataset.target;
+		let fileid = this.data.actions.FileID[idx];
+		let that = this;
 		wx.cloud.getTempFileURL({
 			fileList: [fileid],
 			//fileid不能在浏览器直接下载，要获取临时URL才可以

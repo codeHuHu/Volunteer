@@ -1,3 +1,102 @@
+// 全局微信变量
+wx.$param = require('./param').param
+// 封装的wx微信全局方法
+wx.$ajax = function (option) {
+
+    return new Promise(function (resolve, reject) {
+        if (option.method == undefined || typeof option.method !== "string") {
+            option.method = "POST"
+        }
+        if (option.url == undefined) {
+            option.url = wx.$param.server["fastapi"]
+        }
+        if (option.header == undefined || typeof option.header != 'object') {
+            option.header = {
+                'content-type': 'application/x-www-form-urlencoded'
+            }
+            // header: {
+			// 	'content-type': 'application/json'
+			// }
+        }
+        if (typeof option.url === 'string' && option.url.indexOf("http") == -1) {
+            option.url = wx.$param.server["fastapi"] + option.url
+        }
+        if (typeof option.loading == "boolean" && option.loading) {
+            wx.showLoading({
+                title: '加载中',
+                duration: 60000,
+                mask: true,
+            })
+        } else if (typeof option.loading == "string") {
+            wx.showLoading({
+                title: option.loading,
+                duration: 10000,
+                mask: true,
+            })
+        }
+        // 携带cookie
+        option.header["Authorization"] = wx.getStorageSync("JWT_Token")
+
+        //console.log('过滤后的Option', option)
+
+        wx.request({
+            url: option.url,
+            data: option.data,
+            method: option.method.toUpperCase(),
+            header: option.header,
+            success: (res) => {
+                // http响应错误
+                if (res.statusCode >= 400) {
+                    //认证失败,清除本地token
+                    if (res.statusCode == 401) {
+                        wx.removeStorageSync('JWT_Token')
+                    }
+
+                    let msg = res.data.error
+                    msg = msg ? msg : res.errMsg
+                    msg = String(res.statusCode) + " 错误"
+                    //返回错误信息
+                    reject({
+                        when: "http_status_error",
+                        error: msg,
+                        detail: msg,
+                    })
+                    //显示错误信息
+                    if (option.showErr == false) return
+                    wx.showModal({
+                        title: '提示',
+                        content: msg,
+                        showCancel: false
+                    })
+                    return
+                }
+                // 只返回data
+                if (res.data) {
+                    resolve(res.data)
+                }
+            },
+            fail: (err) => {
+                reject({
+                    when: "origin_error",
+                    error: err
+                })
+                wx.showModal({
+                    title: '错误提示',
+                    content: JSON.stringify(err),
+                    showCancel: false
+                })
+            },
+            complete: (res) => {
+                //不管成功还是失败,都显示一下
+                console.log("complete response:" + option.url, res)
+                if (!!option.loading) {
+                    wx.hideLoading()
+                }
+            }
+        })
+    })
+}
+
 /**
  * 页面转跳封装
  * @method wx.$navTo

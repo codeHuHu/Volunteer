@@ -6,7 +6,7 @@
 				<view class="flex padding-sm justify-between">
 					<view class="padding-xs text-xxl text-black">
 						<view><text class="text-gray text-df"> 志愿者</text></view>
-						<view class="text-black text-xxl padding-top-sm">{{actions.userName}}</view>
+						<view class="text-black text-xxl padding-top-sm">{{actions.name}}</view>
 					</view>
 					<view class="">
 						<view class="cu-avatar xl round">

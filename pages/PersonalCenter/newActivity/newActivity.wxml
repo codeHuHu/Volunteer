@@ -155,11 +155,11 @@
 		<view class="cu-form-group ">
 
 			<view class="title inteam">服务内容:</view>
-			<textarea placeholder="（例：为村居老人提供慰问服务）" bindinput="getintro" auto-height="true"></textarea>
+			<textarea model:value="{{intro}}" placeholder="（例：为村居老人提供慰问服务）" auto-height="true"></textarea>
 		</view>
 		<view class="cu-form-group ">
 			<view class="title inteam">注意事项:</view>
-			<textarea model:value="{{notice}}" placeholder="（例：穿长裤，不穿裙子和短裤）" bindinput="getnotice" auto-height="true"></textarea>
+			<textarea model:value="{{notice}}" placeholder="（例：穿长裤，不穿裙子和短裤）" auto-height="true"></textarea>
 
 		</view>
 		<view class="cu-form-group ">
@@ -309,7 +309,7 @@
 		</view>
 		<view class="cu-form-group">
 			<view class="title">日期选择</view>
-			<picker mode="date" model:value="{{beginDate}}" start="{{nowDate}}" end="2030-11-05">
+			<picker mode="date" value="{{beginDate}}" start="{{nowDate}}" end="2030-11-05" bindchange="bindStartChange">
 				<view class="picker">
 					{{beginDate}}
 				</view>
@@ -317,7 +317,7 @@
 		</view>
 		<view class="cu-form-group">
 			<view class="title">开始时间</view>
-			<picker mode="time" model:value="{{nowTime}}" start="00:00" end="23:59" bindchange="bindSTimeChange">
+			<picker mode="time" value="{{startTime}}" start="00:00" end="23:59" bindchange="bindSTimeChange">
 				<view class="picker">
 					{{startTime}}
 				</view>
@@ -325,7 +325,7 @@
 		</view>
 		<view class="cu-form-group">
 			<view class="title">结束时间</view>
-			<picker mode="time" model:value="{{endTime}}" start="{{startTime}}" end="23:59" bindchange="bindETimeChange">
+			<picker mode="time" value="{{startTime}}" start="{{startTime}}" end="23:59" bindchange="bindETimeChange">
 				<view class="picker">
 					{{endTime}}
 				</view>

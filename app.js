@@ -27,51 +27,51 @@ App({
 			}, 2000)
 		}
 	},
-	onshow: function () {
+	onshow() {
 
+	},
+	getToken() {
+		let that = this
+		let form = {
+			username: '18319093950',
+			password: '123456'
+		}
+		//去获取JWT_Token
+		wx.$ajax({
+			url: wx.$param.server['fastapi'] + "/login",
+			method: "post",
+			data: form,
+		}).then(res => {
+			//储存至本地
+			if (res['access_token'] && res['token_type']) {
+				that.globalData.isAuth = true
+				console.log("正在储存JWT_Token");
+				wx.setStorageSync('JWT_Token', res['token_type'] + ' ' + res['access_token'])
+			}
+			// console.log("获取tokenRes", res);
+		}).catch(err => {
+			console.log('获取tokenErr', err);
+		})
 	},
 	getAuthStatus() {
 		let that = this
-		wx.cloud.callFunction({
-			name: 'getUserOpenid',
-			success(res) {
-				console.log('从云函数获取openid', res.result.openid)
-				//本地存储openid
-				wx.setStorageSync('openid', res.result.openid)
-				wx.cloud.callFunction({
-					name: 'getUserInfo',
-					data: {
-						openid: res.result.openid
-					},
-					success(res) {
-						console.log('获取成功')
-						if (res.result.data.length == 1) {
-							console.log('用户信息获取到了,配置globalData')
-							//这个用于正常使用小程序的用户验证
-							that.globalData.isAuth = true
-							that.globalData.userInfo = res.result.data[0]
-							try {
-								wx.setStorageSync('userInfo', res.result.data[0]);
-							} catch (e) {
-								console.log('app配置storage:userInfo错误', e);
-							}
-							console.log(that.globalData)
-						} else {
-							console.log('用户还没注册,获得不到信息')
-							try {
-								wx.setStorageSync('userInfo', null);
-							} catch (e) {
-								console.log('app配置storage:userInfo错误', e);
-							}
-						}
-					},
-					fail(err) {
-						console.log(err)
-					}
-				})
-			}
-		})
 
+		//先拿本地JWT_Token来获取用户信息
+		wx.$ajax({
+			url: wx.$param.server['fastapi'] + "/user/get",
+			method: "get",
+			showErr: false
+		}).then(res => {
+			//console.log('获取信息res', res)
+			that.globalData.isAuth = true
+			that.globalData.userInfo = res
+			wx.setStorageSync('userInfo', res)
+		}).catch(err => {
+			that.globalData.isAuth = false
+			//wx.removeStorageSync('userInfo')
+			console.log('获取信息err', err);
+			that.getToken()
+		})
 	},
 
 

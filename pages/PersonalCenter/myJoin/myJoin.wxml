@@ -8,22 +8,23 @@
 </view>
 
 <block wx:for="{{actionList}}" wx:key="index">
-	<view wx:if="{{item.status>-2}}"   style="position: relative;" class="cu-card article {{isCard?'no-card':''}} margin" bindtap="navTo" data-url="/pages/ServiceCenter/activityDetail/activityDetail?id={{item._id}}">
+	<view wx:if="{{item.status>-2}}"   style="position: relative;" class="cu-card article {{isCard?'no-card':''}} margin" bindtap="navTo" data-url="/pages/ServiceCenter/activityDetail/activityDetail?id={{item.id}}">
 		<view wx:if="{{item.status == 1}}"><image class="myicon" src="/images/tabbar/sun.png"></image> </view>
 	<view wx:elif="{{item.status == 2}}"><image class="myicon" src="/images/tabbar/water_moon.png"></image> </view>
 		<view class="cu-item shadow">
 			<view class="title">
-				<view class="text-cut">{{item.actName}}</view>
+				<view class="text-cut">{{item.serviceName}}</view>
 			</view>
 			<view class="content">
 				<view class="desc">
 					<view class="character">
-						<view class="cu-tag bg-green light sm round" style="white-space:normal;">{{item.tag}}</view>
+						<view class="cu-tag bg-green light sm round" style="white-space:normal;">{{item.serviceTag}}</view>
 						<view class="cu-tag bg-green light sm round going-on" wx:if="{{item.status==1}}">进行中</view>
 						<view class="cu-tag bg-green light sm round going-on" wx:elif="{{item.status==2}}" style="background-color: gray;">已结束</view>
 						<view>
-							<text class="data">{{data_Arr[index]}}</text>
+							<text class="data">{{item.serviceStartTime}}</text>
 						</view>
+						
 					</view>
 				</view>
 			</view>

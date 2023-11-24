@@ -25,63 +25,66 @@ Page({
 	//查找活动
 	getData() {
 		var that = this;
-		db.collection('ActivityInfo')
-			.where({
-				status: '1'
+
+		let form = {
+			"status": 1,
+			"pagination": {
+				"page": 1,
+				"size": 10
+			}
+		}
+
+		wx.$ajax({
+			url: wx.$param.server['fastapi'] + "/service/show",
+			method: "post",
+			data: form,
+			header: {
+				'content-type': 'application/json'
+			}
+		}).then(res => {
+			that.setData({
+				actions: res.data
 			})
-			.limit(10)
-			.get()
-			.then(res => {
-				const processedData = res.data.map(item => {
-					return {
-						...item,
-						intro: item.intro.length > 50 ? item.intro.slice(0, 50) + '...' : item.intro
-					}
-				})
-				that.setData({
-					actions: processedData
-				})
-			})
-			.catch(err => {
-				console.log(err);
-			})
-	},
-	searchIcon(e) {
-		this.setData({
-			keyword: e.detail.value
+		}).catch(err => {
+
 		})
 	},
 	searchActivity() {
 		var that = this
+
+		wx.showLoading()
 		//搜索栏不为空
 		if (this.data.keyword) {
-			wx.showLoading({
-				title: '搜索中...',
-				mask: true
+			that.setData({
+				actions: []
 			})
-			wx.cloud.callFunction({
-				name: 'searchTeam',
-				data: {
-					collection: 'ActivityInfo',
-					keyword: this.data.keyword,
-					name: 'actName'
+			let form = {
+				"keyword": this.data.keyword,
+				"pagination": {
+					"page": 1,
+					"size": 10
 				}
-			})
-				.then(res => {
-					const processedData = res.result.map(item => {
-						return {
-							...item,
-							intro: item.intro.length > 50 ? item.intro.slice(0, 50) + '...' : item.intro
-						}
-					})
-					that.setData({
-						actions: processedData
-					})
-					wx.hideLoading()
+			}
+			wx.$ajax({
+				url: wx.$param.server['fastapi'] + "/service/show",
+				method: "post",
+				data: form,
+				header: {
+					'content-type': 'application/json'
+				},
+				showErr: false
+			}).then(res => {
+				that.setData({
+					actions: res.data
 				})
-
+				wx.hideLoading()
+			}).catch(err => {
+				console.log(err)
+				wx.hideLoading()
+			})
 		} else {
-			this.getData();
+			that.getData();
+			wx.hideLoading()
 		}
 
 	},

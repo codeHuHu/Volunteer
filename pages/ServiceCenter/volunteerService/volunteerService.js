@@ -1,7 +1,7 @@
 // pages/service/service.js
 const app = getApp();
 const db = wx.cloud.database();
-var utils = require("../../../utils/date.js")
+let utils = require("../../../utils/date.js")
 let loading = false;
 
 Page({
@@ -10,8 +10,8 @@ Page({
 		show2: false,
 		show3: false,
 		selectAll: ['全部', '我的'], //下拉列表的数据
-		selectType: ['类型', '党建引领', '乡村振兴', '新时代文明实践（文化/文艺/体育）', '科普科教', '社区/城中村治理', '环境保护', '弱势群体帮扶', '志愿驿站值班', '其他'],
-		selectStatus: ['状态', '进行中', '已结束'],
+		selectType: ['所有类型', '党建引领', '乡村振兴', '新时代文明实践', '科普科教', '社区/城中村治理', '环境保护', '弱势群体帮扶', '志愿驿站值班', '其他'],
+		selectStatus: ['所有状态', '进行中', '已结束'],
 		index1: 0, //选择的下拉列表下标
 		index2: 0,
 		index3: 0,
@@ -25,248 +25,109 @@ Page({
 		toUpdateArr: [''],
 		actions_Status: ['1'],
 	},
-	onLoad: function (event) {
+	onLoad(event) {
 		wx.setNavigationBarTitle({
 			title: '志愿服务',
 		})
 		this.setData({
 			myPos: app.globalData.userInfo["position"],
-			myId: app.globalData.userInfo["_openid"]
+			myId: app.globalData.userInfo["id"]
 		})
-		const currentDate = new Date();
-		const timeStamp = currentDate.getTime();
-		this.setData({
-			timeStamp,
-			currentDate
-		})
-		this.getStatus()
+		this.getServices()
 	},
-	onPullDownRefresh() {
-		this.onLoad()
-		wx.stopPullDownRefresh()
-	},
-	onReachBottom() { },
-	onShareAppMessage() { },
-	// 点击下拉显示框
-	selectallTap(e) {
-		console.log(e.currentTarget.dataset.show)
-		var suffix = e.currentTarget.dataset.show
+	getServices(myForm = null, myUrl = null) {
+		let that = this;
 
+		let url = !!myUrl ? myUrl : wx.$param.server['fastapi'] + "/service/show"
+		let form = !!myForm ? myForm : { "status": 1, "pagination": { "page": 1, "size": 10 } }
+
+		wx.$ajax({
+			url,
+			method: "post",
+			data: form,
+			header: {
+				'content-type': 'application/json'
+			},
+			showErr: false,
+		}).then(res => {
+			that.setShow("success","获取成功")
+			that.setData({
+				actionList: res.data
+			})
+		}).catch(err => {
+			that.setShow("error","获取失败")
+		})
+	},
+	// 控制下拉显示框
+	controlSelectTap(e) {
+		let suffix = e.currentTarget.dataset.show
 		this.setData({
 			['show' + suffix]: !this.data['show' + suffix]
 		});
 	},
-
-	// 点击下拉列表
-	optionallTap(e) {
-		var that = this
+	// (全部/我的)点击下拉列表
+	allSearch(e) {
+		let that = this
 		let index = e.currentTarget.dataset.index; //获取点击的下拉列表的下标
-		this.setData({
+		that.setData({
+			actionList: [],
 			index1: index,
 			show1: !this.data.show1,
 			index2: 0,
 			index3: 0
 		});
 		if (index == 0) {
-			that.onLoad()
+			that.getServices()
 		} else {
-			db.collection('ActivityInfo').where({
-				_openid: app.globalData.userInfo["_openid"],
-				status: db.command.not(db.command.eq('0')),
-			}).field({
-				_id: true,
-				actName: true,
-				serviceEndStamp: true,
-				serviceStartStamp: true,
-				status: true,
-				tag: true,
-				teamName: true,
-				isSubsidy: true,
-				_openid: true
-			}).limit(20)
-				.orderBy('serviceStartStamp', 'desc')
-				.get()
-				.then(res => {
-					that.setData({
-						actionList: res.data
-					})
-					that.setTime(res.data)
-				}).catch(err => {
-					console.log(err);
-				})
+			//我的
+			that.getServices(null, wx.$param.server['fastapi'] + "/service/myService")
 		}
 	},
-	// 点击下拉列表
-	optiontypeTap(e) {
-		var that = this
+	// ()类型)点击下拉列表
+	typeSearch(e) {
+		let that = this
 		let index = e.currentTarget.dataset.index; //获取点击的下拉列表的下标
-		this.setData({
+		that.setData({
+			actionList: [],
 			index2: index,
 			show2: !this.data.show2,
 			index1: 0,
-			index3: 0
 		});
 		if (index == 0) {
-			this.onLoad()
+			that.getServices()
 		} else {
-			const collection = db.collection('ActivityInfo');
-			collection.where({
-
-				'tag': that.data.selectType[index],
-				'status': db.command.nor(db.command.eq('0'), db.command.eq('-1'))
-			}).field({
-				_id: true,
-				actName: true,
-				serviceEndStamp: true,
-				serviceStartStamp: true,
-				status: true,
-				tag: true,
-				teamName: true,
-				isSubsidy: true,
-				_openid: true
-			})
-				.limit(20)
-				.orderBy('serviceStartStamp', 'desc')
-				.get()
-				.then(res => {
-					//console.log(res.data);
-					that.setData({
-						actionList: res.data
-					})
-					that.setTime(res.data)
-				}).catch(err => {
-					console.log(err);
-				})
+			let form = {
+				"tag": index ? that.data.selectType[index] : '',
+				"status": that.data.index3,
+				"pagination": { "page": 1, "size": 10 }
+			}
+			that.getServices(form, null)
 		}
 
 	},
-	// 点击下拉列表
-	optionstatusTap(e) {
-		var that = this
+	// (状态)点击下拉列表
+	statusSearch(e) {
+		let that = this
 		let index = e.currentTarget.dataset.index; //获取点击的下拉列表的下标
-		this.setData({
+		that.setData({
+			actionList: [],
 			index3: index,
-			show3: !this.data.show3,
+			show3: !that.data.show3,
 			index1: 0,
-			index2: 0
 		});
-		if (index == 1) {
-			const collection = db.collection('ActivityInfo');
-			collection.where({
-				'status': '1' //进行中
-			}).field({
-				_id: true,
-				actName: true,
-				serviceEndStamp: true,
-				serviceStartStamp: true,
-				status: true,
-				tag: true,
-				teamName: true,
-				isSubsidy: true,
-				_openid: true
-			})
-				.limit(20)
-				.orderBy('serviceStartStamp', 'desc')
-				.get()
-				.then(res => {
-					//console.log(res.data);
-					that.setData({
-						actionList: res.data
-					})
-					that.setTime(res.data)
-				}).catch(err => {
-					console.log(err);
-				})
-		} else if (index == 2) {
-			const collection = db.collection('ActivityInfo');
-			collection.where({
-				'status': '2' //已结束
-			}).field({
-				_id: true,
-				actName: true,
-				serviceEndStamp: true,
-				serviceStarttamp: true,
-				status: true,
-				tag: true,
-				teamName: true,
-				isSubsidy: true,
-				_openid: true
-			})
-				.limit(20)
-				.orderBy('serviceStartStamp', 'desc')
-				.get()
-				.then(res => {
-					//console.log(res.data);
-					that.setData({
-						actionList: res.data
-					})
-					that.setTime(res.data)
-				}).catch(err => {
-					console.log(err);
-				})
-		} else {
-			that.onLoad()
+		let form = {
+			"tag": that.data.index2 ? that.data.selectType[that.data.index2] : '',
+			"status": index,
+			"pagination": { "page": 1, "size": 10 }
 		}
+		that.getServices(form, null)
 	},
-	getStatus() {
-		var that = this;
-		var toUpdateArr = [];
 
-		const collection = db.collection('ActivityInfo');
-		collection.where({
-			//获取非： 待审核、拒绝发布、已取消的活动
-			'status': db.command.nor(db.command.eq('0'), db.command.eq('-1'), db.command.eq('-2'))
-
-		}).field({
-			_id: true,
-			actName: true,
-			serviceEndStamp: true,
-			serviceStartStamp: true,
-			status: true,
-			tag: true,
-			teamName: true,
-			isSubsidy: true,
-			_openid: true
-		})
-
-			.limit(20)
-			.orderBy('serviceStartStamp', 'desc')
-			.get()
-			.then(res => {
-				var actions = res.data;
-				var k = 0;
-				for (var l in actions) {
-					var tmpTimeStamp = actions[l].serviceEndStamp;
-					if (actions[l].status != '2' && tmpTimeStamp <= that.data.timeStamp) {
-						actions[l].status = '2';
-						toUpdateArr[k++] = actions[l]._id;
-					}
-				}
-				that.setData({
-					actionList: actions,
-					toUpdateArr
-				});
-				this.setTime(res.data)
-				return Promise.resolve(); // 返回一个 resolved 状态的 Promise 对象
-			}).then(() => {
-				return wx.cloud.callFunction({
-					name: 'changeStatus',
-					data: {
-						toChangeArr: that.data.toUpdateArr,
-						collection: 'ActivityInfo'
-					}
-				});
-			}).then(res => {
-				console.log("更新状态成功");
-			}).catch(error => {
-				console.error(error);
-			});
-	},
 	setTime(result) {
-		var res = result
-		var dataArr = []
-		var t
-		for (var l in res) {
+		let res = result
+		let dataArr = []
+		let t
+		for (let l in res) {
 			t = new Date(res[l].serviceStartStamp)
 			dataArr.push(`${t.getFullYear()}-${utils.Z(t.getMonth() + 1)}-${utils.Z(t.getDate())}`)
 		}
@@ -276,7 +137,7 @@ Page({
 		wx.stopPullDownRefresh()
 	},
 	cancell(e) {
-		var that = this
+		let that = this
 		wx.showModal({
 			title: '是否取消活动',
 			content: '取消后仅你和管理员可见',
@@ -302,7 +163,7 @@ Page({
 			}
 		})
 	},
-	setShow(status, message, time = 2000, fun = false) {
+	setShow(status, message, time = 500, fun = false) {
 		if (loading) {
 			return
 		}

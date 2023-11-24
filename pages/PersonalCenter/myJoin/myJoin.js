@@ -8,51 +8,27 @@ Page({
 	},
 	onReady() { },
 	onShow() {
-		db.collection('UserInfo').where({
-			_openid: app.globalData.userInfo["_openid"]
-		}).get().then(res => {
-			var actions = res.data
-			var myActivity = actions[0].myActivity
-			console.log(actions)
-			db.collection('ActivityInfo').where({
-				_id: db.command.in(myActivity),
-				status: db.command.not(db.command.eq('-2'))
-			}).field({
-				_id: true,
-				actName: true,
-				serviceEndStamp: true,
-				serviceStartStamp: true,
-				status: true,
-				tag: true,
-				teamName: true,
-				_openid: true
-			}).orderBy('serviceStartStamp', 'desc').get().then(res => {
-				this.setData({
-					actionList: res.data
-				})
-				this.setTime(res.data)
-			}).catch(err => {
-				console.log(err);
-			})
-		})
-	},
-	setTime(result) {
-		var res = result
-		console.log(res)
-		var dataArr = []
-		for (var l in res) {
-			const date = new Date(res[l].serviceStartStamp);
-			const year = date.getFullYear();
-			const month = date.getMonth() + 1; // 月份需要加1
-			const day = date.getDate();
+		let that = this
 
-			const formattedDate = `${year}-${month}-${day}`;
-			dataArr.push(formattedDate)
+		let form = {
+			"page": 1,
+			"size": 10
 		}
-		this.setData({
-			data_Arr: dataArr
+		wx.$ajax({
+			url: wx.$param.server['fastapi'] + "/service/myJoin",
+			method: "post",
+			data: form,
+			header: {
+				'content-type': 'application/json'
+			},
+			showErr:false
+		}).then(res => {
+			that.setData({
+				actionList: res.data
+			})
+		}).catch(err => {
+
 		})
-		wx.stopPullDownRefresh()
 	},
 	navTo(e) {
 		wx.$navTo(e)

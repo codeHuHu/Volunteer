@@ -1,11 +1,13 @@
 <view class="cu-bar">
-	<view class="action  flex">
+	<view class="action flex">
 		<view>
-			<text class="text-xl text-bold text-black bg-oc-lime-0">{{actions.actName}}</text>
-			<view class="margin-left cu-tag bg-red light sm round going-on" wx:if="{{actions.isSubsidy=='1'}}">补贴服务</view>
-			<view class="margin-left cu-tag bg-green light sm round going-on" wx:if="{{actions.status=='1'}}">服务进行中</view>
-			<view class="margin-left cu-tag bg-green light sm round going-on" wx:elif="{{actions.status=='2'}}" style="background-color: gray; color: aliceblue;">服务已结束</view>
-			<!-- <view class="cu-tag bg-{{isFull?'blue':'red'}} light xxl round going-on text-bold" wx:if="{{isPintuan=='1'}}">报名{{isDead?(isFull?'已满':'截止'):(isFull?'已满':'中')}}</view> -->
+			<text class="text-xl text-bold text-black bg-oc-lime-0">{{actions.serviceName}}</text>
+			<view class="margin-left cu-tag bg-red light sm round going-on" wx:if="{{actions.isSubsidy}}">补贴服务</view>
+			<view class="margin-left cu-tag bg-green light sm round going-on" wx:if="{{actions.status==1}}">服务进行中</view>
+			<view class="margin-left cu-tag bg-green light sm round going-on" wx:elif="{{actions.status==2}}" style="background-color: gray; color: aliceblue;">服务已结束</view>
+			<view class="cu-tag bg-{{isFull?'blue':'red'}} light xxl round going-on text-bold">
+				报名{{isDead?(isFull?'已满':'截止'):(isFull?'已满':'中')}}
+			</view>
 		</view>
 	</view>
 </view>
@@ -13,7 +15,7 @@
 <view class="grid col-4 radius-lg padding-left">
 	<view class="bg-oc-gray-6 radius padding-tb-xs text-center margin-tb-xs margin-right" style="width: auto; background-color: rgb(78, 187, 78);">
 		<view class=" text-sm">
-			{{actions.tag}}
+			{{actions.serviceTag}}
 		</view>
 	</view>
 </view>
@@ -39,10 +41,10 @@
 		<button wx:if="{{!checkMode}}" open-type="share" class="share cu-avatar round xl">
 			<text class="iconfont icon-icon-test20 text-green"></text>
 		</button>
-		<view class="solid-bottom text-lg text-bold padding text-black">{{isPintuan?'报名':'报名'}}要求</view>
+		<view class="solid-bottom text-lg text-bold padding text-black">报名要求</view>
 		<view wx:if="{{actions.groupTag}}" class="flex-container cu-form-group padding flex align-start">
-			<view class="request-left" style="width: auto;">
-				<text class="">{{isPintuan?'志愿者':'志愿者'}}要求</text>
+			<view class="request-left" style="width: auto;padding:10rpx 0;">
+				<text class="">志愿者要求</text>
 			</view>
 			<view class="tag-container">
 				<view wx:for="{{actions.groupTag}}" wx:key="index" class="margin-left cu-tag radius bg-cyan">
@@ -50,37 +52,33 @@
 						#{{item}}
 					</view>
 				</view>
+
 			</view>
 		</view>
 
 		<view class="padding flex justify-between">
-			<text class="">{{isPintuan?'报名':'报名'}}截止日期</text>
+			<text>报名截止日期</text>
 			<text class="text-df">{{constants.deadTime}}</text>
 		</view>
 		<view class="padding flex  justify-between">
-			<text class="">{{isPintuan==1?'需求':'需求'}}人数</text>
+			<text>需求人数</text>
 			<text class="text-df"> {{actions.outJoin}}/{{actions.outNum}}</text>
 		</view>
 	</view>
 	<view class="margin-sm radius-lg bg-white static">
 		<view class="solid-bottom text-lg text-bold padding text-black">服务时间段</view>
 		<view wx:if="{{!checkMode}}">
-			<!-- 报名以及取消按钮 -->
+			<!-- 这个拿来摆设的 -->
 			<view wx:if="{{actions.status=='2'}}">
-				<button class="signUp cu-avatar round xl bg-yellow animation-{{animation}}" bindtap="toggle" data-class="scale-up" role="button" aria-disabled="false">
+				<button bindtap="toggle" data-class="scale-up" role="button" aria-disabled="false" class="signUp cu-avatar round xl bg-yellow animation-{{animation}}">
 					<text class="avatar-text ">服务结束</text>
 				</button>
 			</view>
-			<view wx:else bindtap="showModal" data-target="{{actions.length!=0?(isDead?(isPintuan?'toGroup':'报名已截止无操作'):(isJoin?'toGroup':(isPintuan?'toPintuan':'toJoin'))):'None'}}">
-				<button wx:if="{{isDead||isJoin==1}}" class="signUp cu-avatar round xl bg-{{isFull?'purple':'green'}} animation-{{animation}}" bindtap="toggle" data-class="scale-up" role="button" aria-disabled="false">
-					<text class="avatar-text">{{isPintuan?(isJoin||isFull?'群二维码':'报名截止'):'报名截止'}}</text>
+			<!-- 查看二维码按钮 -->
+			<view wx:else bindtap="showModal" data-target="toGroup">
+				<button wx:if="{{isJoin}}" bindtap="toggle" data-class="scale-up" role="button" aria-disabled="false" class="signUp cu-avatar round xl bg-{{isFull?'purple':'green'}} animation-{{animation}}">
+					<text class="avatar-text">群二维码</text>
 				</button>
-				<!-- <button wx:elif="{{!isJoin}}" class="signUp cu-avatar round xl bg-green animation-{{animation}}" bindtap="toggle" data-class="scale-up" role="button" aria-disabled="false">
-				<text class="avatar-text ">点击{{isPintuan?'报名':'报名'}}</text>
-			</button> -->
-				<!-- <button wx:elif="{{isJoin}}" class="signUp cu-avatar round xl bg-red animation-{{animation}}" bindtap="toggle" data-class="scale-up" role="button" aria-disabled="false">
-					<text class="avatar-text ">取消{{isPintuan?'报名':'报名'}}</text>
-				</button> -->
 			</view>
 		</view>
 		<!-- 服务时间段列表 -->
@@ -104,12 +102,12 @@
 						<text>{{ child['name'] }}</text>
 						<text class="cuIcon-info text-xxl text-blue margin-bottom" bindtap="showModal" data-target="showPosDesc" data-sindex="{{index}}" data-pindex="{{pindex}}"></text>
 					</view>
-					<!-- 步进器 -->
+					<!-- 计数器 -->
 					<view class="flex-twice flex-treble flex justify-center align-center text-lg">
 						<text class="text-df"> {{child.joined}}/{{child.number}}</text>
 					</view>
 					<!-- 报名 -->
-					<view wx:if="{{!checkMode&&(!isDead&&isJoin == 0)}}" bindtap="showModal" data-target="toPintuan" data-timespan="{{index}}" data-position="{{pindex}}" class="flex-sub flex-treble flex justify-center align-center text-lg">
+					<view wx:if="{{!checkMode&&(!isDead&&isJoin == 0)}}" bindtap="showModal" data-target="comfirmInfo" data-timespan="{{index}}" data-position="{{pindex}}" class="flex-sub flex-treble flex justify-center align-center text-lg">
 						<text class="cuIcon-friendaddfill text-xxl text-green">+</text>
 					</view>
 					<!-- 取消报名 -->
@@ -131,10 +129,11 @@
 		</view>
 		<view class="margin-right-xl" bindtap="showModal" data-target="joinMembers">
 			<view class="cu-avatar-group">
+				<!-- 人数少于6人就根据人数来加头像 -->
 				<view wx:if="{{actions.joinMembers.length<6}}">
 					<view wx:for="{{actions.joinMembers}}" wx:key="index" class="cu-avatar round sm" style="background-image:url({{avators[index]}});"></view>
 				</view>
-
+				<!-- 超过的话就只显示6个头像 -->
 				<view wx:else>
 					<view wx:for="111111" wx:key="index" class="cu-avatar round sm" style="background-image:url({{avators[index]}});"></view>
 				</view>
@@ -147,17 +146,9 @@
 
 <view class="static margin-sm radius-lg bg-white">
 	<view class="solid-bottom text-lg text-bold padding text-black">服务信息</view>
-	<view class="padding flex justify-between">
-		<text class="">服务时间</text>
-		<text class="text-df">{{constants.serviceTime}}</text>
-	</view>
-	<view class="padding flex  justify-between">
-		<text class="">服务时长</text>
-		<text class="text-df ">{{constants.hours+'小时'+constants.minutes+'分钟'}}</text>
-	</view>
 	<view class="padding flex  justify-between">
 		<text class="">服务地点</text>
-		<text class="text-df">{{actions.address.length>0?actions.address:"发布者未填写"}}</text>
+		<text class="text-df">{{actions.serviceAddress.length>0?actions.serviceAddress:"发布者未填写"}}</text>
 	</view>
 	<view wx:if="{{actions.isSubsidy}}" class="padding flex  justify-between">
 		<text class="text-red">服务补贴</text>
@@ -166,34 +157,34 @@
 </view>
 
 <!-- 服务简介 -->
-<view wx:if="{{actions.intro}}" class="static margin-sm radius-lg bg-white">
+<view wx:if="{{actions.serviceIntro}}" class="static margin-sm radius-lg bg-white">
 
 	<view class=" radius-lg bg-white">
 		<view class="solid-bottom text-lg text-bold padding text-black">服务内容</view>
 		<view class="padding flex  justify-between">
-			<text class="text-df">{{actions.intro}}
+			<text class="text-df">{{actions.serviceIntro}}
 			</text>
 		</view>
 	</view>
 </view>
 <!-- 注意事项 -->
-<view wx:if="{{actions.notice}}" class="static margin-sm radius-lg bg-white">
+<view wx:if="{{actions.serviceNotice}}" class="static margin-sm radius-lg bg-white">
 
 	<view class=" radius-lg bg-white">
 		<view class="solid-bottom text-lg text-bold padding text-black">注意事项</view>
 		<view class="padding flex  justify-between">
-			<text class="text-df">{{actions.notice}}
+			<text class="text-df">{{actions.serviceNotice}}
 			</text>
 		</view>
 	</view>
 </view>
 <!-- 服务简介 -->
-<view wx:if="{{actions.peogift}}" class="static margin-sm radius-lg bg-white">
+<view wx:if="{{actions.benefits}}" class="static margin-sm radius-lg bg-white">
 
 	<view class=" radius-lg bg-white">
 		<view class="solid-bottom text-lg text-bold padding text-black">志愿者权益</view>
 		<view class="padding flex  justify-between">
-			<text class="text-df">{{actions.peogift}}
+			<text class="text-df">{{actions.benefits}}
 			</text>
 		</view>
 	</view>
@@ -228,11 +219,10 @@
 		<view class="cu-form-group">
 			<view class="grid col-4 grid-square flex-sub">
 				<view class="bg-img" wx:for="{{actions.qr_code}}" wx:key="index" catchtap="previewImage" data-index="{{index}}" data-urls="{{actions.qr_code}}">
-					<image src='{{actions.qr_code[index]}}' mode='aspectFill'></image>
+					<image src='{{actions.qrCode[index]}}' mode='aspectFill'></image>
 				</view>
 			</view>
 		</view>
-
 	</view>
 	<!-- i志愿报名码 -->
 	<view wx:if="{{actions.iZhiYuan.length}}">
@@ -251,7 +241,7 @@
 	</view>
 	<block wx:if="{{actions.isFeedback}}">
 		<!-- 签到表 -->
-		<view wx:if="{{actions.feedback.signInList.length}}" class=" ">
+		<view wx:if="{{actions.feedback.signInList}}">
 			<view class="cu-bar bg-white radius-xl">
 				<view class="text-lg text-bold padding text-black">
 					签到表
@@ -267,7 +257,7 @@
 
 		</view>
 		<!-- 活动照片 -->
-		<view wx:if="{{actions.feedback.imgList.length}}">
+		<view wx:if="{{actions.feedback.imgList}}">
 			<view class="cu-bar bg-white ">
 				<view class="text-lg text-bold padding text-black">
 					活动照片
@@ -315,38 +305,8 @@
 
 
 <button wx:if="{{actions.isFeedback&&isAdmin}}" class="bg-green" bindtap="myShowToast">导出excel</button>
-<!-- 已评价时加载 活动照片和签到表 -->
-<!-- <view  class="static margin-sm radius-lg bg-white">
-	
-</view> -->
 
 
-<!-- 报名窗口 -->
-<view class="cu-modal {{modalName=='toJoin'?'show':''}}">
-	<view class="cu-dialog">
-		<swiper style="height: 500rpx;">
-			<swiper-item wx:for="{{actions.qr_code}}" wx:key="index" class="bg-img" style="height: 360rpx;" show-menu-by-longpress="true">
-				<view class="cu-bar justify-center text-white">
-					<image class="margin-top" src="{{item}}" bindtap="previewImage" data-index="{{index}}" data-url="{{actions.qr_code}}" mode="aspectFit" />
-				</view>
-				<view class="cu-tag cancleButton bg-white round button" catchtap="hideModal">
-					<text class="cuIcon-close text-xl text-bold text-black"></text>
-				</view>
-			</swiper-item>
-			<swiper-item wx:if="{{!actions.qr_code}}" wx:key="index" class="bg-img" style="height: 360rpx;" show-menu-by-longpress="true">
-				<view class="cu-bar justify-center text-white">
-					<image class="margin-top" src="" bindtap="previewImage" data-index="{{index}}" data-url="{{[]}}" mode="aspectFit" />
-				</view>
-				<view class="cu-tag cancleButton bg-white round button" catchtap="hideModal">
-					<text class="cuIcon-close text-xl text-bold text-black"></text>
-				</view>
-			</swiper-item>
-		</swiper>
-		<view class="cu-bar bg-white">
-			<view class="action margin-0 flex-sub solid-left text-green" bindtap="hideModal" data-target="join">我已扫码完成</view>
-		</view>
-	</view>
-</view>
 <!-- 取消窗口 -->
 <view class="cu-modal {{modalName=='toCancel'?'show':''}}">
 	<view class="cu-dialog">
@@ -371,17 +331,17 @@
 <view class="cu-modal {{modalName=='toGroup'?'show':''}}">
 	<view class="cu-dialog">
 		<swiper style="height: 500rpx;">
-			<swiper-item wx:for="{{actions.qr_code}}" wx:key="index" class="bg-img" style="height: 360rpx;" show-menu-by-longpress="true">
+			<swiper-item wx:for="{{actions.qrCode}}" wx:key="index" class="bg-img" style="height: 360rpx;" show-menu-by-longpress="true">
 				<view class="cu-bar justify-center text-white">
-					<image class="margin-top" src="{{item}}" bindtap="previewImage" data-index="{{index}}" data-urls="{{actions.qr_code}}" mode="aspectFit" />
+					<image class="margin-top" src="{{item}}" bindtap="previewImage" data-index="{{index}}" data-urls="{{actions.qrCode}}" mode="aspectFit" />
 				</view>
 				<view class="cu-tag cancleButton bg-white round button" catchtap="hideModal">
 					<text class="cuIcon-close text-xl text-bold text-black"></text>
 				</view>
 			</swiper-item>
-			<swiper-item wx:if="{{!actions.qr_code}}" wx:key="index" class="bg-img" style="height: 360rpx;" show-menu-by-longpress="true">
+			<swiper-item wx:if="{{!actions.qrCode}}" wx:key="index" class="bg-img" style="height: 360rpx;" show-menu-by-longpress="true">
 				<view class="cu-bar justify-center text-white">
-					<image class="margin-top" src="" bindtap="previewImage" data-index="{{index}}" data-urls="{{[]}}" mode="aspectFit" />
+					<image class="margin-top" src="{{avators[0]}}" bindtap="previewImage" data-index="{{index}}" data-urls="{{[]}}" mode="aspectFit" />
 				</view>
 				<view class="cu-tag cancleButton bg-white round button" catchtap="hideModal">
 					<text class="cuIcon-close text-xl text-bold text-black"></text>
@@ -389,41 +349,15 @@
 			</swiper-item>
 		</swiper>
 		<view class="cu-bar bg-white">
-			<view wx:if="{{isPintuan}}" class="action margin-0 flex-sub solid-left text-green" bindtap="hideModal">已加入报名群</view>
-			<view wx:else class="action margin-0 flex-sub solid-left text-green" bindtap="hideModal" data-target="join">我已扫码完成</view>
+			<view class="action margin-0 flex-sub solid-left text-green" bindtap="hideModal">我知道了</view>
 		</view>
 	</view>
 
 </view>
-<!-- 轻提示 -->
-<view class="toast-fixed-center" hidden="{{!show}}" style="z-index: 99;">
-	<view class="radius-lg padding animation-slide-top text-lg {{status == 'success' ? 'bg-green light':'bg-red light'}}">
-		<text class="cuIcon-info"></text> {{message}}
-	</view>
-</view>
 
-<!-- 报名modal -->
-<!-- <view class="cu-modal {{modalName=='toPintuan'?'show':''}}">
-	<view class="cu-dialog">
-		<view class="cu-form-group">
-			<view class="title">多列选择</view>
-			<picker mode="multiSelector" bindchange="MultiChange" bindcolumnchange="MultiColumnChange" value="{{multiIndex}}" range="{{multiArray}}">
-				<view class="picker">
-					{{multiArray[0][multiIndex[0]]}}，{{multiArray[1][multiIndex[1]]}}，{{multiArray[2][multiIndex[2]]}}
-				</view>
-			</picker>
-		</view>
-		<view class="cu-bar bg-white justify-end">
-			<view class="action">
-				<button class="cu-btn line-green text-green" bindtap="hideModal">算了</button>
-				<button class="cu-btn bg-green margin-left" bindtap="hideModal" data-target="join">我确定</button>
-			</view>
-		</view>
-	</view>
-</view> -->
 
 <!-- 添加时间段模态框 -->
-<view class="cu-modal {{modalName=='toPintuan'?'show':''}}">
+<view class="cu-modal {{modalName=='comfirmInfo'?'show':''}}">
 	<view class="cu-dialog">
 		<!-- 标题 -->
 		<view class="cu-bar bg-white justify-end">
@@ -434,7 +368,7 @@
 		</view>
 		<view class="cu-form-group">
 			<view class="title">志愿者姓名</view>
-			<text>{{myInfo.userName}}</text>
+			<text>{{myInfo.name}}</text>
 		</view>
 		<view class="cu-form-group">
 			<view class="title">联系电话</view>
@@ -487,7 +421,7 @@
 		</view>
 		<view wx:for="{{actions.joinMembers}}" wx:key="index" wx:for-index="mIdx" wx:for-item="mItm" class="flex justify-around margin-bottom-sm">
 			<!-- <text class="text-sm">{{mItm.info.name[0]}}*{{mItm.info.name.length-1!=1? mItm.info.name[mItm.info.name.length-1]:''}}</text> -->
-			<text class="text-sm">{{mItm.info.name}}</text>
+			<text class="text-sm">{{mItm.name}}</text>
 			<text class="text-sm">{{mItm.posName}}</text>
 			<text class="text-sm">{{serviceTimeSpan[mItm.posIdx[0]].date+' '+serviceTimeSpan[mItm.posIdx[0]].time}}</text>
 		</view>
@@ -523,5 +457,12 @@
 		<view class="flex justify-around margin-xl">
 			<text>{{actions.feedback.membersInfo[showFeedbackIdx[0]].feedback}}</text>
 		</view>
+	</view>
+</view>
+
+<!-- 轻提示 -->
+<view class="toast-fixed-center" hidden="{{!show}}" style="z-index: 99;">
+	<view class="radius-lg padding animation-slide-top text-lg {{status == 'success' ? 'bg-green light':'bg-red light'}}">
+		<text class="cuIcon-info"></text> {{message}}
 	</view>
 </view>

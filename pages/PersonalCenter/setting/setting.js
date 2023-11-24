@@ -6,7 +6,7 @@ Page({
 		isUpdate: false,
 		isTextBoxVisible: false,
 		showModal: null,
-		grade: ['小学', '中学', '本科', '研究生', '博士', '已毕业'],
+		grades: ['小学', '中学', '本科', '研究生', '博士', '已毕业'],
 		loading: false,
 		selectedYear: '请选择年份',
 		isCollege: '未填写',
@@ -16,11 +16,11 @@ Page({
 	onLoad(options) {
 		this.setData({
 			openid: app.globalData.userInfo["_openid"],
-			name: app.globalData.userInfo["userName"] ? app.globalData.userInfo["userName"] : '未填写',
+			name: app.globalData.userInfo["name"] ? app.globalData.userInfo["name"] : '未填写',
 			phone: app.globalData.userInfo["phone"] ? app.globalData.userInfo["phone"] : '未填写',
 			aliPay: app.globalData.userInfo["aliPay"] ? app.globalData.userInfo["aliPay"] : '未填写',
 			school: app.globalData.userInfo["school"] ? app.globalData.userInfo["school"] : '未填写',
-			mygrade: app.globalData.userInfo["grade"] ? app.globalData.userInfo["grade"] : '未填写',
+			grade: app.globalData.userInfo["grade"] ? app.globalData.userInfo["grade"] : '未填写',
 			college: app.globalData.userInfo["college"] ? app.globalData.userInfo["college"] : '未填写',
 			selectedYear: app.globalData.userInfo["year"] ? app.globalData.userInfo["year"] : '未填写',
 		})
@@ -33,36 +33,34 @@ Page({
 		if (that.data.isUpdate) {
 			wx.showLoading({
 				title: '(数据上传中...)',
-				mask: true
+				mask: true,
 			})
-			db.collection('UserInfo').where({
-				_openid: this.data.openid
-			}).update({
-				data: {
-					userName: this.data.name,
-					school: this.data.school,
-					grade: this.data.mygrade,
-					college: this.data.college,
-					phone: this.data.phone,
-					aliPay: this.data.aliPay,
-					year: this.data.selectedYear
-				},
-				success(res) {
-					wx.hideLoading();
-					// app.globalData.name = that.data.name
-					// app.globalData.school = that.data.school
-					// app.globalData.grade = that.data.mygrade
-					// app.globalData.college = that.data.college
-					// app.globalData.year = that.data.selectedYear
-					// app.globalData.phone = that.data.phone
-					// app.globalData.aliPay = that.data.aliPay
-
-					// 在此处执行其他操作
-				},
-				fail(error) {
-					console.error('更新失败', error);
+			let form = {
+				name: this.data.name,
+				school: this.data.school,
+				grade: this.data.grade,
+				year: this.data.selectedYear,
+				college: this.data.college,
+			}
+			wx.$ajax({
+				url: wx.$param.server['fastapi'] + "/user/update",
+				method: "post",
+				data: form,
+				header: {
+					'content-type': 'application/json'
 				}
+			}).then(res => {
+				if (res['statusCode'] == 201) {
+					console.log("更新成功", res)
+				} else {
+					console.log("状态码不对", res)
+				}
+				wx.hideLoading()
+			}).catch(err => {
+				console.log("err", err)
+				wx.hideLoading()
 			})
+
 		}
 
 	},
@@ -81,7 +79,7 @@ Page({
 		console.log(e.detail.value)
 		this.setData({
 			Gindex: e.detail.value,
-			mygrade: this.data.grade[e.detail.value]
+			grade: this.data.grades[e.detail.value]
 		})
 	},
 	YearChange(e) {
