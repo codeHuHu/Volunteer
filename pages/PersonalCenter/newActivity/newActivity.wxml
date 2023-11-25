@@ -324,7 +324,7 @@
 		</view>
 		<view class="cu-form-group">
 			<view class="title">日期选择</view>
-			<picker mode="date" model:value="{{beginDate}}" start="{{nowDate}}" end="2030-11-05">
+			<picker mode="date" value="{{beginDate}}" start="{{nowDate}}" end="2030-11-05" bindchange="bindStartChange">
 				<view class="picker">
 					{{beginDate}}
 				</view>
@@ -332,7 +332,7 @@
 		</view>
 		<view class="cu-form-group">
 			<view class="title">开始时间</view>
-			<picker mode="time" model:value="{{nowTime}}" start="00:00" end="23:59" bindchange="bindSTimeChange">
+			<picker mode="time" value="{{nowTime}}" start="00:00" end="23:59" bindchange="bindSTimeChange">
 				<view class="picker">
 					{{startTime}}
 				</view>
@@ -340,7 +340,7 @@
 		</view>
 		<view class="cu-form-group">
 			<view class="title">结束时间</view>
-			<picker mode="time" model:value="{{endTime}}" start="{{startTime}}" end="23:59" bindchange="bindETimeChange">
+			<picker mode="time" value="{{startTime}}" start="{{startTime}}" end="23:59" bindchange="bindETimeChange">
 				<view class="picker">
 					{{endTime}}
 				</view>
