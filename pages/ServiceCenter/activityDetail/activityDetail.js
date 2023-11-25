@@ -2,9 +2,7 @@ const app = getApp()
 let loading = false;
 const db = wx.cloud.database()
 
-const utils = require("../../../utils/date.js")
-const XLSX = require('../../../utils/excel.js') //引入
-
+const utils = require("../../../utils/exportExcel.js")
 
 Page({
 	data: {
@@ -232,7 +230,7 @@ Page({
 		}
 
 		let tmp = e.currentTarget.dataset.target
-		
+
 		if (this.data.isDead && tmp == 'toCancel') {
 			this.setShow("error", "截止时间已到,不可操作")
 			return
@@ -364,117 +362,40 @@ Page({
 		let sheet = []
 		// 表头
 		sheet.push(
-			['活动名称', DA.actName],
-			['活动标签', DA.tag],
+			['活动名称', DA.serviceName],
+			['活动标签', DA.serviceTag],
 			//['活动状态', '已结束'],
 			//['活动组织', DA.teamName],
 			['组织负责人', DA.holder],
-			['服务时间', D.constants.serviceTime],
-			['服务时长', D.constants.hours + '小时' + D.constants.minutes + '分钟'],
-			['服务地点', DA.address],
-			['服务简介', DA.intro],
+			['负责人介绍', DA.holderDetail],
+			// ['服务时间', D.constants.serviceTime],
+			// ['服务时长', D.constants.hours + '小时' + D.constants.minutes + '分钟'],
+			['服务地点', DA.serviceAddress],
+			['服务简介', DA.serviceIntro],
 			['参加活动人数', `${DA.outJoin}人`],
 			['截止时间', D.constants.deadTime],
 			[],
 			[],
-			['用户名称', '服务时间段', '岗位', '参加状态', '评级', '详细评价', '电话', '支付宝', '银行卡信息', '学历', '学年', '学校/单位', '学院',]
+			['用户名称', '服务时间段', '岗位', '参加状态', '评级', '详细评价', '电话', '收款信息', '学历', '学年', '学校/单位', '学院',]
 		)
-		DA.feedback.membersInfo.forEach(item => {
+		DA.joinMembers.forEach(item => {
 			let rowcontent = []
-			rowcontent.push(item.info.name)
-			rowcontent.push(item.serviceSpan)
+			let TS = DA.serviceTimeSpan[item['posIdx'][0]]
+			rowcontent.push(item.name)
+			rowcontent.push(TS.date + " " + TS.time)
 			rowcontent.push(item.posName)
 			rowcontent.push(item.isCome ? '实到' : '未到')
 			rowcontent.push(item.excellent ? '优秀' : '及格')
 			rowcontent.push(item.feedback)
-			rowcontent.push(item.info.phone)
-			rowcontent.push(item.info.aliPay || item.aliPay)
-			rowcontent.push(item.bankType + ' ' + item.bankCardNumber)
-			rowcontent.push(item.info.grade)
-			rowcontent.push(item.info.year)
-			rowcontent.push(item.info.school)
-			rowcontent.push(item.info.college)
+			rowcontent.push(item.phone)
+			rowcontent.push(item.payType + ' ' + item.payNumber)
+			rowcontent.push(item.grade)
+			rowcontent.push(item.year)
+			rowcontent.push(item.school)
+			rowcontent.push(item.college)
 			sheet.push(rowcontent)
 		})
-		// XLSX插件使用
-		//自定义列宽
-		const colWidth = [
-			{ wch: 13 },
-			{ wch: 23 },
-			{ wch: 7 },
-			{ wch: 10 },
-			{ wch: 11 },
-			{ wch: 13 },
-			{ wch: 13 },
-			{ wch: 13 },
-			{ wch: 25 },
-			{ wch: 10 },
-		]
-		const rowWidth = [
-			// {/* visibility */
-			// 	hidden: false, // if true, the row is hidden
-			// 	/* row height is specified in one of the following ways: */
-			// 	hpt: 20,  // height in points
-			// },
-			// {
-			// 	hpt: 10,
-			// }
-		]
-		let ws = XLSX.utils.aoa_to_sheet(sheet);
-		console.log('ws', ws)
-		let wb = XLSX.utils.book_new();
-		console.log('wb', wb)
-		ws['!cols'] = colWidth
-		ws['!rows'] = rowWidth
-		//增加sheet
-		XLSX.utils.book_append_sheet(wb, ws, "sheet名字");
-		let fileData = XLSX.write(wb, {
-			bookType: "xlsx",
-			type: 'base64'
-		});
-		// 保存的本地地址
-		console.log(wx.env.USER_DATA_PATH)
-		let filePath = `${wx.env.USER_DATA_PATH}/${DA.actName}.xlsx`
-		// 写文件
-		const fs = wx.getFileSystemManager()
-		fs.writeFile({
-			filePath: filePath,
-			data: fileData,
-			encoding: 'base64',
-			success(res) {
-				const sysInfo = wx.getSystemInfoSync()
-				if (sysInfo.platform.toLowerCase().indexOf('windows') >= 0) {
-					wx.saveFileToDisk({
-						filePath: filePath,
-						success(res) {
-							console.log(res)
-						},
-						fail(res) {
-							console.error(res)
-							util.tips("导出失败")
-						}
-					})
-				} else {
-					wx.openDocument({
-						filePath: filePath,
-						showMenu: true,
-						success: function (res) {
-							console.log('打开文档成功')
-						},
-						fail: console.error
-					})
-				}
-			},
-			fail(res) {
-				console.error(res)
-				if (res.errMsg.indexOf('locked')) {
-					wx.showModal({
-						title: '提示',
-						content: '文档已打开，请先关闭',
-					})
-				}
-			}
-		})
+		utils.exportExcel(sheet, DA.serviceName)
 	},
 	// 点击列表,收缩与展示
 	click(event) {

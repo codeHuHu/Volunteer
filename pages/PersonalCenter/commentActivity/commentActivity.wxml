@@ -4,7 +4,7 @@
 		<view class="title">活动名称</view>
 		<view >
 			<view class="">
-				{{result.actName?result.actName:'请选择活动'}}
+				{{action.serviceName?action.serviceName:'请选择活动'}}
 			</view>
 		</view>
 	</view>
@@ -51,7 +51,7 @@
 		<view class="showname">
 			<view wx:for="{{checkBox}}" wx:key="index" wx:for-item="item">
 				<button bindtap="showNGModal" data-target="BottomModal" data-id="{{item.id}}">
-					{{item.info.name}}
+					{{item.name}}
 				</button>
 
 			</view>
@@ -68,7 +68,7 @@
 			</view>
 			<view class="grid col-3 padding-sm">
 				<view wx:for="{{checkBox}}" class="padding-xs" wx:key="index">
-					<button class="cu-btn lg block {{item.isCome?'btn-green':'line-green'}}" bindtap="ChooseIsCome" data-value="{{item.id}}"> {{item.info.name}}
+					<button class="cu-btn lg block {{item.isCome?'btn-green':'line-green'}}" bindtap="ChooseIsCome" data-value="{{item.id}}"> {{item.name}}
 					</button>
 				</view>
 			</view>
@@ -84,7 +84,7 @@
 			<view class="grid col-3 padding-sm">
 				<view wx:for="{{checkBox}}" class="padding-xs" wx:key="index">
 
-					<button wx:if="{{item.isCome}}" class="cu-btn lg block {{item.excellent?'btn-green':'line-green'}}" bindtap="ChooseCheckbox" data-value="{{item.id}}"> {{item.info.name}}
+					<button wx:if="{{item.isCome}}" class="cu-btn lg block {{item.excellent?'btn-green':'line-green'}}" bindtap="ChooseCheckbox" data-value="{{item.id}}"> {{item.name}}
 					</button>
 				</view>
 			</view>
@@ -115,7 +115,7 @@
 
 	<view class="box">
 		<view class="cu-bar btn-group margin-top">
-			<button class="cu-btn bg-green shadow-blur round lg" bind:tap="commitfb">保存</button>
+			<button class="cu-btn bg-green shadow-blur round lg" bindtap="commit">保存</button>
 		</view>
 	</view>
 

@@ -12,21 +12,42 @@ Page({
 		// 		status: '2',
 		// 	}
 		// }
-		if (options.mode == 'comment') {
-		} else {
-			let form = {
+		let url = wx.$param.server['fastapi'] + "/service/myService"
+		let form = {
+			'pagination': {
 				"page": 1,
 				"size": 10
 			}
-
+		}
+		if (options.mode == 'comment') {
+			form['status'] = 2
+			if (app.globalData.userInfo['position'] >= 1) {
+				url = wx.$param.server['fastapi'] + "/service/show"
+			}
 			wx.$ajax({
-				url: wx.$param.server['fastapi'] + "/service/myService",
+				url: url,
 				method: "post",
 				data: form,
 				header: {
 					'content-type': 'application/json'
 				},
-				showErr:false
+				showErr: false
+			}).then(res => {
+				that.setData({
+					actionList: res.data
+				})
+			}).catch(err => {
+
+			})
+		} else {
+			wx.$ajax({
+				url: url,
+				method: "post",
+				data: form,
+				header: {
+					'content-type': 'application/json'
+				},
+				showErr: false
 			}).then(res => {
 				that.setData({
 					actionList: res.data
