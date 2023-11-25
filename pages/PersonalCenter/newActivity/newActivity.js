@@ -30,11 +30,11 @@ Page({
 			],
 			//服务群体
 			groupTagList: [
-				{tag:'18周岁以上青年大学生',light:false},
-				{tag:'热心慈善公益事业',light:false},
-				{tag:'性格开朗',light:false},
-				{tag:'听从安排',light:false},
-				{tag:'具备参加志愿服务相应的基本能力和身体素质',light:false}
+				{ tag: '18周岁以上青年大学生', light: false },
+				{ tag: '热心慈善公益事业', light: false },
+				{ tag: '性格开朗', light: false },
+				{ tag: '听从安排', light: false },
+				{ tag: '具备参加志愿服务相应的基本能力和身体素质', light: false }
 			],
 			//文件类型
 			icon: ['excel', 'ppt', 'word', 'pdf'],
@@ -78,7 +78,7 @@ Page({
 			'交通银行',
 			'其他银行(自定义)'
 		],
-		payType:''
+		payType: ''
 	},
 	onLoad() {
 		this.setData({
@@ -86,7 +86,7 @@ Page({
 			phone: app.globalData.userInfo["phone"],
 			myPos: app.globalData.userInfo["position"]
 		})
-		
+
 
 		const currentDate = new Date().toISOString().slice(0, 10);
 		const currentTime = new Date().toLocaleTimeString('en-US', {
@@ -95,18 +95,18 @@ Page({
 			minute: '2-digit'
 		}).slice(0, 5);
 
-		
+
 		const tmpDate = new Date();
-tmpDate.setDate(tmpDate.getDate() + 3);
-		const tmpTime=new Date()
-		tmpTime.setHours(0,0,0,0);
+		tmpDate.setDate(tmpDate.getDate() + 3);
+		const tmpTime = new Date()
+		tmpTime.setHours(0, 0, 0, 0);
 		const tmpDTime = tmpTime.toLocaleTimeString('en-US', {
 			hour12: false,
 			hour: '2-digit',
 			minute: '2-digit'
-	}).slice(0, 5);
+		}).slice(0, 5);
 
-const reDeadDate = tmpDate.toISOString().slice(0, 10);
+		const reDeadDate = tmpDate.toISOString().slice(0, 10);
 		this.setData({
 			nowDate: currentDate,
 			nowTime: currentTime,
@@ -166,8 +166,8 @@ const reDeadDate = tmpDate.toISOString().slice(0, 10);
 	},
 	//填写截止日期的日期
 	bindDeadDateChange: function (e) {
-	
-    this.setData({
+
+		this.setData({
 			deadDate: e.detail.value,
 		})
 	},
@@ -181,7 +181,7 @@ const reDeadDate = tmpDate.toISOString().slice(0, 10);
 		});
 	},
 	async sendNew(e) {
-		var that=this
+		var that = this
 		//检测是否输入完整
 		if (this.check() == 0) {
 			return
@@ -220,12 +220,10 @@ const reDeadDate = tmpDate.toISOString().slice(0, 10);
 						const iZhiYuan = result
 						Promise.all(uploadTask[2])
 							.then(result => {
-								let groupTag=[]
-								var tmpgroup=that.data.constants.groupTagList
-								for(var l in tmpgroup)
-								{
-									if(tmpgroup[l].light)
-									{
+								let groupTag = []
+								var tmpgroup = that.data.constants.groupTagList
+								for (var l in tmpgroup) {
+									if (tmpgroup[l].light) {
 										groupTag.push(tmpgroup[l].tag)
 									}
 								}
@@ -255,7 +253,7 @@ const reDeadDate = tmpDate.toISOString().slice(0, 10);
 
 									tag: this.data.constants.tagList[this.data.tagIndex],
 									groupTag,
-									payType:this.data.payType,
+									payType: this.data.payType,
 									teamName: this.data.teamName,
 									qr_code,
 									iZhiYuan,
@@ -408,7 +406,7 @@ const reDeadDate = tmpDate.toISOString().slice(0, 10);
 		})
 	},
 	check() {
-	
+
 		if (!this.data.holder || !this.data.phone) {
 			this.setShow("error", "请重启小程序");
 			return 0
@@ -421,9 +419,8 @@ const reDeadDate = tmpDate.toISOString().slice(0, 10);
 			this.setShow("error", '请添加岗位');
 			return 0
 		}
-		if(!this.numEqual())
-		{
-			this.setShow("error","各岗位人数需要与总需求人数一致")
+		if (!this.numEqual()) {
+			this.setShow("error", "各岗位人数需要与总需求人数一致")
 		}
 		if (!this.data.outNum && this.data.outNum != 0) {
 			this.setShow("error", "公开招募错误");
@@ -441,9 +438,8 @@ const reDeadDate = tmpDate.toISOString().slice(0, 10);
 			this.setShow("error", "未指定补贴金额");
 			return 0
 		}
-		if(this.data.isSubsidy ==1 && this.data.payType=='')
-		{
-			this.setShow("error","未指定转账方式");
+		if (this.data.isSubsidy == 1 && this.data.payType == '') {
+			this.setShow("error", "未指定转账方式");
 		}
 		if (this.data.isfile == 1 && this.data.temp_fileList == '') {
 			this.setShow("error", "未上传文件");
@@ -455,20 +451,17 @@ const reDeadDate = tmpDate.toISOString().slice(0, 10);
 		}
 		return 1
 	},
-	numEqual()
-	{
-		
+	numEqual() {
+
 		let tempList = this.data.serviceTimeSpan
-		let sum=0
-		for(let i in tempList)
-		{
-			for(let j in tempList[i]['positions'])
-			{
-			sum+=tempList[i]['positions'][j].number
+		let sum = 0
+		for (let i in tempList) {
+			for (let j in tempList[i]['positions']) {
+				sum += tempList[i]['positions'][j].number
 			}
 		}
-		if(sum == this.data.outNum)
-		return true
+		if (sum == this.data.outNum)
+			return true
 		return false
 	},
 	setShow(status, message, time = 1000, fun = false) {
@@ -859,26 +852,28 @@ const reDeadDate = tmpDate.toISOString().slice(0, 10);
 		let idx = e.currentTarget.dataset.index
 		//如果是自定义标签的话
 		if (idx == -1) {
-			let groupTagName=
-			 {tag: this.data.groupTagName,
-				light:true}
+			let groupTagName =
+			{
+				tag: this.data.groupTagName,
+				light: true
+			}
 
 			//判断是否为空
 			if (groupTagName.tag === '') {
 				return
 			}
-			
-			let tmpgroup=this.data.constants.groupTagList
+
+			let tmpgroup = this.data.constants.groupTagList
 			tmpgroup.push(groupTagName)
 			this.setData({
-				'constants.groupTagList':tmpgroup
+				'constants.groupTagList': tmpgroup
 			})
 		} else {
-			let tmpgroup=this.data.constants.groupTagList
+			let tmpgroup = this.data.constants.groupTagList
 			console.log(tmpgroup)
-			tmpgroup[idx].light=!tmpgroup[idx].light;
+			tmpgroup[idx].light = !tmpgroup[idx].light;
 			this.setData({
-			'constants.groupTagList':tmpgroup
+				'constants.groupTagList': tmpgroup
 			})
 		}
 	},
@@ -893,11 +888,11 @@ const reDeadDate = tmpDate.toISOString().slice(0, 10);
 		// })
 		// console.log(idx)
 		let idx = e.currentTarget.dataset.index
-		let tmpgroup=this.data.constants.groupTagList
+		let tmpgroup = this.data.constants.groupTagList
 		console.log(tmpgroup)
-		tmpgroup[idx].light=!tmpgroup[idx].light;
+		tmpgroup[idx].light = !tmpgroup[idx].light;
 		this.setData({
-		'constants.groupTagList':tmpgroup
+			'constants.groupTagList': tmpgroup
 		})
 
 	},
@@ -912,16 +907,16 @@ const reDeadDate = tmpDate.toISOString().slice(0, 10);
 		})
 	},
 
-		//改变选择银行索引
-		BankPickerChange(e) {
-		
-				var idx=this.data.picker.length-1
-			this.setData({
-				BankPickerIndex: e.detail.value,
-				payType: e.detail.value==idx?'':this.data.picker[e.detail.value]	//银行类型
-			})
-			
+	//改变选择银行索引
+	BankPickerChange(e) {
+
+		var idx = this.data.picker.length - 1
+		this.setData({
+			BankPickerIndex: e.detail.value,
+			payType: e.detail.value == idx ? '' : this.data.picker[e.detail.value]	//银行类型
+		})
+
 	},
-	
+
 
 })
