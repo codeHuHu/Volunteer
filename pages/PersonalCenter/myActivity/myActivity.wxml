@@ -22,9 +22,9 @@
 						<view class="cu-tag bg-green light sm round" style="white-space:normal;">{{item.serviceTag}}</view>
 						<view class="cu-tag bg-green light sm round going-on" wx:if="{{item.status==1}}">进行中</view>
 						<view class="cu-tag bg-green light sm round going-on" wx:elif="{{item.status==2}}" style="background-color: gray;">已结束</view>
-						<view class="cu-tag bg-green light sm round going-on" wx:elif="{{item.status==0}}" style="background-color: gray;">审核中</view>
-						<view class="cu-tag bg-green light sm round going-on" wx:elif="{{item.status==-1}}" style="background-color: gray;">拒绝发布</view>
-						<view class="cu-tag bg-green light sm round going-on" wx:elif="{{item.status==-2}}" style="background-color: gray;">活动取消</view>
+						<view class="cu-tag bg-green light sm round going-on" wx:elif="{{item.status==-1}}" style="background-color: gray;">审核中</view>
+						<view class="cu-tag bg-green light sm round going-on" wx:elif="{{item.status==-2}}" style="background-color: gray;">拒绝发布</view>
+						<view class="cu-tag bg-green light sm round going-on" wx:elif="{{item.status==-3}}" style="background-color: gray;">活动取消</view>
 						<view>
 							<text class="data">{{item.serviceStartTime}}</text>
 						</view>

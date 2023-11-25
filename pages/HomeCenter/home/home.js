@@ -27,7 +27,7 @@ Page({
 		var that = this;
 
 		let form = {
-			"status": 1,
+			"status": [1],
 			"pagination": {
 				"page": 1,
 				"size": 10
@@ -40,7 +40,8 @@ Page({
 			data: form,
 			header: {
 				'content-type': 'application/json'
-			}
+			},
+			showErr:false
 		}).then(res => {
 			that.setData({
 				actions: res.data

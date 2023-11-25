@@ -32,11 +32,16 @@ App({
 	},
 	getToken() {
 		let that = this
+		wx.setStorageSync('loginInfo', {
+			phone: "18319093956",
+			password: "123456"
+		})
+
 		let loginInfo = wx.getStorageSync('loginInfo')
 
 		let form = {
-			username: loginInfo['phone'] ? loginInfo['phone'] : '',
-			password: loginInfo['password'] ? loginInfo['password'] : ''
+			username: loginInfo['phone'],
+			password: loginInfo['password']
 		}
 		//去获取JWT_Token
 		wx.$ajax({

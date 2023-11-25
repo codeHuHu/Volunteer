@@ -39,7 +39,7 @@ Page({
 		let that = this;
 
 		let url = !!myUrl ? myUrl : wx.$param.server['fastapi'] + "/service/show"
-		let form = !!myForm ? myForm : { "status": 1, "pagination": { "page": 1, "size": 10 } }
+		let form = !!myForm ? myForm : { "status": [1], "pagination": { "page": 1, "size": 10 } }
 
 		wx.$ajax({
 			url,
@@ -50,12 +50,12 @@ Page({
 			},
 			showErr: false,
 		}).then(res => {
-			that.setShow("success","获取成功")
+			that.setShow("success", "获取成功")
 			that.setData({
 				actionList: res.data
 			})
 		}).catch(err => {
-			that.setShow("error","获取失败")
+			that.setShow("error", "获取失败")
 		})
 	},
 	// 控制下拉显示框
@@ -98,7 +98,7 @@ Page({
 		} else {
 			let form = {
 				"tag": index ? that.data.selectType[index] : '',
-				"status": that.data.index3,
+				"status": [that.data.index3],
 				"pagination": { "page": 1, "size": 10 }
 			}
 			that.getServices(form, null)
@@ -117,7 +117,7 @@ Page({
 		});
 		let form = {
 			"tag": that.data.index2 ? that.data.selectType[that.data.index2] : '',
-			"status": index,
+			"status": [index],
 			"pagination": { "page": 1, "size": 10 }
 		}
 		that.getServices(form, null)
@@ -144,19 +144,24 @@ Page({
 			success(res) {
 				// 用户点击了确定按钮
 				if (res.confirm) {
-					console.log(e.currentTarget.dataset.id)
-					const id = e.currentTarget.dataset.id
-					const collection = db.collection('ActivityInfo');
-					collection.doc(id).update({
+					wx.$ajax({
+						url: wx.$param.server['fastapi'] + "/service/check",
+						method: "post",
 						data: {
-							status: '-2'	//-2表示取消活动
-						}
+							id: e.currentTarget.dataset.id,
+							status: -3
+						},
+						header: {
+							'content-type': 'application/json'
+						},
 					}).then(res => {
-						console.log(res)
-						that.setShow("success", "活动取消成功")
-						that.onLoad()
-					}
-					)
+						that.setData({
+							actionList: [],
+						})
+						that.getServices()
+					}).catch(err => {
+
+					})
 				} else if (res.cancel) {
 
 				}

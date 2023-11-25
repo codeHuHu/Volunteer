@@ -1,95 +1,54 @@
 // pages/checkActivity/checkActivity.js
 const db = wx.cloud.database()
-const app = getApp()
-var utils = require("../../../utils/date.js")
+// const app = getApp()
 let loading = false;
 
 Page({
 	data: {
 
 	},
-	async onLoad(event) {
+	onLoad(event) {
 		wx.setNavigationBarTitle({
 			title: '审核发布',
 		})
-		const currentDate = new Date();
-		const timeStamp = currentDate.getTime();
-		this.setData({
-			timeStamp,
-			currentDate
-		})
-		//生成两个actionsList
-		await this.getList('0');
-		await this.getList('-1');
+		this.getList([-1]) //status为-1是待审核
+		this.getList([-2, -3]) //status为-2是已取消
 	},
-	async getList(e) {
-		var that = this;
-		const collection = db.collection('ActivityInfo');
-		const res = await collection.where({
-			status: e == '0' ? '0' : db.command.in(['-1', '-2'])
-		}).field({
-			_id: true,
-			actName: true,
-			serviceEndStamp: true,
-			serviceStartStamp: true,
-			deadTimeStamp: true,
-			status: true,
-			tag: true,
-			teamName: true,
-			_openid: true,
-			isPintuan: true,
-		})
-			.limit(20)
-			.orderBy('serviceStamp', 'desc')
-			.get();
-
-		var actions = res.data;
-		if (e == '0') {
-			that.setData({
-				actionList: actions,
-			});
-		} else {
-			that.setData({
-				binActionList: actions,
-			});
-		}
-		this.setTime(res.data)
-
-	},
-	async setTime(result) {
-		var res = result
-		var dataArr = []
-		let status = ''
-		var t
-		for (var l in res) {
-			t = new Date(res[l].deadTimeStamp)
-			dataArr.push(`${t.getFullYear()}-${utils.Z(t.getMonth() + 1)}-${utils.Z(t.getDate())}`)
-			//console.log(formattedDate)
-			status = res[l].status
-		}
-		if (status == '0') {
-			this.setData({
-				toCheck_Arr: dataArr
-			})
-			try {
-				wx.stopPullDownRefresh()
-			} catch (error) {
-				console.error(error);
+	getList(e) {
+		let that = this
+		let form = {
+			status: e,
+			pagination: {
+				page: 1,
+				size: 10
 			}
 		}
-		else {
-			this.setData({
-				Reject_Arr: dataArr
-			})
-			try {
-				wx.stopPullDownRefresh()
-			} catch (error) {
-				console.error(error);
+		wx.$ajax({
+			url: wx.$param.server['fastapi'] + "/service/show",
+			method: "post",
+			data: form,
+			header: {
+				'content-type': 'application/json'
+			},
+			showErr: false
+		}).then(res => {
+			if (e[0] == -1) {
+				that.setData({
+					actionList: res.data,
+				})
+			} else if (e[0] == -2) {
+				that.setData({
+					binActionList: res.data,
+				})
 			}
-		}
+		}).catch(err => {
+			console.log("err", err);
+		})
+
+
 	},
-	Agree(e) {
-		var that = this
+	agree(e) {
+		let that = this
 		wx.showModal({
 			title: '确认',
 			content: '是否确定发布？',
@@ -97,26 +56,32 @@ Page({
 				// 用户点击了确定按钮
 				if (res.confirm) {
 					console.log(e.currentTarget.dataset.id)
-					const id = e.currentTarget.dataset.id
-					const collection = db.collection('ActivityInfo');
-					collection.doc(id).update({
+					wx.$ajax({
+						url: wx.$param.server['fastapi'] + "/service/check",
+						method: "post",
 						data: {
-							status: '1'
-						}
+							id: e.currentTarget.dataset.id,
+							status: 1
+						},
+						header: {
+							'content-type': 'application/json'
+						},
 					}).then(res => {
-						console.log(res)
-						that.setShow("success", "发布成功")
-						that.onLoad()
-					}
-					)
+						that.setData({
+							actionList: [],
+						})
+						that.getList([-1]) //status为-1是待审核
+					}).catch(err => {
+
+					})
 				} else if (res.cancel) {
 
 				}
 			}
 		})
 	},
-	Reject(e) {
-		var that = this
+	reject(e) {
+		let that = this
 		wx.showModal({
 			title: '确认',
 			content: '是否拒绝发布',
@@ -124,18 +89,26 @@ Page({
 				// 用户点击了确定按钮
 				if (res.confirm) {
 					console.log(e.currentTarget.dataset.id)
-					const id = e.currentTarget.dataset.id
-					const collection = db.collection('ActivityInfo');
-					collection.doc(id).update({
+					wx.$ajax({
+						url: wx.$param.server['fastapi'] + "/service/check",
+						method: "post",
 						data: {
-							status: '-1'	//-1表示活动不被通过发布
-						}
+							id: e.currentTarget.dataset.id,
+							status: -2
+						},
+						header: {
+							'content-type': 'application/json'
+						},
 					}).then(res => {
-						console.log(res)
-						that.setShow("error", "已移入回收站")
-						that.onLoad()
-					}
-					)
+						that.setData({
+							actionList: [],
+							binActionList: []
+						})
+						that.getList([-1]) //status为-1是待审核
+						that.getList([-2, -3]) //status为-2是已取消
+					}).catch(err => {
+
+					})
 				} else if (res.cancel) {
 
 				}
@@ -177,13 +150,6 @@ Page({
 		} catch {
 			loading = false;
 		}
-	},
-	tabSelect(e) {
-		console.log(e);
-		this.setData({
-			TabCur: e.currentTarget.dataset.id,
-			scrollLeft: (e.currentTarget.dataset.id - 1) * 60
-		})
 	},
 	navTo(e) {
 		wx.$navTo(e)
