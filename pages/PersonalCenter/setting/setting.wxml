@@ -88,19 +88,20 @@
 		</view>
 
 		<view class="cu-item arrow ">
-			<view class="content cu-form-group " bindtap="openModal" data-target="phoneModal">
+			<!--  bindtap="openModal" data-target="phoneModal" -->
+			<view class="content cu-form-group ">
 				<view>
 					<text class="cuIcon-phone margin-right-xs"></text>
-					<text class="text-grey margin-right">电话</text>
+					<text class="text-gray margin-right">电话</text>
 				</view>
-				<view><text>{{phone}}</text></view>
+				<view><text class="text-gray">{{phone}}</text></view>
 			</view>
 		</view>
 		<view class="modal-mask" wx:if="{{ showModal == 'phoneModal' }}" bindtap="closeModal">
 			<view class="modal" catchtap>
 				<view class="modal-title">修改电话</view>
 				<view>
-					<input class="input-field" focus="true" model:value="{{phone}}" placeholder="请输入电话" />
+					<input class="input-field" focus="true" model:value="{{phone}}" placeholder="请输入电话" disabled="1" />
 				</view>
 				<button bindtap="handleSave" class="button">保存</button>
 			</view>

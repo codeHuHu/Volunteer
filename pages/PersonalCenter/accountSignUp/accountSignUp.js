@@ -7,7 +7,6 @@ Page({
 		region: ['广东省', '广州市', '番禺区'],
 		picker: ['居民身份证', '香港居民身份证', '澳门居民身份证', '台湾身份证'],
 		grade: ['小学', '中学', '本科', '研究生', '博士', '已毕业'],
-		team: ['广州大学城志愿者协会', '阳光义工团'],
 		userName: '',
 		userIdNumber: '',
 		userPhone: '',
@@ -32,53 +31,62 @@ Page({
 			selectedYear: year
 		});
 	},
-	GradeChange(e) {
+	gradeChange(e) {
 		this.setData({
-			Gindex: e.detail.value
+			gIdx: e.detail.value
 		})
 	},
-	PickerChange(e) {
+	pickerChange(e) {
 		this.setData({
 			index: e.detail.value
 		})
 	},
 	register() {
-		if (this.check() == 0) {
+		var that = this;
+		if (that.check() == 0) {
 			return
 		}
-		var that = this;
-		db.collection('UserInfo').add({
-			data: {
-				userName: that.data.userName,
-				idType: that.data.picker[that.data.index],
-				idNumber: that.data.userIdNumber,
-				phone: that.data.userPhone,
-				school: that.data.school,
-				college: that.data.college,
-				grade: that.data.grade[that.data.Gindex],
-				year: that.data.selectedYear,
-				isLogin: true,
-				position: 0
-			},
-			success(res) {
-				console.log('注册成功')
-				app.getAuthStatus();
-				wx.reLaunch({
-					url: '/pages/HomeCenter/home/home',
-				})
-				wx.showToast({
-					title: '注册成功',
-				})
+
+		let form = {
+			name: that.data.userName,
+			phone: that.data.userPhone,
+			password: '123456',
+			year: that.data.selectedYear,
+			school: that.data.school,
+			grade: that.data.grade[that.data.gIdx],
+			college: that.data.college,
+			idCard: that.data.userIdNumber,
+			idCardType: that.data.picker[that.data.index],
+		}
+
+		wx.$ajax({
+			url: wx.$param.server['fastapi'] + "/user/create",
+			method: "post",
+			data: form,
+			header: {
+				'content-type': 'application/json'
 			}
+		}).then(res => {
+			console.log('注册成功res', res)
+			wx.setStorageSync('loginInfo', { 'phone': that.data.userPhone, 'password': '123456' })
+			app.getAuthStatus();
+			wx.reLaunch({
+				url: '/pages/HomeCenter/home/home',
+			})
+			wx.showToast({
+				title: '注册成功',
+			})
+		}).catch(err => {
+			console.log(err);
 		})
 	},
-	checkchange() {
+	checkChange() {
 		this.setData({
 			isCheck: !this.data.isCheck
 		})
 	},
 	check() {
-		if (!this.data.Gindex && this.data.Gindex != 0) {
+		if (!this.data.gIdx && this.data.gIdx != 0) {
 			this.setShow("error", "请选择年级");
 			return 0
 		}

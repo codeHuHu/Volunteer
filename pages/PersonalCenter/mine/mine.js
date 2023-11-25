@@ -24,7 +24,8 @@ Page({
 		//先拿本地JWT_Token来获取用户信息
 		wx.$ajax({
 			url: wx.$param.server['fastapi'] + "/user/get",
-			method: "get"
+			method: "get",
+			showErr: false
 		}).then(res => {
 			//console.log('获取信息res', res)
 			app.globalData.isAuth = true
@@ -35,16 +36,16 @@ Page({
 			})
 			wx.setStorageSync('userInfo', res)
 		}).catch(err => {
-			that.globalData.isAuth = false
+			app.globalData.isAuth = false
 			console.log('获取信息err', err);
-			that.getToken()
+			app.getToken()
 		})
 	},
 	refreshData() {
 		this.setData({
 			isLogin: app.globalData.isAuth,
 			actions: app.globalData.userInfo,
-			myPos:app.globalData.userInfo['position']
+			myPos: app.globalData.userInfo['position']
 		})
 	},
 	navTo(e) {

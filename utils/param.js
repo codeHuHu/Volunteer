@@ -3,7 +3,8 @@ var param = {
     "mode": "verify",
     // 服务器地址列表
     "server": {
-        "fastapi": "http://volunteer.hejianhui.asia:8887",
+				// "fastapi": "http://volunteer.hejianhui.asia:8887",
+				"fastapi": "http://127.0.0.1:8004",
     },
 }
 

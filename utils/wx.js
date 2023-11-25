@@ -15,8 +15,8 @@ wx.$ajax = function (option) {
                 'content-type': 'application/x-www-form-urlencoded'
             }
             // header: {
-			// 	'content-type': 'application/json'
-			// }
+            // 	'content-type': 'application/json'
+            // }
         }
         if (typeof option.url === 'string' && option.url.indexOf("http") == -1) {
             option.url = wx.$param.server["fastapi"] + option.url
@@ -52,9 +52,9 @@ wx.$ajax = function (option) {
                         wx.removeStorageSync('JWT_Token')
                     }
 
-                    let msg = res.data.error
+                    let msg = res.data.detail
                     msg = msg ? msg : res.errMsg
-                    msg = String(res.statusCode) + " 错误"
+                    msg = String(res.statusCode) + " 错误" + msg
                     //返回错误信息
                     reject({
                         when: "http_status_error",

@@ -32,47 +32,57 @@ App({
 	},
 	getToken() {
 		let that = this
+		let loginInfo = wx.getStorageSync('loginInfo')
+
 		let form = {
-			username: '18319093950',
-			password: '123456'
+			username: loginInfo['phone'] ? loginInfo['phone'] : '',
+			password: loginInfo['password'] ? loginInfo['password'] : ''
 		}
 		//去获取JWT_Token
 		wx.$ajax({
 			url: wx.$param.server['fastapi'] + "/login",
 			method: "post",
 			data: form,
+			showErr: false
 		}).then(res => {
 			//储存至本地
 			if (res['access_token'] && res['token_type']) {
 				that.globalData.isAuth = true
 				console.log("正在储存JWT_Token");
 				wx.setStorageSync('JWT_Token', res['token_type'] + ' ' + res['access_token'])
+				//获取用户信息
+				that.getAuthStatus()
 			}
-			// console.log("获取tokenRes", res);
 		}).catch(err => {
-			console.log('获取tokenErr', err);
+			console.log('用户未注册');
 		})
 	},
 	getAuthStatus() {
 		let that = this
 
-		//先拿本地JWT_Token来获取用户信息
+		//拿本地JWT_Token来获取用户信息
 		wx.$ajax({
 			url: wx.$param.server['fastapi'] + "/user/get",
 			method: "get",
 			showErr: false
 		}).then(res => {
-			//console.log('获取信息res', res)
-			that.globalData.isAuth = true
-			that.globalData.userInfo = res
-			wx.setStorageSync('userInfo', res)
+			let loginInfo = wx.getStorageSync('loginInfo')
+			//判断是不是本人
+			if (loginInfo && loginInfo['phone'] == res['phone']) {
+				that.globalData.isAuth = true
+				that.globalData.userInfo = res
+				wx.setStorageSync('userInfo', res)
+			} else {
+				that.globalData.isAuth = false
+				wx.removeStorageSync('userInfo')
+				wx.removeStorageSync('JWT_Token')
+			}
 		}).catch(err => {
 			that.globalData.isAuth = false
-			//wx.removeStorageSync('userInfo')
-			console.log('获取信息err', err);
+			wx.removeStorageSync('userInfo')
+			console.log('token信息过期');
+			//去获取Token
 			that.getToken()
 		})
 	},
-
-
 });

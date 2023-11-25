@@ -1,83 +1,21 @@
 {
 	"setting": {
-		"compileHotReLoad": true
+		"compileHotReLoad": true,
+		"urlCheck": false
 	},
 	"condition": {
 		"miniprogram": {
 			"list": [
 				{
 					"name": "",
-					"pathName": "pages/jointeam/jointeam",
+					"pathName": "pages/PersonalCenter/accountSignUp/accountSignUp",
 					"query": "",
 					"launchMode": "default",
 					"scene": null
 				},
 				{
 					"name": "",
-					"pathName": "pages/teamdetail/teamdetail",
-					"query": "",
-					"launchMode": "default",
-					"scene": null
-				},
-				{
-					"name": "",
-					"pathName": "pages/accountSignUp/accountSignUp",
-					"query": "",
-					"launchMode": "default",
-					"scene": null
-				},
-				{
-					"name": "",
-					"pathName": "pages/teammenbers/teammenbers",
-					"query": "",
-					"launchMode": "default",
-					"scene": null
-				},
-				{
-					"name": "",
-					"pathName": "pages/teammenbers/teammenbers",
-					"query": "",
-					"launchMode": "default",
-					"scene": null
-				},
-				{
-					"name": "",
-					"pathName": "pages/RecycleBin/RecycleBin",
-					"query": "",
-					"launchMode": "default",
-					"scene": null
-				},
-				{
-					"name": "",
-					"pathName": "pages/accountSignUp/accountSignUp",
-					"query": "",
-					"launchMode": "default",
-					"scene": null
-				},
-				{
-					"name": "",
-					"pathName": "pages/testKeFu/testKeFu",
-					"query": "",
-					"launchMode": "default",
-					"scene": null
-				},
-				{
-					"name": "",
-					"pathName": "pages/upLoadFile",
-					"query": "",
-					"launchMode": "default",
-					"scene": null
-				},
-				{
-					"name": "",
-					"pathName": "pages/accountSignUp/accountSignUp",
-					"query": "",
-					"launchMode": "default",
-					"scene": null
-				},
-				{
-					"name": "",
-					"pathName": "pages/InformTest/InformTest",
+					"pathName": "pages/PersonalCenter/commentActivity/commentActivity",
 					"query": "",
 					"launchMode": "default",
 					"scene": null

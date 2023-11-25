@@ -2,14 +2,14 @@
 	<view class="cu-form-group flex">
 		<view class="flex-sub title justify-center flex">学历</view>
 		<view class="flex-treble">
-			<picker bindchange="GradeChange" value="{{Gindex}}" range="{{grade}}">
+			<picker bindchange="gradeChange" value="{{gIdx}}" range="{{grade}}">
 				<view class="picker ">
-					{{Gindex?grade[Gindex]:'请选择所在阶段'}}
+					{{gIdx?grade[gIdx]:'请选择所在阶段'}}
 				</view>
 			</picker>
 		</view>
 	</view>
-<view  class="cu-form-group flex">
+<view  class="cu-form-group flex"> 
 	<view class="flex-sub title justify-center flex">入学年份</view>
   <view class="flex-treble">
 		<picker mode="date" start="2010-01-01" end="2099-01-01" fields="year"  bindchange="YearChange" value="{{selectedYear}}" >
@@ -31,7 +31,7 @@
 	<view class="cu-form-group flex">
 		<view class="flex-sub title justify-center flex">证件类型</view>
 		<view class="flex-treble">
-			<picker bindchange="PickerChange" value="{{index}}" range="{{picker}}">
+			<picker bindchange="pickerChange" value="{{index}}" range="{{picker}}">
 				<view class="picker ">
 					{{index?picker[index]:'请选择证件类型'}}
 				</view>
@@ -81,7 +81,7 @@
 	<!-- <view class=""> -->
 	<!-- <text class="text-xs text-grey " style="letter-spacing:2rpx">注：支付宝账号仅用来对部分活动发放补贴</text></view> -->
 	<view class="margin-top">
-	<checkbox class="round margin-right " checked="{{isCheck}}" bindtap="checkchange" ></checkbox>
+	<checkbox class="round margin-right " checked="{{isCheck}}" bindtap="checkChange" ></checkbox>
 		<text class="text-xs text-grey ">注册表示同意并已阅读</text>
 		<text class="text-xs" style="color: rgb(248, 179, 28);" bind:tap="navTo" data-url = "/pages/PersonalCenter/InformTest/InformTest">《协议》</text></view>
 
