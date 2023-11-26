@@ -84,9 +84,4 @@ module.exports = {
             }
         })
     },
-    //mask名字
-    // M(name) {
-    // 	return name.replace(/(?<=^[\u4e00-\u9fa5])[^\u4e00-\u9fa5](?=[\u4e00-\u9fa5]$)/g, "*")
-    // },
-
 }

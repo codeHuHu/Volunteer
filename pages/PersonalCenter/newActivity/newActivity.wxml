@@ -196,12 +196,12 @@
 		<view wx:if="{{isfile=='1'}}">
 			<!-- <view class="cu-form-group text-bold" style="margin-bottom: -20rpx;">
 			<text class="cuIcon-titles text-blue"><text class="text-lg text-black">请上传活动方案文件</text></text></view> -->
-			<view class="flex padding-sm solid{{size?'s':''}}" wx:for="{{temp_fileList}}" wx:key="item" wx-index="index">
+			<view class="flex padding-sm solid{{size?'s':''}}" wx:for="{{temp_fileList}}" wx:key="item" wx:for-index="index" >
 				<view class="padding-lr-xs ">
 					<view class="cu-avatar lg round iconfont {{item.filetype=='.excel'?'icon-excel text-green':(item.filetype=='.ppt'?'icon-ppt text-red':((item.filetype=='.docx'||item.filetype=='.doc')?'icon-word text-blue':(item.filetype=='.pdf'?'icon-PDF text-red':'icon-icon-test')))}}">
 					</view>
 				</view>
-				<view class="padding-xs text-xl text-black">
+				<view class="padding-xs text-xl text-black" bindtap="openfile" data-file="{{temp_fileList[index]}}">
 					<view class="text-sm">{{item.name}}</view>
 					<view class="cu-tag round line-green sm">{{item.size}}</view>
 				</view>

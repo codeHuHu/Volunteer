@@ -193,14 +193,14 @@
 <view wx:if="{{actions.introFile.length}}">
 	<view wx:if="{{checkMode ||(actions.isFeedback&&isAdmin)}}" class=" radius-lg margin-sm bg-white">
 		<view class="solid-bottom text-lg text-bold padding text-black">活动方案文件</view>
-		<view class="flex padding-sm solid{{size?'s':''}}" wx:for="{{actions.introFile}}" wx:key="item" wx-index="index" bind:tap="openFile" data-target="{{index}}">
+		<view class="flex padding-sm solid{{size?'s':''}}" wx:for="{{actions.introFile}}" wx:key="item" wx-index="index" bind:tap="openFile" data-file="{{actions.introFile[index]}}">
 			<view class="padding-lr-xs ">
-				<view class="cu-avatar lg round iconfont {{item.filetype=='.excel'?'icon-excel text-green':(item.filetype=='.ppt'?'icon-ppt text-red':((item.filetype=='.docx'||item.filetype=='.doc')?'icon-word text-blue':(item.filetype=='.pdf'?'icon-PDF text-red':'icon-icon-test')))}}">
+				<!-- <view class="cu-avatar lg round iconfont {{item.filetype=='.excel'?'icon-excel text-green':(item.filetype=='.ppt'?'icon-ppt text-red':((item.filetype=='.docx'||item.filetype=='.doc')?'icon-word text-blue':(item.filetype=='.pdf'?'icon-PDF text-red':'icon-icon-test')))}}"> -->
+					<view class="cu-avatar lg round iconfont icon-PDF text-red icon-icon-test">
 				</view>
 			</view>
 			<view class="padding-xs text-xl text-black">
-				<view class="text-sm">{{item.name}}</view>
-				<view class="cu-tag round line-green sm">{{item.size}}</view>
+				<view class="text-sm">{{item.fileName}}</view>
 			</view>
 		</view>
 	</view>
@@ -382,7 +382,7 @@
 			<view class="title">服务岗位</view>
 			<text>{{serviceTimeSpan[idx[0]]['positions'][idx[1]]['name']}}</text>
 		</view>
-		<view>
+		<view wx:if="{{actions.isSubsidy}}">
 			<view class="cu-form-group">
 				<view class="title">收款单位</view>
 				<view class="picker">

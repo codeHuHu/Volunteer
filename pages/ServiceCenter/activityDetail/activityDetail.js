@@ -173,11 +173,11 @@ Page({
 		}).then(res => {
 			console.log("报名成功res", res)
 			//如果是补贴活动,那将支付信息保存到本地
-			if (!!that.data.actions.isSubsidy) {
+			if (that.data.actions.isSubsidy) {
 				that.savePayInfo()
 			}
 			wx.hideLoading()
-			that.setShow("success", "成功参与");
+			that.setShow("success", "报名成功");
 			that.getService()
 		}).catch(err => {
 			console.log("报名失败err", err)
@@ -202,6 +202,7 @@ Page({
 			}
 		}).then(res => {
 			console.log("取消成功res", res)
+			that.setShow("success", "取消成功");
 			that.getService()
 			wx.hideLoading()
 		}).catch(err => {
@@ -214,9 +215,8 @@ Page({
 		const that = this;
 
 		let localPayInfo = wx.getStorageSync('payInfo')
-		if (!localPayInfo) {
-			localPayInfo = {}
-		}
+		if (!localPayInfo) localPayInfo = {}
+
 		localPayInfo[that.data.payType] = that.data.payNumber
 		wx.setStorageSync('payInfo', localPayInfo)
 
@@ -413,48 +413,29 @@ Page({
 		});
 	},
 	openFile(e) {
-		let idx = e.currentTarget.dataset.target;
-		let fileid = this.data.actions.FileID[idx];
-		let that = this;
-		wx.cloud.getTempFileURL({
-			fileList: [fileid],
-			//fileid不能在浏览器直接下载，要获取临时URL才可以
-			success: res => {
-				console.log(res.fileList)
-				that.setData({
-					//res.fileList[0].tempFileURL是https格式的路径，可以根据这个路径在浏览器上下载
-					imgSrc: res.fileList[0].tempFileURL
-				});
-				wx.showLoading({
-					title: '下载中...',
-					mask: true
-				})
-				//根据https路径可以获得http格式的路径(指定文件下载后存储的路径 (本地路径)),根据这个路径可以预览
-				wx.downloadFile({
-					url: that.data.imgSrc,
-					success: (res) => {
-						console.log(res)
-						that.setData({
-							httpfile: res.tempFilePath
-						})
-						wx.hideLoading()
-						//预览文件
-						wx.openDocument({
-							filePath: that.data.httpfile,
-							success: res => {
-							},
-							fail: err => {
-								console.log(err);
-							}
-						})
+		let file = e.currentTarget.dataset.file;
+		wx.showLoading({
+			title: '下载中...',
+			mask: true
+		})
+
+		//根据https路径可以获得http格式的路径(指定文件下载后存储的路径 (本地路径)),根据这个路径可以预览
+		wx.downloadFile({
+			url: file.filePath,
+			success: (res) => {
+				wx.hideLoading()
+				//预览文件
+				wx.openDocument({
+					filePath: res.tempFilePath,
+					success: res => {
 					},
-					fail: (err) => {
-						console.log('读取失败', err)
+					fail: err => {
+						console.log(err);
 					}
 				})
 			},
-			fail: err => {
-				console.log(err);
+			fail: (err) => {
+				console.log('读取失败', err)
 			}
 		})
 

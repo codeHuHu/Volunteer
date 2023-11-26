@@ -7,11 +7,6 @@ Page({
 		let that = this
 
 		that.data.mode = options.mode
-		// if (Number(app.globalData.userInfo['position']) >= 1) {
-		// 	filter = {
-		// 		status: '2',
-		// 	}
-		// }
 		let url = wx.$param.server['fastapi'] + "/service/myService"
 		let form = {
 			'pagination': {
@@ -20,7 +15,7 @@ Page({
 			}
 		}
 		if (options.mode == 'comment') {
-			form['status'] = 2
+			form['status'] = [2]
 			if (app.globalData.userInfo['position'] >= 1) {
 				url = wx.$param.server['fastapi'] + "/service/show"
 			}
