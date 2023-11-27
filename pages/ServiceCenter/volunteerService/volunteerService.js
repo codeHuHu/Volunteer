@@ -1,6 +1,5 @@
 // pages/service/service.js
 const app = getApp();
-const db = wx.cloud.database();
 let utils = require("../../../utils/date.js")
 let loading = false;
 

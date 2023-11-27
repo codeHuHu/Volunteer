@@ -1,6 +1,5 @@
 const app = getApp()
 let loading = false;
-const db = wx.cloud.database()
 
 const utils = require("../../../utils/exportExcel.js")
 
@@ -423,10 +422,12 @@ Page({
 		wx.downloadFile({
 			url: file.filePath,
 			success: (res) => {
+				console.log("openfile", res)
 				wx.hideLoading()
 				//预览文件
 				wx.openDocument({
 					filePath: res.tempFilePath,
+					showMenu: true,
 					success: res => {
 					},
 					fail: err => {
@@ -435,18 +436,21 @@ Page({
 				})
 			},
 			fail: (err) => {
-				console.log('读取失败', err)
+				wx.hideLoading()
+				wx.showLoading({
+					title: '下载失败' + err.errMsg,
+					mask: true
+				})
+				console.log('下载失败', err)
 			}
 		})
 
 	},
 	checkInfo() {
 		const that = this
-		if (that.data.actions.isSubsidy) {
-			if (!that.data.payNumber) {
-				this.setShow("error", "支付信息没填");
-				return false
-			}
+		if (that.data.actions.isSubsidy && !that.data.payNumber) {
+			this.setShow("error", "支付信息没填");
+			return false
 		}
 		return true
 	}

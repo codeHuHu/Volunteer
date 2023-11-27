@@ -8,7 +8,6 @@
 		"pages/PersonalCenter/newActivity/newActivity",
 		"pages/PersonalCenter/commentActivity/commentActivity",
 		"pages/PersonalCenter/checkActivity/checkActivity",
-		"pages/PersonalCenter/recycleBin/recycleBin",
 		"pages/PersonalCenter/myJoin/myJoin",
 		"pages/PersonalCenter/setting/setting",
 		"pages/PersonalCenter/aboutUs/aboutUs",

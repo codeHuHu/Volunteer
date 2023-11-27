@@ -1,5 +1,4 @@
 const app = getApp()
-const db = wx.cloud.database()
 let loading = false
 Page({
 	data: {
@@ -162,7 +161,7 @@ Page({
 		}
 	},
 	toregister() {
-		if (this.byhistory() || this.byBase()) {
+		if (this.byhistory()) {
 			wx.showToast({
 				title: '你已注册成为志愿者',
 				icon: 'none'
@@ -175,23 +174,5 @@ Page({
 	byhistory() {
 		var userInfo = wx.getStorageSync('userInfo')
 		return userInfo ? true : false
-	},
-	byBase() {
-		wx.cloud.database().collection('UserInfo')
-			.where({
-				_openid: app.globalData.userInfo["_openid"]
-			})
-			.get({
-				success(res) {
-					if (res.data.length) {
-						return true
-					} else {
-						return false
-					}
-				},
-				fail(err) {
-					return false
-				}
-			});
-	},
+	}
 })

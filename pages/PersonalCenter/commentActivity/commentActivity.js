@@ -1,5 +1,3 @@
-// pages/newActivity/newActivity.js
-const db = wx.cloud.database()
 const app = getApp()
 
 Page({
@@ -246,27 +244,6 @@ Page({
 		}).catch(err => {
 			console.log(err);
 			wx.hideLoading()
-		})
-	},
-	uploadFile(filePath) {
-		//返回上传文件后的信息
-		return new Promise(function (callback) {
-			wx.cloud.uploadFile({
-				cloudPath: './COMMENT/' + new Date().getTime(),
-				filePath: filePath,
-				success: res => {
-					console.log('上传图片成功')
-					callback(res.fileID)
-				},
-				fail: err => {
-					console.log('上传图片失败', res)
-					wx.showToast({
-						title: '上传失败',
-						icon: "none"
-					})
-					console.log(err)
-				}
-			})
 		})
 	},
 })

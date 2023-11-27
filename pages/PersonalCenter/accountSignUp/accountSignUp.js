@@ -1,7 +1,6 @@
-// pages/mySignUp/mySignUp.js
-let loading = false;
-const db = wx.cloud.database()
 const app = getApp()
+
+let loading = false;
 Page({
 	data: {
 		region: ['广东省', '广州市', '番禺区'],

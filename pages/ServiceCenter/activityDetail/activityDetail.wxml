@@ -193,7 +193,7 @@
 <view wx:if="{{actions.introFile.length}}">
 	<view wx:if="{{checkMode ||(actions.isFeedback&&isAdmin)}}" class=" radius-lg margin-sm bg-white">
 		<view class="solid-bottom text-lg text-bold padding text-black">活动方案文件</view>
-		<view class="flex padding-sm solid{{size?'s':''}}" wx:for="{{actions.introFile}}" wx:key="item" wx-index="index" bind:tap="openFile" data-file="{{actions.introFile[index]}}">
+		<view class="flex padding-sm solid{{size?'s':''}}" wx:for="{{actions.introFile}}" wx:key="item" wx-index="index" bindtap="openFile" data-file="{{actions.introFile[index]}}">
 			<view class="padding-lr-xs ">
 				<!-- <view class="cu-avatar lg round iconfont {{item.filetype=='.excel'?'icon-excel text-green':(item.filetype=='.ppt'?'icon-ppt text-red':((item.filetype=='.docx'||item.filetype=='.doc')?'icon-word text-blue':(item.filetype=='.pdf'?'icon-PDF text-red':'icon-icon-test')))}}"> -->
 					<view class="cu-avatar lg round iconfont icon-PDF text-red icon-icon-test">

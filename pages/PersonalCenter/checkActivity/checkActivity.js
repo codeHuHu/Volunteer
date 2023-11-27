@@ -1,6 +1,4 @@
-// pages/checkActivity/checkActivity.js
-const db = wx.cloud.database()
-// const app = getApp()
+const app = getApp()
 let loading = false;
 
 Page({

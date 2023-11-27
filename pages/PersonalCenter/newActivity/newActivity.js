@@ -1,5 +1,3 @@
-// pages/newActivity/newActivity.js
-const db = wx.cloud.database()
 let loading = false;
 const app = getApp()
 Page({
@@ -36,9 +34,6 @@ Page({
 				{ tag: '听从安排', light: false },
 				{ tag: '具备志愿的基本能力和身体素质', light: false }
 			],
-			//文件类型
-			icon: ['excel', 'ppt', 'word', 'pdf'],
-
 		},
 
 		boxer: [],
@@ -164,12 +159,11 @@ Page({
 			title: '',
 		})
 
-		// 群二维码
+		// 群二维码 i志愿报名码简介文件
 		const qrCodePromises = that.uploadPromises(that.data.temp_imgList);
-		// i志愿报名码
 		const iZhiYuanPromises = that.uploadPromises(that.data.temp_imgList2);
-		// 获取简介文件的fileId
 		const introFilePromises = that.uploadPromises(that.data.temp_fileList);
+
 		try {
 			const [qrCode, iZhiYuan, introFile] = await Promise.all([qrCodePromises, iZhiYuanPromises, introFilePromises]);
 			console.log("群二维码", qrCode);
@@ -231,11 +225,10 @@ Page({
 		} catch (err) {
 			console.error("上传文件失败", err);
 		}
-
-
 	},
 	async uploadPromises(fileList) {
 		let that = this;
+		//如果是简介文件就记录一下名字,如果是图片就不用
 		const uploadPromises = fileList.map(file => typeof file === 'object' ? that.uploadImage(file.tempFilePath, file.name) : that.uploadImage(file));
 		return Promise.all(uploadPromises);
 	},
@@ -250,7 +243,6 @@ Page({
 				name: 'files',
 				success: (res) => {
 					const data = JSON.parse(res.data);
-					console.log(data);
 					if (fileName) {
 						let tmp = {
 							fileName: fileName,
@@ -262,8 +254,7 @@ Page({
 					}
 				},
 				fail: (error) => {
-					console.error(error);
-					console.log('上传图片失败', res)
+					console.log('上传图片失败', error)
 					wx.showToast({
 						title: '上传失败',
 						icon: "none"
@@ -419,11 +410,11 @@ Page({
 			this.setShow("error", "请添加活动时间段");
 			return 0
 		}
-		// if (this.data.outNum == 0) {
-		// 	this.setShow("error", '请添加岗位');
-		// 	return 0
-		// }
-		if (!!!this.data.outNum && this.data.outNum != 0) {
+		if (this.data.outNum == 0) {
+			this.setShow("error", '请添加岗位');
+			return 0
+		}
+		if (!this.data.outNum && this.data.outNum != 0) {
 			this.setShow("error", "公开招募错误");
 			return 0
 		}
@@ -718,12 +709,12 @@ Page({
 		})
 	},
 
-
 	openfile(e) {
 		var file = e.currentTarget.dataset.file;
 		//预览文件
 		wx.openDocument({
 			filePath: file.tempFilePath,
+			showMenu: true,
 			success: res => {
 			},
 			fail: err => {
@@ -771,20 +762,11 @@ Page({
 	},
 	//删除服务群体
 	delGroupTag(e) {
-		// let idx = e.currentTarget.dataset.index;
-		// let myGroupTagList = this.data.constants.groupTagName;
-
-		// myGroupTagList.splice(idx, 1);
-		// this.setData({
-		// 	myGroupTagList
-		// })
-		// console.log(idx)
 		let idx = e.currentTarget.dataset.index
-		let tmpgroup = this.data.constants.groupTagList
-		console.log(tmpgroup)
-		tmpgroup[idx].light = !tmpgroup[idx].light;
+		let tmpGroup = this.data.constants.groupTagList
+		tmpGroup[idx].light = !tmpGroup[idx].light;
 		this.setData({
-			'constants.groupTagList': tmpgroup
+			'constants.groupTagList': tmpGroup
 		})
 
 	},
