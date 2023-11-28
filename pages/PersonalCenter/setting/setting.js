@@ -62,6 +62,7 @@ Page({
 		}
 
 	},
+	
 	checkchange(e) {
 		this.setData({
 			isUpdate: !this.data.isUpdate

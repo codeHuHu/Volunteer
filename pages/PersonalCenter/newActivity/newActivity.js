@@ -170,7 +170,6 @@ Page({
 			console.log("i志愿", iZhiYuan);
 			console.log("介绍文件", introFile);
 
-			wx.showLoading()
 			const stamps = that.generateStamp()
 			let groupTag = []
 			var tmpgroup = that.data.constants.groupTagList
@@ -254,9 +253,9 @@ Page({
 					}
 				},
 				fail: (error) => {
-					console.log('上传图片失败', error)
+					console.log('上传图片失败', error.data + error.statusCode)
 					wx.showToast({
-						title: '上传失败',
+						title: '上传失败' + error.data + error.statusCode,
 						icon: "none"
 					})
 					console.log(err)
@@ -430,7 +429,7 @@ Page({
 			this.setShow("error", "未指定补贴金额");
 			return 0
 		}
-		if (!!this.data.isfile && this.data.temp_fileList == '') {
+		if (this.data.isfile == 1 && this.data.temp_fileList == '') {
 			this.setShow("error", "未上传文件");
 			return 0
 		}

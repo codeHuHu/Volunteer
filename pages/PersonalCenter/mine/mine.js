@@ -10,6 +10,7 @@ Page({
 		imageSrc: 'cloud://volunteer-4gaukcmqce212f11.766f-volunteer-4gaukcmqce212f11-1321274883/kefu.jpg', // 图片链接，请替换为实际的图片链接
 	},
 	onLoad() {
+
 	},
 	onShow() {
 		this.getUserInfo()
@@ -38,13 +39,13 @@ Page({
 		}).catch(err => {
 			app.globalData.isAuth = false
 			console.log('获取信息err', err);
-			app.getToken()
 		})
 	},
 	refreshData() {
 		this.setData({
 			isLogin: app.globalData.isAuth,
 			actions: app.globalData.userInfo,
+			// myPos: 1,
 			myPos: app.globalData.userInfo['position']
 		})
 	},
@@ -56,7 +57,19 @@ Page({
 		this.hideModal()
 		wx.$navTo(e)
 	},
+	getPhoneNumber(e) {
+		console.log(e)
+		if (e.detail.code) {
+			let code = e.detail.code
+			app.login(code)
+		}
+
+	},
 	showModal(e) {
+		if (this.data.myPos < 1) {
+			this.setShow("error", "未注册");
+			return 0
+		}
 		this.setData({
 			modalName: e.currentTarget.dataset.target
 		})

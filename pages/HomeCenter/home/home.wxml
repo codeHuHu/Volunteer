@@ -54,6 +54,7 @@
 
 <view class="new-join flex justify-between">
 	<text class="text-bold text-black text-grey">最新志愿活动</text>
+	<!-- open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber" -->
 	<button class="joinvolunteer" bindtap="toregister">成为志愿者</button>
 </view>
 

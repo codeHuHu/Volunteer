@@ -76,7 +76,7 @@
 			</view>
 			<!-- 查看二维码按钮 -->
 			<view wx:else bindtap="showModal" data-target="toGroup">
-				<button wx:if="{{isJoin}}" bindtap="toggle" data-class="scale-up" role="button" aria-disabled="false" class="signUp cu-avatar round xl bg-{{isFull?'purple':'green'}} animation-{{animation}}">
+				<button wx:if="{{isJoin==1}}" bindtap="toggle" data-class="scale-up" role="button" aria-disabled="false" class="signUp cu-avatar round xl bg-{{isFull?'purple':'green'}} animation-{{animation}}">
 					<text class="avatar-text">群二维码</text>
 				</button>
 			</view>

@@ -40,7 +40,7 @@ Page({
 			header: {
 				'content-type': 'application/json'
 			},
-			showErr:false
+			showErr: false
 		}).then(res => {
 			that.setData({
 				actions: res.data
@@ -161,18 +161,27 @@ Page({
 		}
 	},
 	toregister() {
-		if (this.byhistory()) {
+		if (app.globalData.isAuth) {
 			wx.showToast({
 				title: '你已注册成为志愿者',
 				icon: 'none'
 			})
 		}
-		else {
-			wx.$navTo("/pages/PersonalCenter/accountSignUp/accountSignUp")
-		}
 	},
 	byhistory() {
 		var userInfo = wx.getStorageSync('userInfo')
 		return userInfo ? true : false
-	}
+	},
+	//转发朋友
+	onShareAppMessage(event) {
+		return {
+			//imageUrl: this.data.actions.images[0],
+			path: 'pages/HomeCenter/home/home'
+		}
+	},
+	//转发朋友圈
+	onShareTimeline(event) {
+		return {
+		}
+	},
 })

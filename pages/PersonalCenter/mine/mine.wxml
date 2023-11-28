@@ -50,9 +50,9 @@
 		<view class="bg-img margin-lr" style="min-height: 35vh;">
 			<view class="bg-img">
 				<image class="" src="cloud://volunteer-4gaukcmqce212f11.766f-volunteer-4gaukcmqce212f11-1321274883/1-up1.png" mode="aspectFill" style="width: 100%;">
-					<view bindtap="navTo" data-url="/pages/PersonalCenter/accountSignUp/accountSignUp" class="margin-left cu-tag round bg-green margin-top-xs button" style="width: 20%; font-weight: bold;" >
+					<!-- <view bindtap="navTo" data-url="/pages/PersonalCenter/accountSignUp/accountSignUp" class="margin-left cu-tag round bg-green margin-top-xs button" style="width: 20%; font-weight: bold;">
 						注册
-					</view>
+					</view> -->
 				</image>
 			</view>
 		</view>
@@ -96,9 +96,12 @@
 			</view>
 		</view>
 		<view style=" margin-top:100rpx; display: flex; justify-content: center; align-items: center; height: 120rpx;">
-			<image mode="aspectFill" style="z-index: -1; width: 80%; opacity: .8;" src="cloud://volunteer-4gaukcmqce212f11.766f-volunteer-4gaukcmqce212f11-1321274883/banner.png" />
+
+			<image mode="aspectFill" style="z-index: -1; width: 80%; opacity: .8;" src="cloud://volunteer-4gaukcmqce212f11.766f-volunteer-4gaukcmqce212f11-1321274883/banner.png">
+			</image>
 		</view>
 	</view>
+
 </scroll-view>
 <!-- 轻提示 -->
 <view class="toast-fixed-center" hidden="{{!show}}" style="z-index: 99;">
@@ -142,8 +145,11 @@
 		<text class='iconfont icon-lianxikefu text-grey text-xl'></text>
 		<view class="sm cu-btn round " style="top:-3rpx; color:#aca6a6;background-color: transparent;">联系客服</view>
 	</button>
-	<view style=" font-size:20rpx;color: #aca6a6; ">丨</view>
-	<button bindtap="navTo" data-url = "/pages/PersonalCenter/aboutUs/aboutUs" style=" height:100rpx; width: 300rpx;">
+	<!-- open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber" -->
+	<view style=" font-size:20rpx;color: #aca6a6; ">丨
+		<button open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber" style="padding:0;">-_-</button>
+	</view>
+	<button bindtap="navTo" data-url="/pages/PersonalCenter/aboutUs/aboutUs" style=" height:100rpx; width: 300rpx;">
 		<text class='iconfont icon-guanyu text-grey text-xl'></text>
 		<view class="sm cu-btn round" style="top:-3rpx; color:#aca6a6; background-color: transparent; ">
 			关于开发者</view>

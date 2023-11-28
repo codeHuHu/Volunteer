@@ -27,7 +27,6 @@ Page({
 		let that = this
 
 		that.setData({
-			isLogin: app.globalData.isAuth,//记录是否登录
 			myInfo: myInfo,//记录个人信息
 			id: options.id,//传入活动id
 			//判断是否为审核页面
@@ -37,14 +36,13 @@ Page({
 		//判断是否为从转发进来的
 		if (options.actions) {
 			console.log('从转发进来的')
+			// app.getAuthStatus()
+			console.log("app", app.globalData);
 			let actions = JSON.parse(decodeURIComponent(options.actions))
-			//let myInfo = wx.getStorageSync('userInfo')
 			that.setData({
 				actions,
-				//isLogin: myInfo ? true : false,
 			})
 		}
-
 		that.getService(options.id)
 
 	},
@@ -222,9 +220,9 @@ Page({
 	},
 	showModal(e) {
 		//首先看是否登录了
-		if (!this.data.isLogin) {
-			this.setShow("error", "您尚未注册");
-			wx.$navTo('/pages/PersonalCenter/accountSignUp/accountSignUp')
+		if (!app.globalData.isAuth) {
+			this.setShow("error", "您尚未登陆");
+			// wx.$navTo('/pages/PersonalCenter/accountSignUp/accountSignUp')
 			return
 		}
 
