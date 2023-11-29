@@ -49,7 +49,7 @@
 		<view class="text-gray text-bold">暂无数据</view>
 	</view>
 	<view style="display: flex; justify-content: center; align-items: center;">
-		<image mode="aspectFill" style=" top:330rpx;width: 80%; opacity: .7;" src="cloud://volunteer-4gaukcmqce212f11.766f-volunteer-4gaukcmqce212f11-1321274883/banner.png" />
+		<image mode="aspectFill" style=" top:330rpx;width: 80%; opacity: .7;" src="/images/tabbar/funThing.png" />
 	</view>
 
 </view>
