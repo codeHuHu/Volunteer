@@ -7,7 +7,7 @@ Page({
 		actions: {},
 		showModal: true, // 是否显示模态框
 		showImageModal: false, // 是否显示图片和提示信息框
-		imageSrc: 'cloud://volunteer-4gaukcmqce212f11.766f-volunteer-4gaukcmqce212f11-1321274883/kefu.jpg', // 图片链接，请替换为实际的图片链接
+		imageSrc: '', // 图片链接，请替换为实际的图片链接
 	},
 	onLoad() {
 

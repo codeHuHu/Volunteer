@@ -3,7 +3,7 @@
 
 
 <view class="up">
-	<image mode="aspectFill" src="/images/tabbar/顶头.png" />
+	<image mode="aspectFill" src="https://volunteerservice.oss-cn-beijing.aliyuncs.com/services/cc5a9fa6964838f395a52951e52c509.png" />
 </view>
 
 
@@ -87,7 +87,7 @@
 	</block>
 </view>
 <view wx:else style="display: flex; justify-content: center; align-items: center;">
-	<image mode="aspectFill" style=" top:40rpx;width: 80%; opacity: .8;" src="cloud://volunteer-4gaukcmqce212f11.766f-volunteer-4gaukcmqce212f11-1321274883/banner.png" />
+	<image mode="aspectFill" style=" top:40rpx;width: 80%; opacity: .8;" src="https://volunteerservice.oss-cn-beijing.aliyuncs.com/services/7942b2258626eba1ee2518171398809.png" />
 	<view class="text-center padding-tb bottom-bar" style="display: flex; justify-content: center; align-items: center; position: absolute; bottom:20rpx;width: 100%;">
 		<button open-type="contact" style="height:100rpx; width:300rpx;">
 			<text class='iconfont icon-lianxikefu text-grey text-xl'></text>

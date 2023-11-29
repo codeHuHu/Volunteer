@@ -37,5 +37,5 @@
 </block>
 <view wx:if="{{actionList.length<4}}">
 		<view style="display: flex; justify-content: center; align-items: center;" >
-	<image mode="aspectFill"  style="position: fixed; top:450rpx;width: 80%; opacity: .8;" src="cloud://volunteer-4gaukcmqce212f11.766f-volunteer-4gaukcmqce212f11-1321274883/banner.png" />
+	<image mode="aspectFill"  style="position: fixed; top:450rpx;width: 80%; opacity: .8;" src="https://volunteerservice.oss-cn-beijing.aliyuncs.com/services/7942b2258626eba1ee2518171398809.png" />
 </view></view>

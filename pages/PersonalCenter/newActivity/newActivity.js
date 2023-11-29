@@ -62,7 +62,7 @@ Page({
 		temp_imgList2: [], //i志愿报名码
 		temp_fileList: [],	//简介文件
 		myGroupTagList: [],
-
+		progress: "0"
 
 	},
 	onLoad() {
@@ -82,8 +82,8 @@ Page({
 			nowTime: currentTime,
 
 			beginDate: currentDate,//服务开始日期
-			startTime: currentTime,//服务阶段开始时刻
-			endTime: "23:59",//服务阶段结束时刻
+			startTime: currentTime.slice(0, 2) + ':00',//服务阶段开始时刻
+			endTime: currentTime.slice(0, 2) + ':00',//服务阶段结束时刻
 			deadDate: currentDate,//截止日期
 			deadTime: currentTime,//截止时刻
 		});
@@ -120,6 +120,7 @@ Page({
 		console.log(e)
 		this.setData({
 			startTime: e.detail.value,
+			endTime: e.detail.value,
 		})
 	},
 	//添加时间段的结束时间
@@ -156,7 +157,8 @@ Page({
 			return
 		}
 		wx.showLoading({
-			title: '',
+			title: '等待上传',
+			mask: true
 		})
 
 		// 群二维码 i志愿报名码简介文件
@@ -170,6 +172,7 @@ Page({
 			console.log("i志愿", iZhiYuan);
 			console.log("介绍文件", introFile);
 
+			wx.hideLoading()
 			const stamps = that.generateStamp()
 			let groupTag = []
 			var tmpgroup = that.data.constants.groupTagList
@@ -219,7 +222,6 @@ Page({
 				wx.navigateBack()
 				wx.$navTo("/pages/ServiceCenter/activityDetail/activityDetail?id=" + res.data[0].id)
 			}).catch(err => {
-
 			})
 		} catch (err) {
 			console.error("上传文件失败", err);
@@ -228,19 +230,27 @@ Page({
 	async uploadPromises(fileList) {
 		let that = this;
 		//如果是简介文件就记录一下名字,如果是图片就不用
-		const uploadPromises = fileList.map(file => typeof file === 'object' ? that.uploadImage(file.tempFilePath, file.name) : that.uploadImage(file));
+		const uploadPromises = fileList.map(file => typeof file === 'object' ? that.uploadFile(file.tempFilePath, file.name, true) : that.uploadFile(file));
 		return Promise.all(uploadPromises);
 	},
 	// 异步上传单个文件
-	uploadImage(filePath, fileName = null) {
+	uploadFile(filePath, fileName = null, progress = false) {
+		let that = this
 		//返回上传文件后的信息
 		return new Promise(function (callback) {
 			console.log("promise filePath", filePath);
-			wx.uploadFile({
+			const uploadTask = wx.uploadFile({
 				url: wx.$param.server['fastapi'] + '/service/uploadFile',
 				filePath: filePath,
 				name: 'files',
 				success: (res) => {
+					console.log("promise res", res)
+					if (progress) {
+						that.setData({
+							progress: 100
+						})
+					}
+
 					const data = JSON.parse(res.data);
 					if (fileName) {
 						let tmp = {
@@ -260,7 +270,17 @@ Page({
 					})
 					console.log(err)
 				},
-			});
+			})
+			//监听进度
+			if (progress) {
+				uploadTask.onProgressUpdate(res => {
+					if (res.progress < 85) {
+						that.setData({
+							progress: res.progress
+						})
+					}
+				})
+			}
 		})
 	},
 	choosefile() {
@@ -277,6 +297,10 @@ Page({
 				let fileSizeDisplay;
 
 				if (fileSizeInMB >= 1) {
+					if (fileSizeInMB >= 15) {
+						that.setShow('error', '文件大小超过15MB')
+						return
+					}
 					fileSizeDisplay = fileSizeInMB.toFixed(2) + " MB";
 				} else {
 					let fileSizeInKB = fileSizeInBytes / 1024;
@@ -549,10 +573,11 @@ Page({
 	},
 	//添加服务时间段
 	addServiceSpan() {
+		let that = this
 		//tempSpan对象
 		let Span = {
-			date: this.data.beginDate,
-			time: this.data.startTime + "-" + this.data.endTime,
+			date: that.data.beginDate,
+			time: that.data.startTime + "-" + that.data.endTime,
 			positions: [
 				{
 					//自动生成一个岗位
@@ -563,18 +588,18 @@ Page({
 				}
 			],
 		}
-		let serviceTimeSpan = this.data.serviceTimeSpan	//数组[]里面有多个对象{}
-		let boxer = this.data.boxer
+		let serviceTimeSpan = that.data.serviceTimeSpan	//数组[]里面有多个对象{}
+		let boxer = that.data.boxer
 		serviceTimeSpan.push(Span)
 		//新增 一列 已打开的 伸缩box
 		boxer.push(1)
-		this.setData({
-			endTime: "23:59",
+		that.setData({
+			startTime: that.data.endTime,
 			serviceTimeSpan,
 			boxer
 		})
-		this.handleTotalNum();
-		this.hideModal()
+		that.handleTotalNum();
+		that.hideModal()
 	},
 	//删除时间段
 	deleteServiceSpan(e) {

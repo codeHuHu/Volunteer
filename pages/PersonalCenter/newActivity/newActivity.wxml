@@ -60,8 +60,8 @@
 		</view>
 		<view class="{{groupBoxer ? '' : 'piano-hidden-content'}}">
 			<!-- {{showLightButton[index]?'red':'default'}}  -->
-			<view wx:for="{{constants.groupTagList}}" wx:if="{{item.light}}"wx:key="index" class=" light cu-tag radius bg-green">
-		
+			<view wx:for="{{constants.groupTagList}}" wx:if="{{item.light}}" wx:key="index" class=" light cu-tag radius bg-green">
+
 				<view bindtap="delGroupTag" data-index="{{index}}">
 					#{{item.tag}}
 					<text class="text-red text-sm padding-bottom" catchtap="delGroupTag" data-index="{{index}}">x</text>
@@ -145,26 +145,25 @@
 		</view>
 
 		<view class="cu-form-group">
-			<view style="display: flex;align-items: center;margin-left:-3%;">
-				<text class="text-red text-xxl">*</text>
-				<view class="title">服务地点:</view>
-				<input model:value="{{address}}" placeholder="活动开展地址" />
-			</view>
+			<text class="text-red text-xxl">*</text>
+			<view class="title">服务地点:</view>
+			<textarea model:value="{{address}}" placeholder="活动开展地址" auto-height maxlength="-1" cursor-spacing="40" show-confirm-bar="false"></textarea>
+			<!-- <input model:value="{{address}}" placeholder="活动开展地址" /> -->
 		</view>
 
 		<view class="cu-form-group ">
-
-			<view class="title inteam">服务内容:</view>
-			<textarea model:value="{{intro}}" placeholder="（例：为村居老人提供慰问服务）" auto-height="true"></textarea>
+			<view class="title">服务内容:</view>
+			<textarea style="border:1rpx solid blue" model:value="{{intro}}" placeholder="（例：为村居老人提供慰问服务）" auto-height maxlength="-1" cursor-spacing="40" show-confirm-bar="false"></textarea>
 		</view>
+
 		<view class="cu-form-group ">
 			<view class="title inteam">注意事项:</view>
-			<textarea model:value="{{notice}}" placeholder="（例：穿长裤，不穿裙子和短裤）" auto-height="true"></textarea>
-
+			<textarea style="border:1rpx solid blue" model:value="{{notice}}" placeholder="（例：穿长裤，不穿裙子和短裤）" auto-height maxlength="-1" cursor-spacing="40" show-confirm-bar="false"></textarea>
 		</view>
+
 		<view class="cu-form-group ">
 			<view class="title inteam">志愿者权益:</view>
-			<textarea model:value="{{peoplegift}}" placeholder="如：1.接受相关志愿服务培训；2.提供【i志愿时长】等" class="new_profile" ></textarea>
+			<textarea class="new_profile" style="border:1rpx solid blue" model:value="{{peoplegift}}" placeholder="如：1.接受相关志愿服务培训；2.提供【i志愿时长】等" auto-height maxlength="-1" cursor-spacing="40" show-confirm-bar="false"></textarea>
 		</view>
 		<view class="cu-form-group">
 			<view class="inline_name">是否为补贴活动:</view>
@@ -196,7 +195,7 @@
 		<view wx:if="{{isfile=='1'}}">
 			<!-- <view class="cu-form-group text-bold" style="margin-bottom: -20rpx;">
 			<text class="cuIcon-titles text-blue"><text class="text-lg text-black">请上传活动方案文件</text></text></view> -->
-			<view class="flex padding-sm solid{{size?'s':''}}" wx:for="{{temp_fileList}}" wx:key="item" wx:for-index="index" >
+			<view class="flex padding-sm solid{{size?'s':''}}" wx:for="{{temp_fileList}}" wx:key="item" wx:for-index="index">
 				<view class="padding-lr-xs ">
 					<view class="cu-avatar lg round iconfont {{item.filetype=='.excel'?'icon-excel text-green':(item.filetype=='.ppt'?'icon-ppt text-red':((item.filetype=='.docx'||item.filetype=='.doc')?'icon-word text-blue':(item.filetype=='.pdf'?'icon-PDF text-red':'icon-icon-test')))}}">
 					</view>
@@ -204,6 +203,7 @@
 				<view class="padding-xs text-xl text-black" bindtap="openfile" data-file="{{temp_fileList[index]}}">
 					<view class="text-sm">{{item.name}}</view>
 					<view class="cu-tag round line-green sm">{{item.size}}</view>
+					<progress style="width:350rpx;" percent="{{progress}}" show-info stroke-width="3" />
 				</view>
 				<text bind:tap="DelFile" class="cuIcon-close text-red" style="position: absolute;right:30rpx" data-index="{{index}}"></text>
 			</view>
@@ -224,15 +224,18 @@
 				<text class="cuIcon-title text-blue"></text>
 				<text class=" text-xs"> 群二维码将在志愿者报名拼团后自动弹出噢！</text>
 			</view>
-		</view>
 
+		</view>
 		<view class="cu-form-group">
+
 			<view class="grid col-4 grid-square flex-sub">
 				<view class="bg-img" wx:for="{{temp_imgList}}" wx:key="item" catchtap="ViewImage" data-which="1" data-url="{{temp_imgList[index]}}">
 					<image src='{{temp_imgList[index]}}' mode='aspectFill'></image>
+
 					<view class="cu-tag bg-red" catchtap="DelImg" data-index="{{index}}" data-which="1">
 						<text class="cuIcon-close"></text>
 					</view>
+
 				</view>
 				<view class="solids" catchtap="ChooseImage" wx:if="{{temp_imgList.length<1}}">
 					<text class="cuIcon-cameraadd"></text>
@@ -244,6 +247,7 @@
 			<view class="cu-bar" style="margin-bottom: -10rpx;">
 				<view class="action border-title">
 					<text class="cuIcon-titles text-blue"></text><text class="text-lg text-bold" style="margin-left: -7rpx;">i志愿报名码</text>
+
 				</view>
 
 			</view>
@@ -254,6 +258,7 @@
 						<view class="cu-tag bg-red" catchtap="DelImg2" data-index="{{index}}">
 							<text class="cuIcon-close"></text>
 						</view>
+
 					</view>
 					<view class="solids" catchtap="ChooseImage2" wx:if="{{temp_imgList2.length<1}}">
 						<text class="cuIcon-cameraadd"></text>
@@ -404,17 +409,17 @@
 		<view class="margin-sm">
 			<view>
 				<view class="">可选择标签</view>
-				<view wx:for="{{constants.groupTagList}}" wx:key="index" class="cu-tag light {{item.light?'bg-green':'bg-grey'}}" bindtap="addGroupTag" data-index="{{index}}" >
+				<view wx:for="{{constants.groupTagList}}" wx:key="index" class="cu-tag light {{item.light?'bg-green':'bg-grey'}}" bindtap="addGroupTag" data-index="{{index}}">
 					#{{item.tag}}
 				</view>
 			</view>
 			<view class=" margin-top margin-bottom-xs solids-top-blue padding-top">自定义</view>
 			<view class="input-wrapper">
-  <input model:value="{{groupTagName}}" class="input" placeholder="输入标签名字"></input>
-  <button class="btn" bindtap="addGroupTag" data-index="{{-1}}">确定</button>
-</view>
+				<input model:value="{{groupTagName}}" class="input" placeholder="输入标签名字"></input>
+				<button class="btn" bindtap="addGroupTag" data-index="{{-1}}">确定</button>
+			</view>
 
-		
+
 			<!-- <view class="">
 				{{showLightButton[index]?'red':'default'}} 
 				<view wx:for="{{myGroupTagList}}" wx:key="index" class="cu-tag radius " style="align-items: center;">

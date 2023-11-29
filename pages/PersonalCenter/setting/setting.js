@@ -70,7 +70,7 @@ Page({
 	},
 	showQRcode() {
 		wx.previewImage({
-			urls: ['cloud://volunteer-4gaukcmqce212f11.766f-volunteer-4gaukcmqce212f11-1321274883/kefu.jpg'],
+			urls: [''],
 			current: '',
 		})
 	},
