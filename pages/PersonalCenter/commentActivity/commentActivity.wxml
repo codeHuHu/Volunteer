@@ -14,18 +14,18 @@
 			签到表上传
 		</view>
 		<view class="action">
-			{{signInList.length}}/8
+			{{checkImg.length}}/8
 		</view>
 	</view>
 	<view class="cu-form-group">
 		<view class="grid col-4 grid-square flex-sub">
-			<view class="bg-img" wx:for="{{signInList}}" wx:key="index" bindtap="ViewImage" data-urls="signInList" data-url="{{signInList[index]}}">
-				<image src='{{signInList[index]}}' mode='aspectFill'></image>
-				<view class="cu-tag bg-red" catchtap="DelImg" data-param="signInList" data-index="{{index}}">
+			<view class="bg-img" wx:for="{{checkImg}}" wx:key="index" bindtap="ViewImage" data-urls="checkImg" data-url="{{checkImg[index]}}">
+				<image src='{{checkImg[index]}}' mode='aspectFill'></image>
+				<view class="cu-tag bg-red" catchtap="DelImg" data-param="checkImg" data-index="{{index}}">
 					<text class="cuIcon-close"></text>
 				</view>
 			</view>
-			<view class="solids" bindtap="ChooseImage" data-param="signInList" wx:if="{{signInList.length<8}}">
+			<view class="solids" bindtap="ChooseImage" data-param="checkImg" wx:if="{{checkImg.length<8}}">
 				<text class="cuIcon-cameraadd"></text>
 			</view>
 		</view>
@@ -96,18 +96,18 @@
 			活动图片上传
 		</view>
 		<view class="action">
-			{{imgList.length}}/8
+			{{serviceImg.length}}/8
 		</view>
 	</view>
 	<view class="cu-form-group">
 		<view class="grid col-4 grid-square flex-sub">
-			<view class="bg-img" wx:for="{{imgList}}" wx:key="index" bindtap="ViewImage" data-url="{{imgList[index]}}">
-				<image src='{{imgList[index]}}' mode='aspectFill'></image>
-				<view class="cu-tag bg-red" catchtap="DelImg" data-param="imgList" data-index="{{index}}">
+			<view class="bg-img" wx:for="{{serviceImg}}" wx:key="index" bindtap="ViewImage" data-url="{{serviceImg[index]}}">
+				<image src='{{serviceImg[index]}}' mode='aspectFill'></image>
+				<view class="cu-tag bg-red" catchtap="DelImg" data-param="serviceImg" data-index="{{index}}">
 					<text class="cuIcon-close"></text>
 				</view>
 			</view>
-			<view class="solids" bindtap="ChooseImage" data-param="imgList" wx:if="{{imgList.length<8}}">
+			<view class="solids" bindtap="ChooseImage" data-param="serviceImg" wx:if="{{serviceImg.length<8}}">
 				<text class="cuIcon-cameraadd"></text>
 			</view>
 		</view>

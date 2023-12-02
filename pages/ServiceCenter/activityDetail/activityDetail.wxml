@@ -241,7 +241,7 @@
 	</view>
 	<block wx:if="{{actions.isFeedback}}">
 		<!-- 签到表 -->
-		<view wx:if="{{actions.feedback.signInList}}">
+		<view wx:if="{{actions.checkImg}}">
 			<view class="cu-bar bg-white radius-xl">
 				<view class="text-lg text-bold padding text-black">
 					签到表
@@ -249,15 +249,15 @@
 			</view>
 			<view class="cu-form-group">
 				<view class="grid col-4 grid-square flex-sub">
-					<view class="bg-img" wx:for="{{actions.feedback.signInList}}" wx:key="index" catchtap="previewImage" data-index="{{index}}" data-urls="{{actions.feedback.signInList}}">
-						<image src='{{actions.feedback.signInList[index]}}' mode='aspectFill'></image>
+					<view class="bg-img" wx:for="{{actions.checkImg}}" wx:key="index" catchtap="previewImage" data-index="{{index}}" data-urls="{{actions.checkImg}}">
+						<image src='{{actions.checkImg[index]}}' mode='aspectFill'></image>
 					</view>
 				</view>
 			</view>
 
 		</view>
 		<!-- 活动照片 -->
-		<view wx:if="{{actions.feedback.imgList}}">
+		<view wx:if="{{actions.serviceImg}}">
 			<view class="cu-bar bg-white ">
 				<view class="text-lg text-bold padding text-black">
 					活动照片
@@ -265,8 +265,8 @@
 			</view>
 			<view class="cu-form-group">
 				<view class="grid col-4 grid-square flex-sub">
-					<view class="bg-img" wx:for="{{actions.feedback.imgList}}" wx:key="index" bindtap="previewImage" data-index="{{index}}" data-urls="{{actions.feedback.imgList}}">
-						<image src='{{actions.feedback.imgList[index]}}' mode='aspectFill'></image>
+					<view class="bg-img" wx:for="{{actions.serviceImg}}" wx:key="index" bindtap="previewImage" data-index="{{index}}" data-urls="{{actions.serviceImg}}">
+						<image src='{{actions.serviceImg[index]}}' mode='aspectFill'></image>
 					</view>
 				</view>
 			</view>

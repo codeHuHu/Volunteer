@@ -5,8 +5,8 @@ Page({
 		modalName: null,
 		tempId: null,
 		tempValue: null,
-		signInList: [], //签到表
-		imgList: [], //活动图片
+		checkImg: [], //签到表
+		serviceImg: [], //活动图片
 		checkBox: [{
 			id: '',
 			name: '',
@@ -46,11 +46,11 @@ Page({
 				if (action.isFeedback == 1) {
 					var tmp = action.joinMembers
 					that.setData({
-						imgList: [],
-						signInList: [],
-						//result.feedback.imgList
+						serviceImg: action.serviceImg,
+						checkImg: action.checkImg,
+						//result.feedback.serviceImg
 						checkBox: action.joinMembers,
-						//signInList: result.feedback.signInList
+						//checkImg: result.feedback.checkImg
 					})
 				}
 				else {
@@ -63,8 +63,8 @@ Page({
 					}
 					that.setData({
 						checkBox: tmp,
-						imgList: [],
-						signInList: []
+						serviceImg: [],
+						checkImg: []
 					})
 				}
 			}).catch(err => {
@@ -82,25 +82,25 @@ Page({
 			sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
 			sourceType: ['album'], //从相册选择
 			success: (res) => {
-				if (param === 'signInList') {
-					console.log('signInList');
-					if (this.data.signInList.length != 0) {
+				if (param === 'checkImg') {
+					console.log('checkImg');
+					if (this.data.checkImg.length != 0) {
 						this.setData({
-							signInList: this.data.signInList.concat(res.tempFilePaths)
+							checkImg: this.data.checkImg.concat(res.tempFilePaths)
 						})
 					} else {
 						this.setData({
-							signInList: res.tempFilePaths
+							checkImg: res.tempFilePaths
 						})
 					}
 				} else {
-					if (this.data.imgList.length != 0) {
+					if (this.data.serviceImg.length != 0) {
 						this.setData({
-							imgList: this.data.imgList.concat(res.tempFilePaths)
+							serviceImg: this.data.serviceImg.concat(res.tempFilePaths)
 						})
 					} else {
 						this.setData({
-							imgList: res.tempFilePaths
+							serviceImg: res.tempFilePaths
 						})
 					}
 				}
@@ -109,7 +109,7 @@ Page({
 	},
 	ViewImage(e) {
 		wx.previewImage({
-			urls: e.currentTarget.dataset.urls == 'signInList' ? this.data.signInList : this.data.imgList,
+			urls: e.currentTarget.dataset.urls == 'checkImg' ? this.data.checkImg : this.data.serviceImg,
 			current: e.currentTarget.dataset.url
 		});
 	},
@@ -120,18 +120,18 @@ Page({
 			cancelText: '返回',
 			confirmText: '确认',
 			success: res => {
-				if (param === 'signInList') {
+				if (param === 'checkImg') {
 					if (res.confirm) {
-						this.data.signInList.splice(e.currentTarget.dataset.index, 1);
+						this.data.checkImg.splice(e.currentTarget.dataset.index, 1);
 						this.setData({
-							signInList: this.data.signInList
+							checkImg: this.data.checkImg
 						})
 					}
 				} else {
 					if (res.confirm) {
-						this.data.imgList.splice(e.currentTarget.dataset.index, 1);
+						this.data.serviceImg.splice(e.currentTarget.dataset.index, 1);
 						this.setData({
-							imgList: this.data.imgList
+							serviceImg: this.data.serviceImg
 						})
 					}
 				}
@@ -196,7 +196,7 @@ Page({
 			checkBox: items
 		})
 	},
-	commit() {
+	async commit() {
 		let that = this
 
 		if (!that.data.id) {
@@ -210,40 +210,117 @@ Page({
 			title: '上传中',
 		})
 
-		let checkBox = []
-		let tmp = that.data.checkBox
-		for (let i in tmp) {
-			let item = {
-				id: tmp[i].id,
-				isCome: tmp[i].isCome,
-				excellent: tmp[i].excellent,
-				feedback: tmp[i].feedback
-			}
-			checkBox.push(item)
-		}
-		wx.$ajax({
-			url: wx.$param.server['fastapi'] + "/service/comment",
-			method: "post",
-			data: {
-				serviceId: that.data.id,
-				checkBox: checkBox,
-				serviceImg: [],
-				checkImg: []
-			},
-			header: {
-				'content-type': 'application/json'
-			},
-			//showErr: false
-		}).then(res => {
-			console.log(res);
-			if (res['msg'] == "评价成功") {
-				wx.hideLoading()
-				wx.navigateBack()
-			}
+		//过滤出需要上传的图片
+		let filtered_servieImg_upload = that.data.serviceImg.filter(Img => Img.toLowerCase().includes("//tmp"));
+		let filtered_checkImg_upload = that.data.checkImg.filter(Img => Img.toLowerCase().includes("//tmp"));
+		//过滤出不需要上传的图片
+		let filtered_serviceImg = that.data.serviceImg.filter(Img => !Img.toLowerCase().includes("//tmp"));
+		let filtered_checkImg = that.data.checkImg.filter(Img => !Img.toLowerCase().includes("//tmp"));
 
-		}).catch(err => {
-			console.log(err);
-			wx.hideLoading()
+		// 群二维码 i志愿报名码简介文件
+		const serviceImgPromises = that.uploadPromises(filtered_servieImg_upload);
+		const checkImgPromises = that.uploadPromises(filtered_checkImg_upload);
+
+		try {
+			let [serviceImg, checkImg] = await Promise.all([serviceImgPromises, checkImgPromises]);
+			serviceImg = serviceImg.concat(filtered_serviceImg)
+			checkImg = checkImg.concat(filtered_checkImg)
+
+			let checkBox = []
+			let tmp = that.data.checkBox
+			for (let i in tmp) {
+				let item = {
+					id: tmp[i].id,
+					isCome: tmp[i].isCome,
+					excellent: tmp[i].excellent,
+					feedback: tmp[i].feedback
+				}
+				checkBox.push(item)
+			}
+			wx.$ajax({
+				url: wx.$param.server['fastapi'] + "/service/comment",
+				method: "post",
+				data: {
+					serviceId: that.data.id,
+					checkBox,
+					serviceImg,
+					checkImg
+				},
+				header: {
+					'content-type': 'application/json'
+				},
+				//showErr: false
+			}).then(res => {
+				console.log(res);
+				if (res['msg'] == "评价成功") {
+					wx.hideLoading()
+					wx.navigateBack()
+				}
+
+			}).catch(err => {
+				console.log(err);
+				wx.hideLoading()
+			})
+		} catch (err) {
+			console.error("上传文件失败", err);
+		}
+
+
+	},
+	async uploadPromises(fileList) {
+		let that = this;
+		//如果是简介文件就记录一下名字,如果是图片就不用
+		const uploadPromises = fileList.map(file => typeof file === 'object' ? that.uploadFile(file.tempFilePath, file.name, true) : that.uploadFile(file));
+		return Promise.all(uploadPromises);
+	},
+	// 异步上传单个文件
+	uploadFile(filePath, fileName = null, progress = false) {
+		let that = this
+		//返回上传文件后的信息
+		return new Promise(function (callback) {
+			console.log("promise filePath", filePath);
+			const uploadTask = wx.uploadFile({
+				url: wx.$param.server['fastapi'] + '/service/uploadFile',
+				filePath: filePath,
+				name: 'files',
+				success: (res) => {
+					console.log("promise res", res)
+					if (progress) {
+						that.setData({
+							progress: 100
+						})
+					}
+
+					const data = JSON.parse(res.data);
+					if (fileName) {
+						let tmp = {
+							fileName: fileName,
+							filePath: data['file_urls'][0]
+						}
+						callback(tmp)
+					} else {
+						callback(data['file_urls'][0])
+					}
+				},
+				fail: (error) => {
+					console.log('上传图片失败', error.data + error.statusCode)
+					wx.showToast({
+						title: '上传失败' + error.data + error.statusCode,
+						icon: "none"
+					})
+					console.log(err)
+				},
+			})
+			//监听进度
+			if (progress) {
+				uploadTask.onProgressUpdate(res => {
+					if (res.progress < 85) {
+						that.setData({
+							progress: res.progress
+						})
+					}
+				})
+			}
 		})
 	},
 })
