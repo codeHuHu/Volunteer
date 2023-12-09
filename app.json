@@ -1,5 +1,7 @@
 {
 	"pages": [
+		
+		"pages/PersonalCenter/register/register",
 		"pages/HomeCenter/home/home",
 		"pages/HomeCenter/volunteerWelfare/volunteerWelfare",
 		"pages/PersonalCenter/accountSignUp/accountSignUp",
