@@ -1,17 +1,23 @@
 <!--pages/PersonalCenter/register/register.wxml-->
 <div class="register">
-<div class="img-div">
-<image src="https://volunteerservice.oss-cn-beijing.aliyuncs.com/services/fe7f4e87573bbfc31f7c2702d469f1b.jpg" mode="aspectFill" style="position: relative; left: 47rpx;"></image></div>
-<text>\n</text>
-<view class="weui-btn-area">
-
-    <button class="b1" disabled='{{btn_disabled}}'>一键登录</button>
+	<div class="img-div">
+		<image src="https://volunteerservice.oss-cn-beijing.aliyuncs.com/services/fe7f4e87573bbfc31f7c2702d469f1b.jpg" mode="aspectFill" style="position: relative; left: 47rpx;"></image>
+	</div>
+	<text>\n</text>
+	<view class="weui-btn-area margin-bottom-xxl">
+		<view style=" font-size:20rpx;color: #aca6a6; ">丨
+		</view>
+		<view class="flex justify-center text-red">
+			<text>新用户登陆后请到设置填充个人信息哦</text>
+		</view>
+		<button open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber" class="b1" disabled='{{btn_disabled}}'>一键登录</button>
 		<text>\n</text>
-</view>
-<checkbox-group class="group" bindchange="agreechange">
- <checkbox class="weui-agree__checkbox" id="weuiAgree" value="agree" checked="{{}}" /> 阅读并同意<navigator url="" class="weui-agree__link">《广州大学志愿拼团用户协议》</navigator><navigator url="" class="weui-agree__link">《隐私协议》</navigator>
- </checkbox-group>
+	</view>
+	<checkbox-group class="group" bindchange="agreeChange">
+		<checkbox class="weui-agree__checkbox" id="weuiAgree" value="agree" checked="{{}}" />
+		阅读并同意
+		<navigator url="" class="weui-agree__link">《广州大学志愿拼团用户协议》</navigator>
+		<navigator url="" class="weui-agree__link">《隐私协议》</navigator>
+	</checkbox-group>
+
 </div>
-
-
-

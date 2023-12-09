@@ -221,8 +221,8 @@ Page({
 	showModal(e) {
 		//首先看是否登录了
 		if (!app.globalData.isAuth) {
-			this.setShow("error", "您尚未登陆");
-			// wx.$navTo('/pages/PersonalCenter/accountSignUp/accountSignUp')
+			this.setShow("error", "您尚未登录");
+			wx.$navTo('/pages/PersonalCenter/register/register')
 			return
 		}
 
@@ -299,15 +299,14 @@ Page({
 	//转发朋友
 	onShareAppMessage(event) {
 		return {
-			title: this.data.actions.actName,
-			//imageUrl: this.data.actions.images[0],
+			title: this.data.actions.serviceName,
 			path: 'pages/ServiceCenter/activityDetail/activityDetail?id=' + this.data.id + '&actions=' + encodeURIComponent(JSON.stringify(this.data.actions))
 		}
 	},
 	//转发朋友圈
 	onShareTimeline(event) {
 		return {
-			title: this.data.actions.actName + '~快来一起参加吧!',
+			title: this.data.actions.serviceName + '~快来一起参加吧!',
 			query: 'id=' + this.data.id + '&actions=' + encodeURIComponent(JSON.stringify(this.data.actions))
 		}
 	},

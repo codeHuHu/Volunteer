@@ -1,82 +1,40 @@
-// pages/register/register.js
+const app = getApp()
 Page({
-
-	/**
-	 * 页面的初始数据
-	 */
 	data: {
-		btn_disabled:true,
+		btn_disabled: true,
 
 	},
-	agreechange:function(e) {
-		console.log(e.detail.value)
-			this.setData({
-				isAgree:e.detail.value,
-			})
-			if (e.detail.value=="agree"){
-				console.log(e.detail.value)
-			 this.setData({
-				 btn_disabled:false,
-			 })
-		 }else{
-			console.log(e.detail.value)
-			 this.setData({
-				 btn_disabled:true
-			 })}},
-
-	/**
-	 * 生命周期函数--监听页面加载
-	 */
 	onLoad(options) {
+		console.log("check");
+		if(wx.getStorageSync('JWT_Token')){
+			console.log("check success");
+			wx.navigateBack()
+		}
+	},
+	getPhoneNumber(e) {
+		console.log(e)
+		if (e.detail.code) {
+			wx.showLoading()
+			let code = e.detail.code
+			app.login(code)
+		}
 
 	},
-
-	/**
-	 * 生命周期函数--监听页面初次渲染完成
-	 */
-	onReady() {
-
+	agreeChange(e) {
+		console.log(e.detail.value)
+		this.setData({
+			isAgree: e.detail.value,
+		})
+		if (e.detail.value == "agree") {
+			console.log(e.detail.value)
+			this.setData({
+				btn_disabled: false,
+			})
+		} else {
+			console.log(e.detail.value)
+			this.setData({
+				btn_disabled: true
+			})
+		}
 	},
-
-	/**
-	 * 生命周期函数--监听页面显示
-	 */
-	onShow() {
-
-	},
-
-	/**
-	 * 生命周期函数--监听页面隐藏
-	 */
-	onHide() {
-
-	},
-
-	/**
-	 * 生命周期函数--监听页面卸载
-	 */
-	onUnload() {
-
-	},
-
-	/**
-	 * 页面相关事件处理函数--监听用户下拉动作
-	 */
-	onPullDownRefresh() {
-
-	},
-
-	/**
-	 * 页面上拉触底事件的处理函数
-	 */
-	onReachBottom() {
-
-	},
-
-	/**
-	 * 用户点击右上角分享
-	 */
-	onShareAppMessage() {
-
-	}
 })

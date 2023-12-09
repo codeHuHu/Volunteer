@@ -12,7 +12,7 @@
 .button{
 	position: absolute;
 	top:300rpx;
-	left: 18rpx;
+	left: 35%;
 }
 .text-green.text-bold {
 	font-size: 34rpx;

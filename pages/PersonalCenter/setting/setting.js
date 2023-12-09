@@ -27,42 +27,57 @@ Page({
 	onShow() { },
 	onHide() { },
 	onUnload() {
-		var that = this
-		if (that.data.isUpdate) {
-			wx.showLoading({
-				title: '(数据上传中...)',
-				mask: true,
-			})
-			let form = {
-				name: this.data.name,
-				school: this.data.school,
-				grade: this.data.grade,
-				year: this.data.selectedYear,
-				college: this.data.college,
-			}
-			wx.$ajax({
-				url: wx.$param.server['fastapi'] + "/user/update",
-				method: "post",
-				data: form,
-				header: {
-					'content-type': 'application/json'
-				}
-			}).then(res => {
-				if (res['statusCode'] == 201) {
-					console.log("更新成功", res)
-				} else {
-					console.log("状态码不对", res)
-				}
-				wx.hideLoading()
-			}).catch(err => {
-				console.log("err", err)
-				wx.hideLoading()
-			})
 
-		}
 
 	},
-	
+	save() {
+		wx.showLoading({
+			title: '(数据上传中...)',
+			mask: true,
+		})
+		let form = {
+			name: this.data.name,
+			school: this.data.school,
+			grade: this.data.grade,
+			year: this.data.selectedYear,
+			college: this.data.college,
+		}
+		wx.$ajax({
+			url: wx.$param.server['fastapi'] + "/user/update",
+			method: "post",
+			data: form,
+			header: {
+				'content-type': 'application/json'
+			}
+		}).then(res => {
+			if (res['statusCode'] == 201) {
+				console.log("更新成功", res)
+			} else {
+				console.log("状态码不对", res)
+			}
+			wx.showToast({
+				title: '保存成功',
+				icon: 'success'
+			});
+			wx.hideLoading()
+		}).catch(err => {
+			console.log("err", err)
+			wx.hideLoading()
+		})
+	},
+	logout() {
+		wx.showModal({
+			title: '请确认',
+			content: '是否退出登录',
+			success(res) {
+				// 用户点击了确定按钮
+				if (res.confirm) {
+					app.logout()
+				}
+			}
+		})
+
+	},
 	checkchange(e) {
 		this.setData({
 			isUpdate: !this.data.isUpdate
@@ -102,10 +117,7 @@ Page({
 	},
 	handleSave() {
 		// 调用API保存昵称到本地存储或后台服务器
-		wx.showToast({
-			title: '保存成功',
-			icon: 'success'
-		});
+		
 		this.closeModal(); // 保存后关闭模态框
 		// wx.navigateBack(); // 返回上一页
 	},

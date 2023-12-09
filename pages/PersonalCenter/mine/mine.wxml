@@ -50,15 +50,19 @@
 		<view class="bg-img margin-lr" style="min-height: 35vh;">
 			<view class="bg-img">
 				<image class="" src="https://volunteerservice.oss-cn-beijing.aliyuncs.com/services/2322ceda56cd4e545f852e8a135c570.png" mode="aspectFill" style="width: 100%;">
-					<!-- <view bindtap="navTo" data-url="/pages/PersonalCenter/accountSignUp/accountSignUp" class="margin-left cu-tag round bg-green margin-top-xs button" style="width: 20%; font-weight: bold;">
-						注册
-					</view> -->
+
 				</image>
+				<view bindtap="navTo" data-url="/pages/PersonalCenter/register/register" class="cu-tag round bg-green  button" style="width: 30%; font-weight: bold;">
+					前往登陆
+				</view>
 			</view>
+
 		</view>
+
 	</block>
 
 	<view class="cu-list menu card-menu margin-bottom-xl shadow-lg radius">
+
 		<view class="cu-item arrow" bindtap="navTo" data-url="/pages/PersonalCenter/myActivity/myActivity" data-check="1">
 			<view class="content">
 				<text class="cuIcon-my lg text-gray"></text>
@@ -101,7 +105,9 @@
 			<image mode="aspectFill" style="z-index: -1; width: 80%; opacity: .8;" src="https://volunteerservice.oss-cn-beijing.aliyuncs.com/services/7942b2258626eba1ee2518171398809.png">
 			</image>
 		</view>
+
 	</view>
+
 
 </scroll-view>
 <!-- 轻提示 -->
@@ -147,9 +153,7 @@
 		<view class="sm cu-btn round " style="top:-3rpx; color:#aca6a6;background-color: transparent;">联系客服</view>
 	</button>
 	<!-- open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber" -->
-	<view style=" font-size:20rpx;color: #aca6a6; ">丨
-		<button open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber" style="padding:0;">-_-</button>
-	</view>
+	
 	<button bindtap="navTo" data-url="/pages/PersonalCenter/aboutUs/aboutUs" style=" height:100rpx; width: 300rpx;">
 		<text class='iconfont icon-guanyu text-grey text-xl'></text>
 		<view class="sm cu-btn round" style="top:-3rpx; color:#aca6a6; background-color: transparent; ">

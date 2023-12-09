@@ -74,7 +74,7 @@
 							<text max-lines="2">{{item.serviceIntro}}</text>
 						</view>
 						<view class="character " style="justify-content: space-between; ">
-							
+
 							<view class="cu-tag bg-green light sm round" style="max-width: 200rpx; overflow: hidden;">{{item.serviceTag}}</view>
 							<view class="detail">
 								<button class="btn-detail" bindtap="navTo" data-url="/pages/ServiceCenter/activityDetail/activityDetail?id={{item.id}}">查看</button>

@@ -1,46 +1,48 @@
-.register{
-	background-color:white;
+.register {
+	background-color: white;
 	margin: 10px;
 	height: 420px;
 	font-size: 10px;
 }
-.group{
+
+.group {
 	text-align: center;
 }
 
-image{
+image {
 	width: 280px;
 	height: 290px;
 	text-align: center;
 	/* padding-right: 15px; */
 
 }
-.img-div{
+
+.img-div {
 	text-align: center;
 }
-.b1{
-background-color:#98CB92;
-color: white;
-width: 300px;
+
+.b1 {
+	background-color: #98CB92;
+	color: white;
+	width: 300px;
 	border-radius: 50px;
-	font-weight:350px;
-	front-size:50;
+	font-weight: 350px;
+	front-size: 100rpx;
 	height: 40px;
 	line-height: 40px;
-	}
-	.weui-agree__link{
-		display: inline;
-		color: olivedrab;
-		
-	}
+}
 
-	wx-checkbox .wx-checkbox-input {
+.weui-agree__link {
+	display: inline;
+	color: olivedrab;
 
-		width:16px !important;
-		height:16px !important;
-		margin-left: 6px;
-		text-align: center;
-		
-		}
-		
-	
+}
+
+wx-checkbox .wx-checkbox-input {
+
+	width: 16px !important;
+	height: 16px !important;
+	margin-left: 6px;
+	text-align: center;
+
+}

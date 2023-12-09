@@ -166,6 +166,8 @@ Page({
 				title: '你已注册成为志愿者',
 				icon: 'none'
 			})
+		}else{
+			wx.$navTo("/pages/PersonalCenter/register/register")
 		}
 	},
 	byhistory() {

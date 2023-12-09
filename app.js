@@ -25,15 +25,27 @@ App({
 				that.globalData.isAuth = true
 				console.log("正在储存JWT_Token");
 				wx.setStorageSync('JWT_Token', res['token_type'] + ' ' + res['access_token'])
+				wx.hideLoading()
 				wx.reLaunch({
 					url: '/pages/HomeCenter/home/home',
 				})
 				that.getAuthStatus()
 			}
 		}).catch(err => {
-			console.log('用户未注册');
+			console.log('用户未登录');
 		})
 
+	},
+	logout() {
+		let that = this
+		wx.showLoading()
+		wx.removeStorageSync('JWT_Token')
+		that.globalData.userInfo = {}
+		wx.reLaunch({
+			url: '/pages/HomeCenter/home/home',
+		})
+		that.getAuthStatus()
+		wx.hideLoading()
 	},
 	getAuthStatus() {
 		let that = this

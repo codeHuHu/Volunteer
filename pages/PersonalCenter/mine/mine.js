@@ -51,7 +51,7 @@ Page({
 	},
 	navTo(e) {
 		if (e.currentTarget.dataset.check == "1" && !this.data.isLogin) {
-			this.setShow("error", "未注册");
+			this.setShow("error", "未登录");
 			return 0
 		}
 		this.hideModal()
@@ -67,7 +67,7 @@ Page({
 	},
 	showModal(e) {
 		if (this.data.myPos < 1) {
-			this.setShow("error", "未注册");
+			this.setShow("error", "未登录");
 			return 0
 		}
 		this.setData({

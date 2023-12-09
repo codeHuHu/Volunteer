@@ -116,40 +116,29 @@
 		<view class="cu-list menu card-menu shadow-lg radius">
 			<!-- <view class=""> -->
 			<!-- <text class="text-xs text-grey " style="letter-spacing:2rpx">注：支付宝账号仅用来对部分活动发放补贴</text></view> -->
-			<view class="margin-top">
-				<checkbox class="round margin-right" checked="{{isUpdate}}" bindtap="checkchange"></checkbox>
-				<text class="text-xs text-red ">点击勾选,退出时会自动更新数据哦</text>
+			<view class="margin-top flex justify-center">
+				<button class="cu-btn bg-green shadow-blur round lg" bindtap="save">保存修改</button>
+				
 			</view>
 		</view>
-		<!-- <view class="cu-item  ">
-		<navigator class="content cu-form-group " url="/pages/about/log/log" hover-class="none">
-			<view >
-		<text class="cuIcon-friendaddfill margin-right-xs"></text>
-			<text class="text-grey margin-right">队伍</text></view>
-			<view><text>{{team}}</text></view>
-		</navigator>
-	</view> -->
+
+		
 
 	</view>
 
 	<view class="cu-list menu card-menu margin-top-xl margin-bottom-xl shadow-lg radius">
+		<view class="cu-item">
+			<button class='cu-btn content'>
+				<text class='cuIcon-service text-orange text-xl'></text>
+				<text class='text-l text-black' bindtap="logout">退出登录</text>
+			</button>
+		</view>
 		<view class="cu-item">
 			<button class='cu-btn content' open-type='feedback'>
 				<text class='cuIcon-write text-cyan text-xl'></text>
 				<text class='text-l text-black'>意见反馈</text>
 			</button>
 		</view>
-		<!-- <view class="floating-textbox" wx:if="{{isTextBoxVisible}}">
-			<textarea class="textbox-content" type="text" placeholder="请输入建议/意见"></textarea>
-			<button class="close-button" bindtap="hideTextBox">×</button>
-			<button class="flex cu-btn bg-grey lg" style="bottom:80rpx" bindtap="hideTextBox">提交</button>
-		</view> -->
-		<!-- <view class="cu-item arrow ">
-		<navigator class="content cu-form-group " url="/pages/about/log/log" hover-class="none">
-			<text class="text-grey margin-right">关于我们</text>
-		</navigator>
-
-	</view>	 -->
 
 		<view class="cu-item">
 			<button class='cu-btn content' open-type='contact'>
@@ -157,7 +146,7 @@
 				<text class='text-l text-black'>联系客服</text>
 			</button>
 		</view>
-
+		
 	</view>
 	<view class="cu-tabbar-height"></view>
 

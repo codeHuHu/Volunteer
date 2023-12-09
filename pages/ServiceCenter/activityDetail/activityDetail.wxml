@@ -390,7 +390,7 @@
 				</view>
 			</view>
 			<view class="cu-form-group" style="justify-content: between;" style="display: flex;align-items: center; ">
-				<view class="title outteam">银行卡号</view>
+				<view class="title outteam">收款账号</view>
 				<input class="tel" model:value="{{payNumber}}" placeholder="例：6217003810026896707">
 				</input>
 			</view>
