@@ -41,10 +41,10 @@
 			<view class="content cu-form-group flex">
 				<view>
 					<text class="iconfont icon-duiwu margin-right-xs"></text>
-					<text class="text-grey margin-right">学年</text>
+					<text class="text-grey margin-right">入学年份</text>
 				</view>
 				<view class="flex-treble">
-					<picker mode="date" start="1900-01-01" end="2099-01-01" fields="year" bindchange="YearChange" value="{{selectedYear}}">
+					<picker mode="date" start="2000" end="2025" fields="year" bindchange="YearChange" value="{{selectedYear}}">
 						<view class="picker">
 							{{selectedYear}}
 						</view>
@@ -118,11 +118,11 @@
 			<!-- <text class="text-xs text-grey " style="letter-spacing:2rpx">注：支付宝账号仅用来对部分活动发放补贴</text></view> -->
 			<view class="margin-top flex justify-center">
 				<button class="cu-btn bg-green shadow-blur round lg" bindtap="save">保存修改</button>
-				
+
 			</view>
 		</view>
 
-		
+
 
 	</view>
 
@@ -146,7 +146,7 @@
 				<text class='text-l text-black'>联系客服</text>
 			</button>
 		</view>
-		
+
 	</view>
 	<view class="cu-tabbar-height"></view>
 

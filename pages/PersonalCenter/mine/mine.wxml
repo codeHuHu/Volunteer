@@ -49,7 +49,7 @@
 
 		<view class="bg-img margin-lr" style="min-height: 35vh;">
 			<view class="bg-img">
-				<image class="" src="https://volunteerservice.oss-cn-beijing.aliyuncs.com/services/2322ceda56cd4e545f852e8a135c570.png" mode="aspectFill" style="width: 100%;">
+				<image class="" src="https://volunteerservice.oss-cn-beijing.aliyuncs.com/services/cc5a9fa6964838f395a52951e52c509.png" mode="aspectFill" style="width: 100%;">
 
 				</image>
 				<view bindtap="navTo" data-url="/pages/PersonalCenter/register/register" class="cu-tag round bg-green  button" style="width: 30%; font-weight: bold;">
