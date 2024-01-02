@@ -1,5 +1,13 @@
 const app = getApp()
 let loading = false
+
+
+let form = {
+	status: 1,
+	page: 1,
+	pageSize: 5
+}
+
 Page({
 	data: {
 		actions: [],
@@ -23,19 +31,11 @@ Page({
 	},
 	//查找活动
 	getData() {
+		wx.showLoading()
 		var that = this;
-
-		let form = {
-			"status": [1],
-			"pagination": {
-				"page": 1,
-				"size": 10
-			}
-		}
-
 		wx.$ajax({
-			url: wx.$param.server['fastapi'] + "/service/show",
-			method: "post",
+			url: wx.$param.server['springboot'] + "/service/public/page",
+			method: "get",
 			data: form,
 			header: {
 				'content-type': 'application/json'
@@ -43,77 +43,28 @@ Page({
 			showErr: false
 		}).then(res => {
 			that.setData({
-				actions: res.data
+				actions: res.data.records
 			})
+			wx.hideLoading()
 		}).catch(err => {
-
+			console.log(err)
+			wx.hideLoading()
 		})
 	},
 	searchActivity() {
 		var that = this
-
-		wx.showLoading()
-		//搜索栏不为空
-		if (this.data.keyword) {
-			that.setData({
-				actions: []
-			})
-			let form = {
-				"keyword": this.data.keyword,
-				"pagination": {
-					"page": 1,
-					"size": 10
-				}
-			}
-			wx.$ajax({
-				url: wx.$param.server['fastapi'] + "/service/show",
-				method: "post",
-				data: form,
-				header: {
-					'content-type': 'application/json'
-				},
-				showErr: false
-			}).then(res => {
-				that.setData({
-					actions: res.data
-				})
-				wx.hideLoading()
-			}).catch(err => {
-				console.log(err)
-				wx.hideLoading()
-			})
+		that.setData({
+			actions: []
+		})
+		form['title'] = this.data.keyword
+		if (this.data.keyword.length == 0) {
+			form['status'] = 1
 		} else {
-			that.getData();
-			wx.hideLoading()
+			form['status'] = 0
 		}
+		that.getData()
+	},
 
-	},
-	setShow(status, message, time = 1500, fun = false) {
-		if (loading) {
-			return
-		}
-		loading = true;
-		try {
-			this.setData({
-				status,
-				message,
-				time,
-				show: true,
-			})
-			setTimeout(() => {
-				this.setData({
-					show: false,
-				})
-				loading = false;
-				// 触发回调函数
-				if (fun) {
-					this.end()
-				}
-			}, time)
-		} catch {
-			loading = false;
-		}
-	},
 	showModal(e) {
 		this.setData({
 			modalName: e.currentTarget.dataset.target
@@ -166,7 +117,7 @@ Page({
 				title: '你已注册成为志愿者',
 				icon: 'none'
 			})
-		}else{
+		} else {
 			wx.$navTo("/pages/PersonalCenter/register/register")
 		}
 	},
@@ -184,6 +135,32 @@ Page({
 	//转发朋友圈
 	onShareTimeline(event) {
 		return {
+		}
+	},
+	setShow(status, message, time = 1500, fun = false) {
+		if (loading) {
+			return
+		}
+		loading = true;
+		try {
+			this.setData({
+				status,
+				message,
+				time,
+				show: true,
+			})
+			setTimeout(() => {
+				this.setData({
+					show: false,
+				})
+				loading = false;
+				// 触发回调函数
+				if (fun) {
+					this.end()
+				}
+			}, time)
+		} catch {
+			loading = false;
 		}
 	},
 })

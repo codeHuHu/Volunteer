@@ -22,7 +22,7 @@ Page({
 			}
 		}
 		wx.$ajax({
-			url: wx.$param.server['fastapi'] + "/service/show",
+			url: wx.$param.server['springboot'] + "/service/show",
 			method: "post",
 			data: form,
 			header: {
@@ -55,7 +55,7 @@ Page({
 				if (res.confirm) {
 					console.log(e.currentTarget.dataset.id)
 					wx.$ajax({
-						url: wx.$param.server['fastapi'] + "/service/check",
+						url: wx.$param.server['springboot'] + "/service/check",
 						method: "post",
 						data: {
 							id: e.currentTarget.dataset.id,
@@ -88,7 +88,7 @@ Page({
 				if (res.confirm) {
 					console.log(e.currentTarget.dataset.id)
 					wx.$ajax({
-						url: wx.$param.server['fastapi'] + "/service/check",
+						url: wx.$param.server['springboot'] + "/service/check",
 						method: "post",
 						data: {
 							id: e.currentTarget.dataset.id,

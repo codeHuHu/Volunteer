@@ -36,9 +36,6 @@ wx.$ajax = function (option) {
 		}
 		// 携带cookie
 		option.header["Authorization"] = wx.getStorageSync("JWT_Token")
-
-		//console.log('过滤后的Option', option)
-
 		wx.request({
 			url: option.url,
 			data: option.data,
@@ -49,7 +46,9 @@ wx.$ajax = function (option) {
 				if (res.statusCode >= 400) {
 					//认证失败,清除本地token
 					if (res.statusCode == 401) {
+						console.log("认证失败,清除本地token 和 userInfo");
 						wx.removeStorageSync('JWT_Token')
+						wx.removeStorageSync('userInfo')
 					}
 
 					let msg = res.statusCode == 429 ? '\n操作频繁,请一分钟后再操作' : res.data.detail

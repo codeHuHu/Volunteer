@@ -10,43 +10,40 @@ Page({
 		imageSrc: '', // 图片链接，请替换为实际的图片链接
 	},
 	onLoad() {
-
 	},
 	onShow() {
 		this.getUserInfo()
-		this.refreshData()
 		this.saveGlobalData()
 	},
 	saveGlobalData() {
 		wx.setStorageSync('app_globalData', app.globalData)
 	},
 	getUserInfo() {
-		var that = this
+		let that = this
 		//先拿本地JWT_Token来获取用户信息
 		wx.$ajax({
-			url: wx.$param.server['fastapi'] + "/user/get",
+			url: wx.$param.server['springboot'] + "/user",
 			method: "get",
 			showErr: false
 		}).then(res => {
-			//console.log('获取信息res', res)
+			console.log('获取信息res', res)
 			app.globalData.isAuth = true
-			app.globalData.userInfo = res
-			this.setData({
+			app.globalData.userInfo = res.data
+			that.setData({
 				isLogin: true,
-				actions: res
+				actions: res.data,
+				myPos: res.data['position']
 			})
-			wx.setStorageSync('userInfo', res)
+			wx.setStorageSync('userInfo', res.data)
 		}).catch(err => {
 			app.globalData.isAuth = false
+			that.setData({
+				isLogin: false,
+				actions: {},
+				myPos: 0
+			})
+			app.globalData.userInfo = null
 			console.log('获取信息err', err);
-		})
-	},
-	refreshData() {
-		this.setData({
-			isLogin: app.globalData.isAuth,
-			actions: app.globalData.userInfo,
-			// myPos: 1,
-			myPos: app.globalData.userInfo['position']
 		})
 	},
 	navTo(e) {
@@ -56,14 +53,6 @@ Page({
 		}
 		this.hideModal()
 		wx.$navTo(e)
-	},
-	getPhoneNumber(e) {
-		console.log(e)
-		if (e.detail.code) {
-			let code = e.detail.code
-			app.login(code)
-		}
-
 	},
 	showModal(e) {
 		if (this.data.myPos < 1) {

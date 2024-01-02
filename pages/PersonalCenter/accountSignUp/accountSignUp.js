@@ -59,7 +59,7 @@ Page({
 		}
 
 		wx.$ajax({
-			url: wx.$param.server['fastapi'] + "/user/create",
+			url: wx.$param.server['springboot'] + "/user/create",
 			method: "post",
 			data: form,
 			header: {

@@ -43,8 +43,8 @@ Page({
 			college: this.data.college,
 		}
 		wx.$ajax({
-			url: wx.$param.server['fastapi'] + "/user/update",
-			method: "post",
+			url: wx.$param.server['springboot'] + "/user",
+			method: "put",
 			data: form,
 			header: {
 				'content-type': 'application/json'

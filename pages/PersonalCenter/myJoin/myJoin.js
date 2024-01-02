@@ -1,5 +1,11 @@
 // pages/myJoin/myJoin.js
 const app = getApp()
+
+let form = {
+	page: 1,
+	pageSize: 10
+}
+
 Page({
 	data: {},
 	onLoad(options) {
@@ -8,22 +14,16 @@ Page({
 	onReady() { },
 	onShow() {
 		let that = this
-
-		let form = {
-			"page": 1,
-			"size": 10
-		}
 		wx.$ajax({
-			url: wx.$param.server['fastapi'] + "/service/myJoin",
-			method: "post",
+			url: wx.$param.server['springboot'] + "/service/myJoin/page",
+			method: "get",
 			data: form,
 			header: {
 				'content-type': 'application/json'
-			},
-			showErr:false
+			}
 		}).then(res => {
 			that.setData({
-				actionList: res.data
+				actionList: res.data.records
 			})
 		}).catch(err => {
 

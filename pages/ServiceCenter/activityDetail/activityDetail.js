@@ -59,16 +59,11 @@ Page({
 
 		//获取服务
 		wx.$ajax({
-			url: wx.$param.server['fastapi'] + "/service/show",
-			method: "post",
-			data: {
-				"id": id,
-			},
-			header: {
-				'content-type': 'application/json'
-			}
+			url: wx.$param.server['springboot'] + `/service/${id}`,
+			method: "get",
 		}).then(res => {
-			that.adjustData(res.data[0])
+			console.log("res", res);
+			that.adjustData(res.data)
 		}).catch(err => {
 		})
 	},
@@ -94,7 +89,7 @@ Page({
 			// 如果名单里有该志愿者,改变报名按钮状态
 			for (let i in res.joinMembers) {
 				//暂时通过名字来判断
-				if (res.joinMembers[i]["name"] == app.globalData.userInfo["name"] && res.joinMembers[i]["id"] == app.globalData.userInfo["id"]) {
+				if (res.joinMembers[i]["uid"] == app.globalData.userInfo["id"] && res.joinMembers[i]["name"] == app.globalData.userInfo["name"]) {
 					activeIdx = res.joinMembers[i].posIdx[0]
 					joinFlag = 1
 					// 找出所报名的岗位逻辑位置
@@ -115,7 +110,7 @@ Page({
 
 		//在这里加个非时间的功能,计算boxer
 		let boxer = []
-		for (let i in res.serviceTimeSpan) {
+		for (let i in res.timeSpan) {
 			if (i == activeIdx) {
 				boxer.push(1)
 			} else {
@@ -125,12 +120,12 @@ Page({
 
 		//一些常量
 		let constants = {
-			deadTime: res.serviceDeadTime,
+			deadTime: res.deadTime,
 		}
 
 
 		that.setData({
-			isFull: (res.outJoin >= res.outNum) ? 1 : 0,
+			isFull: (res.joinNum >= res.needNum) ? 1 : 0,
 			boxer,
 			constants,
 			//记录用户是否有导出特权(负责人或管理员)
@@ -138,7 +133,7 @@ Page({
 			isDead: false,
 			//isDead: res.deadTimeStamp - new Date().getTime() <= 0 ? 1 : 0,
 			actions: res,
-			serviceTimeSpan: res.serviceTimeSpan,
+			timeSpan: res.timeSpan,
 		})
 	},
 	Join() {
@@ -150,17 +145,17 @@ Page({
 		})
 
 		let form = {
-			id: that.data.id,
+			sid: that.data.id,
 			payType: that.data.payType ? that.data.payType : '',
 			payNumber: that.data.payNumber ? that.data.payNumber : '',
 			posIdx: that.data.idx,
-			posName: that.data.serviceTimeSpan[that.data.idx[0]].positions[that.data.idx[1]].name,
+			posName: that.data.timeSpan[that.data.idx[0]].positions[that.data.idx[1]].name,
 		}
 
 		console.log(form)
 
 		wx.$ajax({
-			url: wx.$param.server['fastapi'] + "/service/engage",
+			url: wx.$param.server['springboot'] + "/service/engage",
 			method: "post",
 			data: form,
 			header: {
@@ -188,10 +183,10 @@ Page({
 		})
 
 		wx.$ajax({
-			url: wx.$param.server['fastapi'] + "/service/engage",
+			url: wx.$param.server['springboot'] + "/service/engage",
 			method: "post",
 			data: {
-				id: that.data.id
+				sid: that.data.id
 			},
 			header: {
 				'content-type': 'application/json'
@@ -298,14 +293,14 @@ Page({
 	//转发朋友
 	onShareAppMessage(event) {
 		return {
-			title: this.data.actions.serviceName,
+			title: this.data.actions.title,
 			path: 'pages/ServiceCenter/activityDetail/activityDetail?id=' + this.data.id + '&actions=' + encodeURIComponent(JSON.stringify(this.data.actions))
 		}
 	},
 	//转发朋友圈
 	onShareTimeline(event) {
 		return {
-			title: this.data.actions.serviceName + '~快来一起参加吧!',
+			title: this.data.actions.title + '~快来一起参加吧!',
 			query: 'id=' + this.data.id + '&actions=' + encodeURIComponent(JSON.stringify(this.data.actions))
 		}
 	},
@@ -357,17 +352,17 @@ Page({
 		let sheet = []
 		// 表头
 		sheet.push(
-			['活动名称', DA.serviceName],
-			['活动标签', DA.serviceTag],
+			['活动名称', DA.title],
+			['活动标签', DA.tag],
 			//['活动状态', '已结束'],
 			//['活动组织', DA.teamName],
-			['组织负责人', DA.holder],
+			['组织负责人', DA.holder.name],
 			['负责人介绍', DA.holderDetail],
 			// ['服务时间', D.constants.serviceTime],
 			// ['服务时长', D.constants.hours + '小时' + D.constants.minutes + '分钟'],
-			['服务地点', DA.serviceAddress],
-			['服务简介', DA.serviceIntro],
-			['参加活动人数', `${DA.outJoin}人`],
+			['服务地点', DA.address],
+			['服务简介', DA.intro],
+			['参加活动人数', `${DA.joinNum}人`],
 			['截止时间', D.constants.deadTime],
 			[],
 			[],
@@ -375,12 +370,12 @@ Page({
 		)
 		DA.joinMembers.forEach(item => {
 			let rowcontent = []
-			let TS = DA.serviceTimeSpan[item['posIdx'][0]]
+			let TS = DA.timeSpan[item['posIdx'][0]]
 			rowcontent.push(item.name)
 			rowcontent.push(TS.date + " " + TS.time)
 			rowcontent.push(item.posName)
 			rowcontent.push(item.isCome ? '实到' : '未到')
-			rowcontent.push(item.excellent ? '优秀' : '及格')
+			rowcontent.push(item.performance)
 			rowcontent.push(item.feedback)
 			rowcontent.push(item.phone)
 			rowcontent.push(item.payType + ' ' + item.payNumber)
@@ -390,7 +385,7 @@ Page({
 			rowcontent.push(item.college)
 			sheet.push(rowcontent)
 		})
-		utils.exportExcel(sheet, DA.serviceName)
+		utils.exportExcel(sheet, DA.title)
 	},
 	// 点击列表,收缩与展示
 	click(event) {

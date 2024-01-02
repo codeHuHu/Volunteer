@@ -151,9 +151,7 @@
 	<button open-type="contact" style="height:100rpx; width:300rpx;">
 		<text class='iconfont icon-lianxikefu text-grey text-xl'></text>
 		<view class="sm cu-btn round " style="top:-3rpx; color:#aca6a6;background-color: transparent;">联系客服</view>
-	</button>
-	<!-- open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber" -->
-	
+	</button>	
 	<button bindtap="navTo" data-url="/pages/PersonalCenter/aboutUs/aboutUs" style=" height:100rpx; width: 300rpx;">
 		<text class='iconfont icon-guanyu text-grey text-xl'></text>
 		<view class="sm cu-btn round" style="top:-3rpx; color:#aca6a6; background-color: transparent; ">

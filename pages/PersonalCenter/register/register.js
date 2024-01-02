@@ -17,7 +17,7 @@ Page({
 			wx.showLoading()
 			let code = e.detail.code
 			console.log(code)
-			//app.login(code)
+			app.login(code)
 		}
 
 	},

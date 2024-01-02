@@ -1,34 +1,33 @@
 const app = getApp()
 
+let form = {
+	page: 1,
+	pageSize: 10
+}
+
 Page({
 	data: {},
 	onLoad(options) {
 		let that = this
 
 		that.data.mode = options.mode
-		let url = wx.$param.server['fastapi'] + "/service/myService"
-		let form = {
-			'pagination': {
-				"page": 1,
-				"size": 10
-			}
-		}
+		let url = wx.$param.server['springboot'] + "/service/myService/page"
+		
 		if (options.mode == 'comment') {
-			form['status'] = [2]
-			if (app.globalData.userInfo['position'] >= 1) {
-				url = wx.$param.server['fastapi'] + "/service/show"
-			}
+			form['status'] = 2
+			// if (app.globalData.userInfo['position'] >= 1) {
+			// 	url = wx.$param.server['springboot'] + "/service/show"
+			// }
 			wx.$ajax({
 				url: url,
-				method: "post",
+				method: "get",
 				data: form,
 				header: {
 					'content-type': 'application/json'
-				},
-				showErr: false
+				}
 			}).then(res => {
 				that.setData({
-					actionList: res.data
+					actionList: res.data.records
 				})
 			}).catch(err => {
 
@@ -36,7 +35,7 @@ Page({
 		} else {
 			wx.$ajax({
 				url: url,
-				method: "post",
+				method: "get",
 				data: form,
 				header: {
 					'content-type': 'application/json'
@@ -44,7 +43,7 @@ Page({
 				showErr: false
 			}).then(res => {
 				that.setData({
-					actionList: res.data
+					actionList: res.data.records
 				})
 			}).catch(err => {
 

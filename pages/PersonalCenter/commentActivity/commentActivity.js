@@ -28,17 +28,15 @@ Page({
 			})
 
 			wx.$ajax({
-				url: wx.$param.server['fastapi'] + "/service/show",
-				method: "post",
-				data: {
-					"id": that.data.activityId,
-				},
+				url: wx.$param.server['springboot'] + `/service/${that.data.activityId}`,
+				method: "get",
 				header: {
 					'content-type': 'application/json'
 				},
 				//showErr: false
 			}).then(res => {
-				let action = res.data[0]
+				console.log(res);
+				let action = res.data
 				that.setData({
 					action
 				})
@@ -145,7 +143,7 @@ Page({
 	},
 	showNGModal(e) {
 		this.data.tempId = e.currentTarget.dataset.id
-		const value = this.data.checkBox.find(item => item.id === e.currentTarget.dataset.id).feedback;
+		const value = this.data.checkBox.find(item => item.uid === e.currentTarget.dataset.id).feedback;
 		this.setData({
 			tempValue: value
 		})
@@ -154,7 +152,7 @@ Page({
 	handleInput(e) {
 		const btnId = this.data.tempId;
 		const checkBox = this.data.checkBox.map(item => {
-			if (item.id === btnId) {
+			if (item.uid === btnId) {
 				item.feedback = e.detail.value;
 			}
 			return item;
@@ -172,7 +170,7 @@ Page({
 		let items = this.data.checkBox;
 		let values = e.currentTarget.dataset.value;
 		for (let i = 0, lenI = items.length; i < lenI; ++i) {
-			if (items[i].id === values) {
+			if (items[i].uid === values) {
 				items[i].isCome = !items[i].isCome;
 				items[i].excellent = items[i].isCome;
 				break
@@ -187,7 +185,7 @@ Page({
 		let items = this.data.checkBox;
 		let values = e.currentTarget.dataset.value;
 		for (let i = 0, lenI = items.length; i < lenI; ++i) {
-			if (items[i].id === values) {
+			if (items[i].uid === values) {
 				items[i].excellent = !items[i].excellent;
 				break
 			}
@@ -238,7 +236,7 @@ Page({
 				checkBox.push(item)
 			}
 			wx.$ajax({
-				url: wx.$param.server['fastapi'] + "/service/comment",
+				url: wx.$param.server['springboot'] + "/service/comment",
 				method: "post",
 				data: {
 					serviceId: that.data.id,
@@ -280,7 +278,7 @@ Page({
 		return new Promise(function (callback) {
 			console.log("promise filePath", filePath);
 			const uploadTask = wx.uploadFile({
-				url: wx.$param.server['fastapi'] + '/service/uploadFile',
+				url: wx.$param.server['springboot'] + '/service/uploadFile',
 				filePath: filePath,
 				name: 'files',
 				success: (res) => {

@@ -1,7 +1,7 @@
 <view class="cu-bar">
 	<view class="action flex">
 		<view>
-			<text class="text-xl text-bold text-black bg-oc-lime-0">{{actions.serviceName}}</text>
+			<text class="text-xl text-bold text-black bg-oc-lime-0">{{actions.title}}</text>
 			<view class="margin-left cu-tag bg-red light sm round going-on" wx:if="{{actions.isSubsidy}}">补贴服务</view>
 			<view class="margin-left cu-tag bg-green light sm round going-on" wx:if="{{actions.status==1}}">服务进行中</view>
 			<view class="margin-left cu-tag bg-green light sm round going-on" wx:elif="{{actions.status==2}}" style="background-color: gray; color: aliceblue;">服务已结束</view>
@@ -15,7 +15,7 @@
 <view class="grid col-4 radius-lg padding-left">
 	<view class="bg-oc-gray-6 radius padding-tb-xs text-center margin-tb-xs margin-right" style="width: auto; background-color: rgb(78, 187, 78);">
 		<view class=" text-sm">
-			{{actions.serviceTag}}
+			{{actions.tag}}
 		</view>
 	</view>
 </view>
@@ -24,7 +24,7 @@
 	<view class="solid-bottom text-lg text-bold padding text-black">服务组织</view>
 	<view class="padding flex  justify-between">
 		<text class="">负责人</text>
-		<text class="text-df ">{{actions.holder}} {{actions.phone}}</text>
+		<text class="text-df ">{{actions.holder.name}} {{actions.phone}}</text>
 	</view>
 	<view wx:if="{{actions.holderDetail}}" class="padding flex  justify-between">
 		<text class="">负责人介绍</text>
@@ -62,7 +62,7 @@
 		</view>
 		<view class="padding flex  justify-between">
 			<text>需求人数</text>
-			<text class="text-df"> {{actions.outJoin}}/{{actions.outNum}}</text>
+			<text class="text-df"> {{actions.joinNum}}/{{actions.needNum}}</text>
 		</view>
 	</view>
 	<view class="margin-sm radius-lg bg-white static">
@@ -82,7 +82,7 @@
 			</view>
 		</view>
 		<!-- 服务时间段列表 -->
-		<view class="cu-list menu" wx:for="{{serviceTimeSpan}}" wx:key="item" wx:for-index="index">
+		<view class="cu-list menu" wx:for="{{timeSpan}}" wx:key="item" wx:for-index="index">
 			<view class="cu-item">
 				<!-- 时间段 -->
 				<view class="content">
@@ -139,7 +139,7 @@
 				</view>
 
 			</view>
-			<text class="text-grey text-sm ">{{actions.outJoin}} 人</text>
+			<text class="text-grey text-sm ">{{actions.joinNum}} 人</text>
 		</view>
 	</view>
 </view>
@@ -148,7 +148,7 @@
 	<view class="solid-bottom text-lg text-bold padding text-black">服务信息</view>
 	<view class="padding flex  justify-between">
 		<text class="">服务地点</text>
-		<text class="text-df">{{actions.serviceAddress.length>0?actions.serviceAddress:"发布者未填写"}}</text>
+		<text class="text-df">{{actions.address.length>0?actions.address:"发布者未填写"}}</text>
 	</view>
 	<view wx:if="{{actions.isSubsidy}}" class="padding flex  justify-between">
 		<text class="text-red">服务补贴</text>
@@ -157,34 +157,34 @@
 </view>
 
 <!-- 服务简介 -->
-<view wx:if="{{actions.serviceIntro}}" class="static margin-sm radius-lg bg-white">
+<view wx:if="{{actions.intro}}" class="static margin-sm radius-lg bg-white">
 
 	<view class=" radius-lg bg-white">
 		<view class="solid-bottom text-lg text-bold padding text-black">服务内容</view>
 		<view class="padding flex  justify-between">
-			<text class="text-df">{{actions.serviceIntro}}
+			<text class="text-df">{{actions.intro}}
 			</text>
 		</view>
 	</view>
 </view>
 <!-- 注意事项 -->
-<view wx:if="{{actions.serviceNotice}}" class="static margin-sm radius-lg bg-white">
+<view wx:if="{{actions.notice}}" class="static margin-sm radius-lg bg-white">
 
 	<view class=" radius-lg bg-white">
 		<view class="solid-bottom text-lg text-bold padding text-black">注意事项</view>
 		<view class="padding flex  justify-between">
-			<text class="text-df">{{actions.serviceNotice}}
+			<text class="text-df">{{actions.notice}}
 			</text>
 		</view>
 	</view>
 </view>
 <!-- 服务简介 -->
-<view wx:if="{{actions.benefits}}" class="static margin-sm radius-lg bg-white">
+<view wx:if="{{actions.benefit}}" class="static margin-sm radius-lg bg-white">
 
 	<view class=" radius-lg bg-white">
 		<view class="solid-bottom text-lg text-bold padding text-black">志愿者权益</view>
 		<view class="padding flex  justify-between">
-			<text class="text-df">{{actions.benefits}}
+			<text class="text-df">{{actions.benefit}}
 			</text>
 		</view>
 	</view>
@@ -362,7 +362,7 @@
 		<!-- 标题 -->
 		<view class="cu-bar bg-white" style="justify-content:flex-end;">
 			<view class="content">请确认您的信息</view>	
-			<view wx:if="{{actions.isSubsidy==1}}"><text class="margin-left-xxl text-xs text-white bg-blue">补贴活动</text></view>
+			
 
 			<view class="action"bindtap="hideModal">
 				<text class="cuIcon-close text-red"></text>
@@ -378,13 +378,14 @@
 		</view>
 		<view class="cu-form-group">
 			<view class="title">服务时间段</view>
-			<text>{{serviceTimeSpan[idx[0]]['date']+' '+ serviceTimeSpan[idx[0]]['time']}}</text>
+			<text>{{timeSpan[idx[0]]['date']+' '+ timeSpan[idx[0]]['time']}}</text>
 		</view>
 		<view class="cu-form-group">
 			<view class="title">服务岗位</view>
-			<text>{{serviceTimeSpan[idx[0]]['positions'][idx[1]]['name']}}</text>
+			<text>{{timeSpan[idx[0]]['positions'][idx[1]]['name']}}</text>
 		</view>
 		<view wx:if="{{actions.isSubsidy}}">
+			<text class="margin-left-xxl text-xs">补贴活动收款方式</text>
 			<view class="cu-form-group">
 				<view class="title">收款单位</view>
 				<view class="picker">
@@ -425,7 +426,7 @@
 			<!-- <text class="text-sm">{{mItm.info.name[0]}}*{{mItm.info.name.length-1!=1? mItm.info.name[mItm.info.name.length-1]:''}}</text> -->
 			<text class="text-sm">{{mItm.name}}</text>
 			<text class="text-sm">{{mItm.posName}}</text>
-			<text class="text-sm">{{serviceTimeSpan[mItm.posIdx[0]].date+' '+serviceTimeSpan[mItm.posIdx[0]].time}}</text>
+			<text class="text-sm">{{timeSpan[mItm.posIdx[0]].date+' '+timeSpan[mItm.posIdx[0]].time}}</text>
 		</view>
 	</view>
 </view>
@@ -441,7 +442,7 @@
 			</view>
 		</view>
 		<view class="flex justify-around margin-xl">
-			<text>{{serviceTimeSpan[showPosDescIdx[0]].positions[showPosDescIdx[1]].desc?serviceTimeSpan[showPosDescIdx[0]].positions[showPosDescIdx[1]].desc:'无'}}</text>
+			<text>{{timeSpan[showPosDescIdx[0]].positions[showPosDescIdx[1]].desc?timeSpan[showPosDescIdx[0]].positions[showPosDescIdx[1]].desc:'无'}}</text>
 		</view>
 	</view>
 </view>

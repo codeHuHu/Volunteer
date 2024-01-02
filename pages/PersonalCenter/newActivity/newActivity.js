@@ -234,7 +234,7 @@ Page({
 			}
 
 			wx.$ajax({
-				url: wx.$param.server['fastapi'] + "/service/create",
+				url: wx.$param.server['springboot'] + "/service/create",
 				method: "post",
 				data: form,
 				header: {
@@ -264,7 +264,7 @@ Page({
 		return new Promise(function (callback) {
 			console.log("promise filePath", filePath);
 			const uploadTask = wx.uploadFile({
-				url: wx.$param.server['fastapi'] + '/service/uploadFile',
+				url: wx.$param.server['springboot'] + '/service/uploadFile',
 				filePath: filePath,
 				name: 'files',
 				success: (res) => {
