@@ -88,7 +88,6 @@ Page({
 				})
 			}
 		}
-
 		let activeIdx = -1
 		if (res.joinMembers) {
 			let joinFlag = 0

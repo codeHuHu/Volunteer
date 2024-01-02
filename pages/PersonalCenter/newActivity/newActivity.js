@@ -62,8 +62,17 @@ Page({
 		temp_imgList2: [], //i志愿报名码
 		temp_fileList: [],	//简介文件
 		myGroupTagList: [],
-		progress: "0"
-
+		picker: [
+			'支付宝',
+			'建设银行',
+			'邮储银行',
+			'农业银行',
+			'工商银行',
+			'中国银行',
+			'交通银行',
+			'其他银行(自定义)'
+		],
+		payType: ''
 	},
 	onLoad() {
 		this.setData({
@@ -71,16 +80,30 @@ Page({
 			phone: app.globalData.userInfo["phone"],
 			myPos: app.globalData.userInfo["position"]
 		})
+
+
 		const currentDate = new Date().toISOString().slice(0, 10);
 		const currentTime = new Date().toLocaleTimeString('en-US', {
 			hour12: false,
 			hour: '2-digit',
 			minute: '2-digit'
 		}).slice(0, 5);
+
+
+		const tmpDate = new Date();
+		tmpDate.setDate(tmpDate.getDate() + 3);
+		const tmpTime = new Date()
+		tmpTime.setHours(0, 0, 0, 0);
+		const tmpDTime = tmpTime.toLocaleTimeString('en-US', {
+			hour12: false,
+			hour: '2-digit',
+			minute: '2-digit'
+		}).slice(0, 5);
+
+		const reDeadDate = tmpDate.toISOString().slice(0, 10);
 		this.setData({
 			nowDate: currentDate,
 			nowTime: currentTime,
-
 			beginDate: currentDate,//服务开始日期
 			startTime: currentTime.slice(0, 2) + ':00',//服务阶段开始时刻
 			endTime: currentTime.slice(0, 2) + ':00',//服务阶段结束时刻
@@ -131,12 +154,14 @@ Page({
 	},
 	//填写截止日期的时刻
 	bindDeadTimeChange: function (e) {
+		console.log(e.detail.value)
 		this.setData({
 			deadTime: e.detail.value,
 		})
 	},
 	//填写截止日期的日期
 	bindDeadDateChange: function (e) {
+
 		this.setData({
 			deadDate: e.detail.value,
 		})
@@ -171,7 +196,6 @@ Page({
 			console.log("群二维码", qrCode);
 			console.log("i志愿", iZhiYuan);
 			console.log("介绍文件", introFile);
-
 			wx.hideLoading()
 			const stamps = that.generateStamp()
 			let groupTag = []
@@ -425,6 +449,7 @@ Page({
 	},
 
 	check() {
+
 		if (!this.data.holder || !this.data.phone) {
 			this.setShow("error", "请重启小程序");
 			return 0
@@ -436,6 +461,9 @@ Page({
 		if (this.data.outNum == 0) {
 			this.setShow("error", '请添加岗位');
 			return 0
+		}
+		if (!this.numEqual()) {
+			this.setShow("error", "各岗位人数需要与总需求人数一致")
 		}
 		if (!this.data.outNum && this.data.outNum != 0) {
 			this.setShow("error", "公开招募错误");
@@ -453,6 +481,9 @@ Page({
 			this.setShow("error", "未指定补贴金额");
 			return 0
 		}
+		if (this.data.isSubsidy == 1 && this.data.payType == '') {
+			this.setShow("error", "未指定转账方式");
+		}
 		if (this.data.isfile == 1 && this.data.temp_fileList == '') {
 			this.setShow("error", "未上传文件");
 			return 0
@@ -462,6 +493,19 @@ Page({
 		// 	return 0
 		// }
 		return 1
+	},
+	numEqual() {
+
+		let tempList = this.data.serviceTimeSpan
+		let sum = 0
+		for (let i in tempList) {
+			for (let j in tempList[i]['positions']) {
+				sum += tempList[i]['positions'][j].number
+			}
+		}
+		if (sum == this.data.outNum)
+			return true
+		return false
 	},
 	setShow(status, message, time = 1000, fun = false) {
 		if (loading) {
@@ -646,6 +690,7 @@ Page({
 				desc: this.data.positonDescription
 			}
 			let tempList = this.data.serviceTimeSpan
+			//‘position’是字段数组,对象才可以通过字段拿到值
 			tempList[span]['positions'].push(tempPos)
 			//添加岗位后,自动展开列表
 			let boxer = this.data.boxer
@@ -804,4 +849,17 @@ Page({
 			isfile: e.detail.value
 		})
 	},
+
+	//改变选择银行索引
+	BankPickerChange(e) {
+
+		var idx = this.data.picker.length - 1
+		this.setData({
+			BankPickerIndex: e.detail.value,
+			payType: e.detail.value == idx ? '' : this.data.picker[e.detail.value]	//银行类型
+		})
+
+	},
+
+
 })
