@@ -89,7 +89,7 @@ Page({
 			// 如果名单里有该志愿者,改变报名按钮状态
 			for (let i in res.joinMembers) {
 				//暂时通过名字来判断
-				if (res.joinMembers[i]["uid"] == app.globalData.userInfo["id"] && res.joinMembers[i]["name"] == app.globalData.userInfo["name"]) {
+				if (res.joinMembers[i]["id"] == app.globalData.userInfo["id"] && res.joinMembers[i]["name"] == app.globalData.userInfo["name"]) {
 					activeIdx = res.joinMembers[i].posIdx[0]
 					joinFlag = 1
 					// 找出所报名的岗位逻辑位置
@@ -145,7 +145,7 @@ Page({
 		})
 
 		let form = {
-			sid: that.data.id,
+			sId: that.data.id,
 			payType: that.data.payType ? that.data.payType : '',
 			payNumber: that.data.payNumber ? that.data.payNumber : '',
 			posIdx: that.data.idx,
@@ -186,7 +186,7 @@ Page({
 			url: wx.$param.server['springboot'] + "/service/engage",
 			method: "post",
 			data: {
-				sid: that.data.id
+				sId: that.data.id
 			},
 			header: {
 				'content-type': 'application/json'
