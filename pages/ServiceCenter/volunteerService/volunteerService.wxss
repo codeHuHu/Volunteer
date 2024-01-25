@@ -1,5 +1,6 @@
 page {
 	background: #f3f7f7;
+	height: auto;
 }
 
 .up image {

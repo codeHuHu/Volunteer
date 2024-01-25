@@ -7,11 +7,13 @@ let form = {
 	tag: "",
 	status: 1,
 	page: 1,
-	pageSize: 10
+	pageSize: 5
 }
 
 
-Page({
+Page(
+	{
+
 	data: {
 		show1: false, //控制下拉列表的显示隐藏，false隐藏、true显示
 		show2: false,
@@ -22,7 +24,9 @@ Page({
 		index1: 0, //选择的下拉列表下标
 		index2: 0,
 		index3: 0,
-		actionList: [],
+		actionList: [],	//存储查询结果的数组
+	//	isLoading:false,
+		hasMore:true,
 		currentDate: '',
 		doing: '进行中',
 		finish: '已结束',
@@ -33,6 +37,7 @@ Page({
 		actions_Status: ['1'],
 	},
 	onLoad(event) {
+		this.initPage()
 		wx.setNavigationBarTitle({
 			title: '志愿服务',
 		})
@@ -54,8 +59,16 @@ Page({
 			showErr: false,
 		}).then(res => {
 			that.setShow("success", "获取成功")
+			console.log(res.data)
+			const updateActionList = this.data.actionList.concat(res.data.records)
 			that.setData({
-				actionList: res.data.records
+				actionList: updateActionList
+			})
+
+			const hasMore = res.data.records.length >= form['pageSize']
+			this.setData({
+				hasMore:hasMore,
+			//	isLoading:false
 			})
 		}).catch(err => {
 			that.setShow("error", "获取失败")
@@ -81,6 +94,7 @@ Page({
 			index2: 0,
 			index3: 0
 		});
+		that.initPage()
 		that.getData()
 	},
 	// 类型 点击下拉列表
@@ -97,6 +111,7 @@ Page({
 		});
 		form['status'] = that.data.index3 != 0 ? that.data.index3 : 1
 		form['tag'] = index ? that.data.selectType[index] : ''
+		that.initPage()
 		that.getData()
 
 	},
@@ -113,6 +128,7 @@ Page({
 			index1: 0,
 		});
 		form['status'] = that.data.index3
+		that.initPage()
 		that.getData()
 	},
 	myCancel(e) {
@@ -124,11 +140,10 @@ Page({
 				// 用户点击了确定按钮
 				if (res.confirm) {
 					wx.$ajax({
-						url: wx.$param.server['springboot'] + "/service/check",
+						url: wx.$param.server['springboot'] + "/service/status/-3" ,
 						method: "post",
 						data: {
 							id: e.currentTarget.dataset.id,
-							status: -3
 						},
 						header: {
 							'content-type': 'application/json'
@@ -147,6 +162,30 @@ Page({
 			}
 		})
 	},
+	initPage()
+	{
+		form['page'] = 1
+		form['pageSize'] = 5
+		this.setData({
+			hasMore:true,
+		})
+	},
+	//页面上拉触底事件的处理函数
+	onReachBottom:function()
+	{
+		var that =this
+		console.log("上拉刷新")
+	//	wx.pageScrollTo({scrollTop: 100})
+		const {hasMore} =this.data;
+		console.log(hasMore)
+		if(hasMore)
+		{
+			console.log("+1页",form['page'])
+		form['page'] = form['page']+1
+		that.getData()
+	}
+	
+},
 	setShow(status, message, time = 500, fun = false) {
 		if (loading) {
 			return

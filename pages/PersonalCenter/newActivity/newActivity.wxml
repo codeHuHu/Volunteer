@@ -81,7 +81,7 @@
 				<view class="flex margin-left-xl">
 					<text class="text-red text-xxl">*</text>
 					<view class="title outteam">需求人数:</view>
-					<input class=" margin-left-sm title inteam" maxlength="3" model:value="{{outNum}}" style="width: 60rpx; border-bottom: solid 1rpx #d48d8d;"></input>
+					<input class=" margin-left-sm title inteam" maxlength="3" model:value="{{needNum}}" style="width: 60rpx; border-bottom: solid 1rpx #d48d8d;"></input>
 					人
 				</view>
 			</view>

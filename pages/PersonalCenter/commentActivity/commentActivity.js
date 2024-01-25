@@ -10,7 +10,7 @@ Page({
 		checkBox: [{
 			id: '',
 			name: '',
-			excellent: true,
+			isExcellent: true,
 			isCome: true,
 			feedback: ''
 		}],
@@ -37,6 +37,7 @@ Page({
 			}).then(res => {
 				console.log(res);
 				let action = res.data
+				console.log(action)
 				that.setData({
 					action
 				})
@@ -54,8 +55,8 @@ Page({
 				else {
 					var tmp = action.joinMembers
 					for (var l = 0; l < tmp.length; l++) {
-						tmp[l]['serviceTime'] = action.serviceTimeSpan[tmp[l].posIdx[0]]['date']
-						tmp[l]['excellent'] = true
+						tmp[l]['posIdx'] = tmp[l].posIdx
+						tmp[l]['isExcellent'] = true
 						tmp[l]['isCome'] = true
 						tmp[l]['feedback'] = ''
 					}
@@ -143,7 +144,7 @@ Page({
 	},
 	showNGModal(e) {
 		this.data.tempId = e.currentTarget.dataset.id
-		const value = this.data.checkBox.find(item => item.uid === e.currentTarget.dataset.id).feedback;
+		const value = this.data.checkBox.find(item => item.id === e.currentTarget.dataset.id).feedback;
 		this.setData({
 			tempValue: value
 		})
@@ -152,7 +153,7 @@ Page({
 	handleInput(e) {
 		const btnId = this.data.tempId;
 		const checkBox = this.data.checkBox.map(item => {
-			if (item.uid === btnId) {
+			if (item.id === btnId) {
 				item.feedback = e.detail.value;
 			}
 			return item;
@@ -170,9 +171,9 @@ Page({
 		let items = this.data.checkBox;
 		let values = e.currentTarget.dataset.value;
 		for (let i = 0, lenI = items.length; i < lenI; ++i) {
-			if (items[i].uid === values) {
+			if (items[i].id === values) {
 				items[i].isCome = !items[i].isCome;
-				items[i].excellent = items[i].isCome;
+				items[i].isExcellent = items[i].isCome;
 				break
 			}
 		}
@@ -185,8 +186,8 @@ Page({
 		let items = this.data.checkBox;
 		let values = e.currentTarget.dataset.value;
 		for (let i = 0, lenI = items.length; i < lenI; ++i) {
-			if (items[i].uid === values) {
-				items[i].excellent = !items[i].excellent;
+			if (items[i].id === values) {
+				items[i].isExcellent = !items[i].isExcellent;
 				break
 			}
 		}
@@ -224,26 +225,26 @@ Page({
 			serviceImg = serviceImg.concat(filtered_serviceImg)
 			checkImg = checkImg.concat(filtered_checkImg)
 
-			let checkBox = []
 			let tmp = that.data.checkBox
 			for (let i in tmp) {
-				let item = {
-					id: tmp[i].id,
-					isCome: tmp[i].isCome,
-					excellent: tmp[i].excellent,
-					feedback: tmp[i].feedback
-				}
-				checkBox.push(item)
+				tmp[i].isCome = Number(tmp[i].isCome)
+				tmp[i].isExcellent = Number(tmp[i].isExcellent)
+			}
+			this.setData({
+				checkBox:tmp
+			})
+			let form = {
+				joinMembers:this.data.checkBox,
+				id:this.data.id,
+				serviceImg:serviceImg,
+				checkImg:checkImg,
+				isFeedback:1,
+				timeSpan:this.data.action.timeSpan
 			}
 			wx.$ajax({
-				url: wx.$param.server['springboot'] + "/service/comment",
-				method: "post",
-				data: {
-					serviceId: that.data.id,
-					checkBox,
-					serviceImg,
-					checkImg
-				},
+				url: wx.$param.server['springboot'] + "/service/update",
+				method: "put",
+				data: form,
 				header: {
 					'content-type': 'application/json'
 				},
@@ -254,7 +255,6 @@ Page({
 					wx.hideLoading()
 					wx.navigateBack()
 				}
-
 			}).catch(err => {
 				console.log(err);
 				wx.hideLoading()
@@ -277,10 +277,16 @@ Page({
 		//返回上传文件后的信息
 		return new Promise(function (callback) {
 			console.log("promise filePath", filePath);
+			const header =
+			{
+				'content-type': 'application/json',
+				'Authorization':  wx.getStorageSync("JWT_Token")
+			}
 			const uploadTask = wx.uploadFile({
-				url: wx.$param.server['springboot'] + '/service/uploadFile',
+				url: wx.$param.server['springboot'] + '/common/upload',
 				filePath: filePath,
-				name: 'files',
+				name: 'file',
+				header:header,
 				success: (res) => {
 					console.log("promise res", res)
 					if (progress) {
@@ -290,14 +296,16 @@ Page({
 					}
 
 					const data = JSON.parse(res.data);
+					const msg = data.msg
+					console.log("msg= ",msg)
 					if (fileName) {
 						let tmp = {
 							fileName: fileName,
-							filePath: data['file_urls'][0]
+							filePath: msg
 						}
 						callback(tmp)
 					} else {
-						callback(data['file_urls'][0])
+						callback(msg)
 					}
 				},
 				fail: (error) => {

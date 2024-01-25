@@ -55,11 +55,11 @@ Page({
 				if (res.confirm) {
 					console.log(e.currentTarget.dataset.id)
 					wx.$ajax({
-						url: wx.$param.server['springboot'] + "/service/check",
+						url: wx.$param.server['springboot'] + "/service/check/1",
 						method: "post",
 						data: {
 							id: e.currentTarget.dataset.id,
-							status: 1
+						
 						},
 						header: {
 							'content-type': 'application/json'
@@ -88,11 +88,10 @@ Page({
 				if (res.confirm) {
 					console.log(e.currentTarget.dataset.id)
 					wx.$ajax({
-						url: wx.$param.server['springboot'] + "/service/check",
+						url: wx.$param.server['springboot'] + "/service/check/-2",
 						method: "post",
 						data: {
 							id: e.currentTarget.dataset.id,
-							status: -2
 						},
 						header: {
 							'content-type': 'application/json'

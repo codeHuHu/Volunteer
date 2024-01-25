@@ -54,7 +54,7 @@ Page({
 		actName: '',
 		groupTagName: '',
 		teamName: '',
-		outNum: 0,
+		needNum: 0,
 		subsidyAmount: 0,
 		address: '',
 		intro: '',
@@ -78,7 +78,8 @@ Page({
 		this.setData({
 			holder: app.globalData.userInfo["name"],
 			phone: app.globalData.userInfo["phone"],
-			myPos: app.globalData.userInfo["position"]
+			myPos: app.globalData.userInfo["position"],
+			holderId:app.globalData.userInfo['id']
 		})
 
 
@@ -137,6 +138,7 @@ Page({
 		this.setData({
 			beginDate: e.detail.value,
 		})
+		console.log(this.data.beginDate)
 	},
 	//添加时间段的开始时间
 	bindSTimeChange: function (e) {
@@ -145,6 +147,7 @@ Page({
 			startTime: e.detail.value,
 			endTime: e.detail.value,
 		})
+		console.log(this.data.startTime)
 	},
 	//添加时间段的结束时间
 	bindETimeChange: function (e) {
@@ -206,35 +209,36 @@ Page({
 				}
 			}
 			let form = {
+				holderId:that.data.holderId,
 				holderDetail: that.data.holderDetail,
 				//service
-				serviceName: that.data.actName,
-				serviceAddress: that.data.address,
-				serviceIntro: that.data.intro,
-				serviceTag: that.data.constants.tagList[that.data.tagIndex],
-				serviceNotice: that.data.notice,
-				serviceStartStamp: stamps[0],//服务开始时间戳
-				serviceEndStamp: stamps[1],//服务结束时间戳
-				serviceDeadStamp: stamps[2],//截止报名时间戳
-				serviceTimeSpan: that.data.serviceTimeSpan,
-
-				benefits: that.data.peoplegift,
+				title: that.data.actName,
+				address: that.data.address,
+				intro: that.data.intro,
+				tag: that.data.constants.tagList[that.data.tagIndex],
+				notice: that.data.notice,
+				startTime: stamps[0],//服务开始时间戳
+				endTime: stamps[1],//服务结束时间戳
+				deadTime: stamps[2],//截止报名时间戳
+				timeSpan: that.data.serviceTimeSpan,
+				benefit: that.data.peoplegift,
 				status: that.data.myPos >= 1 ? 1 : 0, // 如果pos为1，活动状态为0：待审核，否则为1：进行中
 				groupTag,
 				//number
 				outJoin: 0,
-				outNum: that.data.outNum,
+				needNum: that.data.needNum,
 
 				teamName: that.data.teamName,
 				qrCode,
 				iZhiYuan,
 				introFile,	//简介文件
-				isSubsidy: that.data.isSubsidy,//转换为布尔值
+				isSubsidy: that.data.isSubsidy,//1或0
 				subsidyAmount: that.data.subsidyAmount,
+				payType:that.data.payType
 			}
 
 			wx.$ajax({
-				url: wx.$param.server['springboot'] + "/service/create",
+				url: wx.$param.server['springboot'] + "/service/publish",
 				method: "post",
 				data: form,
 				header: {
@@ -243,15 +247,16 @@ Page({
 			}).then(res => {
 				wx.hideLoading()
 				that.setShow("sucess", "发布成功")
+				console.log("id",res.data)
 				wx.navigateBack()
-				wx.$navTo("/pages/ServiceCenter/activityDetail/activityDetail?id=" + res.data[0].id)
+				wx.$navTo("/pages/ServiceCenter/activityDetail/activityDetail?id=" + res.data.id)
 			}).catch(err => {
 			})
 		} catch (err) {
 			console.error("上传文件失败", err);
 		}
 	},
-	async uploadPromises(fileList) {
+	async uploadPromises(fileList) {	
 		let that = this;
 		//如果是简介文件就记录一下名字,如果是图片就不用
 		const uploadPromises = fileList.map(file => typeof file === 'object' ? that.uploadFile(file.tempFilePath, file.name, true) : that.uploadFile(file));
@@ -260,13 +265,20 @@ Page({
 	// 异步上传单个文件
 	uploadFile(filePath, fileName = null, progress = false) {
 		let that = this
-		//返回上传文件后的信息
+		//返回上传文件后的信息	
 		return new Promise(function (callback) {
 			console.log("promise filePath", filePath);
+			const header =
+			{
+				'content-type': 'application/json',
+				'Authorization':  wx.getStorageSync("JWT_Token")
+			}
+			//uploadTask是文件上传任务对象
 			const uploadTask = wx.uploadFile({
-				url: wx.$param.server['springboot'] + '/service/uploadFile',
+				url: wx.$param.server['springboot'] + '/common/upload',
 				filePath: filePath,
-				name: 'files',
+				name:'file',
+				header: header,
 				success: (res) => {
 					console.log("promise res", res)
 					if (progress) {
@@ -276,14 +288,16 @@ Page({
 					}
 
 					const data = JSON.parse(res.data);
+					const msg = data.msg
+					console.log("msg= ",msg)
 					if (fileName) {
 						let tmp = {
 							fileName: fileName,
-							filePath: data['file_urls'][0]
+							filePath: msg
 						}
 						callback(tmp)
 					} else {
-						callback(data['file_urls'][0])
+						callback(msg)
 					}
 				},
 				fail: (error) => {
@@ -297,6 +311,7 @@ Page({
 			})
 			//监听进度
 			if (progress) {
+			
 				uploadTask.onProgressUpdate(res => {
 					if (res.progress < 85) {
 						that.setData({
@@ -458,14 +473,14 @@ Page({
 			this.setShow("error", "请添加活动时间段");
 			return 0
 		}
-		if (this.data.outNum == 0) {
+		if (this.data.needNum == 0) {
 			this.setShow("error", '请添加岗位');
 			return 0
 		}
 		if (!this.numEqual()) {
 			this.setShow("error", "各岗位人数需要与总需求人数一致")
 		}
-		if (!this.data.outNum && this.data.outNum != 0) {
+		if (!this.data.needNum && this.data.needNum != 0) {
 			this.setShow("error", "公开招募错误");
 			return 0
 		}
@@ -503,7 +518,7 @@ Page({
 				sum += tempList[i]['positions'][j].number
 			}
 		}
-		if (sum == this.data.outNum)
+		if (sum == this.data.needNum)
 			return true
 		return false
 	},
@@ -607,8 +622,25 @@ Page({
 				serviceEndStamp = stamp
 			}
 		}
-		return [serviceStartStamp / 1000, serviceEndStamp / 1000, deadTimeStamp / 1000]
+		console.log(this.formatTimeStamp(serviceStartStamp))
+		return [this.formatTimeStamp(serviceStartStamp), this.formatTimeStamp(serviceEndStamp), this.formatTimeStamp(deadTimeStamp)]
 	},
+	formatTimeStamp(stamp)
+	{
+		const date = new Date(stamp);
+
+		const year = date.getFullYear();
+		const month = String(date.getMonth() + 1).padStart(2, '0');
+		const day = String(date.getDate()).padStart(2, '0');
+		const hour = String(date.getHours()).padStart(2, '0');
+		const minute = String(date.getMinutes()).padStart(2, '0');
+		const second = String(date.getSeconds()).padStart(2, '0');
+	
+		const formattedDate = `${year}-${month}-${day} ${hour}:${minute}:${second}`;
+		return formattedDate;
+},
+
+
 	//改变选择岗位索引
 	positionPickerChange(e) {
 		this.setData({
@@ -774,7 +806,7 @@ Page({
 			}
 		}
 		this.setData({
-			outNum: total
+			needNum: total
 		})
 	},
 
@@ -841,7 +873,7 @@ Page({
 	},
 	isSubsidy(e) {
 		this.setData({
-			isSubsidy: e.detail.value == 1 ? true : false
+			isSubsidy: e.detail.value
 		})
 	},
 	isfile(e) {
