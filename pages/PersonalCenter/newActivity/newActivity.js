@@ -108,8 +108,8 @@ Page({
 			beginDate: currentDate,//服务开始日期
 			startTime: currentTime.slice(0, 2) + ':00',//服务阶段开始时刻
 			endTime: currentTime.slice(0, 2) + ':00',//服务阶段结束时刻
-			deadDate: currentDate,//截止日期
-			deadTime: currentTime,//截止时刻
+			deadDate: reDeadDate,//截止日期
+			deadTime: tmpDTime,//截止时刻
 		});
 	},
 	onReady() {
@@ -135,10 +135,13 @@ Page({
 	},
 	//添加时间段的日期选择时
 	bindStartChange: function (e) {
+		console.log(e.detail.value)
+		var deadDate = new Date(e.detail.value); // 将日期字符串转换为日期对象
+		deadDate.setDate(deadDate.getDate() + 2); // 将截止日期加上2天
 		this.setData({
 			beginDate: e.detail.value,
+			deadDate:deadDate.toISOString().slice(0, 10)
 		})
-		console.log(this.data.beginDate)
 	},
 	//添加时间段的开始时间
 	bindSTimeChange: function (e) {
@@ -209,7 +212,6 @@ Page({
 				}
 			}
 			let form = {
-				holderId:that.data.holderId,
 				holderDetail: that.data.holderDetail,
 				//service
 				title: that.data.actName,
@@ -222,7 +224,7 @@ Page({
 				deadTime: stamps[2],//截止报名时间戳
 				timeSpan: that.data.serviceTimeSpan,
 				benefit: that.data.peoplegift,
-				status: that.data.myPos >= 1 ? 1 : 0, // 如果pos为1，活动状态为0：待审核，否则为1：进行中
+				
 				groupTag,
 				//number
 				outJoin: 0,
@@ -287,17 +289,17 @@ Page({
 						})
 					}
 
-					const data = JSON.parse(res.data);
-					const msg = data.msg
-					console.log("msg= ",msg)
+					const tmpdata = JSON.parse(res.data);
+					const data = tmpdata.data
+					console.log("data= ",data)
 					if (fileName) {
 						let tmp = {
 							fileName: fileName,
-							filePath: msg
+							filePath: data
 						}
 						callback(tmp)
 					} else {
-						callback(msg)
+						callback(data)
 					}
 				},
 				fail: (error) => {

@@ -133,6 +133,7 @@ Page(
 	},
 	myCancel(e) {
 		let that = this
+		console.log(e.currentTarget.dataset.id)
 		wx.showModal({
 			title: '是否取消活动',
 			content: '取消后仅你和管理员可见',
@@ -146,7 +147,7 @@ Page(
 							id: e.currentTarget.dataset.id,
 						},
 						header: {
-							'content-type': 'application/json'
+							'content-type': 'application/x-www-form-urlencoded'
 						},
 					}).then(res => {
 						that.setData({

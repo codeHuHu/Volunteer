@@ -42,6 +42,7 @@ Page({
 			},
 			showErr: false
 		}).then(res => {
+			console.log(res)
 			that.setData({
 				actions: res.data.records
 			})
