@@ -240,7 +240,7 @@ Page({
 			}
 
 			wx.$ajax({
-				url: wx.$param.server['springboot'] + "/service/publish",
+				url: wx.$param.server['springboot'] + "/service",
 				method: "post",
 				data: form,
 				header: {

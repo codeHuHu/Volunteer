@@ -12,14 +12,14 @@
 		<view bindtap="navTo" data-url="/pages/ServiceCenter/activityDetail/activityDetail?id={{item.id}}&check=1" class="cu-card article {{isCard?'no-card':''}} margin">
 			<view class="cu-item shadow">
 				<view class="title">
-					<view class="text-cut">{{item.serviceName}}</view>
+					<view class="text-cut">{{item.title}}</view>
 				</view>
 				<view class="content">
 					<view class="desc">
 						<view class="character">
-							<view class="cu-tag bg-green light sm round" style="white-space:normal;">{{item.serviceTag}}</view>
+							<view class="cu-tag bg-green light sm round" style="white-space:normal;">{{item.tag}}</view>
 							<view>
-								<text class="data">报名截止日期：{{item.serviceDeadTime}}</text>
+								<text class="data">报名截止日期：{{item.deadTime}}</text>
 							</view>
 						</view>
 
@@ -62,14 +62,14 @@
 			</view> -->
 			<view class="cu-item shadow">
 				<view class="title">
-					<view class="text-cut">{{item.serviceName}}</view>
+					<view class="text-cut">{{item.title}}</view>
 				</view>
 				<view class="content">
 					<view class="desc">
 						<view class="character">
-							<view class="cu-tag bg-green light sm round" style="white-space:normal;">{{item.serviceTag}}</view>
+							<view class="cu-tag bg-green light sm round" style="white-space:normal;">{{item.tag}}</view>
 							<view>
-								<text class="data">报名截止日期：{{item.serviceDeadTime}}</text>
+								<text class="data">报名截止日期：{{item.deadTime}}</text>
 							</view>
 						</view>
 

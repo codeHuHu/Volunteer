@@ -82,7 +82,7 @@
 				<text class="text-white">发布活动</text>
 			</view>
 		</view>
-		<view bindtap="navTo" data-url="/pages/PersonalCenter/commentActivity/commentActivity" data-check="1" class="cu-item arrow">
+		<view bindtap="navTo" data-url="/pages/PersonalCenter/commentActivity/commentActivity" data-check="1" class="cu-item arrow " style="display: none;">
 			<view class="content">
 				<text class="cuIcon-activity lg text-gray"></text>
 				<text class="text-grey">活动评价</text>
