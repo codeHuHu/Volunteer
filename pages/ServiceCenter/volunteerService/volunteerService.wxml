@@ -88,7 +88,7 @@
 		</view>
 	</view>
 	<view wx:if="{{myPos>=1}}" class="flex justify-end">
-		<button wx:if="{{item.status!='-2'}}" class="sm cu-btn text-sm text-red line-red shadow margin-right" data-id="{{item.id}}" bind:tap="myCancel">
+		<button wx:if="{{item.status!='-2' && item.status != '-3'}}" class="sm cu-btn text-sm text-red line-red shadow margin-right" data-id="{{item.id}}" bind:tap="myCancel">
 			取消活动</button>
 	</view>
 

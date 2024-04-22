@@ -3,7 +3,7 @@ require("./utils/wx.js")
 App({
 	globalData: {
 		isAuth: false,
-		userInfo: {}
+		userInfo: null
 	},
 	onLaunch() {
 		this.getAuthStatus()

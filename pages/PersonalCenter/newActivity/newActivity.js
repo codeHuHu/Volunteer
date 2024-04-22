@@ -494,7 +494,7 @@ Page({
 			this.setShow("error", "未指定服务地点")
 			return 0
 		}
-		if (this.data.isSubsidy && this.data.subsidyAmount == 0) {
+		if (this.data.isSubsidy==1 && this.data.subsidyAmount == 0) {
 			this.setShow("error", "未指定补贴金额");
 			return 0
 		}

@@ -5,9 +5,9 @@ let loading = false;
 
 let form = {
 	tag: "",
-	status: 1,
+	status: 0,
 	page: 1,
-	pageSize: 5
+	pageSize: 10,
 }
 
 
@@ -35,19 +35,34 @@ Page(
 		data_Arr: [],
 		toUpdateArr: [''],
 		actions_Status: ['1'],
+		myPos:0,
+		myId:0
 	},
 	onLoad(event) {
 		this.initPage()
+		form['tag']=""
 		wx.setNavigationBarTitle({
 			title: '志愿服务',
 		})
-		this.setData({
+		
+		if(app.globalData.userInfo)
+		{
+				this.setData({
 			myPos: app.globalData.userInfo["position"],
 			myId: app.globalData.userInfo["id"]
 		})
+		}
+	
+		console.log(form)
+
 		this.getData()
 	},
 	getData() {
+		if(app.globalData.userInfo!=null)
+		{
+				form['userId']=this.data.myId
+		}
+	
 		let that = this;
 		wx.$ajax({
 			url: wx.$param.server['springboot'] + "/service/public/page",
@@ -64,12 +79,12 @@ Page(
 			that.setData({
 				actionList: updateActionList
 			})
-
-			const hasMore = res.data.records.length >= form['pageSize']
-			this.setData({
-				hasMore:hasMore,
-			//	isLoading:false
-			})
+		
+			//const hasMore = res.data.records.length >= form['pageSize']
+			// this.setData({
+			// 	hasMore:hasMore, 是否还要加页
+			// //	isLoading:false
+			// })
 		}).catch(err => {
 			that.setShow("error", "获取失败")
 		})
@@ -109,7 +124,7 @@ Page(
 			index2: index,
 			index1: 0,
 		});
-		form['status'] = that.data.index3 != 0 ? that.data.index3 : 1
+		form['status'] = that.data.index3
 		form['tag'] = index ? that.data.selectType[index] : ''
 		that.initPage()
 		that.getData()
@@ -166,7 +181,7 @@ Page(
 	initPage()
 	{
 		form['page'] = 1
-		form['pageSize'] = 5
+		form['pageSize'] = 10
 		this.setData({
 			hasMore:true,
 		})

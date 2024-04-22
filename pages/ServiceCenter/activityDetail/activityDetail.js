@@ -56,7 +56,7 @@ Page({
 		if (!id) {
 			id = that.data.id
 		}
-
+console.log(id)
 		//获取服务
 		wx.$ajax({
 			url: wx.$param.server['springboot'] + `/service/${id}`,
