@@ -6,7 +6,7 @@ Page({
 	},
 	onLoad(options) {
 		console.log("check");
-		if(wx.getStorageSync('JWT_Token')){
+		if (wx.getStorageSync('JWT_Token')) {
 			console.log("check success");
 			wx.navigateBack()
 		}
@@ -19,7 +19,6 @@ Page({
 			console.log(code)
 			app.login(code)
 		}
-
 	},
 	agreeChange(e) {
 		console.log(e.detail.value)

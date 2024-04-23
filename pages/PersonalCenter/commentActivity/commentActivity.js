@@ -231,15 +231,15 @@ Page({
 				tmp[i].isExcellent = Number(tmp[i].isExcellent)
 			}
 			this.setData({
-				checkBox:tmp
+				checkBox: tmp
 			})
 			let form = {
-				joinMembers:this.data.checkBox,
-				id:this.data.id,
-				serviceImg:serviceImg,
-				checkImg:checkImg,
-				isFeedback:1,
-				timeSpan:this.data.action.timeSpan
+				joinMembers: this.data.checkBox,
+				id: this.data.id,
+				serviceImg: serviceImg,
+				checkImg: checkImg,
+				isFeedback: 1,
+				timeSpan: this.data.action.timeSpan
 			}
 			wx.$ajax({
 				url: wx.$param.server['springboot'] + "/service/update",
@@ -280,13 +280,13 @@ Page({
 			const header =
 			{
 				'content-type': 'application/json',
-				'Authorization':  wx.getStorageSync("JWT_Token")
+				'Authorization': wx.getStorageSync("JWT_Token")
 			}
 			const uploadTask = wx.uploadFile({
 				url: wx.$param.server['springboot'] + '/common/upload',
 				filePath: filePath,
 				name: 'file',
-				header:header,
+				header: header,
 				success: (res) => {
 					console.log("promise res", res)
 					if (progress) {
@@ -297,7 +297,7 @@ Page({
 
 					const data = JSON.parse(res.data);
 					const msg = data.msg
-					console.log("msg= ",msg)
+					console.log("msg= ", msg)
 					if (fileName) {
 						let tmp = {
 							fileName: fileName,

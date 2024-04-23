@@ -56,7 +56,6 @@ Page({
 		if (!id) {
 			id = that.data.id
 		}
-console.log(id)
 		//获取服务
 		wx.$ajax({
 			url: wx.$param.server['springboot'] + `/service/${id}`,
@@ -84,14 +83,14 @@ console.log(id)
 			}
 		}
 		let activeIdx = -1
+		let isJoin = 0
 		if (res.joinMembers) {
-			let joinFlag = 0
 			// 如果名单里有该志愿者,改变报名按钮状态
 			for (let i in res.joinMembers) {
 				//暂时通过名字来判断
 				if (res.joinMembers[i]["id"] == app.globalData.userInfo["id"] && res.joinMembers[i]["name"] == app.globalData.userInfo["name"]) {
 					activeIdx = res.joinMembers[i].posIdx[0]
-					joinFlag = 1
+					isJoin = 1
 					// 找出所报名的岗位逻辑位置
 					that.setData({
 						idx: res.joinMembers[i].posIdx,
@@ -99,14 +98,10 @@ console.log(id)
 					break
 				}
 			}
-			that.setData({
-				isJoin: joinFlag,
-			})
-		} else {
-			that.setData({
-				isJoin: 0
-			})
 		}
+		that.setData({
+			isJoin
+		})
 
 		//在这里加个非时间的功能,计算boxer
 		let boxer = []
@@ -129,7 +124,7 @@ console.log(id)
 			boxer,
 			constants,
 			//记录用户是否有导出特权(负责人或管理员)
-			isAdmin: app.globalData["userInfo"]["position"] >= 1,
+			isAdmin: app.getRole() >= 1,
 			isDead: false,
 			//isDead: res.deadTimeStamp - new Date().getTime() <= 0 ? 1 : 0,
 			actions: res,

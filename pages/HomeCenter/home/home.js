@@ -10,7 +10,7 @@ let form = {
 
 Page({
 	data: {
-		actions: [],
+		dataList: [],
 		keyword: '',
 		showModal: true, // 是否显示模态框
 		showImageModal: false, // 是否显示图片和提示信息框
@@ -21,7 +21,7 @@ Page({
 			title: '首页',
 		})
 		this.setData({
-			myPos: app.globalData.userInfo['position'],
+			myPos: app.getRole()
 		})
 	},
 	onReady() { },
@@ -42,9 +42,8 @@ Page({
 			},
 			showErr: false
 		}).then(res => {
-			console.log(res)
 			that.setData({
-				actions: res.data.records
+				dataList: res.data.records
 			})
 			wx.hideLoading()
 		}).catch(err => {
@@ -55,7 +54,7 @@ Page({
 	searchActivity() {
 		var that = this
 		that.setData({
-			actions: []
+			dataList: []
 		})
 		form['title'] = this.data.keyword
 		if (this.data.keyword.length == 0) {
@@ -65,7 +64,6 @@ Page({
 		}
 		that.getData()
 	},
-
 	showModal(e) {
 		this.setData({
 			modalName: e.currentTarget.dataset.target
@@ -112,8 +110,8 @@ Page({
 			wx.$navTo("/pages/PersonalCenter/accountSignUp/accountSignUp")
 		}
 	},
-	toregister() {
-		if (app.globalData.isAuth) {
+	toRegister() {
+		if (app.globalData.isAuth == true) {
 			wx.showToast({
 				title: '你已注册成为志愿者',
 				icon: 'none'
@@ -122,14 +120,10 @@ Page({
 			wx.$navTo("/pages/PersonalCenter/register/register")
 		}
 	},
-	byhistory() {
-		var userInfo = wx.getStorageSync('userInfo')
-		return userInfo ? true : false
-	},
 	//转发朋友
 	onShareAppMessage(event) {
 		return {
-			//imageUrl: this.data.actions.images[0],
+			//imageUrl: this.data.dataList.images[0],
 			path: 'pages/HomeCenter/home/home'
 		}
 	},

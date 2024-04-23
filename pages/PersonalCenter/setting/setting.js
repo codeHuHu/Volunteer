@@ -27,8 +27,6 @@ Page({
 	onShow() { },
 	onHide() { },
 	onUnload() {
-
-
 	},
 	save() {
 		wx.showLoading({
@@ -50,15 +48,11 @@ Page({
 				'content-type': 'application/json'
 			}
 		}).then(res => {
-			if (res['statusCode'] == 201) {
-				console.log("更新成功", res)
-			} else {
-				console.log("状态码不对", res)
-			}
 			wx.showToast({
 				title: '保存成功',
 				icon: 'success'
 			});
+			app.getAuthStatus()
 			wx.hideLoading()
 		}).catch(err => {
 			console.log("err", err)
@@ -76,7 +70,6 @@ Page({
 				}
 			}
 		})
-
 	},
 	checkchange(e) {
 		this.setData({
@@ -117,7 +110,7 @@ Page({
 	},
 	handleSave() {
 		// 调用API保存昵称到本地存储或后台服务器
-		
+
 		this.closeModal(); // 保存后关闭模态框
 		// wx.navigateBack(); // 返回上一页
 	},

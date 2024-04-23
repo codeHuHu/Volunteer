@@ -6,7 +6,7 @@
 				<view class="flex padding-sm justify-between">
 					<view class="padding-xs text-xxl text-black">
 						<view><text class="text-gray text-df"> 志愿者</text></view>
-						<view class="text-black text-xxl padding-top-sm">{{actions.name}}</view>
+						<view class="text-black text-xxl padding-top-sm">{{userName}}</view>
 					</view>
 					<view class="">
 						<view class="cu-avatar xl round">
@@ -76,7 +76,7 @@
 			</view>
 		</view>
 		<!-- bindtap="showModal" data-target="isAccess" -->
-		<view wx:if="{{myPos>0}}" bindtap="navTo" data-url="/pages/PersonalCenter/newActivity/newActivity" class="cu-item arrow" style=" background-color: rgb(163, 219, 163);">
+		<view wx:if="{{myRole>0}}" bindtap="navTo" data-url="/pages/PersonalCenter/newActivity/newActivity" class="cu-item arrow" style=" background-color: rgb(163, 219, 163);">
 			<view class="content">
 				<text class="cuIcon-activity lg text-white"></text>
 				<text class="text-white">发布活动</text>
@@ -94,7 +94,7 @@
 				<text class="text-grey">个人设置</text>
 			</view>
 		</view>
-		<view wx:if="{{myPos>0}}" bindtap="navTo" data-url="/pages/PersonalCenter/checkActivity/checkActivity" data-check="1" class="cu-item arrow" style=" background-color: rgb(163, 219, 163);">
+		<view wx:if="{{myRole>0}}" bindtap="navTo" data-url="/pages/PersonalCenter/checkActivity/checkActivity" data-check="1" class="cu-item arrow" style=" background-color: rgb(163, 219, 163);">
 			<view class="content">
 				<text class="cuIcon-activity lg text-white"></text>
 				<text class="text-white">审核</text>

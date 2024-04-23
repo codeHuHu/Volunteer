@@ -79,7 +79,7 @@ Page({
 			holder: app.globalData.userInfo["name"],
 			phone: app.globalData.userInfo["phone"],
 			myPos: app.globalData.userInfo["position"],
-			holderId:app.globalData.userInfo['id']
+			holderId: app.globalData.userInfo['id']
 		})
 
 
@@ -140,7 +140,7 @@ Page({
 		deadDate.setDate(deadDate.getDate() + 2); // 将截止日期加上2天
 		this.setData({
 			beginDate: e.detail.value,
-			deadDate:deadDate.toISOString().slice(0, 10)
+			deadDate: deadDate.toISOString().slice(0, 10)
 		})
 	},
 	//添加时间段的开始时间
@@ -224,7 +224,7 @@ Page({
 				deadTime: stamps[2],//截止报名时间戳
 				timeSpan: that.data.serviceTimeSpan,
 				benefit: that.data.peoplegift,
-				
+
 				groupTag,
 				//number
 				outJoin: 0,
@@ -236,7 +236,7 @@ Page({
 				introFile,	//简介文件
 				isSubsidy: that.data.isSubsidy,//1或0
 				subsidyAmount: that.data.subsidyAmount,
-				payType:that.data.payType
+				payType: that.data.payType
 			}
 
 			wx.$ajax({
@@ -249,7 +249,7 @@ Page({
 			}).then(res => {
 				wx.hideLoading()
 				that.setShow("sucess", "发布成功")
-				console.log("id",res.data)
+				console.log("id", res.data)
 				wx.navigateBack()
 				wx.$navTo("/pages/ServiceCenter/activityDetail/activityDetail?id=" + res.data.id)
 			}).catch(err => {
@@ -258,7 +258,7 @@ Page({
 			console.error("上传文件失败", err);
 		}
 	},
-	async uploadPromises(fileList) {	
+	async uploadPromises(fileList) {
 		let that = this;
 		//如果是简介文件就记录一下名字,如果是图片就不用
 		const uploadPromises = fileList.map(file => typeof file === 'object' ? that.uploadFile(file.tempFilePath, file.name, true) : that.uploadFile(file));
@@ -273,13 +273,13 @@ Page({
 			const header =
 			{
 				'content-type': 'application/json',
-				'Authorization':  wx.getStorageSync("JWT_Token")
+				'Authorization': wx.getStorageSync("JWT_Token")
 			}
 			//uploadTask是文件上传任务对象
 			const uploadTask = wx.uploadFile({
 				url: wx.$param.server['springboot'] + '/common/upload',
 				filePath: filePath,
-				name:'file',
+				name: 'file',
 				header: header,
 				success: (res) => {
 					console.log("promise res", res)
@@ -291,7 +291,7 @@ Page({
 
 					const tmpdata = JSON.parse(res.data);
 					const data = tmpdata.data
-					console.log("data= ",data)
+					console.log("data= ", data)
 					if (fileName) {
 						let tmp = {
 							fileName: fileName,
@@ -313,7 +313,7 @@ Page({
 			})
 			//监听进度
 			if (progress) {
-			
+
 				uploadTask.onProgressUpdate(res => {
 					if (res.progress < 85) {
 						that.setData({
@@ -494,7 +494,7 @@ Page({
 			this.setShow("error", "未指定服务地点")
 			return 0
 		}
-		if (this.data.isSubsidy==1 && this.data.subsidyAmount == 0) {
+		if (this.data.isSubsidy == 1 && this.data.subsidyAmount == 0) {
 			this.setShow("error", "未指定补贴金额");
 			return 0
 		}
@@ -627,8 +627,7 @@ Page({
 		console.log(this.formatTimeStamp(serviceStartStamp))
 		return [this.formatTimeStamp(serviceStartStamp), this.formatTimeStamp(serviceEndStamp), this.formatTimeStamp(deadTimeStamp)]
 	},
-	formatTimeStamp(stamp)
-	{
+	formatTimeStamp(stamp) {
 		const date = new Date(stamp);
 
 		const year = date.getFullYear();
@@ -637,10 +636,10 @@ Page({
 		const hour = String(date.getHours()).padStart(2, '0');
 		const minute = String(date.getMinutes()).padStart(2, '0');
 		const second = String(date.getSeconds()).padStart(2, '0');
-	
+
 		const formattedDate = `${year}-${month}-${day} ${hour}:${minute}:${second}`;
 		return formattedDate;
-},
+	},
 
 
 	//改变选择岗位索引

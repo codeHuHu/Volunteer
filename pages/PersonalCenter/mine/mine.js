@@ -1,4 +1,3 @@
-// pages/mine/mine.js
 const app = getApp()
 let loading = false;
 Page({
@@ -10,40 +9,33 @@ Page({
 		imageSrc: '', // 图片链接，请替换为实际的图片链接
 	},
 	onLoad() {
+		this.getUserInfo()
 	},
 	onShow() {
-		this.getUserInfo()
-		this.saveGlobalData()
+		let that = this
+		that.saveGlobalData()
+		that.setData({
+			isLogin: app.globalData.isAuth,
+			userName: app.getUserName(),
+			myRole: app.getRole()
+		})
 	},
+	onPullDownRefresh() {
+		this.getUserInfo()
+		wx.stopPullDownRefresh()
+	},
+	// 这个主要为了调试用的
 	saveGlobalData() {
 		wx.setStorageSync('app_globalData', app.globalData)
 	},
 	getUserInfo() {
 		let that = this
-		//先拿本地JWT_Token来获取用户信息
-		wx.$ajax({
-			url: wx.$param.server['springboot'] + "/user",
-			method: "get",
-			showErr: false
-		}).then(res => {
-			console.log('获取信息res', res)
-			app.globalData.isAuth = true
-			app.globalData.userInfo = res.data
-			that.setData({
-				isLogin: true,
-				actions: res.data,
-				myPos: res.data['position']
-			})
-			wx.setStorageSync('userInfo', res.data)
-		}).catch(err => {
-			app.globalData.isAuth = false
-			that.setData({
-				isLogin: false,
-				actions: {},
-				myPos: 0
-			})
-			app.globalData.userInfo = { position: 0 }
-			console.log('获取信息err', err);
+		// 调用全局函数
+		app.getAuthStatus()
+		that.setData({
+			isLogin: app.globalData.isAuth,
+			userName: app.getUserName(),
+			myRole: app.getRole()
 		})
 	},
 	navTo(e) {
@@ -55,7 +47,7 @@ Page({
 		wx.$navTo(e)
 	},
 	showModal(e) {
-		if (this.data.myPos < 1) {
+		if (this.data.myRole < 1) {
 			this.setShow("error", "未登录");
 			return 0
 		}
