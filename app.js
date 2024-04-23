@@ -3,7 +3,7 @@ require("./utils/wx.js")
 App({
 	globalData: {
 		isAuth: false,
-		userInfo: null
+		userInfo: { position: 0 }
 	},
 	onLaunch() {
 		this.getAuthStatus()
@@ -46,7 +46,7 @@ App({
 		let that = this
 		wx.showLoading()
 		wx.removeStorageSync('JWT_Token')
-		that.globalData.userInfo = {}
+		that.globalData.userInfo = { position: 0 }
 		wx.reLaunch({
 			url: '/pages/HomeCenter/home/home',
 		})

@@ -42,7 +42,7 @@ Page({
 				actions: {},
 				myPos: 0
 			})
-			app.globalData.userInfo = null
+			app.globalData.userInfo = { position: 0 }
 			console.log('获取信息err', err);
 		})
 	},
