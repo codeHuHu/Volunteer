@@ -84,7 +84,7 @@ Page({
 		}
 		let activeIdx = -1
 		let isJoin = 0
-		if (res.joinMembers) {
+		if (res.joinMembers && app.globalData.userInfo != null) {
 			// 如果名单里有该志愿者,改变报名按钮状态
 			for (let i in res.joinMembers) {
 				//暂时通过名字来判断
