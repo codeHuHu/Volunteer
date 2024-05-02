@@ -54,7 +54,7 @@ Page({
 		actName: '',
 		groupTagName: '',
 		teamName: '',
-		needNum: 0,
+		// needNum: 0,
 		subsidyAmount: 0,
 		address: '',
 		intro: '',
@@ -113,7 +113,7 @@ Page({
 		});
 	},
 	onReady() {
-		this.handleTotalNum()
+		//this.handleTotalNum()
 	},
 	hideModal() {
 		this.setData({
@@ -228,7 +228,7 @@ Page({
 				groupTag,
 				//number
 				outJoin: 0,
-				needNum: that.data.needNum,
+				// needNum: that.data.needNum,
 
 				teamName: that.data.teamName,
 				qrCode,
@@ -475,17 +475,17 @@ Page({
 			this.setShow("error", "请添加活动时间段");
 			return 0
 		}
-		if (this.data.needNum == 0) {
-			this.setShow("error", '请添加岗位');
-			return 0
-		}
-		if (!this.numEqual()) {
-			this.setShow("error", "各岗位人数需要与总需求人数一致")
-		}
-		if (!this.data.needNum && this.data.needNum != 0) {
-			this.setShow("error", "公开招募错误");
-			return 0
-		}
+		// if (this.data.needNum == 0) {
+		// 	this.setShow("error", '请添加岗位');
+		// 	return 0
+		// }
+		// if (!this.numEqual()) {
+		// 	this.setShow("error", "各岗位人数需要与总需求人数一致")
+		// }
+		// if (!this.data.needNum && this.data.needNum != 0) {
+		// 	this.setShow("error", "公开招募错误");
+		// 	return 0
+		// }
 		if (!this.data.tagIndex && this.data.tagIndex != 0) {
 			this.setShow("error", "未选择活动标签");
 			return 0
@@ -511,19 +511,19 @@ Page({
 		// }
 		return 1
 	},
-	numEqual() {
+	// numEqual() {
 
-		let tempList = this.data.serviceTimeSpan
-		let sum = 0
-		for (let i in tempList) {
-			for (let j in tempList[i]['positions']) {
-				sum += tempList[i]['positions'][j].number
-			}
-		}
-		if (sum == this.data.needNum)
-			return true
-		return false
-	},
+	// 	let tempList = this.data.serviceTimeSpan
+	// 	let sum = 0
+	// 	for (let i in tempList) {
+	// 		for (let j in tempList[i]['positions']) {
+	// 			sum += tempList[i]['positions'][j].number
+	// 		}
+	// 	}
+	// 	if (sum == this.data.needNum)
+	// 		return true
+	// 	return false
+	// },
 	setShow(status, message, time = 1000, fun = false) {
 		if (loading) {
 			return
@@ -675,7 +675,7 @@ Page({
 			serviceTimeSpan,
 			boxer
 		})
-		that.handleTotalNum();
+	//	that.handleTotalNum();
 		that.hideModal()
 	},
 	//删除时间段
@@ -695,9 +695,9 @@ Page({
 						serviceTimeSpan,
 						boxer
 					})
-					setTimeout(() => {
-						that.handleTotalNum();
-					}, 500);
+					// setTimeout(() => {
+					// 	that.handleTotalNum();
+					// }, 500);
 				} else if (res.cancel) {
 					console.log('用户点击取消')
 				}
@@ -734,7 +734,7 @@ Page({
 				boxer
 			})
 		}
-		this.handleTotalNum();
+		//this.handleTotalNum();
 		this.hideModal()
 	},
 	//删除岗位
@@ -755,9 +755,9 @@ Page({
 						})
 					}
 					//要延迟处理总人数才行,不然会有bug
-					setTimeout(() => {
-						that.handleTotalNum();
-					}, 200);
+					// setTimeout(() => {
+					// 	that.handleTotalNum();
+					// }, 200);
 
 				} else if (res.cancel) {
 					console.log('用户点击取消')
@@ -794,22 +794,22 @@ Page({
 			console.log("op错误")
 		}
 
-		this.handleTotalNum();
+		//this.handleTotalNum();
 
 	},
 	//处理总人数
-	handleTotalNum() {
-		let tempList = this.data.serviceTimeSpan
-		let total = 0;
-		for (let i in tempList) {
-			for (let j in tempList[i]['positions']) {
-				total += tempList[i].positions[j].number
-			}
-		}
-		this.setData({
-			needNum: total
-		})
-	},
+	// handleTotalNum() {
+	// 	let tempList = this.data.serviceTimeSpan
+	// 	let total = 0;
+	// 	for (let i in tempList) {
+	// 		for (let j in tempList[i]['positions']) {
+	// 			total += tempList[i].positions[j].number
+	// 		}
+	// 	}
+	// 	this.setData({
+	// 		needNum: total
+	// 	})
+	// },
 
 	openfile(e) {
 		var file = e.currentTarget.dataset.file;

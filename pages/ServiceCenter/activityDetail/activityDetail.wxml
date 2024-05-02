@@ -24,7 +24,7 @@
 	<view class="solid-bottom text-lg text-bold padding text-black">服务组织</view>
 	<view class="padding flex  justify-between">
 		<text class="">负责人</text>
-		<text class="text-df ">{{actions.holder.name}} {{actions.phone}}</text>
+		<text class="text-df ">{{actions.holder.name}}——{{actions.holder.phone}}</text>
 	</view>
 	<view wx:if="{{actions.holderDetail}}" class="padding flex  justify-between">
 		<text class="">负责人介绍</text>
@@ -147,8 +147,13 @@
 <view class="static margin-sm radius-lg bg-white">
 	<view class="solid-bottom text-lg text-bold padding text-black">服务信息</view>
 	<view class="padding flex  justify-between">
-		<text class="">服务地点</text>
-		<text class="text-df">{{actions.address.length>0?actions.address:"发布者未填写"}}</text>
+		<view class="flex-sub">
+			<text class="">服务地点</text>
+		</view>
+		<view class="flex-twice">
+			<text class="text-df flex justify-end">{{actions.address.length>0?actions.address:"发布者未填写"}}</text>
+		</view>
+
 	</view>
 	<view wx:if="{{actions.isSubsidy}}" class="padding flex  justify-between">
 		<text class="text-red">服务补贴</text>
@@ -196,7 +201,7 @@
 		<view class="flex padding-sm solid{{size?'s':''}}" wx:for="{{actions.introFile}}" wx:key="item" wx-index="index" bindtap="openFile" data-file="{{actions.introFile[index]}}">
 			<view class="padding-lr-xs ">
 				<!-- <view class="cu-avatar lg round iconfont {{item.filetype=='.excel'?'icon-excel text-green':(item.filetype=='.ppt'?'icon-ppt text-red':((item.filetype=='.docx'||item.filetype=='.doc')?'icon-word text-blue':(item.filetype=='.pdf'?'icon-PDF text-red':'icon-icon-test')))}}"> -->
-					<view class="cu-avatar lg round iconfont icon-PDF text-red icon-icon-test">
+				<view class="cu-avatar lg round iconfont icon-PDF text-red icon-icon-test">
 				</view>
 			</view>
 			<view class="padding-xs text-xl text-black">
@@ -361,10 +366,10 @@
 	<view class="cu-dialog">
 		<!-- 标题 -->
 		<view class="cu-bar bg-white" style="justify-content:flex-end;">
-			<view class="content">请确认您的信息</view>	
-			
+			<view class="content">请确认您的信息</view>
 
-			<view class="action"bindtap="hideModal">
+
+			<view class="action" bindtap="hideModal">
 				<text class="cuIcon-close text-red"></text>
 			</view>
 		</view>

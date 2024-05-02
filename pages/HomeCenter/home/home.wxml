@@ -64,7 +64,7 @@
 			<view>
 				<image class="icon" src="/images/tabbar/sun.png"></image>
 			</view>
-			<view class="cu-item shadow">
+			<view class="cu-item shadow" bindtap="navTo" data-url="/pages/ServiceCenter/activityDetail/activityDetail?id={{item.id}}">
 				<view class="title">
 					<view class="text-cut">{{item.title}}</view>
 				</view>
@@ -76,9 +76,9 @@
 						<view class="character " style="justify-content: space-between; ">
 
 							<view class="cu-tag bg-green light sm round" style="max-width: 200rpx; overflow: hidden;">{{item.tag}}</view>
-							<view class="detail">
+							<!-- <view class="detail">
 								<button class="btn-detail" bindtap="navTo" data-url="/pages/ServiceCenter/activityDetail/activityDetail?id={{item.id}}">查看</button>
-							</view>
+							</view> -->
 						</view>
 					</view>
 				</view>
