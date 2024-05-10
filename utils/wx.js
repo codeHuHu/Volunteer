@@ -8,7 +8,7 @@ wx.$ajax = function (option) {
 			option.method = "POST"
 		}
 		if (option.url == undefined) {
-			option.url = wx.$param.server["fastapi"]
+			option.url = wx.$param.server["springboot"]
 		}
 		if (option.header == undefined || typeof option.header != 'object') {
 			option.header = {
@@ -19,7 +19,7 @@ wx.$ajax = function (option) {
 			// }
 		}
 		if (typeof option.url === 'string' && option.url.indexOf("http") == -1) {
-			option.url = wx.$param.server["fastapi"] + option.url
+			option.url = wx.$param.server["springboot"] + option.url
 		}
 		if (typeof option.loading == "boolean" && option.loading) {
 			wx.showLoading({

@@ -76,12 +76,12 @@
 			</view>
 		</view>
 		<!-- bindtap="showModal" data-target="isAccess" -->
-		<view wx:if="{{myRole>0}}" bindtap="navTo" data-url="/pages/PersonalCenter/newActivity/newActivity" class="cu-item arrow" style=" background-color: rgb(163, 219, 163);">
+		<!-- <view wx:if="{{myRole>0}}" bindtap="navTo" data-url="/pages/PersonalCenter/newActivity/newActivity" class="cu-item arrow" style=" background-color: rgb(163, 219, 163);">
 			<view class="content">
 				<text class="cuIcon-activity lg text-white"></text>
 				<text class="text-white">发布活动</text>
 			</view>
-		</view>
+		</view> -->
 		<view bindtap="navTo" data-url="/pages/PersonalCenter/commentActivity/commentActivity" data-check="1" class="cu-item arrow " style="display: none;">
 			<view class="content">
 				<text class="cuIcon-activity lg text-gray"></text>
