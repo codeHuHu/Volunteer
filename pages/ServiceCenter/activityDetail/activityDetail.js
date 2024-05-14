@@ -46,6 +46,12 @@ Page({
 		that.getService(options.id)
 
 	},
+	onShow() {
+		let myInfo = wx.getStorageSync('userInfo')
+		this.setData({
+			myInfo: myInfo,//记录个人信息
+		})
+	},
 	onPullDownRefresh() {
 		wx.stopPullDownRefresh()
 	},
@@ -212,6 +218,12 @@ Page({
 		if (!app.globalData.isAuth) {
 			this.setShow("error", "您尚未登录");
 			wx.$navTo('/pages/PersonalCenter/register/register')
+			return
+		}
+		if (app.globalData.userInfo.name === "新用户") {
+			this.setShow("error", "您尚未实名");
+			setTimeout(() => { wx.$navTo('/pages/PersonalCenter/setting/setting') }, 700)
+
 			return
 		}
 
@@ -434,6 +446,8 @@ Page({
 	},
 	checkInfo() {
 		const that = this
+
+
 		if (that.data.actions.isSubsidy && !that.data.payNumber) {
 			this.setShow("error", "支付信息没填");
 			return false

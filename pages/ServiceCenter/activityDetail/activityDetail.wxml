@@ -373,14 +373,14 @@
 				<text class="cuIcon-close text-red"></text>
 			</view>
 		</view>
-		<view class="cu-form-group">
+		<!-- <view class="cu-form-group">
 			<view class="title">志愿者姓名</view>
 			<text>{{myInfo.name}}</text>
 		</view>
 		<view class="cu-form-group">
 			<view class="title">联系电话</view>
 			<text>{{myInfo.phone}}</text>
-		</view>
+		</view> -->
 		<view class="cu-form-group">
 			<view class="title">服务时间段</view>
 			<text>{{timeSpan[idx[0]]['date']+' '+ timeSpan[idx[0]]['time']}}</text>
@@ -399,7 +399,7 @@
 			</view>
 			<view class="cu-form-group" style="justify-content: between;" style="display: flex;align-items: center; ">
 				<view class="title outteam">收款账号</view>
-				<input class="tel" model:value="{{payNumber}}" placeholder="例：6217003810026896707">
+				<input class="tel" model:value="{{payNumber}}" placeholder="没有则填无">
 				</input>
 			</view>
 		</view>
