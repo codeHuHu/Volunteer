@@ -44,6 +44,7 @@ wx.$ajax = function (option) {
 			success: (res) => {
 				// http响应错误
 				if (res.statusCode >= 400) {
+					console.log("请求响应错误");
 					//认证失败,清除本地token
 					if (res.statusCode == 401) {
 						console.log("认证失败,清除本地token 和 userInfo");
@@ -68,6 +69,16 @@ wx.$ajax = function (option) {
 						showCancel: false
 					})
 					return
+				}
+				if (res.data.code == 50000) {
+					let msg = res.data.msg
+					//返回错误信息
+					reject({
+						when: "请求错误",
+						error: msg,
+						detail: msg,
+					})
+					return;
 				}
 				// 只返回data
 				if (res.data) {

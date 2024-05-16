@@ -173,6 +173,8 @@ Page({
 			that.getService()
 		}).catch(err => {
 			console.log("报名失败err", err)
+			that.setShow("error", err.detail)
+			that.getService()
 			wx.hideLoading()
 		})
 	},
@@ -229,16 +231,24 @@ Page({
 
 		let tmp = e.currentTarget.dataset.target
 
-		if (this.data.isDead && tmp == 'toCancel') {
-			this.setShow("error", "截止时间已到,不可操作")
-			return
-		}
+		// if (this.data.isDead && tmp == 'toCancel') {
+		// 	this.setShow("error", "截止时间已到,不可操作")
+		// 	return
+		// }
 		if (tmp == 'toGroup' && !this.data.isJoin) {
 			this.setShow("error", "你尚未参与此活动");
 			return
 		}
 
 		if (tmp == 'comfirmInfo') {
+			// (仅仅是前端判断)判断人数是不是满了
+			let selectPosition = this.data.timeSpan[e.currentTarget.dataset.timespan].positions[e.currentTarget.dataset.position];
+			if (selectPosition.joined >= selectPosition.number) {
+				this.setShow("error", "该岗位人数已满")
+				return;
+			}
+
+
 			this.setData({
 				idx: [e.currentTarget.dataset.timespan, e.currentTarget.dataset.position],
 			})
@@ -260,6 +270,7 @@ Page({
 		let tmp = e.currentTarget.dataset.target
 
 		if (tmp == 'join') {
+
 			if (this.checkInfo()) {
 				wx.showLoading()
 				this.setData({
