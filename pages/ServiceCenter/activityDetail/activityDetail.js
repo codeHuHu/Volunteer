@@ -27,8 +27,8 @@ Page({
 		let that = this
 
 		that.setData({
-			myInfo: myInfo,//记录个人信息
-			id: options.id,//传入活动id
+			myInfo: myInfo, //记录个人信息
+			id: options.id, //传入活动id
 			//判断是否为审核页面
 			checkMode: options.check ? 1 : 0
 		})
@@ -49,14 +49,13 @@ Page({
 	onShow() {
 		let myInfo = wx.getStorageSync('userInfo')
 		this.setData({
-			myInfo: myInfo,//记录个人信息
+			myInfo: myInfo, //记录个人信息
 		})
 	},
 	onPullDownRefresh() {
 		wx.stopPullDownRefresh()
 	},
-	onUnload() {
-	},
+	onUnload() { },
 	getService(id = null) {
 		let that = this
 		if (!id) {
@@ -69,8 +68,7 @@ Page({
 		}).then(res => {
 			console.log("res", res);
 			that.adjustData(res.data)
-		}).catch(err => {
-		})
+		}).catch(err => { })
 	},
 	//调整数据
 	adjustData(res) {
@@ -224,31 +222,32 @@ Page({
 		}
 		if (app.globalData.userInfo.name === "新用户") {
 			this.setShow("error", "您尚未实名");
-			setTimeout(() => { wx.$navTo('/pages/PersonalCenter/setting/setting') }, 700)
+			setTimeout(() => {
+				wx.$navTo('/pages/PersonalCenter/setting/setting')
+			}, 700)
 
 			return
 		}
 
 		let tmp = e.currentTarget.dataset.target
 
-		// if (this.data.isDead && tmp == 'toCancel') {
+		// if (tmp == 'toCancel' && this.data.isDead) {
 		// 	this.setShow("error", "截止时间已到,不可操作")
 		// 	return
 		// }
+
+
+
 		if (tmp == 'toGroup' && !this.data.isJoin) {
 			this.setShow("error", "你尚未参与此活动");
 			return
-		}
-
-		if (tmp == 'comfirmInfo') {
+		} else if (tmp == 'comfirmInfo') {
 			// (仅仅是前端判断)判断人数是不是满了
 			let selectPosition = this.data.timeSpan[e.currentTarget.dataset.timespan].positions[e.currentTarget.dataset.position];
 			if (selectPosition.joined >= selectPosition.number) {
 				this.setShow("error", "该岗位人数已满")
 				return;
 			}
-
-
 			this.setData({
 				idx: [e.currentTarget.dataset.timespan, e.currentTarget.dataset.position],
 			})
@@ -260,6 +259,14 @@ Page({
 			this.setData({
 				showFeedbackIdx: [e.currentTarget.dataset.index]
 			})
+		} else if (tmp == 'joinMembers') {
+			if (!this.data.isAdmin) {
+				return;
+			}
+			this.setData({
+				showJoinMembersIdx: [e.currentTarget.dataset.sindex, e.currentTarget.dataset.pindex]
+			})
+
 		}
 
 		this.setData({
@@ -437,8 +444,7 @@ Page({
 				wx.openDocument({
 					filePath: res.tempFilePath,
 					showMenu: true,
-					success: res => {
-					},
+					success: res => { },
 					fail: err => {
 						console.log(err);
 					}

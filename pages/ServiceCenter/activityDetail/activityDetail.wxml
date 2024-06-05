@@ -98,12 +98,12 @@
 			<view wx:if="{{item.positions.length}}" class="cu-item {{boxer[index] ? '' : 'piano-hidden-content'}}" wx:for="{{item.positions}}" wx:for-index="pindex" wx:for-item="child" wx:key="item">
 				<view class="content flex justify-around">
 					<!-- 岗位名称 -->
-					<view class="flex-treble flex justify-center text-sm text-black ">
+					<view bindtap="showModal" data-target="showPosDesc" data-sindex="{{index}}" data-pindex="{{pindex}}" class="flex-treble flex justify-center text-sm text-black ">
 						<text>{{ child['name'] }}</text>
-						<text class="cuIcon-info text-xxl text-blue margin-bottom" bindtap="showModal" data-target="showPosDesc" data-sindex="{{index}}" data-pindex="{{pindex}}"></text>
+						<text class="cuIcon-info text-xxl text-blue margin-bottom"></text>
 					</view>
 					<!-- 计数器 -->
-					<view class="flex-twice flex-treble flex justify-center align-center text-lg">
+					<view bindtap="showModal" data-target="joinMembers" data-sindex="{{index}}" data-pindex="{{pindex}}" class="flex-twice flex-treble flex justify-center align-center text-lg">
 						<text class="text-df"> {{child.joined}}/{{child.number}}</text>
 					</view>
 					<!-- 报名 -->
@@ -122,26 +122,7 @@
 			</view>
 		</view>
 	</view>
-	<view class="flex justify-between">
-		<view class="content margin-left-xl">
-			<text class="cuIcon-emojiflashfill text-pink"></text>
-			<text class="text-grey">已加入</text>
-		</view>
-		<view class="margin-right-xl" bindtap="showModal" data-target="joinMembers">
-			<view class="cu-avatar-group">
-				<!-- 人数少于6人就根据人数来加头像 -->
-				<view wx:if="{{actions.joinMembers.length<6}}">
-					<view wx:for="{{actions.joinMembers}}" wx:key="index" class="cu-avatar round sm" style="background-image:url({{avators[index]}});"></view>
-				</view>
-				<!-- 超过的话就只显示6个头像 -->
-				<view wx:else>
-					<view wx:for="111111" wx:key="index" class="cu-avatar round sm" style="background-image:url({{avators[index]}});"></view>
-				</view>
 
-			</view>
-			<text class="text-grey text-sm ">{{actions.joinNum}} 人</text>
-		</view>
-	</view>
 </view>
 
 <view class="static margin-sm radius-lg bg-white">
@@ -413,25 +394,24 @@
 
 <!-- 报名人数详情 -->
 <view class="cu-modal {{modalName=='joinMembers'?'show':''}}">
-	<view class="cu-dialog">
+	<view class="cu-dialog padding-bottom-sm">
 		<!-- 标题 -->
 		<view class="cu-bar bg-white justify-end">
-			<view class="content">已加入名单</view>
+			<view class="content">{{timeSpan[showJoinMembersIdx[0]].positions[showJoinMembersIdx[1]].name}}</view>
 			<view class="action" bindtap="hideModal">
 				<text class="cuIcon-close text-red"></text>
 			</view>
 		</view>
-		<view class="flex justify-around margin-bottom">
+		<view class="flex justify-around margin-bottom-sm">
 			<!-- <view class="title">服务日期</view> -->
 			<text class="text-sm">姓名</text>
-			<text class="text-sm">岗位</text>
-			<text class="text-sm basis-sm">时间段</text>
+			<text class="text-sm">手机</text>
+
 		</view>
-		<view wx:for="{{actions.joinMembers}}" wx:key="index" wx:for-index="mIdx" wx:for-item="mItm" class="flex justify-around margin-bottom-sm">
+		<view wx:for="{{timeSpan[showJoinMembersIdx[0]].positions[showJoinMembersIdx[1]].joinMembers}}" wx:key="index" wx:for-index="mIdx" wx:for-item="mItm" class="flex justify-around padding-top-sm" style="border-top: solid 1rpx #080;">
 			<!-- <text class="text-sm">{{mItm.info.name[0]}}*{{mItm.info.name.length-1!=1? mItm.info.name[mItm.info.name.length-1]:''}}</text> -->
 			<text class="text-sm">{{mItm.name}}</text>
-			<text class="text-sm">{{mItm.posName}}</text>
-			<text class="text-sm">{{timeSpan[mItm.posIdx[0]].date+' '+timeSpan[mItm.posIdx[0]].time}}</text>
+			<text class="text-sm">{{mItm.phone}}</text>
 		</view>
 	</view>
 </view>
@@ -441,7 +421,7 @@
 	<view class="cu-dialog">
 		<!-- 标题 -->
 		<view class="cu-bar bg-white justify-end">
-			<view class="content">岗位描述</view>
+			<view class="content">{{timeSpan[showPosDescIdx[0]].positions[showPosDescIdx[1]].name}}---岗位描述</view>
 			<view class="action" bindtap="hideModal">
 				<text class="cuIcon-close text-red"></text>
 			</view>
