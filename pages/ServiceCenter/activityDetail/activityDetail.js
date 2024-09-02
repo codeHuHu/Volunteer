@@ -20,6 +20,8 @@ Page({
 		},
 		payType: '',
 		payNumber: '',
+		joinSet:[],	//维护该用户在每个岗位的参加情况
+		joinStatus:{}
 	},
 	onLoad(options) {
 		console.log('app.globalData:', app.globalData)
@@ -44,7 +46,7 @@ Page({
 			})
 		}
 		that.getService(options.id)
-
+		
 	},
 	onShow() {
 		let myInfo = wx.getStorageSync('userInfo')
@@ -89,24 +91,29 @@ Page({
 		let activeIdx = -1
 		let isJoin = 0
 		if (res.joinMembers && app.globalData.userInfo != null) {
+			let ifJoinSet = []
 			// 如果名单里有该志愿者,改变报名按钮状态
 			for (let i in res.joinMembers) {
 				//暂时通过名字来判断
 				if (res.joinMembers[i]["id"] == app.globalData.userInfo["id"] && res.joinMembers[i]["name"] == app.globalData.userInfo["name"]) {
 					activeIdx = res.joinMembers[i].posIdx[0]
+					ifJoinSet.push(res.joinMembers[i].posIdx)
 					isJoin = 1
 					// 找出所报名的岗位逻辑位置
-					that.setData({
-						idx: res.joinMembers[i].posIdx,
-					})
-					break
+					// that.setData({
+					// 	idx: res.joinMembers[i].posIdx,
+					// })
+					// break
 				}
 			}
+			that.setData({
+				joinSet:ifJoinSet
+			})
 		}
 		that.setData({
 			isJoin
 		})
-
+		this.updateJoinStatus(res.timeSpan);
 		//在这里加个非时间的功能,计算boxer
 		let boxer = []
 		for (let i in res.timeSpan) {
@@ -134,7 +141,17 @@ Page({
 			actions: res,
 			timeSpan: res.timeSpan,
 		})
+
 	},
+	updateJoinStatus(timeSpan) {
+    const joinStatus = {};
+    timeSpan.forEach((item, index) => {
+      item['positions'].forEach((pos, pindex) => {
+        joinStatus[`${index}-${pindex}`] = this.data.joinSet.some((it) => it[0] === index && it[1] === pindex);
+      });
+		});
+    this.setData({ joinStatus:joinStatus });
+  },
 	Join() {
 		let that = this
 
@@ -187,7 +204,8 @@ Page({
 			url: wx.$param.server['springboot'] + "/service/engage",
 			method: "post",
 			data: {
-				sId: that.data.id
+				sId: that.data.id,
+				posIdx: that.data.idx,
 			},
 			header: {
 				'content-type': 'application/json'
@@ -199,6 +217,7 @@ Page({
 			wx.hideLoading()
 		}).catch(err => {
 			console.log("取消失败err", err)
+			that.setShow("error", err.detail)
 			wx.hideLoading()
 		})
 	},
@@ -214,6 +233,7 @@ Page({
 
 	},
 	showModal(e) {
+		console.log(e.currentTarget.dataset)
 		//首先看是否登录了
 		if (!app.globalData.isAuth) {
 			this.setShow("error", "您尚未登录");
@@ -251,6 +271,7 @@ Page({
 			this.setData({
 				idx: [e.currentTarget.dataset.timespan, e.currentTarget.dataset.position],
 			})
+			
 		} else if (tmp == 'showPosDesc') {
 			this.setData({
 				showPosDescIdx: [e.currentTarget.dataset.sindex, e.currentTarget.dataset.pindex]
@@ -270,7 +291,8 @@ Page({
 		}
 
 		this.setData({
-			modalName: tmp
+			modalName: tmp,
+			idx: [e.currentTarget.dataset.timespan, e.currentTarget.dataset.position],
 		})
 	},
 	hideModal(e) {

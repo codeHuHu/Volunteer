@@ -76,7 +76,7 @@
 			</view>
 			<!-- 查看二维码按钮 -->
 			<view wx:else bindtap="showModal" data-target="toGroup">
-				<button wx:if="{{isJoin==1}}" bindtap="toggle" data-class="scale-up" role="button" aria-disabled="false" class="signUp cu-avatar round xl bg-{{isFull?'purple':'green'}} animation-{{animation}}">
+				<button wx:if="{{JoinSet.length}}" bindtap="toggle" data-class="scale-up" role="button" aria-disabled="false" class="signUp cu-avatar round xl bg-{{isFull?'purple':'green'}} animation-{{animation}}">
 					<text class="avatar-text">群二维码</text>
 				</button>
 			</view>
@@ -107,15 +107,15 @@
 						<text class="text-df"> {{child.joined}}/{{child.number}}</text>
 					</view>
 					<!-- 报名 -->
-					<view wx:if="{{!checkMode&&(!isDead&&isJoin == 0)}}" bindtap="showModal" data-target="comfirmInfo" data-timespan="{{index}}" data-position="{{pindex}}" class="flex-sub flex-treble flex justify-center align-center text-lg">
-						<text class="cuIcon-friendaddfill text-xxl text-green">+</text>
-					</view>
-					<!-- 取消报名 -->
-					<view wx:elif="{{!checkMode&&(isJoin == 1&&index==idx[0]&&pindex==idx[1])}}" bindtap="showModal" data-target="toCancel" data-timespan="{{index}}" data-position="{{pindex}}" class="flex-sub flex-treble flex justify-center align-center text-lg">
-						<text class="cuIcon-friendaddfill text-xxl text-red">-</text>
-					</view>
+					<view wx:if="{{!checkMode && (!isDead && !joinStatus[index + '-' + pindex])}}" bindtap="showModal" data-target="comfirmInfo" data-timespan="{{index}}" data-position="{{pindex}}" class="flex-sub flex-treble flex justify-center align-center text-lg">
+    <text class="cuIcon-friendaddfill text-xxl text-green">+</text>
+</view>
+<!-- 取消报名 -->
+<view wx:elif="{{!checkMode && (!isDead && joinStatus[index + '-' + pindex])}}" bindtap="showModal" data-target="toCancel" data-timespan="{{index}}" data-position="{{pindex}}" class="flex-sub flex-treble flex justify-center align-center text-lg">
+    <text class="cuIcon-friendaddfill text-xxl text-red">-</text>
+</view>
 					<!-- 占个位置而已 -->
-					<view wx:else class="flex-sub flex-treble flex justify-center align-center text-lg">
+					<view wx:else class="flex-sub flex-treble flex justify-center align-center text-lg">111
 					</view>
 				</view>
 
