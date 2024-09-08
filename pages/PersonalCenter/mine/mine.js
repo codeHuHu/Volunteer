@@ -12,6 +12,7 @@ Page({
 		this.getUserInfo()
 	},
 	onShow() {
+		console.log("show")
 		let that = this
 		that.saveGlobalData()
 		that.setData({

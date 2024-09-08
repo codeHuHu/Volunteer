@@ -30,7 +30,7 @@ App({
 				that.getAuthStatus()
 			}
 		}).catch(err => {
-			console.log('login的err', res)
+			console.log('login的err', err)
 		})
 
 	},
@@ -57,11 +57,12 @@ App({
 		}).then(res => {
 			console.log('app.getAuthStatus获取信息res', res)
 			// 全局
-			that.globalData.isAuth = true
+			that.globalData.isAuth = true	//是否登录
 			that.globalData.userInfo = res.data
 			// 本地
 			wx.setStorageSync('userInfo', res.data)
 		}).catch(err => {
+			//拦截器拦截token错误返回401
 			console.log("app.getAuthStatus获取信息err", err);
 			that.globalData.isAuth = false
 			that.globalData.userInfo = null

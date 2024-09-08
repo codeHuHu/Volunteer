@@ -34,6 +34,7 @@ Page(
 		index: '',
 		data_Arr: [],
 		toUpdateArr: [''],
+		total:0,	//每页查找的记录数
 		actions_Status: ['1'],
 		myPos:0,
 		myId:0
@@ -41,6 +42,7 @@ Page(
 	onLoad(event) {
 		this.initPage()
 		form['tag']=""
+		form['status']=0
 		wx.setNavigationBarTitle({
 			title: '志愿服务',
 		})
@@ -77,14 +79,15 @@ Page(
 			console.log(res.data)
 			const updateActionList = this.data.actionList.concat(res.data.records)
 			that.setData({
-				actionList: updateActionList
+				actionList: updateActionList,
+				total:res.data.total
 			})
-		
-			//const hasMore = res.data.records.length >= form['pageSize']
-			// this.setData({
-			// 	hasMore:hasMore, 是否还要加页
-			// //	isLoading:false
-			// })
+			
+			const hasMore = that.data.total >= form['pageSize']
+			this.setData({
+				hasMore:hasMore, //是否还要加页
+			//	isLoading:false
+			})
 		}).catch(err => {
 			that.setShow("error", "获取失败")
 		})
@@ -111,7 +114,7 @@ Page(
 		});
 		that.initPage()
 		that.getData()
-	},
+	}, 
 	// 类型 点击下拉列表
 	typeSearch(e) {
 		let that = this
