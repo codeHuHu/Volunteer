@@ -288,7 +288,7 @@ Page({
 							progress: 100
 						})
 					}
-
+					console.log(1)
 					const tmpdata = JSON.parse(res.data);
 					const data = tmpdata.data
 					console.log("data= ", data)
