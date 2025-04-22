@@ -289,6 +289,7 @@ Page({
 						})
 					}
 					console.log(1)
+					console.log(2)
 					const tmpdata = JSON.parse(res.data);
 					const data = tmpdata.data
 					console.log("data= ", data)
