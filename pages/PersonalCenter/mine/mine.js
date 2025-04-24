@@ -22,6 +22,7 @@ Page({
 		})
 	},
 	onPullDownRefresh() {
+		console.log("对")
 		this.getUserInfo()
 		wx.stopPullDownRefresh()
 	},
