@@ -289,10 +289,8 @@ Page({
 						})
 					}
 
-					console.log("出错")
 					const tmpdata = JSON.parse(res.data);
 					const data = tmpdata.data
-					console.log("已修改")
 					console.log("data= ", data)
 					if (fileName) {
 						let tmp = {
