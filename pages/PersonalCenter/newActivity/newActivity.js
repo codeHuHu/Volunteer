@@ -289,7 +289,7 @@ Page({
 						})
 					}
 
-					console.log("出错")
+					console.log("改正")
 					const tmpdata = JSON.parse(res.data);
 					const data = tmpdata.data
 					console.log("已修改")
