@@ -32,6 +32,7 @@ Page({
 	},
 	//查找活动
 	getData() {
+		
 		wx.showLoading()
 		var that = this;
 		wx.$ajax({
